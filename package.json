@@ -1,0 +1,51 @@
+{
+  "name": "@example/basics",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "node build.js && paraglide-js compile --project ./project.inlang && tinacms dev -c \"astro dev\"",
+    "start": "astro dev",
+    "build": "node build.js && paraglide-js compile --project ./project.inlang && tinacms build && astro build",
+    "preview": "astro preview",
+    "postinstall": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide"
+  },
+  "devDependencies": {
+    "@inlang/paraglide-js": "1.8.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "@tinacms/cli": "^1.5.39",
+    "@types/node": "^20.14.10",
+    "@types/underscore": "^1.11.15",
+    "astro": "^4.4.0",
+    "prettier-plugin-astro": "^0.13.0"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^2.1.1",
+    "@astrojs/netlify": "^5.1.2",
+    "@astrojs/react": "^3.0.10",
+    "@astrojs/sitemap": "^3.0.5",
+    "@astrojs/tailwind": "^5.1.0",
+    "@headlessui/react": "^1.7.18",
+    "@heroicons/react": "^2.1.1",
+    "@inlang/paraglide-astro": "^0.1.11",
+    "@nanostores/react": "^0.7.1",
+    "@performant-software/core-data": "2.1.1",
+    "@performant-software/geospatial": "2.1.1",
+    "@performant-software/semantic-components": "2.1.1",
+    "@peripleo/maplibre": "^0.5.2",
+    "@peripleo/peripleo": "^0.5.2",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-switch": "^1.0.3",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "clsx": "^2.1.0",
+    "nanostores": "^0.9.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-instantsearch": "^7.6.0",
+    "tailwindcss": "^3.4.1",
+    "tinacms": "^1.5.28",
+    "typesense-instantsearch-adapter": "^2.7.1",
+    "underscore": "^1.13.6"
+  }
+}

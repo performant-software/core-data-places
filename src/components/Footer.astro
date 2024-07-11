@@ -1,0 +1,60 @@
+---
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import Container from "./Container.astro";
+import { Image } from "astro:assets";
+import client from "../../tina/__generated__/client";
+
+const projectResponse = await client.request({
+    query: `query getAbout($relativePath: String!) {
+      about(relativePath: $relativePath) {
+        title
+      }
+    }`,
+  variables: { relativePath: 'about.mdx' },
+}, {});
+
+const { title } = projectResponse.data.about;
+
+---
+
+<div class="bg-white w-full">
+    <Container className="flex flex-col gap-8 py-12 items-center">
+        <div class="flex flex-col md:flex-row gap-6 align-middle justify-center items-center">
+            <div class="w-20 h-20 rounded-full bg-blue-600" />
+            <p class="text-5xl font-serif self-center">
+                { title }
+            </p>
+        </div>
+        <p class="text-center">
+            Lorem ipsum dolor sit amet consectetur. Eros quis faucibus magna vestibulum massa ac dolor.
+        </p>
+        <div class="flex flex-row justify-center gap-6 object-contain">
+            <div class="w-10 h-10 bg-blue-600 rounded-full" />
+            <div class="w-10 h-10 bg-blue-600 rounded-full" />
+            <div class="w-10 h-10 bg-blue-600 rounded-full" />
+            <div class="w-10 h-10 bg-blue-600 rounded-full" />
+        </div>
+        <div class="flex flex-row justify-center gap-8">
+            <a href={`${import.meta.env.PUBLIC_CORE_DATA_BASE_URL}/projects/${import.meta.env.PUBLIC_CORE_DATA_PROJECT_ID}`} target="_blank">
+                <button class="p-3 rounded-lg bg-blue-600 hover:bg-blue-800 text-white flex flex-row gap-3">
+                    <p>
+                        Log in to Core Data
+                    </p>
+                    <ArrowTopRightOnSquareIcon className="h-6 w-6" />
+                </button>
+            </a>
+            <a href="/admin/index.html" target="_blank">
+                <button class="p-3 rounded-lg bg-blue-600 hover:bg-blue-800 text-white flex flex-row gap-3">
+                    <p>
+                        Log in to project CMS
+                    </p>
+                    <ArrowTopRightOnSquareIcon className="h-6 w-6" />
+                </button>
+            </a>
+        </div>
+        <div class="h-[2px] bg-neutral-dark rounded-full w-full" />
+        <p class="text-center text-sm">
+            &copy; 2024 Lorem Ipsum Inc, all rights reserved etc
+        </p>
+    </Container>
+</div>

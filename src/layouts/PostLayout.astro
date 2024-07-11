@@ -1,0 +1,54 @@
+---
+import Layout from './Layout.astro';
+import { TinaMarkdown } from "tinacms/dist/rich-text";
+import PlaceInsert from "../components/PlaceInsert";
+import PlaceDetailModal from '../components/PlaceDetailModal';
+
+interface Props {
+    post: any
+}
+
+const { post } = Astro.props;
+
+const components = {
+    place: PlaceInsert
+}
+
+---
+
+<Layout title={post.title} tab="Posts" >
+    <main class="w-full">
+        <div class="max-w-screen-2xl mx-auto px-32 2xl:px-0">
+        <h1 class="text-3xl py-12">{post.title}</h1>
+        <div class="prose">
+            <TinaMarkdown content={post.body} components={components} />
+        </div>
+        <PlaceDetailModal client:load />
+    </main>
+</Layout>
+
+<script>
+
+import { isModalOpen, currentPlace } from '../modalStore.js';
+
+document.addEventListener('astro:page-load', () => {
+
+    document.querySelectorAll('.place-tile')
+        .forEach((tile) => tile.addEventListener('click', () => {
+            if (tile instanceof HTMLElement) {
+            openModal(tile.dataset.uuid);
+        }
+    }));
+
+
+    // Set the store to true when the button is clicked
+    function openModal(uuid: string) {
+      isModalOpen.set(true);
+      currentPlace.set(uuid);
+    }
+
+    // Add an event listener to the button
+    // document.getElementById('modalOpenHeader')?.addEventListener('click', openModal);
+    // document.getElementById('modalOpen')?.addEventListener('click', openModal);
+}, { once: false });
+</script>

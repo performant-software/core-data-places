@@ -1,0 +1,27 @@
+---
+import { Image } from "astro:assets";
+import hero from "../assets/gbof_hero.png";
+import Container from "./Container.astro";
+
+export interface Props {
+  title: string;
+  subheader: string;
+}
+
+const { title, subheader } = Astro.props;
+
+---
+<div class="bg-gray-900">
+  <div class="relative isolate overflow-hidden h-[400px]">
+    <Image src={hero} alt="" class="absolute inset-0 -z-10 h-full w-full object-cover" />
+    <div class="absolute inset-0 w-full h-full object-cover -z-10 bg-gray-900/40" />
+    <Container className="flex flex-col gap-16 text-white max-w-3/4 justify-center h-full">
+      <h1 class="text-5xl font-bold">
+        { title }
+      </h1>
+      <p>
+        { subheader }
+      </p>
+    </Container>
+  </div>
+</div>
