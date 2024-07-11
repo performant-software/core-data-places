@@ -27,7 +27,7 @@
     "@astrojs/tailwind": "^5.1.0",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
-    "@inlang/paraglide-astro": "^0.1.11",
+    "@inlang/paraglide-astro": "^0.1.32",
     "@nanostores/react": "^0.7.1",
     "@performant-software/core-data": "2.1.1",
     "@performant-software/geospatial": "2.1.1",
