@@ -1,0 +1,42 @@
+.search-features.dialog-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    inset: 0;
+    position: fixed;
+    animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 98;
+  }
+  
+  .search-features.dialog-content {
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: rgba(14, 18, 22, 0.35) 0px 10px 38px -10px, rgba(14, 18, 22, 0.2) 0px 10px 20px -15px;
+    position: fixed;
+    align-self: center;
+    top: 10%;
+    width: 40vw;
+    max-width: 1000px;
+    height: 75vh;
+    padding: 25px;
+    animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 99;
+    overflow: auto;
+  }
+  
+  .search-features.dialog-content:focus {
+    outline: none;
+  }
+  
+  .search-features.dialog-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+  
+  @keyframes overlayShow {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }

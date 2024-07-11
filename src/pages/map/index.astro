@@ -1,0 +1,16 @@
+---
+import Container from "../../components/Container.astro";
+import Layout from "../../layouts/Layout.astro";
+import Search from '../../components/map/Search';
+import MapSearch from '../../components/Search/MapSearch';
+
+const viewDetails = (hit: any) => {
+  console.log(hit.uuid);
+  Astro.redirect(`/map/${hit.uuid}`)
+};
+console.log(viewDetails);
+---
+
+<Layout title="Map" tab="Map" map>
+  <Search client:only="react" />
+</Layout>

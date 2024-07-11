@@ -14,6 +14,7 @@ interface CoreDataPlaceProps {
 };
 
 const CoreDataPlace = (props: CoreDataPlaceProps) => {
+  console.log(props);
   const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(useRuntimeConfig());
   
   const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));

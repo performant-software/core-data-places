@@ -23,8 +23,8 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   }
 
   const fetchPlace = async (placeUuid: string) => {
-    const placeData = await fetch(`https://core-data-cloud-production-955ccda75add.herokuapp.com/core_data/public/places/${placeUuid}?project_ids=2`).then(response => response.json());
-    setSelectedPlace(placeData);
+    const placeData = await fetch(`https://app.coredata.cloud/core_data/public/v1/places/${placeUuid}?project_ids=5`).then(response => response.json());
+    setSelectedPlace(placeData.place);
   };
 
   const toggleAnimate = (e: any) => {
@@ -64,10 +64,11 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetch('https://core-data-cloud-production-955ccda75add.herokuapp.com/core_data/public/places?project_ids=2').then(response => response.json())
+      const data = await fetch('https://app.coredata.cloud/core_data/public/v1/places?project_ids=5').then(response => response.json())
         .then(async response => {
-          const results = response.metadata.count;
-          const fullData = await fetch(`https://core-data-cloud-production-955ccda75add.herokuapp.com/core_data/public/places?project_ids=2&per_page=${results}`).then(response => response.json()).then(response => JSON.stringify(response));
+          console.log('hi', response);
+          const results = response.list.count;
+          const fullData = await fetch(`https://app.coredata.cloud/core_data/public/v1/places?project_ids=5&per_page=${results}`).then(response => response.json()).then(response => JSON.stringify(response));
           return fullData});
       setPlaces(JSON.parse(data));
     }
@@ -76,7 +77,7 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   }, []);
 
   useEffect(() => {
-    places && setFilteredPlaces(query === '' ? places.features : places.features.filter((place) => place.properties.title.toLowerCase().includes(query.toLowerCase())));
+    places && setFilteredPlaces(query === '' ? places.places : places.places.filter((place) => place.name.toLowerCase().includes(query.toLowerCase())));
   }, [places, query]);
 
   useEffect(() => {
@@ -84,7 +85,7 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   }, [props.input.value]);
 
   useEffect(() => {
-    if (selectedPlace && !selectedPlace.geometry) {
+    if (selectedPlace && !selectedPlace.place_geometry) {
       setMessage('NOTE: The selected place has no specified location in Core Data. This may cause errors.')
     }
     else {
@@ -111,8 +112,8 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
               <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {filteredPlaces.map((place) => (
                   <Combobox.Option
-                    key={place.properties.uuid}
-                    value={{ uuid: place.properties.uuid, title: place.properties.title }}
+                    key={place.uuid}
+                    value={{ uuid: place.uuid, title: place.name }}
                     className={({ active }) =>
                       classNames(
                         'relative cursor-default select-none py-2 pl-3 pr-9',
@@ -122,7 +123,7 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
                   >
                     {({ active, selected }) => (
                       <>
-                        <span className={classNames('block truncate', selected && 'font-semibold')}>{place.properties.title}</span>
+                        <span className={classNames('block truncate', selected && 'font-semibold')}>{place.name}</span>
 
                         {selected && (
                           <span

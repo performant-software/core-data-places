@@ -20,11 +20,11 @@ const projectResponse = await client.request({
   variables: { relativePath: 'about.mdx' },
 }, {});
 
+const { title, subheader, description } = projectResponse.data.about;
+
 const postsResponse = await client.queries.postConnection();
 
 const postsData = postsResponse.data.postConnection.edges?.map((item) => item?.node);
-
-const { title, subheader, description } = projectResponse.data.about;
 
 ---
 

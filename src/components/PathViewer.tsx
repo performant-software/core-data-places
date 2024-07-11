@@ -47,7 +47,7 @@ const PathViewer = (props: PathViewerProps) => {
                 <div className="h-full w-1/2">
                     {path && current >= 0 ? (
                         <CoreDataPlace
-                            placeURIs={[`${import.meta.env.PUBLIC_CORE_DATA_API_URL}/${path.path[current].place.uuid}?project_ids=${import.meta.env.PUBLIC_CORE_DATA_PROJECT_ID}`]}
+                            placeURIs={[`${import.meta.env.PUBLIC_CORE_DATA_API_URL_LEGACY}/${path.path[current].place.uuid}?project_ids=${import.meta.env.PUBLIC_CORE_DATA_PROJECT_ID}`]}
                             buffer={path.path[current].place?.buffer}
                             animate={path.path[current].place?.animate}
                             layer={path.path[current].place?.layer}
@@ -55,7 +55,7 @@ const PathViewer = (props: PathViewerProps) => {
                         />
                     ) : path && (
                         <CoreDataPlace
-                            placeURIs={path.path.map((current) => `${import.meta.env.PUBLIC_CORE_DATA_API_URL}/${current.place.uuid}?project_ids=${import.meta.env.PUBLIC_CORE_DATA_PROJECT_ID}`)}
+                            placeURIs={path.path.map((current) => `${import.meta.env.PUBLIC_CORE_DATA_API_URL_LEGACY}/${current.place.uuid}?project_ids=${import.meta.env.PUBLIC_CORE_DATA_PROJECT_ID}`)}
                             animate={false}
                             mapId="cover"
                         />

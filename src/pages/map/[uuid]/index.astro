@@ -1,0 +1,18 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import PlaceDetailSearch from '../../../components/map/PlaceDetailSearch';
+
+const { uuid } = Astro.params;
+
+if (!uuid) {
+    Astro.redirect('/map');
+}
+
+---
+
+<Layout title="Map" tab="Map">
+    <PlaceDetailSearch
+        placeId={uuid || ''}
+        client:only="react"
+    />
+</Layout>
