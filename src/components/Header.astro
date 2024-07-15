@@ -17,11 +17,11 @@ const projectResponse = await client.request({
       }
     }`,
   variables: { relativePath: 'about.mdx' },
-});
+}, {});
 
 const { title } = projectResponse.data.about;
 
-const sections = ["Map", "Posts", "Paths", "About"];
+const sections = ["Map", "Posts", "Paths"];
 ---
 
 <div class={`hidden md:inline-block w-full max-w-screen-3xl 3xl:mx-auto bg-white ${ !map && 'shadow-md' } z-10`}>
