@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import * as m from '../paraglide/messages';
 
 
 export interface Props {
@@ -46,6 +47,6 @@ const { date, category, title, author, slug, imageUrl, blurb } = Astro.props;
     </div>
   </div>
   <a class="flex justify-end p-12 w-full" href={slug}>
-    Read More &rarr;
+    {m.t_readMore()} &rarr;
   </a>
 </article>

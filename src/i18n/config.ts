@@ -24,6 +24,27 @@ const config = {
         posts: {
             tinaLabel: "Posts"
         },
+        aboutProject: {
+            tinaLabel: "About the Project"
+        },
+        startTour: {
+            tinaLabel: "Start the Tour"
+        },
+        readMore: {
+            tinaLabel: "Read More"
+        },
+        footerText: {
+            tinaLabel: "(footer text)"
+        },
+        footerCopyright: {
+            tinaLabel: "(footer copyright)"
+        },
+        coreDataLogin: {
+            tinaLabel: "Log in to Core Data"
+        },
+        tinaLogin: {
+            tinaLabel: "Log in to Tina CMS"
+        },
         // add in non-user-defined core data fields here
         title: {
             tinaLabel: "Name"

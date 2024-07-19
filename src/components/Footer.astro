@@ -3,6 +3,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import Container from "./Container.astro";
 import { Image } from "astro:assets";
 import client from "../../tina/__generated__/client";
+import * as m from '../paraglide/messages';
 
 const projectResponse = await client.request({
     query: `query getAbout($relativePath: String!) {
@@ -26,7 +27,7 @@ const { title } = projectResponse.data.about;
             </p>
         </div>
         <p class="text-center">
-            Lorem ipsum dolor sit amet consectetur. Eros quis faucibus magna vestibulum massa ac dolor.
+            { m.t_footerText()}
         </p>
         <div class="flex flex-row justify-center gap-6 object-contain">
             <div class="w-10 h-10 bg-blue-600 rounded-full" />
@@ -38,7 +39,7 @@ const { title } = projectResponse.data.about;
             <a href={`${import.meta.env.PUBLIC_CORE_DATA_BASE_URL}/projects/${import.meta.env.PUBLIC_CORE_DATA_PROJECT_ID}`} target="_blank">
                 <button class="p-3 rounded-lg bg-blue-600 hover:bg-blue-800 text-white flex flex-row gap-3">
                     <p>
-                        Log in to Core Data
+                        {m.t_coreDataLogin()}
                     </p>
                     <ArrowTopRightOnSquareIcon className="h-6 w-6" />
                 </button>
@@ -46,7 +47,7 @@ const { title } = projectResponse.data.about;
             <a href="/admin/index.html" target="_blank">
                 <button class="p-3 rounded-lg bg-blue-600 hover:bg-blue-800 text-white flex flex-row gap-3">
                     <p>
-                        Log in to project CMS
+                        {m.t_tinaLogin()}
                     </p>
                     <ArrowTopRightOnSquareIcon className="h-6 w-6" />
                 </button>
@@ -54,7 +55,7 @@ const { title } = projectResponse.data.about;
         </div>
         <div class="h-[2px] bg-neutral-dark rounded-full w-full" />
         <p class="text-center text-sm">
-            &copy; 2024 Lorem Ipsum Inc, all rights reserved etc
+           { m.t_footerCopyright()}
         </p>
     </Container>
 </div>

@@ -8,6 +8,7 @@ import Footer from '../components/Footer.astro';
 import PostCard from '../components/PostCard.astro';
 import { Image } from 'astro:assets';
 import placeholderImg from '../assets/placeholder.png';
+import * as m from '../paraglide/messages';
 
 const projectResponse = await client.request({
   query: `query getAbout($relativePath: String!) {
@@ -38,7 +39,7 @@ const { title, subheader, description, heroImage, featureImage } = projectRespon
   />
   <Container className="my-12 grid lg:grid-cols-2 gap-16">
     <div>
-      <h2 class="text-5xl font-serif ">About the Project</h2>
+      <h2 class="text-5xl font-serif ">{m.t_aboutProject()}</h2>
       <article class="py-8 prose prose-lg max-w-none">
         <TinaMarkdown content={description} />
       </article>
