@@ -4,6 +4,7 @@ import PlaceInsert from "./PlaceInsert";
 import client from "../../tina/__generated__/client";
 import { RuntimeConfig } from "@peripleo/peripleo";
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
+import IframeEmbed from "./IframeEmbed";
 
 interface PostContentProps {
     slug: string;
@@ -29,7 +30,7 @@ const PostContent = (props: PostContentProps) => {
         <div className="w-full">
             <h1 className="text-3xl py-6">{title}</h1>
             <article className="prose prose-lg max-w-none w-full">
-                <TinaMarkdown content={content} components={{ place: PlaceInsert }} />
+                <TinaMarkdown content={content} components={{ place: PlaceInsert, iframe: IframeEmbed }} />
             </article>
         </div>
     </RuntimeConfig>
