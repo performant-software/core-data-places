@@ -17,9 +17,17 @@ const userDefinedFields = {
 		caption: m.t_71d006bd42264c0a9d88a980f6dd20c5(),
 		tinaLabel: "Art"
 	},
+	"017481b2-2cfb-481a-bc39-5fde5a09b9d4": {
+		caption: m.t_017481b22cfb481abc395fde5a09b9d4(),
+		tinaLabel: "Photos"
+	},
 	"aeb18e69-bf25-4b63-a8d9-92c4c42a3670": {
 		caption: m.t_aeb18e69bf254b63a8d992c4c42a3670(),
 		tinaLabel: "Place -> Cultural Figure"
+	},
+	"3dd1bcc0-8185-42b0-8df8-f43676f2e3e4": {
+		caption: m.t_3dd1bcc0818542b08df8f43676f2e3e4(),
+		tinaLabel: "Place -> Photos"
 	}
 }
 

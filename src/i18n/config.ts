@@ -52,6 +52,27 @@ const config = {
         root: {
             tinaLabel: "Root"
         },
+        owner_project: {
+            tinaLabel: "Owner Project"
+        },
+        all_projects: {
+            tinaLabel: "All Projects"
+        },
+        owner_project_id: {
+            tinaLabel: "Owner Project -> ID"
+        },
+        all_projects_id: {
+            tinaLabel: "All Projects -> ID"
+        },
+        owner_project_name: {
+            tinaLabel: "Owner Project -> Name"
+        },
+        all_projects_name: {
+            tinaLabel: "All Projects -> Name"
+        },
+        event_range: {
+            tinaLabel: "Event Range"
+        },
         ...userDefinedFields
     },
     featuredModel: {
