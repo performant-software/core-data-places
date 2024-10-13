@@ -24,3 +24,6 @@ pnpm-debug.log*
 .idea/
 
 node_modules
+
+users.csv
+content/users
