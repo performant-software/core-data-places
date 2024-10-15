@@ -69,7 +69,7 @@ We'll [self-host](https://tina.io/docs/self-hosted/overview/) TinaCMS on Netlify
 
 #### Install Netlify CLI
 
-```bash
+```
 npm install netlify-cli -g
 ```
 
@@ -77,4 +77,14 @@ npm install netlify-cli -g
 
 ```
 netlify dev
+```
+
+## Cloudinary
+
+Self-hosted TinaCMS does not support Git backed media. We'll need to use the Cloudinary integration in order to use the media manager. To do so, set the following environment variables:
+
+```
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
 ```

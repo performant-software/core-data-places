@@ -7,6 +7,12 @@
   status = 200
   force = true
 
+[[redirects]]
+  from = "/api/cloudinary/*"
+  to = "/.netlify/functions/tina"
+  status = 200
+  force = true
+
 [dev]
   command = "npm run dev"
   targetPort = 4321
