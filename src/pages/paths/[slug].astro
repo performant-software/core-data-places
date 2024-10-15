@@ -1,19 +1,16 @@
 ---
-import client from "../../../tina/__generated__/client";
+import { client } from '../../../tina/__generated__/databaseClient';
 import Layout from "../../layouts/Layout.astro";
 import PathViewer from "../../components/PathViewer";
 
-
 const { slug } = Astro.params;
-
 const pathsResponse = await client.queries.pathConnection();
 
 const pathSlugs = pathsResponse.data.pathConnection.edges.map((path) => path.node._sys.filename);
-
-const path = pathSlugs.includes(slug) && await client.queries.path({ relativePath: `${slug}.mdx`});
+const { data: { path } } = pathSlugs.includes(slug) && await client.queries.path({ relativePath: `${slug}.mdx`});
 
 ---
 
-<Layout title={path ? path.data.path.title : 'Paths'} tab="Paths" map>
-    { path && <PathViewer slug={slug} client:only /> }
+<Layout title={path ? path.title : 'Paths'} tab="Paths" map>
+  { path && <PathViewer path={path} client:only /> }
 </Layout>
