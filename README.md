@@ -57,15 +57,16 @@ Feel free to check [our documentation](https://docs.astro.build) or jump into ou
 
 We'll [self-host](https://tina.io/docs/self-hosted/overview/) TinaCMS on Netlify, using a serverless function as the GraphQL API. To start, set the following environment variables in your `.env`:
 
-| Variable                        | Description                                                                        |
-|:--------------------------------|:-----------------------------------------------------------------------------------|
-| `GITHUB_BRANCH`                 | The name of the branch where the content will be stored                            |
-| `GITHUB_OWNER`                  | User account or organization that owns the GitHub repo                             |
-| `GITHUB_REPO`                   | Name of the GitHub repo                                                            |
-| `GITHUB_PERSONAL_ACCESS_TOKEN`  | GitHub personal access token                                                       |
-| `TINA_PUBLIC_IS_LOCAL`          | If `true` TinaCMS will run locally. If `false` content will be committed to GitHub |
-| `MONGODB_URI`                   | MongoDB connection string                                                          |
-| `NEXTAUTH_SECRET`               | Random string to serve as authentication secret                                    |
+| Variable                       | Description                                                                        |
+|:-------------------------------|:-----------------------------------------------------------------------------------|
+| `GITHUB_BRANCH`                | The name of the branch where the content will be stored                            |
+| `GITHUB_OWNER`                 | User account or organization that owns the GitHub repo                             |
+| `GITHUB_REPO`                  | Name of the GitHub repo                                                            |
+| `GITHUB_PERSONAL_ACCESS_TOKEN` | GitHub personal access token                                                       |
+| `TINA_PUBLIC_IS_LOCAL`         | If `true` TinaCMS will run locally. If `false` content will be committed to GitHub |
+| `MONGODB_NAME`                 | MongoDB database name                                                              |
+| `MONGODB_URI`                  | MongoDB connection string                                                          |
+| `NEXTAUTH_SECRET`              | Random string to serve as authentication secret                                    |
 
 #### Install Netlify CLI
 

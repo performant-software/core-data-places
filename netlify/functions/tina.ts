@@ -25,13 +25,13 @@ const authProvider = isLocal
     authOptions: TinaAuthJSOptions({
       databaseClient,
       secret: process.env.NEXTAUTH_SECRET!,
-      debug: true,
+      debug: true
     })
   });
 
 const tinaBackend = TinaNodeBackend({
   authProvider,
-  databaseClient,
+  databaseClient
 });
 
 const mediaHandler = createMediaHandler({

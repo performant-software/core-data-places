@@ -24,7 +24,7 @@ export default isLocal
     }),
     databaseAdapter: new MongodbLevel<string, Record<string, unknown>>({
       collectionName: `${process.env.GITHUB_REPO}-${branch}`,
-      dbName: "tinacms",
+      dbName: process.env.MONGODB_NAME!,
       mongoUri: process.env.MONGODB_URI!,
     })
   });

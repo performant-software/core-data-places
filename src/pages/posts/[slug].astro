@@ -4,7 +4,7 @@ import PlaceDetailModal from "../../components/PlaceDetailModal";
 import PostContent from "../../components/PostContent";
 import Layout from "../../layouts/Layout.astro";
 import Footer from "../../components/Footer.astro";
-import { client } from '../../../tina/__generated__/databaseClient';
+import { client } from "../../../tina/__generated__/databaseClient";
 
 const { slug } = Astro.params;
 const { data: { post } } = await client.queries.post({ relativePath: `${slug}.mdx`});
