@@ -2,12 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import Container from '../components/Container.astro';
 import Hero from '../components/Hero.astro';
-import client from '../../tina/__generated__/client';
+import { client } from '../../tina/__generated__/databaseClient';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import Footer from '../components/Footer.astro';
-import PostCard from '../components/PostCard.astro';
-import { Image } from 'astro:assets';
-import placeholderImg from '../assets/placeholder.png';
 import * as m from '../paraglide/messages';
 
 const projectResponse = await client.request({
@@ -24,9 +21,6 @@ const projectResponse = await client.request({
 }, {});
 
 const postsResponse = await client.queries.postConnection();
-
-const postsData = postsResponse.data.postConnection.edges?.map((item) => item?.node);
-
 const { title, subheader, description, heroImage, featureImage } = projectResponse.data.about;
 
 ---
@@ -46,14 +40,5 @@ const { title, subheader, description, heroImage, featureImage } = projectRespon
     </div>
     <img src={featureImage} alt="" class="w-full" />
   </Container>
-  <!-- <Container className="flex flex-col gap-12 pb-16">
-    <div class="bg-neutral-dark h-[2px] w-full my-6" />
-    <h2 class="text-5xl font-serif">Featured Work</h2>
-    <div class="w-full grid grid-cols-3 gap-12">
-      { postsData && postsData.map((post) => ( 
-        <PostCard title={post.title} imageUrl={post?.cardImage} slug={`/posts/${post._sys.filename}`} />
-    ))}
-    </div>
-  </Container> -->
   <Footer />
 </Layout>

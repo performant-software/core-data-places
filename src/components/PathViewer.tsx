@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import client from "../../tina/__generated__/client";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
-import { Controls, Peripleo, RuntimeConfig } from "@peripleo/peripleo";
-import { Map, Zoom } from "@peripleo/maplibre";
+import { RuntimeConfig } from "@peripleo/peripleo";
 import { Peripleo as PeripleoUtils } from "@performant-software/core-data";
 import CoreDataPlace from "./CoreDataPlace";
 import {
@@ -15,20 +13,14 @@ import * as m from "../paraglide/messages";
 import IframeEmbed from "./IframeEmbed";
 
 export interface PathViewerProps {
-  slug: string;
+  path: any;
 }
 
 const PathViewer = (props: PathViewerProps) => {
-  const [path, setPath] = useState<any | undefined>(undefined);
   const [current, setCurrent] = useState(-1);
 
+  const { path } = props;
   const contentDiv = useRef(null);
-
-  useEffect(() => {
-    client.queries.path({ relativePath: `${props.slug}.mdx` }).then((path) => {
-      setPath(path.data.path);
-    });
-  }, []);
 
   useEffect(() => {
     contentDiv &&

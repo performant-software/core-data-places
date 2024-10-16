@@ -19,6 +19,14 @@ export default defineConfig({
     outdir: "./src/paraglide", //where your files should be
   })],
   vite: {
+    optimizeDeps: {
+      esbuildOptions: {
+        // Node.js global to browser globalThis
+        define: {
+          global: 'globalThis',
+        },
+      },
+    },
     resolve: {
       preserveSymlinks: true,
       mainFields: [

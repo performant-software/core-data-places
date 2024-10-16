@@ -2,7 +2,7 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import Container from "./Container.astro";
 import { Image } from "astro:assets";
-import client from "../../tina/__generated__/client";
+import { client } from '../../tina/__generated__/databaseClient';
 import * as m from '../paraglide/messages';
 
 const projectResponse = await client.request({

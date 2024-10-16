@@ -52,3 +52,40 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Self-Hosting TinaCMS
+
+We'll [self-host](https://tina.io/docs/self-hosted/overview/) TinaCMS on Netlify, using a serverless function as the GraphQL API. To start, set the following environment variables in your `.env`:
+
+| Variable                       | Description                                                                        |
+|:-------------------------------|:-----------------------------------------------------------------------------------|
+| `GITHUB_BRANCH`                | The name of the branch where the content will be stored                            |
+| `GITHUB_OWNER`                 | User account or organization that owns the GitHub repo                             |
+| `GITHUB_REPO`                  | Name of the GitHub repo                                                            |
+| `GITHUB_PERSONAL_ACCESS_TOKEN` | GitHub personal access token                                                       |
+| `TINA_PUBLIC_IS_LOCAL`         | If `true` TinaCMS will run locally. If `false` content will be committed to GitHub |
+| `MONGODB_NAME`                 | MongoDB database name                                                              |
+| `MONGODB_URI`                  | MongoDB connection string                                                          |
+| `NEXTAUTH_SECRET`              | Random string to serve as authentication secret                                    |
+
+#### Install Netlify CLI
+
+```
+npm install netlify-cli -g
+```
+
+#### Start Development Server
+
+```
+netlify dev
+```
+
+## Cloudinary
+
+Self-hosted TinaCMS does not support Git backed media. We'll need to use the Cloudinary integration in order to use the media manager. To do so, set the following environment variables:
+
+```
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+```

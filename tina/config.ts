@@ -1,7 +1,11 @@
-import TinaPlacePicker from "../src/components/TinaPlacePicker";
-import { defineConfig, type TinaField, type Template } from "tinacms";
+import { defineConfig, LocalAuthProvider, type TinaField } from "tinacms";
+import {
+  TinaUserCollection,
+  UsernamePasswordAuthJSProvider,
+} from "tinacms-authjs/dist/tinacms";
 import config from "../src/i18n/config";
 import { t } from "../src/i18n/utils";
+import TinaPlacePicker from "../src/components/TinaPlacePicker";
 
 const uiFields: TinaField<false>[] = Object.keys(config.ui).map((key: string) => ({
   name: t(key),
@@ -13,34 +17,27 @@ const uiFields: TinaField<false>[] = Object.keys(config.ui).map((key: string) =>
   }
 }));
 
-// Your hosting provider likely exposes this as an environment variable
-const branch =
-  process.env.GITHUB_BRANCH ||
-  process.env.VERCEL_GIT_COMMIT_REF ||
-  process.env.HEAD ||
-  "main";
+const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 
 export default defineConfig({
-  branch,
-
-  // Get this from tina.io
-  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
-  // Get this from tina.io
-  token: process.env.TINA_TOKEN,
-
+  authProvider: isLocal
+    ? new LocalAuthProvider()
+    : new UsernamePasswordAuthJSProvider(),
   build: {
     outputFolder: "admin",
     publicFolder: "public",
   },
+  contentApiUrlOverride: '/api/tina/gql',
   media: {
-    tina: {
-      mediaRoot: "/src/assets",
-      publicFolder: "",
-    },
+    loadCustomStore: async () => {
+      const pack = await import("next-tinacms-cloudinary");
+      return pack.TinaCloudCloudinaryMediaStore;
+    }
   },
   // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
   schema: {
     collections: [
+      TinaUserCollection,
       {
         name: "about",
         label: "About the Project",

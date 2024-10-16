@@ -4,17 +4,20 @@ import PlaceDetailModal from "../../components/PlaceDetailModal";
 import PostContent from "../../components/PostContent";
 import Layout from "../../layouts/Layout.astro";
 import Footer from "../../components/Footer.astro";
-
+import { client } from "../../../tina/__generated__/databaseClient";
 
 const { slug } = Astro.params;
-
-// const post = await client.queries.post({ relativePath: `${slug}.mdx`});
+const { data: { post } } = await client.queries.post({ relativePath: `${slug}.mdx`});
 
 ---
 
 <Layout title={slug} tab="Posts">
   <Container className="pb-16">
-    <PostContent slug={slug} client:only />
+    <PostContent
+      content={post?.body}
+      title={post?.title}
+      client:only
+    />
   </Container>
   <PlaceDetailModal client:only />
   <Footer />
