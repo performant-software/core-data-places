@@ -1,23 +1,20 @@
-import { defineConfig, LocalAuthProvider, type TinaField } from "tinacms";
-import {
-  TinaUserCollection,
-  UsernamePasswordAuthJSProvider,
-} from "tinacms-authjs/dist/tinacms";
-import config from "../src/i18n/config";
-import { t } from "../src/i18n/utils";
-import TinaPlacePicker from "../src/components/TinaPlacePicker";
+import { defineConfig, LocalAuthProvider, type TinaField } from 'tinacms';
+import { TinaUserCollection, UsernamePasswordAuthJSProvider } from 'tinacms-authjs/dist/tinacms';
+import config from '../src/i18n/config';
+import { t } from '../src/i18n/utils';
+import TinaPlacePicker from './components/TinaPlacePicker';
 
 const uiFields: TinaField<false>[] = Object.keys(config.ui).map((key: string) => ({
   name: t(key),
   label: config.ui[key as keyof typeof config.ui].tinaLabel,
-  type: "string",
+  type: 'string',
   ui: {
     //@ts-ignore
     component: config.ui[key as keyof typeof config.ui]?.textArea ? 'textarea' : 'text'
   }
 }));
 
-const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
+const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 const localContentPath = process.env.TINA_LOCAL_CONTENT_PATH;
 
 export default defineConfig({
@@ -25,14 +22,14 @@ export default defineConfig({
     ? new LocalAuthProvider()
     : new UsernamePasswordAuthJSProvider(),
   build: {
-    outputFolder: "admin",
-    publicFolder: "public",
+    outputFolder: 'admin',
+    publicFolder: 'public',
   },
   contentApiUrlOverride: '/api/tina/gql',
   localContentPath,
   media: {
     loadCustomStore: async () => {
-      const pack = await import("next-tinacms-cloudinary");
+      const pack = await import('next-tinacms-cloudinary');
       return pack.TinaCloudCloudinaryMediaStore;
     }
   },
@@ -41,39 +38,39 @@ export default defineConfig({
     collections: [
       TinaUserCollection,
       {
-        name: "about",
-        label: "About the Project",
-        path: "content/about",
-        format: "mdx",
+        name: 'about',
+        label: 'About the Project',
+        path: 'content/about',
+        format: 'mdx',
         fields: [
           {
-            type: "string",
-            name: "title",
-            label: "Project Title",
+            type: 'string',
+            name: 'title',
+            label: 'Project Title',
           },
           {
-            type: "string",
-            name: "subheader",
-            label: "Subheader",
+            type: 'string',
+            name: 'subheader',
+            label: 'Subheader',
             ui: {
-              component: "textarea"
+              component: 'textarea'
             }
           },
           {
-            type: "rich-text",
-            name: "description",
-            label: "Project Description",
+            type: 'rich-text',
+            name: 'description',
+            label: 'Project Description',
             isBody: true
           },
           {
-            type: "image",
-            name: "heroImage",
-            label: "Hero Image"
+            type: 'image',
+            name: 'heroImage',
+            label: 'Hero Image'
           },
           {
-            type: "image",
-            name: "featureImage",
-            label: "Feature Image"
+            type: 'image',
+            name: 'featureImage',
+            label: 'Feature Image'
           }
         ],
         ui: {
@@ -84,52 +81,52 @@ export default defineConfig({
         }
       },
       {
-        name: "post",
-        label: "Posts",
-        path: "content/posts",
-        format: "mdx",
+        name: 'post',
+        label: 'Posts',
+        path: 'content/posts',
+        format: 'mdx',
         fields: [
           {
-            type: "string",
-            name: "title",
-            label: "Title",
+            type: 'string',
+            name: 'title',
+            label: 'Title',
             isTitle: true,
             required: true,
           },
           {
-            name: "cardImage",
-            label: "Card Image",
-            type: "image"
+            name: 'cardImage',
+            label: 'Card Image',
+            type: 'image'
           },
           {
-            type: "rich-text",
-            name: "body",
-            label: "Body",
+            type: 'rich-text',
+            name: 'body',
+            label: 'Body',
             isBody: true,
             templates: [
               {
-                name: "iframe",
-                label: "AV Embed",
+                name: 'iframe',
+                label: 'AV Embed',
                 fields: [
                   {
-                    name: "src",
-                    label: "Embed Link",
-                    type: "string",
+                    name: 'src',
+                    label: 'Embed Link',
+                    type: 'string',
                     required: true
                   },
                   {
-                    name: "width",
-                    label: "Width (pixels)",
-                    type: "number",
+                    name: 'width',
+                    label: 'Width (pixels)',
+                    type: 'number',
                     ui: {
                       parse: (val?: number)=>val || 0,
                       format: (val?: number)=> val === 0 ? null : val
                     }
                   },
                   {
-                    name: "height",
-                    label: "Height (pixels)",
-                    type: "number",
+                    name: 'height',
+                    label: 'Height (pixels)',
+                    type: 'number',
                     ui: {
                       parse: (val?: number)=>val || 0,
                       format: (val?: number)=> val === 0 ? null : val
@@ -138,47 +135,47 @@ export default defineConfig({
                 ]
               },
               {
-                name: "place",
-                label: "Place",
+                name: 'place',
+                label: 'Place',
                 fields: [
                   {
-                    name: "title",
-                    label: "Title",
-                    type: "string",
+                    name: 'title',
+                    label: 'Title',
+                    type: 'string',
                     required: true,
                     isTitle: true,
                   },
                   {
-                    name: "place",
-                    label: "Place Data",
-                    type: "object",
+                    name: 'place',
+                    label: 'Place Data',
+                    type: 'object',
                     fields: [
                       {
-                        name: "title",
-                        label: "Title",
-                        type: "string",
+                        name: 'title',
+                        label: 'Title',
+                        type: 'string',
                         required: true,
                         isTitle: true
                       },
                       {
-                        name: "uuid",
-                        label: "UUID",
-                        type: "string",
+                        name: 'uuid',
+                        label: 'UUID',
+                        type: 'string',
                       },
                       {
-                        name: "animate",
-                        label: "Animate pulsing place marker?",
-                        type: "boolean"
+                        name: 'animate',
+                        label: 'Animate pulsing place marker?',
+                        type: 'boolean'
                       },
                       {
-                        name: "buffer",
-                        label: "Map zoom buffer (in miles)",
-                        type: "number"
+                        name: 'buffer',
+                        label: 'Map zoom buffer (in miles)',
+                        type: 'number'
                       },
                       {
-                        name: "layer",
-                        label: "Custom Map Layer",
-                        type: "number",
+                        name: 'layer',
+                        label: 'Custom Map Layer',
+                        type: 'number',
                         list: true
                       }
                     ],
@@ -188,11 +185,11 @@ export default defineConfig({
                     required: true,
                   },
                   {
-                    name: "caption",
-                    label: "Caption",
-                    type: "string",
+                    name: 'caption',
+                    label: 'Caption',
+                    type: 'string',
                     ui: {
-                      component: "textarea"
+                      component: 'textarea'
                     }
                   }
                 ],
@@ -202,52 +199,52 @@ export default defineConfig({
         ],
       },
       {
-        name: "path",
-        label: "Paths",
-        path: "content/paths",
-        format: "mdx",
+        name: 'path',
+        label: 'Paths',
+        path: 'content/paths',
+        format: 'mdx',
         fields: [
           {
-            name: "title",
-            label: "Title",
-            type: "string",
+            name: 'title',
+            label: 'Title',
+            type: 'string',
             required: true,
             isTitle: true,
           },
           {
-            name: "image",
-            label: "Cover Image",
-            type: "image"
+            name: 'image',
+            label: 'Cover Image',
+            type: 'image'
           },
           {
-            name: "description",
-            label: "Description",
-            type: "rich-text",
+            name: 'description',
+            label: 'Description',
+            type: 'rich-text',
             isBody: true,
             templates: [
               {
-                name: "iframe",
-                label: "AV Embed",
+                name: 'iframe',
+                label: 'AV Embed',
                 fields: [
                   {
-                    name: "src",
-                    label: "Embed Link",
-                    type: "string",
+                    name: 'src',
+                    label: 'Embed Link',
+                    type: 'string',
                     required: true
                   },
                   {
-                    name: "width",
-                    label: "Width (pixels)",
-                    type: "number",
+                    name: 'width',
+                    label: 'Width (pixels)',
+                    type: 'number',
                     ui: {
                       parse: (val?: number)=>val || 0,
                       format: (val?: number)=> val === 0 ? null : val
                     }
                   },
                   {
-                    name: "height",
-                    label: "Height (pixels)",
-                    type: "number",
+                    name: 'height',
+                    label: 'Height (pixels)',
+                    type: 'number',
                     ui: {
                       parse: (val?: number)=>val || 0,
                       format: (val?: number)=> val === 0 ? null : val
@@ -258,8 +255,8 @@ export default defineConfig({
             ]
           },
           {
-            name: "path",
-            type: "object",
+            name: 'path',
+            type: 'object',
             list: true,
             ui: {
               itemProps: (item) => {
@@ -268,36 +265,36 @@ export default defineConfig({
             },
             fields: [
               {
-                name: "place",
-                label: "Place Data",
-                type: "object",
+                name: 'place',
+                label: 'Place Data',
+                type: 'object',
                 fields: [
                   {
-                    name: "title",
-                    label: "Title",
-                    type: "string",
+                    name: 'title',
+                    label: 'Title',
+                    type: 'string',
                     required: true,
                     isTitle: true
                   },
                   {
-                    name: "uuid",
-                    label: "UUID",
-                    type: "string",
+                    name: 'uuid',
+                    label: 'UUID',
+                    type: 'string',
                   },
                   {
-                    name: "animate",
-                    label: "Animate pulsing place marker?",
-                    type: "boolean"
+                    name: 'animate',
+                    label: 'Animate pulsing place marker?',
+                    type: 'boolean'
                   },
                   {
-                    name: "buffer",
-                    label: "Map zoom buffer (in miles)",
-                    type: "number"
+                    name: 'buffer',
+                    label: 'Map zoom buffer (in miles)',
+                    type: 'number'
                   },
                   {
-                    name: "layer",
-                    label: "Custom Map Layer",
-                    type: "number",
+                    name: 'layer',
+                    label: 'Custom Map Layer',
+                    type: 'number',
                     list: true
                   }
                 ],
@@ -307,33 +304,33 @@ export default defineConfig({
                 required: true,
               },
               {
-                name: "blurb",
-                label: "Blurb",
-                type: "rich-text",
+                name: 'blurb',
+                label: 'Blurb',
+                type: 'rich-text',
                 templates: [
                   {
-                    name: "iframe",
-                    label: "AV Embed",
+                    name: 'iframe',
+                    label: 'AV Embed',
                     fields: [
                       {
-                        name: "src",
-                        label: "Embed Link",
-                        type: "string",
+                        name: 'src',
+                        label: 'Embed Link',
+                        type: 'string',
                         required: true
                       },
                       {
-                        name: "width",
-                        label: "Width (pixels)",
-                        type: "number",
+                        name: 'width',
+                        label: 'Width (pixels)',
+                        type: 'number',
                         ui: {
                           parse: (val?: number)=>val || 0,
                           format: (val?: number)=> val === 0 ? null : val
                         }
                       },
                       {
-                        name: "height",
-                        label: "Height (pixels)",
-                        type: "number",
+                        name: 'height',
+                        label: 'Height (pixels)',
+                        type: 'number',
                         ui: {
                           parse: (val?: number)=>val || 0,
                           format: (val?: number)=> val === 0 ? null : val
@@ -348,10 +345,10 @@ export default defineConfig({
         ]
       },
       {
-        name: "ui",
-        format: "json",
-        label: "UI Labels",
-        path: "content/ui",
+        name: 'ui',
+        format: 'json',
+        label: 'UI Labels',
+        path: 'content/ui',
         fields: uiFields
       }
     ],
