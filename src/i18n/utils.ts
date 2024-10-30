@@ -19,7 +19,7 @@ export const buildTranslations = (data) => {
 
   Object.keys(data).forEach((key) => {
     if (key.startsWith(TRANSLATION_PREFIX)) {
-      translations[key] = data[key];
+      translations[key] = data[key] || undefined;
     }
   });
 
@@ -29,13 +29,8 @@ export const buildTranslations = (data) => {
   const defaultTranslations = {};
 
   Object.keys(i18n).forEach((key) => {
-    defaultTranslations[getTranslationKey(key)] = i18n[key].defaultValue;
+    defaultTranslations[getTranslationKey(key)] = i18n[key].defaultValue || undefined;
   });
 
-  /**
-   * TODO: Comment me
-   */
-  _.extend(translations, defaultTranslations);
-
-  return translations;
+  return _.defaults(translations, defaultTranslations);
 };
