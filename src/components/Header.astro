@@ -1,9 +1,11 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import { client } from '../../tina/__generated__/databaseClient';
+import { getTranslations } from '../i18n/server';
 import Container from "./Container.astro";
 import MobileHeader from "./MobileHeader";
-import * as m from '../paraglide/messages';
-import { t } from "../i18n/utils";
+
+const { t } = await getTranslations(Astro.currentLocale);
 
 export interface Props {
     tab?: string;
@@ -35,8 +37,8 @@ const sections = ["Map", "Posts", "Paths"];
         </a>
         <div class="flex flex-row xl:gap-x-16 lg:gap-x-12 gap-x-4 align-baseline justify-around">
             { sections.map((sect) => (
-                <a href={`/${sect.toLowerCase()}`} class="flex flex-col p-y-4 justify-center">
-                    <div class={`flex ${ sect == tab && 'font-bold border-b-2 border-b-orange-primary'}`}>{m[t(sect.toLowerCase())]()}</div>
+                <a href={getRelativeLocaleUrl(Astro.currentLocale, sect.toLowerCase())} class="flex flex-col p-y-4 justify-center">
+                    <div class={`flex ${ sect == tab && 'font-bold border-b-2 border-b-orange-primary'}`}>{ t(sect.toLowerCase()) }</div>
                 </a>
             ))}
         </div>

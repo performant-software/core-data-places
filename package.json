@@ -3,20 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "node build.js && paraglide-js compile --project ./project.inlang && tinacms dev -c \"astro dev\"",
+    "dev": "node build.mjs && tinacms dev -c \"astro dev\"",
     "start": "astro dev",
-    "build": "node build.js && paraglide-js compile --project ./project.inlang && tinacms build && astro build",
-    "preview": "astro preview",
-    "postinstall": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide"
+    "build": "node build.mjs && tinacms build && astro build",
+    "preview": "astro preview"
   },
   "devDependencies": {
-    "@inlang/paraglide-js": "1.8.0",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.13",
     "@types/node": "^14.18.63",
     "@types/underscore": "^1.11.15",
     "astro": "^4.4.0",
-    "prettier-plugin-astro": "^0.13.0"
+    "prettier-plugin-astro": "^0.13.0",
+    "ts-node": "^10.9.2"
   },
   "dependencies": {
     "@astrojs/mdx": "^2.1.1",
@@ -26,7 +25,6 @@
     "@astrojs/tailwind": "^5.1.0",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
-    "@inlang/paraglide-astro": "^0.1.32",
     "@nanostores/react": "^0.7.1",
     "@netlify/functions": "^2.8.2",
     "@octokit/rest": "^21.0.2",

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { RuntimeConfig } from "@peripleo/peripleo";
 import { Peripleo as PeripleoUtils } from "@performant-software/core-data";
+import { useTranslations } from '../i18n/client';
 import CoreDataPlace from "./CoreDataPlace";
 import {
   ArrowLeftCircleIcon,
@@ -9,7 +10,6 @@ import {
   ArrowRightIcon,
   ArrowUturnLeftIcon,
 } from "@heroicons/react/24/outline";
-import * as m from "../paraglide/messages";
 import IframeEmbed from "./IframeEmbed";
 
 export interface PathViewerProps {
@@ -21,6 +21,8 @@ const PathViewer = (props: PathViewerProps) => {
 
   const { path } = props;
   const contentDiv = useRef(null);
+
+  const { t } = useTranslations();
 
   useEffect(() => {
     contentDiv &&
@@ -111,7 +113,7 @@ const PathViewer = (props: PathViewerProps) => {
                     className="cursor-pointer bg-white text-neutral-dark w-48 h-16 flex justify-between items-center hover:scale-105 rounded-full px-6"
                     onClick={() => setCurrent(0)}
                   >
-                    <p>{m.t_startTour()}</p>
+                    <p>{ t('startTour') }</p>
                     <ArrowRightIcon className="h-8 w-8" />
                   </div>
                 </>

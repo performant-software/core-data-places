@@ -32,8 +32,7 @@ const Place = () => {
   const [place, setPlace] = useState<Place>();
 
   const [mediaLoading, setMediaLoading] = useState<boolean>(true);
-  const [organizationsLoading, setOrganizationsLoading] =
-    useState<boolean>(true);
+  const [organizationsLoading, setOrganizationsLoading] = useState<boolean>(true);
   const [peopleLoading, setPeopleLoading] = useState<boolean>(true);
   const [placesLoading, setPlacesLoading] = useState<boolean>(true);
   const [taxonomiesLoading, setTaxonomiesLoading] = useState<boolean>(true);

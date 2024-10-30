@@ -1,0 +1,77 @@
+{
+  "map": {
+    "tinaLabel": "Map",
+    "defaultValue": "Map"
+  },
+  "home": {
+    "tinaLabel": "Home",
+    "defaultValue": "Home"
+  },
+  "about": {
+    "tinaLabel": "About",
+    "defaultValue": "About"
+  },
+  "paths": {
+    "tinaLabel": "Paths",
+    "defaultValue": "Paths"
+  },
+  "posts": {
+    "tinaLabel": "Posts",
+    "defaultValue": "Posts"
+  },
+  "aboutProject": {
+    "tinaLabel": "About the Project",
+    "defaultValue": "About the Project"
+  },
+  "startTour": {
+    "tinaLabel": "Start the Tour",
+    "defaultValue": "Start the Tour"
+  },
+  "readMore": {
+    "tinaLabel": "Read More",
+    "defaultValue": "Read More"
+  },
+  "footerText": {
+    "tinaLabel": "(footer text)",
+    "defaultValue": ""
+  },
+  "footerCopyright": {
+    "tinaLabel": "(footer copyright)",
+    "defaultValue": ""
+  },
+  "coreDataLogin": {
+    "tinaLabel": "Log in to Core Data",
+    "defaultValue": "Log into Core Data"
+  },
+  "tinaLogin": {
+    "tinaLabel": "Log in to Tina CMS",
+    "defaultValue": "Log in to Tina CMS"
+  },
+  "title": {
+    "tinaLabel": "Name"
+  },
+  "root": {
+    "tinaLabel": "Root"
+  },
+  "owner_project": {
+    "tinaLabel": "Owner Project"
+  },
+  "all_projects": {
+    "tinaLabel": "All Projects"
+  },
+  "owner_project_id": {
+    "tinaLabel": "Owner Project -> ID"
+  },
+  "all_projects_id": {
+    "tinaLabel": "All Projects -> ID"
+  },
+  "owner_project_name": {
+    "tinaLabel": "Owner Project -> Name"
+  },
+  "all_projects_name": {
+    "tinaLabel": "All Projects -> Name"
+  },
+  "event_range": {
+    "tinaLabel": "Event Range"
+  }
+}

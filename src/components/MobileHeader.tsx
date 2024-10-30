@@ -1,23 +1,20 @@
-import { Disclosure, Transition } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import * as m from '../paraglide/messages';
-import { t } from '../i18n/utils';
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
+import { Disclosure, Transition } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useTranslations } from '../i18n/client';
 
 interface MobileHeaderProps {
-  sections: string[]
+  sections: string[];
 }
 
 const MobileHeader = (props: MobileHeaderProps) => {
+  const { t } = useTranslations();
+
   return (
     <Disclosure as="div" className="md:hidden w-full bg-white shadow-md z-10">
       {({ open }) => (
         <>
           <div className='flex flex-row justify-between px-6 mx-0 sm:px-0 sm:mx-12 md:mx-16 lg:mx-32 2xl:mx-auto max-w-screen-xl py-8 z-10 top-0'>
-            <a href='/'>{ m.t_home()}</a>
+            <a href='/'>{ t('home') }</a>
             <Disclosure.Button className=" md:hidden relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-primary">
               <span className="absolute -inset-0.5" />
               <span className="sr-only">Open main menu</span>
@@ -46,7 +43,7 @@ const MobileHeader = (props: MobileHeaderProps) => {
                     href={`/${sect.toLowerCase()}`}
                     className="block bg-white hover:bg-orange-primary/10 py-4 text-base text-center font-bold"
                   >
-                    {m[t(sect.toLowerCase())]()}
+                    { t(sect.toLowerCase()) }
                   </Disclosure.Button>
                 )
                 )}

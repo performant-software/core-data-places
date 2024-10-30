@@ -1,28 +1,6 @@
 {
     "branding": {
-      "title": "Core Data",
-      "related": [
-        {
-          "endpoint": "media_contents",
-          "ui_label": "Related Media & Documents",
-          "default_open": false
-        },
-        {
-          "endpoint": "organizations",
-          "ui_label": "Organizations",
-          "default_open": true
-        },
-        {
-          "endpoint": "people",
-          "ui_label": "Related People",
-          "default_open": false
-        },
-        {
-          "endpoint": "places",
-          "ui_label": "Related Places",
-          "default_open": false
-        }
-      ]
+      "title": "Core Data"
     },
     "layers": [
       {
@@ -56,19 +34,21 @@
       }
     ],
     "typesense": {
-      "host": "mk0zu5rvf46oa2h7p-1.a1.typesense.net",
+      "host": "i74olkjcuy69ze2vp-1.a1.typesense.net",
       "port": 443,
       "protocol": "https",
-      "api_key": "2nwj1yfayvl3PCBZr7rTU9zjn7RGP8hm",
-      "index_name": "hudson_valley",
+      "api_key": "PSNp8MUfQBInjahcHQ3l76jChrHZHqmj",
+      "index_name": "scavenger_hunt",
       "query_by": "name",
       "facets": {
       }
     },
     "core_data": {
-      "url": "https://app.coredata.cloud",
+      "url": "https://staging.coredata.cloud",
       "project_ids": [
-        5
+        43,
+        44,
+        45
       ]
     }
   }

@@ -18,6 +18,7 @@ const uiFields: TinaField<false>[] = Object.keys(config.ui).map((key: string) =>
 }));
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
+const localContentPath = process.env.TINA_LOCAL_CONTENT_PATH;
 
 export default defineConfig({
   authProvider: isLocal
@@ -28,6 +29,7 @@ export default defineConfig({
     publicFolder: "public",
   },
   contentApiUrlOverride: '/api/tina/gql',
+  localContentPath,
   media: {
     loadCustomStore: async () => {
       const pack = await import("next-tinacms-cloudinary");

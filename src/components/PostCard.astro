@@ -1,19 +1,8 @@
 ---
-import { Image } from 'astro:assets';
-import * as m from '../paraglide/messages';
-
-
-export interface Props {
-  date?: string;
-  category?: string;
-  title: string;
-  author?: string;
-  slug: string;
-  imageUrl?: string;
-  blurb?: any;
-}
+import { getTranslations } from '../i18n/server';
 
 const { date, category, title, author, slug, imageUrl, blurb } = Astro.props;
+const { t } = await getTranslations(Astro.currentLocale);
 ---
 
 
@@ -41,12 +30,12 @@ const { date, category, title, author, slug, imageUrl, blurb } = Astro.props;
         <p class="font-semibold text-gray-900">
           <a href="#">
               <span class="absolute inset-0"></span>
-              {author}
+              { author }
           </a>
         </p>
     </div>
   </div>
   <a class="flex justify-end p-12 w-full" href={slug}>
-    {m.t_readMore()} &rarr;
+    { t('readMore') } &rarr;
   </a>
 </article>
