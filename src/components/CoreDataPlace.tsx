@@ -1,8 +1,7 @@
-import { Peripleo, Controls, RuntimeConfig, useRuntimeConfig } from '@peripleo/peripleo';
+import { LayerMenu, PlaceMarkers, Peripleo as PeripleoUtils, OverlayLayers } from '@performant-software/core-data';
 import { Map, Zoom } from '@peripleo/maplibre';
-import { PlaceMarkers, Peripleo as PeripleoUtils, OverlayLayers } from '@performant-software/core-data';
-import { translations } from '../helpers/i18n';
-import { useEffect, useState } from 'react';
+import { Peripleo, Controls, useRuntimeConfig } from '@peripleo/peripleo';
+import React, { useEffect, useState } from 'react';
 import _ from 'underscore';
 
 interface CoreDataPlaceProps {
@@ -11,12 +10,11 @@ interface CoreDataPlaceProps {
   buffer?: number;
   layer?: number[];
   mapId?: string;
-};
+}
 
 const CoreDataPlace = (props: CoreDataPlaceProps) => {
-  console.log(props);
   const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(useRuntimeConfig());
-  
+
   const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));
   const [overlays, setOverlays] = useState([]);
 
@@ -44,37 +42,35 @@ const CoreDataPlace = (props: CoreDataPlaceProps) => {
   }, []);
 
   return (
-      <Peripleo>
-        <Map style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}>
-          <Controls position="topright">
-            <div onClick={(e: any) => {e.stopPropagation()}}>
-              <Zoom />
-            </div>
-            {/* { baseLayers.length > 1 && (
+    <Peripleo>
+      <Map style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}>
+        <Controls position="topright">
+          <Zoom />
+          { baseLayers.length > 1 && (
             <LayerMenu
               baseLayer={baseLayer?.name}
               baseLayers={baseLayers}
+              baseLayersLabel={'Base Layers'}
               dataLayers={dataLayers}
               onChangeBaseLayer={setBaseLayer}
               onChangeOverlays={setOverlays}
+              overlaysLabel={'Overlays'}
             />
-          )} */}
-          </Controls>
-          <OverlayLayers
-            overlays={overlays}
-            key={`overlay-${props.mapId}`}
-          />
-          <PlaceMarkers
-            urls={props.placeURIs}
-            buffer={props.buffer}
-            animate={props.animate}
-            key={`markers-${props.mapId}`}
-          />
-        </Map>
-      </Peripleo>
-  )
-
+          )}
+        </Controls>
+        <OverlayLayers
+          overlays={overlays}
+          key={`overlay-${props.mapId}`}
+        />
+        <PlaceMarkers
+          urls={props.placeURIs}
+          buffer={props.buffer}
+          animate={props.animate}
+          key={`markers-${props.mapId}`}
+        />
+      </Map>
+    </Peripleo>
+  );
 };
 
 export default CoreDataPlace;
-

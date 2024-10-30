@@ -1,7 +1,6 @@
 import { isModalOpen, currentPlace } from "../modalStore";
 import CoreDataPlace from "./CoreDataPlace";
-import { projectIdsApiSuffix } from "../helpers/core-data";
-import config from '../../public/config.json';
+import { getPlacesURL } from "../helpers/core-data";
 
 const PlaceInsert = (props: any) => {
   return (
@@ -15,9 +14,7 @@ const PlaceInsert = (props: any) => {
     >
       <div className="h-[400px] w-3/4 flex mx-auto">
         <CoreDataPlace
-          placeURIs={[
-            `${config.core_data.url}/core_data/public/v1/places/${props.place.uuid}?${projectIdsApiSuffix}`,
-          ]}
+          placeURIs={[getPlacesURL(props.place.uuid)]}
           layer={props.place?.layer}
           animate={props.place?.animate}
           buffer={props.place?.buffer}

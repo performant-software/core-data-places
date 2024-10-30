@@ -2,8 +2,7 @@ import { Combobox, Switch } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { useCallback, useEffect, useState } from 'react'
 import { wrapFieldsWithMeta } from 'tinacms';
-import config from '../../public/config.json';
-import _ from 'underscore';
+import { getPlacesURL, getPlaceURL } from '../../src/helpers/core-data';
 
 interface CustomTinaFieldProps {
   field: any,
@@ -23,25 +22,13 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   }
 
   const fetchPlace = useCallback((id) => {
-    const url = `${config.core_data.url}/core_data/public/v1/places/${id}`;
-    const params = new URLSearchParams();
-
-    _.each(config.core_data.project_ids, (projectId) => {
-      params.append('project_ids[]', projectId.toString());
-    });
-
-    return fetch(`${url}?${params.toString()}`).then((response) => response.json());
+    const url = getPlaceURL(id);
+    return fetch(url).then((response) => response.json());
   }, []);
 
   const fetchPlaces = useCallback((params = {}) => {
-    const url = `${config.core_data.url}/core_data/public/v1/places`;
-    const searchParams = new URLSearchParams(params);
-
-    _.each(config.core_data.project_ids, (projectId) => {
-      searchParams.append('project_ids[]', projectId.toString());
-    });
-
-    return fetch(`${url}?${searchParams.toString()}`).then((response) => response.json());
+    const url = getPlacesURL(params);
+    return fetch(url).then((response) => response.json());
   }, []);
 
   const toggleAnimate = (e: any) => {
