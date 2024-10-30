@@ -24,8 +24,3 @@ export const getPlaceURL = (id: number, params = {}) => {
 
   return `${url}?${searchParams}`;
 };
-
-export const getProjectDescriptorsURL = (id: number, params) => {
-  const url = `${config.core_data.url}/core_data/public/v1/projects/${id}/descriptors`;
-  return url;
-};

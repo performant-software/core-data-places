@@ -8,7 +8,7 @@
   force = true
 
 [[redirects]]
-  from = "/api/cloudinary/*"
+  from = "/api/s3/*"
   to = "/.netlify/functions/tina"
   status = 200
   force = true
