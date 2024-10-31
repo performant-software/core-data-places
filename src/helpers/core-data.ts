@@ -18,9 +18,12 @@ export const getPlacesURL = (params = {}) => {
   return `${url}?${searchParams}`;
 };
 
-export const getPlaceURL = (id: number, params = {}) => {
+export const getPlaceURL = (id: string, params = {}) => {
   const url = `${config.core_data.url}/core_data/public/v1/places/${id}`;
   const searchParams = buildSearchParameters(params);
+
+  console.log(id);
+  console.log(params);
 
   return `${url}?${searchParams}`;
 };

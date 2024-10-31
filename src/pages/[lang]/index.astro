@@ -1,20 +1,18 @@
 ---
-import { getTranslations } from '../../i18n/server';
-import Layout from '../../layouts/Layout.astro';
+import { fetchAbout } from '../../helpers/tina-cms';
 import Container from '../../components/Container.astro';
 import Hero from '../../components/Hero.astro';
-import { client } from '../../../tina/__generated__/databaseClient';
+import Layout from '../../layouts/Layout.astro';
+import { getTranslations } from '../../i18n/server';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
-import Footer from '../../components/Footer.astro';
 
-const projectResponse = await client.queries.about({ relativePath: 'about.mdx' });
-const { title, subheader, description, heroImage, featureImage } = projectResponse.data.about;
-
+const { title, subheader, description, heroImage, featureImage } = await fetchAbout();
 const { t } = await getTranslations(Astro.currentLocale);
 
 ---
 
 <Layout
+  footer
   title={title}
 >
   <Hero 
@@ -45,5 +43,4 @@ const { t } = await getTranslations(Astro.currentLocale);
       class="w-full"
     />
   </Container>
-  <Footer />
 </Layout>

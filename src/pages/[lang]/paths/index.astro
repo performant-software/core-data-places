@@ -1,28 +1,39 @@
 ---
 import { getRelativeLocaleUrl } from 'astro:i18n';
-import { client } from "../../../../tina/__generated__/databaseClient";
-import Container from "../../../components/Container.astro";
-import PostCard from "../../../components/PostCard.astro";
-import Layout from "../../../layouts/Layout.astro";
-import Footer from "../../../components/Footer.astro";
+import _ from 'underscore';
+import Container from '../../../components/Container.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { fetchPaths } from '../../../helpers/tina-cms';
+import { getTranslations } from '../../../i18n/server';
+import Layout from '../../../layouts/Layout.astro';
 
-const pathsResponse = await client.queries.pathConnection();
-const pathsData = pathsResponse.data.pathConnection.edges?.map((item) => item?.node);
-
+const { t } = await getTranslations(Astro.currentLocale);
+const paths = await fetchPaths();
 ---
 
-<Layout title="Paths" tab="paths">
-    <Container className="pb-16">
-        <h1 class="text-3xl my-12">paths</h1>
-        <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            { pathsData && pathsData.map((path) => ( 
-                <PostCard
-                  imageUrl={path?.image}
-                  slug={getRelativeLocaleUrl(Astro.currentLocale, `/paths/${path?._sys.filename}` || '#')}
-                  title={path?.title || 'Untitled'}
-                />
-            ))}
-        </div>
-    </Container>
-    <Footer />
+<Layout
+  footer
+  tab='paths'
+  title={t('paths')}
+>
+  <Container
+    className='pb-16'
+  >
+    <h1
+      class='text-3xl my-12'
+    >
+      { t('paths') }
+    </h1>
+    <div
+      class='mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3'
+    >
+      { _.map(paths, (path) => (
+        <PostCard
+          imageUrl={path?.image}
+          slug={getRelativeLocaleUrl(Astro.currentLocale, `/paths/${path?._sys.filename}` || '#')}
+          title={path?.title || t('untitled')}
+        />
+      ))}
+    </div>
+  </Container>
 </Layout>

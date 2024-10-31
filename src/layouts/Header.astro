@@ -2,11 +2,11 @@
 import { getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
 import _ from 'underscore';
-import Container from './Container.astro';
+import Container from '../components/Container.astro';
 import { fetchAbout } from '../helpers/tina-cms';
 import { getTranslations } from '../i18n/server';
-import MobileHeader from './MobileHeader';
-import LanguagePicker from './LanguagePicker';
+import MobileHeader from '../components/MobileHeader';
+import LanguagePicker from '../components/LanguagePicker';
 
 const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
@@ -31,7 +31,7 @@ const { title } = await fetchAbout();
     >
         <a
           class='flex flex-row align-middle gap-6'
-          href='/'
+          href='/public'
         >
             <div
               class='inline-block w-6 h-6 bg-blue-600 rounded-full'

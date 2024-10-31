@@ -38,12 +38,11 @@ const PathViewer = (props: PathViewerProps) => {
 
   return (
     <RuntimeConfig
-      //@ts-ignore
       path='/config.json'
       preprocess={PeripleoUtils.normalize}
     >
       <div
-        className='w-full h-screen flex flex-row relative'
+        className='w-full flex flex-row flex-grow relative'
       >
         { path && (
           <div
@@ -65,7 +64,7 @@ const PathViewer = (props: PathViewerProps) => {
             />
           </div>
         )}
-        <div className='h-full w-1/2'>
+        <div className='w-1/2'>
           { path && current >= 0 ? (
             <CoreDataPlace
               placeURIs={[
@@ -87,7 +86,7 @@ const PathViewer = (props: PathViewerProps) => {
           )}
         </div>
         <div
-          className='h-full w-1/2 overflow-y-scroll bg-neutral-dark text-white pb-[20dvh]'
+          className='w-1/2 overflow-y-scroll bg-neutral-dark text-white'
           ref={contentDiv}
         >
           { path && (

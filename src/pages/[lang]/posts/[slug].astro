@@ -1,24 +1,29 @@
 ---
-import Container from "../../../components/Container.astro";
-import PlaceDetailModal from "../../../components/PlaceDetailModal";
-import PostContent from "../../../components/PostContent";
-import Layout from "../../../layouts/Layout.astro";
-import Footer from "../../../components/Footer.astro";
-import { client } from "../../../../tina/__generated__/databaseClient";
+import Container from '../../../components/Container.astro';
+import PlaceDetailModal from '../../../components/PlaceDetailModal';
+import PostContent from '../../../components/PostContent';
+import { fetchPost } from '../../../helpers/tina-cms';
+import Layout from '../../../layouts/Layout.astro';
 
 const { slug } = Astro.params;
-const { data: { post } } = await client.queries.post({ relativePath: `${slug}.mdx`});
-
+const post = await fetchPost(slug);
 ---
 
-<Layout title={slug} tab="Posts">
-  <Container className="pb-16">
+<Layout
+  footer
+  tab='posts'
+  title={slug}
+>
+  <Container
+    className='pb-16'
+  >
     <PostContent
       content={post?.body}
       title={post?.title}
       client:only
     />
   </Container>
-  <PlaceDetailModal client:only />
-  <Footer />
+  <PlaceDetailModal
+    client:only
+  />
 </Layout>

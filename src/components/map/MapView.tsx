@@ -53,7 +53,7 @@ import { useStats } from 'react-instantsearch';
   
     return (
       <Map
-        className='flex-grow sm:min-h-screen'
+        className='flex-grow'
         style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
       >
         <Controls

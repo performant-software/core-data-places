@@ -44,3 +44,8 @@
 .switch-thumb[data-state='checked'] {
   transform: translateX(14px);
 }
+
+.p6o-map-container {
+  height: 100%;
+  width: 100%;
+}
