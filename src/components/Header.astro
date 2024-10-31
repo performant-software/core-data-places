@@ -1,47 +1,79 @@
 ---
-import { getRelativeLocaleUrl } from 'astro:i18n';
-import { client } from '../../tina/__generated__/databaseClient';
+import { getRelativeLocaleUrlList } from 'astro:i18n';
+import clsx from 'clsx';
+import _ from 'underscore';
+import Container from './Container.astro';
+import { fetchAbout } from '../helpers/tina-cms';
 import { getTranslations } from '../i18n/server';
-import Container from "./Container.astro";
-import MobileHeader from "./MobileHeader";
+import MobileHeader from './MobileHeader';
+import LanguagePicker from './LanguagePicker';
 
-const { t } = await getTranslations(Astro.currentLocale);
+const locales = getRelativeLocaleUrlList();
+const currentLocale = Astro.currentLocale;
+const currentUrl = Astro.url;
 
-export interface Props {
-    tab?: string;
-    map?: boolean;
-}
+const { t } = await getTranslations(currentLocale);
 
-const { tab, map = false } = Astro.props;
+const { currentTab, tabs } = Astro.props;
+const isMap = currentTab === tabs.map;
 
-const projectResponse = await client.request({
-    query: `query getAbout($relativePath: String!) {
-      about(relativePath: $relativePath) {
-        title
-      }
-    }`,
-  variables: { relativePath: 'about.mdx' },
-}, {});
-
-const { title } = projectResponse.data.about;
-
-const sections = ["Map", "Posts", "Paths"];
+const { title } = await fetchAbout();
 ---
 
-<div class={`hidden md:inline-block w-full max-w-screen-3xl 3xl:mx-auto bg-white ${ !map && 'shadow-md' } z-10`}>
-    <Container className="flex flex-row justify-between py-8 align-middle">
-        <a class="flex flex-row align-middle gap-6" href="/">
-            <!-- <Image src={logo} alt="EditionCrafter" /> -->
-            <div class="inline-block w-6 h-6 bg-blue-600 rounded-full" />
-            <p class="text-2xl font-serif self-center">{title}</p>
+<div
+  class={clsx(
+    'hidden md:inline-block w-full max-w-screen-3xl 3xl:mx-auto bg-white z-10',
+    { 'shadow-md': !isMap }
+  )}
+>
+    <Container
+      className='flex flex-row justify-between py-8 align-middle'
+    >
+        <a
+          class='flex flex-row align-middle gap-6'
+          href='/'
+        >
+            <div
+              class='inline-block w-6 h-6 bg-blue-600 rounded-full'
+            />
+            <p
+              class='text-2xl font-serif self-center'
+            >
+                { title }
+            </p>
         </a>
-        <div class="flex flex-row xl:gap-x-16 lg:gap-x-12 gap-x-4 align-baseline justify-around">
-            { sections.map((sect) => (
-                <a href={getRelativeLocaleUrl(Astro.currentLocale, sect.toLowerCase())} class="flex flex-col p-y-4 justify-center">
-                    <div class={`flex ${ sect == tab && 'font-bold border-b-2 border-b-orange-primary'}`}>{ t(sect.toLowerCase()) }</div>
-                </a>
+        <div
+          class='flex flex-row xl:gap-x-16 lg:gap-x-12 gap-x-4 align-baseline justify-around'
+        >
+            { _.map(_.keys(tabs), (key) => (
+              <a
+                class='flex flex-col p-y-4 justify-center'
+                href={tabs[key].url}
+              >
+                  <div
+                    class={clsx(
+                      'flex',
+                      { 'font-bold border-b-2 border-b-orange-primary': key === currentTab }
+                    )}
+                  >
+                      { t(key) }
+                  </div>
+              </a>
             ))}
+            <LanguagePicker
+              locales={locales}
+              currentLocale={currentLocale}
+              currentUrl={currentUrl.pathname}
+              client:only='react'
+            />
         </div>
     </Container>
 </div>
-<MobileHeader sections={sections} client:load />
+
+<MobileHeader
+  currentLocale={Astro.currentLocale}
+  currentUrl={currentUrl.pathname}
+  locales={locales}
+  tabs={tabs}
+  client:load
+/>

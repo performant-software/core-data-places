@@ -1,16 +1,22 @@
 import { defineConfig, LocalAuthProvider, type TinaField } from 'tinacms';
 import { TinaUserCollection, UsernamePasswordAuthJSProvider } from 'tinacms-authjs/dist/tinacms';
-import config from '../src/i18n/config';
-import { t } from '../src/i18n/utils';
+import { getTranslationKey } from '../src/i18n/utils';
 import TinaPlacePicker from './components/TinaPlacePicker';
+import i18n from '../src/i18n/i18n.json';
+import userDefinedFields from '../src/i18n/userDefinedFields.json';
 
-const uiFields: TinaField<false>[] = Object.keys(config.ui).map((key: string) => ({
-  name: t(key),
-  label: config.ui[key as keyof typeof config.ui].tinaLabel,
+const fields = {
+  ...i18n,
+  ...userDefinedFields
+};
+
+const uiFields: TinaField<false>[] = Object.keys(fields).map((key: string) => ({
+  name: getTranslationKey(key),
+  label: fields[key].tinaLabel,
   type: 'string',
   ui: {
     //@ts-ignore
-    component: config.ui[key as keyof typeof config.ui]?.textArea ? 'textarea' : 'text'
+    component: fields[key]?.textArea ? 'textarea' : 'text'
   }
 }));
 

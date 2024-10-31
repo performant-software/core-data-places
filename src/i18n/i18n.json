@@ -19,6 +19,10 @@
     "tinaLabel": "Posts",
     "defaultValue": "Posts"
   },
+  "openMainMenu": {
+    "tinaLabel": "Open Main Menu",
+    "defaultValue": "Open Main Menu"
+  },
   "aboutProject": {
     "tinaLabel": "About the Project",
     "defaultValue": "About the Project"

@@ -1,4 +1,6 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import clsx from 'clsx';
 import Header from '../components/Header.astro';
 import '@performant-software/core-data/style.css';
 import '@performant-software/geospatial/style.css';
@@ -6,14 +8,25 @@ import '@peripleo/maplibre/peripleo-maplibre.css';
 import '@peripleo/peripleo/default-theme';
 import '../styles/index.css';
 
-export interface Props {
-  map?: boolean;
-  tab?: string;
-  title: string;
-}
+const currentLocale = Astro.currentLocale;
 
-const { title, tab, map = false } = Astro.props as Props;
+const Tabs = {
+  map: {
+    key: 'map',
+    url: getRelativeLocaleUrl(currentLocale, 'map')
+  },
+  paths: {
+    key: 'paths',
+    url: getRelativeLocaleUrl(currentLocale, 'paths')
+  },
+  posts: {
+    key: 'posts',
+    url: getRelativeLocaleUrl(currentLocale, 'posts')
+  }
+};
 
+const { title, tab } = Astro.props;
+const isMap = tab === Tabs.map.key;
 ---
 
 <!DOCTYPE html>
@@ -24,17 +37,24 @@ const { title, tab, map = false } = Astro.props as Props;
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 	<title>{title}</title>
 </head>
-<body class={`flex h-full sm:min-h-screen flex-col bg-white ${ !map && '3xl:bg-neutral-dark 3xl:max-w-screen-3xl'} text-neutral-dark mx-auto`} transition:animate="initial">
-  <Header tab={tab} map={map} />
-  <main class={`w-full min-h-screen relative bg-neutral-light ${map && 'flex'}`}>
+<body
+  class={clsx(
+    'flex h-full sm:min-h-screen flex-col bg-white text-neutral-dark mx-auto',
+    { '3xl:bg-neutral-dark 3xl:max-w-screen-3xl': !isMap }
+  )}
+  transition:animate="initial"
+>
+  <Header
+    currentTab={tab}
+    tabs={Tabs}
+  />
+  <main
+    class={clsx(
+      'w-full min-h-screen relative bg-neutral-light',
+      { 'flex': isMap }
+    )}
+  >
     <slot />
   </main>
 </body>
 </html>
-
-<style is:global>
-	.p6o-map-container {
-	height: 100%;
-	width: 100%;
-	}
-</style>

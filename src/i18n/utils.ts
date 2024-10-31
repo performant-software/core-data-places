@@ -4,8 +4,6 @@ import userDefinedFields from './userDefinedFields.json';
 
 export const TRANSLATION_PREFIX = 't_';
 
-export const t = (key) => getTranslationKey(key);
-
 export const getTranslation = (key, translations, values = {}) => {
   let translation = translations[getTranslationKey(key)];
 

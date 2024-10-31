@@ -4,11 +4,16 @@ import netlify from "@astrojs/netlify";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
-import config from "./src/i18n/config";
+import config from './public/config.json';
 
 // https://astro.build/config
 export default defineConfig({
-  i18n: config.i18n,
+  i18n: {
+    ...config.i18n,
+    routing: {
+      prefixDefaultLocale: true
+    }
+  },
   output: "server",
   adapter: netlify(),
   integrations: [

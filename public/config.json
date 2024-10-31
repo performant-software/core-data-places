@@ -1,6 +1,7 @@
 {
-    "branding": {
-      "title": "Core Data"
+    "i18n": {
+      "defaultLocale": "en",
+      "locales": ["en", "fr"]
     },
     "layers": [
       {
