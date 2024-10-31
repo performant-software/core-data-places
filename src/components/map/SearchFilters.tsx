@@ -1,11 +1,9 @@
+import { Dialog, Transition } from "@headlessui/react";
 import {
   FacetListsGrouped,
   FacetStateContext,
-  useGeoSearchToggle,
-  useCachedHits,
+  useGeoSearchToggle
 } from "@performant-software/core-data";
-// import * as Dialog from '@radix-ui/react-dialog';
-import * as Switch from "@radix-ui/react-switch";
 import { Settings2, X } from "lucide-react";
 import React, {
   useContext,
@@ -17,13 +15,11 @@ import React, {
 import {
   RefinementList,
   useCurrentRefinements,
-  useInstantSearch,
-  useRefinementList,
+  useInstantSearch
 } from "react-instantsearch";
 import "../../styles/SearchFilters.css";
-import { Dialog, Transition } from "@headlessui/react";
-import * as m from "../../paraglide/messages";
-import { t } from "../../i18n/utils";
+
+import TranslationContext from './TranslationContext';
 
 interface FacetStateContextType {
   attributes: string[];
@@ -33,6 +29,7 @@ const SearchFilters = (props) => {
   const { attributes } = useContext<FacetStateContextType>(FacetStateContext);
   const { renderState } = useInstantSearch();
   const { items } = useCurrentRefinements();
+  const { t } = useContext(TranslationContext);
   const refinementCount = useMemo(() => {
     if (!items || !items.length) {
       return 0;
@@ -192,9 +189,7 @@ const SearchFilters = (props) => {
                             }
                           />
                         )}
-                        resolveLabel={(uuid: string) => {
-                          return m[t(uuid)] ? m[t(uuid)]() : uuid;
-                        }}
+                        resolveLabel={(uuid: string) => t(uuid)}
                       />
                     )}
 

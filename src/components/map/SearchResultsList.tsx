@@ -5,9 +5,7 @@ import { useCallback, useMemo } from 'react';
 import { Highlight } from 'react-instantsearch';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
-import config from '../../i18n/config';
-import * as m from '../../paraglide/messages';
-import { t } from '../../i18n/utils';
+import RelatedModel from './RelatedModel';
 
 interface HitComponentProps {
   hit: any;
@@ -51,11 +49,10 @@ const HitComponent = (props: HitComponentProps) => {
               strokeWidth={1}
             />
           </div>
-          { hit[config.featuredModel.uuid] && hit[config.featuredModel.uuid].length > 0 && (
-            <div className="flex ps-2">
-              { `${hit[config.featuredModel.uuid][0].name.slice(0,40)}${hit[config.featuredModel.uuid][0].name.length > 40 ? '...' : ''}${hit[config.featuredModel.uuid].length > 1 ? ` and ${hit[config.featuredModel.uuid].length - 1} more` : ''}` }
-            </div>
-          )}
+          <RelatedModel
+            className='flex ps-2'
+            hit={hit}
+          />
         </div>
           <Highlight
             attribute={'name'}

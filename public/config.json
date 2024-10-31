@@ -41,7 +41,8 @@
       "index_name": "scavenger_hunt",
       "query_by": "name",
       "facets": {
-      }
+      },
+      "related_model": "6e89decd-b884-47ef-a052-a2f49ab4c33c.0.name"
     },
     "core_data": {
       "url": "https://staging.coredata.cloud",

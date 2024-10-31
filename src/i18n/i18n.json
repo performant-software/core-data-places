@@ -47,6 +47,10 @@
     "tinaLabel": "Log in to Tina CMS",
     "defaultValue": "Log in to Tina CMS"
   },
+  "andCountMore": {
+    "tinaLabel": "and <count> more",
+    "defaultValue": "and {{count}} more"
+  },
   "title": {
     "tinaLabel": "Name"
   },

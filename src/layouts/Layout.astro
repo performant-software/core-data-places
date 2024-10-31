@@ -7,9 +7,9 @@ import '@peripleo/peripleo/default-theme';
 import '../styles/index.css';
 
 export interface Props {
-	title: string;
-  	tab?: string;
-	map?: boolean;
+  map?: boolean;
+  tab?: string;
+  title: string;
 }
 
 const { title, tab, map = false } = Astro.props as Props;

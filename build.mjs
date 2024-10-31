@@ -19,7 +19,7 @@ const getLabel = (field) => {
 const init = async () => {
   const fields = {};
 
-  for (const projectId in config.core_data.project_ids) {
+  for (const projectId of config.core_data.project_ids) {
     const url = `${config.core_data.url}/core_data/public/v1/projects/${projectId}/descriptors`;
     const payload = await fetch(url).then((response) => response.json());
 

@@ -10,7 +10,7 @@ export const getLanguageFromUrl = (url: string) => {
 export const useTranslations = () => {
   const [translations, setTranslations] = useState({});
 
-  const t = useCallback((key) => getTranslation(key, translations), [translations]);
+  const t = useCallback((key, values = {}) => getTranslation(key, translations, values), [translations]);
 
   const onLoad = useCallback((response) => {
     const translationData = buildTranslations(response?.data?.ui || {});

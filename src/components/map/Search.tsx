@@ -1,11 +1,14 @@
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, Router, RuntimeConfig } from '@peripleo/peripleo';
+import { useTranslations } from '../../i18n/client';
+import TranslationContext from './TranslationContext';
 import TypesenseSearch from './TypesenseSearch';
 import MapView from './MapView';
-// import { translations } from '../../helpers/i18n';
 import SearchRoutes from './SearchRoutes';
 
 const Search = () => {
+  const { t } = useTranslations();
+
   return (
     <RuntimeConfig
       //@ts-ignore
@@ -15,8 +18,12 @@ const Search = () => {
       <Router>
         <Peripleo>
           <TypesenseSearch>
-            <SearchRoutes />
-            <MapView />
+            <TranslationContext.Provider
+              value={{ t }}
+            >
+              <SearchRoutes />
+              <MapView />
+            </TranslationContext.Provider>
           </TypesenseSearch>
         </Peripleo>
       </Router>

@@ -8,7 +8,7 @@ export const getTranslations = async (language = config.i18n.defaultLocale) => {
   const translations = buildTranslations(data);
 
   return {
-    t: (key: string) => getTranslation(key, translations),
+    t: (key: string, values = {}) => getTranslation(key, translations, values),
     translations
   };
 };
