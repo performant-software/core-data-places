@@ -5,37 +5,93 @@ const { date, category, title, author, slug, imageUrl, blurb } = Astro.props;
 const { t } = await getTranslations(Astro.currentLocale);
 ---
 
-
-<article class="flex max-w-xl flex-col items-start justify-between bg-white">
-  <div class="relative w-full">
-    { imageUrl ? <img src={imageUrl} alt="" class="aspect-[16/9] w-full bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]" height={256} width={384} />
-      : <div class="aspect-[16/9] w-full bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]" /> }
-    <div class="absolute inset-0 ring-1 ring-inset ring-gray-900/10"></div>
+<article
+  class='flex max-w-xl flex-col items-start justify-between bg-white'
+>
+  <div
+    class='relative w-full'
+  >
+    { imageUrl && (
+      <img
+        alt=''
+        src={imageUrl}
+        class='aspect-[16/9] w-full bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
+        height={256}
+        width={384}
+      />
+    )}
+    { !imageUrl && (
+      <div
+        class='aspect-[16/9] w-full bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
+      />
+    )}
+    <div
+      class='absolute inset-0 ring-1 ring-inset ring-gray-900/10'
+    />
   </div>
-  <div class="flex items-center gap-x-4 text-xs">
-    <time datetime="2020-03-16" class="text-gray-500">{date}</time>
-    { category && <a href="#" class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">{category}</a> }
+  <div
+    class='flex items-center gap-x-4 text-xs'
+  >
+    <time
+      datetime='2020-03-16'
+      class='text-gray-500'
+    >
+      { date }
+    </time>
+    { category && (
+      <a
+        href='#'
+        class='relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100'
+      >
+        { category }
+      </a>
+    )}
   </div>
-  <div class="group relative p-6">
-    <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
-        <a href={slug}>
-          <span class="absolute inset-0"></span>
-          {title}
-        </a>
+  <div
+    class='group relative p-6'
+  >
+    <h3
+      class='mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600'
+    >
+      <a
+        href={slug}
+      >
+        <span
+          class='absolute inset-0'
+        />
+        { title }
+      </a>
     </h3>
-    <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{blurb}</p>
+    <p
+      class='mt-5 line-clamp-3 text-sm leading-6 text-gray-600'
+    >
+      { blurb }
+    </p>
   </div>
-  <div class="relative mt-8 flex items-center gap-x-4">
-    <div class="text-sm leading-6">
-        <p class="font-semibold text-gray-900">
-          <a href="#">
-              <span class="absolute inset-0"></span>
-              { author }
-          </a>
-        </p>
+  <div
+    class='relative mt-8 flex items-center gap-x-4'
+  >
+    <div
+      class='text-sm leading-6'
+    >
+      <p
+        class='font-semibold text-gray-900'
+      >
+        <a
+          href='#'
+        >
+          <span
+            class='absolute inset-0'
+          />
+          { author }
+        </a>
+      </p>
     </div>
   </div>
-  <a class="flex justify-end p-12 w-full" href={slug}>
+  <a
+    class='flex justify-end p-12 w-full'
+    href={slug}
+  >
     { t('readMore') } &rarr;
   </a>
 </article>

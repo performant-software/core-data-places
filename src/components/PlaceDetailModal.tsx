@@ -1,7 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { CoreDataContextProvider, PlaceDetails } from '@performant-software/core-data';
+import { PlaceDetails } from '@performant-software/core-data';
 import { Fragment } from 'react';
-import config from '../../public/config.json';
 
 interface Props {
   onClose(): void;
@@ -51,14 +50,9 @@ const PlaceDetailModal = (props: Props) => (
             <Dialog.Panel
               className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all'
             >
-              <CoreDataContextProvider
-                baseUrl={config.core_data.url}
-                projectIds={config.core_data.project_ids}
-              >
-                <PlaceDetails
-                  id={props.placeId}
-                />
-              </CoreDataContextProvider>
+              <PlaceDetails
+                id={props.placeId}
+              />
             </Dialog.Panel>
           </Transition.Child>
         </div>
