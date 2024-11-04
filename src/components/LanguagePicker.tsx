@@ -1,7 +1,7 @@
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import React, { Fragment, useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 
 interface Props {
   locales: string[];

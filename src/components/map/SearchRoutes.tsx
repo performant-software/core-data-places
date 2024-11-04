@@ -1,12 +1,10 @@
-import Place from './Place';
-import SearchPanel from './SearchPanel';
 import  { CoreDataContextProvider } from '@performant-software/core-data';
 import { Route, Routes, useRuntimeConfig } from '@peripleo/peripleo';
-import React from 'react';
+import Place from './Place';
+import SearchPanel from './SearchPanel';
 
 const SearchRoutes = () => {
   const { core_data: config }: any = useRuntimeConfig();
-  console.log(config);
 
   return (
     <CoreDataContextProvider

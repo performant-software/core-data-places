@@ -1,22 +1,24 @@
 import { useSearchBox, useCachedHits } from '@performant-software/core-data';
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
-import { useStats } from 'react-instantsearch';
+import { useContext, useMemo } from 'react';
 import _ from 'underscore';
+import TranslationContext from './TranslationContext';
 
 interface Props {
   className?: string;
 }
 
 const SearchCount = (props: Props) => {
-  // const { nbHits: count } = useStats();
-  const count = useCachedHits() ? useCachedHits().length : 0;
+  const hits = useCachedHits();
   const { query } = useSearchBox();
+  const { t } = useContext(TranslationContext);
+
+  const count = hits?.length || 0;
 
   const content = useMemo(() => (
     count === 1
-      ? `${count} result for ${query}`
-      : `${count} results for ${query}`
+      ? t('resultsCountSingular', { query })
+      : t('resultsCount', { count, query })
   ), [count, query]);
 
   if (_.isEmpty(query)) {

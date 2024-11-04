@@ -1,9 +1,9 @@
-import { type Feature, useHoverState, useNavigate } from '@peripleo/peripleo';
-import React, { useCallback } from 'react';
+import { useHoverState } from '@peripleo/peripleo';
+import { useCallback } from 'react';
+import SearchFilters from './SearchFilters';
 import SearchBox from './SearchBox';
 import SearchCount from './SearchCount';
 import SearchResultsList from './SearchResultsList';
-import SearchFilters from './SearchFilters';
 
 const SearchPanel = () => {
   const { hover, setHover } = useHoverState();

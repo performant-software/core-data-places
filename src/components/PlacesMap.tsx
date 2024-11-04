@@ -6,7 +6,7 @@ import {
 } from '@performant-software/core-data';
 import { Map, Zoom } from '@peripleo/maplibre';
 import { Peripleo, Controls, useRuntimeConfig } from '@peripleo/peripleo';
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import _ from 'underscore';
 import { getPlaceURL } from '../helpers/core-data';
 

@@ -1,10 +1,10 @@
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, Router, RuntimeConfig } from '@peripleo/peripleo';
-import { useTranslations } from '../../i18n/client';
-import TranslationContext from './TranslationContext';
-import TypesenseSearch from './TypesenseSearch';
 import MapView from './MapView';
 import SearchRoutes from './SearchRoutes';
+import TranslationContext from './TranslationContext';
+import TypesenseSearch from './TypesenseSearch';
+import { useTranslations } from '../../i18n/client';
 
 const Search = () => {
   const { t } = useTranslations();

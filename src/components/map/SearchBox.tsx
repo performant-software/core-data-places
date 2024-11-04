@@ -7,9 +7,8 @@ import tailwindConfig from '../../../tailwind.config.mjs';
 const SearchBox = () => {
   const { query, refine } = useSearchBox();
 
-  // const { theme } = resolveConfig(tailwindConfig);
-  // const color = theme.colors.gray['1000'];
-  const color = '#505A6A';
+  const { theme } = resolveConfig(tailwindConfig);
+  const color = theme.colors.gray['1000'];
 
   const inputRef = useRef<HTMLInputElement>(null);
 

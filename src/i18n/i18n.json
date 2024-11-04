@@ -27,6 +27,42 @@
     "tinaLabel": "Untitled",
     "defaultValue": "Untitled"
   },
+  "mapLayers": {
+    "tinaLabel": "Map Layers",
+    "defaultValue": "Map Layers"
+  },
+  "relatedMedia": {
+    "tinaLabel": "Related Media",
+    "defaultValue": "Related Media"
+  },
+  "relatedOrganizations": {
+    "tinaLabel": "Related Organizations",
+    "defaultValue": "Related Organizations"
+  },
+  "relatedPeople": {
+    "tinaLabel": "Related People",
+    "defaultValue": "Related People"
+  },
+  "relatedPlaces": {
+    "tinaLabel": "Related Places",
+    "defaultValue": "Related Places"
+  },
+  "relatedTaxonomies": {
+    "tinaLabel": "Related Taxonomies",
+    "defaultValue": "Related Taxonomies"
+  },
+  "none": {
+    "tinaLabel": "None",
+    "defaultValue": "None"
+  },
+  "baseLayers": {
+    "tinaLabel": "Base Layers",
+    "defaultValue": "Base Layers"
+  },
+  "overlays": {
+    "tinaLabel": "Overlays",
+    "defaultValue": "Overlays"
+  },
   "aboutProject": {
     "tinaLabel": "About the Project",
     "defaultValue": "About the Project"
@@ -58,6 +94,26 @@
   "andCountMore": {
     "tinaLabel": "and <count> more",
     "defaultValue": "and {{count}} more"
+  },
+  "resultsCount": {
+    "tinaLabel": "<count> results for <query>",
+    "defaultValue": "{{count}} results for {{query}}"
+  },
+  "resultsCountSingular": {
+    "tinaLabel": "1 result for <query>",
+    "defaultValue": "1 result for {{query}}"
+  },
+  "filters": {
+    "tinaLabel": "Filters",
+    "defaultValue": "Filters"
+  },
+  "filterMapBounds": {
+    "tinaLabel": "Filter by map bounds",
+    "defaultValue": "Filter by map bounds"
+  },
+  "plusCount": {
+    "tinaLabel": "+ <count>",
+    "defaultValue": "+{{count}}"
   },
   "title": {
     "tinaLabel": "Name"

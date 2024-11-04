@@ -2,10 +2,10 @@ import { type Feature, useNavigate } from '@peripleo/peripleo';
 import { Typesense as TypesenseUtils, useCachedHits } from '@performant-software/core-data';
 import { Building } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
-import { Highlight } from 'react-instantsearch';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
-import RelatedModel from './RelatedModel';
+import config from '../../../public/config.json';
+import SearchHighlight from './SearchHighlight';
 
 interface HitComponentProps {
   hit: any;
@@ -43,26 +43,41 @@ const HitComponent = (props: HitComponentProps) => {
         className='flex-grow text-left flex flex-col justify-center rounded-none px-5'
         onClick={props.onClick}
       >
-        <div className="flex">
-          <div>
+        <div
+          className='flex items-center'
+        >
+          <div
+            className='pe-3'
+          >
             <Building
               strokeWidth={1}
             />
           </div>
-          <RelatedModel
-            className='flex ps-2'
-            hit={hit}
-          />
+          <div
+            className='flex flex-col'
+          >
+            { config.search.result_card.title && (
+              <SearchHighlight
+                attribute={config.search.result_card.title}
+                badge
+                className='text-sm'
+                hit={hit}
+              />
+            )}
+            { config.search.result_card.subtitle && (
+              <SearchHighlight
+                attribute={config.search.result_card.subtitle}
+                badge
+                className='text-sm text-gray-500'
+                hit={hit}
+              />
+            )}
+          </div>
         </div>
-          <Highlight
-            attribute={'name'}
-            className='mx-4 text-sm text-gray-600 pt-2 ps-4'
-            hit={hit}
-          />
       </button>
     </div>
   );
-}
+};
 
 interface Props {
   hover?: Feature<{ id: string }>;

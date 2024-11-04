@@ -34,16 +34,22 @@
         "overlay": true
       }
     ],
+    "search": {
+      "cluster_radius": 6,
+      "result_card": {
+        "title": "name",
+        "subtitle": "6e89decd-b884-47ef-a052-a2f49ab4c33c.0.name"
+      }
+    },
     "typesense": {
       "host": "i74olkjcuy69ze2vp-1.a1.typesense.net",
       "port": 443,
       "protocol": "https",
       "api_key": "PSNp8MUfQBInjahcHQ3l76jChrHZHqmj",
       "index_name": "scavenger_hunt",
-      "query_by": "name",
+      "query_by": "name,6e89decd-b884-47ef-a052-a2f49ab4c33c.name",
       "facets": {
-      },
-      "related_model": "6e89decd-b884-47ef-a052-a2f49ab4c33c.0.name"
+      }
     },
     "core_data": {
       "url": "https://staging.coredata.cloud",

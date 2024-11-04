@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 import coreDataConfig from '@performant-software/core-data/tailwind.config';
+import forms from '@tailwindcss/forms';
+import typeography from '@tailwindcss/typography';
 
 export default {
 	presets: [
@@ -27,7 +29,7 @@ export default {
 		},
 	},
 	plugins: [
-		require('@tailwindcss/typography'),
-		require('@tailwindcss/forms')
-	],
-}
+		forms,
+		typeography
+	]
+};
