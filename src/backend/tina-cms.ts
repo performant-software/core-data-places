@@ -1,8 +1,13 @@
-import { client } from '@tina/databaseClient';
+import databaseClient, { client } from '@tina/databaseClient';
 
 export const fetchAbout = async () => {
   const response = await client.queries.about({ relativePath: 'about.mdx' });
   return response.data.about;
+};
+
+export const fetchI18n = async (language: string) => {
+  const response = await databaseClient.queries.i18n({ relativePath: `${language}.json` });
+  return response.data.i18n;
 };
 
 export const fetchPath = async (slug: string) => {

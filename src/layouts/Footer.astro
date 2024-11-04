@@ -1,8 +1,8 @@
 ---
 import { fetchAbout } from '@backend/tina-cms';
 import Container from '@components/Container.astro';
+import config from '@config';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
-import config from '../../public/config.json';
 
 const { t } = Astro.props;
 const { title } = await fetchAbout();

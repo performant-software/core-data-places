@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node build.mjs && tinacms dev -c \"astro dev\"",
-    "build": "node build.mjs && tinacms build && astro build",
+    "start": "node build.config.mjs && node build.fields.mjs && tinacms dev -c \"astro dev\"",
+    "build": "node build.config.mjs && node build.fields.mjs && tinacms build && astro build",
     "preview": "astro preview"
   },
   "devDependencies": {

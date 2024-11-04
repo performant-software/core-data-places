@@ -1,0 +1,41 @@
+{
+  "content": [
+    "paths",
+    "posts"
+  ],
+  "i18n": {
+    "defaultLocale": "en",
+    "locales": [
+      "en"
+    ]
+  },
+  "layers": [
+    {
+      "name": "Maptiler DataViz",
+      "layer_type": "vector",
+      "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
+    }
+  ],
+  "search": {
+    "cluster_radius": 6,
+    "result_card": {
+      "title": "name"
+    }
+  },
+  "typesense": {
+    "host": "example.typesense.com",
+    "port": 443,
+    "protocol": "https",
+    "api_key": "abcdefg",
+    "index_name": "core_data_palces",
+    "query_by": "name"
+  },
+  "core_data": {
+    "url": "https://staging.coredata.cloud",
+    "project_ids": [
+      1,
+      2,
+      3
+    ]
+  }
+}

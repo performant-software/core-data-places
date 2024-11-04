@@ -1,11 +1,11 @@
 import SearchHighlight from '@apps/search/SearchHighlight';
 import TranslationContext from '@apps/search/TranslationContext';
 import Badge from '@components/Badge';
+import config from '@config';
 import { useCachedHits } from '@performant-software/core-data';
 import type { Feature, FeatureCluster } from '@peripleo/peripleo';
 import { useContext, useMemo } from 'react';
 import _ from 'underscore';
-import config from '../../../public/config.json';
 
 interface Props {
   event: MouseEvent;

@@ -1,7 +1,7 @@
 import { defineConfig, LocalAuthProvider } from 'tinacms';
 import { TinaUserCollection, UsernamePasswordAuthJSProvider } from 'tinacms-authjs/dist/tinacms';
 import _ from 'underscore';
-import config from '../public/config.json';
+import config from '../config.json';
 import About from './content/about';
 import I18n from './content/i18n';
 import PathsCollection from './content/paths';

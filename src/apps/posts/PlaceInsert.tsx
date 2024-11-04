@@ -1,6 +1,6 @@
+import config from '@config';
 import { CoreDataContextProvider } from '@performant-software/core-data';
 import { useState } from 'react';
-import config from '../../../public/config.json';
 import PlaceDetailModal from '@components/PlaceDetailModal';
 import PlacesMap from "@components/PlacesMap";
 

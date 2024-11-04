@@ -1,10 +1,10 @@
+import config from '@config';
 import _ from 'underscore';
-import config from '../../public/config.json';
 
-const buildSearchParameters = (params) => {
+const buildSearchParameters = (params: any) => {
   const searchParams = new URLSearchParams(params);
 
-  _.each(config.core_data.project_ids, (projectId) => {
+  _.each(config.core_data.project_ids, (projectId: number) => {
     searchParams.append('project_ids[]', projectId.toString());
   });
 

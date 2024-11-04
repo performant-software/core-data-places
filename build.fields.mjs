@@ -1,5 +1,5 @@
 import fs from 'fs';
-import config from './public/config.json' assert { type: 'json' };
+import config from './config.json' assert { type: 'json' };
 
 const CONTEXT_SEPARATOR = '->';
 
@@ -16,6 +16,11 @@ const getLabel = (field) => {
   return label.join(' ');
 };
 
+/**
+ * Pull in fields/labels from "/projects/:project_id/descriptors".
+ *
+ * @returns {Promise<void>}
+ */
 const init = async () => {
   const fields = {};
 

@@ -1,4 +1,5 @@
 ---
+import config from '@config';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
 import '@performant-software/core-data/style.css';
@@ -9,7 +10,6 @@ import '@styles/index.css';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import clsx from 'clsx';
 import _ from 'underscore';
-import config from '../../public/config.json';
 
 const currentLocale = Astro.currentLocale;
 

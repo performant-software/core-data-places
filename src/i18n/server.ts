@@ -1,4 +1,4 @@
-import databaseClient from '@tina/databaseClient';
+import { fetchI18n } from '@backend/tina-cms';
 import { buildTranslations, getTranslation } from './utils';
 
 /**
@@ -7,8 +7,7 @@ import { buildTranslations, getTranslation } from './utils';
  * @param language
  */
 export const getTranslations = async (language: string) => {
-  const response = await databaseClient.queries.i18n({ relativePath: `${language}.json` });
-  const data = response?.data?.i18n || {};
+  const data = await fetchI18n(language) || {};
   const translations = buildTranslations(data);
 
   return {

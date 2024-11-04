@@ -1,17 +1,17 @@
-import { createDatabase, createLocalDatabase } from "@tinacms/datalayer";
-import { MongodbLevel } from "./db-provider";
-import { GitHubProvider } from "./git-provider";
-import dotenv from "dotenv";
+import { createDatabase, createLocalDatabase } from '@tinacms/datalayer';
+import { MongodbLevel } from './db-provider';
+import { GitHubProvider } from './git-provider';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
-const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
+const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 
 const branch =
   process.env.GITHUB_BRANCH ||
   process.env.VERCEL_GIT_COMMIT_REF ||
   process.env.HEAD ||
-  "main";
+  'main';
 
 export default isLocal
   ? createLocalDatabase()
