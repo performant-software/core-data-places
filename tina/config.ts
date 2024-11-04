@@ -6,6 +6,7 @@ import About from './content/about';
 import I18n from './content/i18n';
 import PathsCollection from './content/paths';
 import PostsCollection from './content/posts';
+import Settings from './content/settings';
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 const localContentPath = process.env.TINA_LOCAL_CONTENT_PATH;
@@ -31,6 +32,7 @@ export default defineConfig({
     collections: _.compact([
       TinaUserCollection,
       About,
+      Settings,
       config.content?.includes('paths')
         ? PathsCollection
         : undefined,

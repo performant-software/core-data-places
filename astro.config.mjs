@@ -10,6 +10,7 @@ import config from './config.json';
 export default defineConfig({
   i18n: {
     ...config.i18n,
+    defaultLocale: config.i18n.default_locale,
     routing: {
       prefixDefaultLocale: true
     }

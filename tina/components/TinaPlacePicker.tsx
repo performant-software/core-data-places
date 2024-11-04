@@ -1,4 +1,4 @@
-import { getPlacesURL, getPlaceURL } from '../../src/backend/core-data';
+import { getPlacesURL, getPlaceURL } from '../utils'
 import { Combobox, Switch } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { useCallback, useEffect, useState } from 'react'

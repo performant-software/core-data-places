@@ -67,7 +67,7 @@
     "tinaLabel": "Related Taxonomies",
     "defaultValue": "Related Taxonomies"
   },
-  "relatedMediaEmpty": {
+  "relatedTaxonomiesEmpty": {
     "tinaLabel": "No related taxonomies",
     "defaultValue": "No related taxonomies"
   },
