@@ -1,20 +1,17 @@
 ---
+import { fetchAbout } from '@backend/tina-cms';
+import Container from '@components/Container.astro';
+import LanguagePicker from '@components/LanguagePicker';
+import MobileHeader from '@components/MobileHeader';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
 import _ from 'underscore';
-import Container from '../components/Container.astro';
-import { fetchAbout } from '../helpers/tina-cms';
-import { getTranslations } from '../i18n/server';
-import MobileHeader from '../components/MobileHeader';
-import LanguagePicker from '../components/LanguagePicker';
 
 const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
 const currentUrl = Astro.url;
 
-const { t } = await getTranslations(currentLocale);
-
-const { currentTab, tabs } = Astro.props;
+const { currentTab, t, tabs } = Astro.props;
 const isMap = currentTab === tabs.map;
 
 const { title } = await fetchAbout();

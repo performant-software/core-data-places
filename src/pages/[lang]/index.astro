@@ -1,9 +1,9 @@
 ---
-import { fetchAbout } from '../../helpers/tina-cms';
-import Container from '../../components/Container.astro';
-import Hero from '../../components/Hero.astro';
-import Layout from '../../layouts/Layout.astro';
-import { getTranslations } from '../../i18n/server';
+import { fetchAbout } from '@backend/tina-cms';
+import Container from '@components/Container.astro';
+import Hero from '@components/Hero.astro';
+import { getTranslations } from '@i18n/server';
+import Layout from '@layouts/Layout.astro';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 
 const { title, subheader, description, heroImage, featureImage } = await fetchAbout();
@@ -13,6 +13,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 
 <Layout
   footer
+  t={t}
   title={title}
 >
   <Hero 

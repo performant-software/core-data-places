@@ -14,5 +14,5 @@
   force = true
 
 [dev]
-  command = "npm run dev"
+  command = "npm start"
   targetPort = 4321

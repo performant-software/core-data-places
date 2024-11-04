@@ -1,8 +1,8 @@
+import PlaceInsert from '@apps/posts/PlaceInsert';
+import IframeEmbed from '@components/IframeEmbed';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { RuntimeConfig } from '@peripleo/peripleo';
 import { TinaMarkdown, TinaMarkdownContent } from 'tinacms/dist/rich-text';
-import IframeEmbed from './IframeEmbed';
-import PlaceInsert from './PlaceInsert';
 
 interface PostContentProps {
   content: TinaMarkdownContent;

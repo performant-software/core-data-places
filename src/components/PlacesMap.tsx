@@ -1,3 +1,4 @@
+import { getPlaceURL } from '@backend/core-data';
 import {
   LayerMenu,
   PlaceMarkers,
@@ -8,7 +9,6 @@ import { Map, Zoom } from '@peripleo/maplibre';
 import { Peripleo, Controls, useRuntimeConfig } from '@peripleo/peripleo';
 import { useMemo, useState } from 'react';
 import _ from 'underscore';
-import { getPlaceURL } from '../helpers/core-data';
 
 interface Props {
   animate?: boolean;

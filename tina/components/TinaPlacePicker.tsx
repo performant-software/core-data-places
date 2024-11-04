@@ -1,14 +1,14 @@
+import { getPlacesURL, getPlaceURL } from '../../src/backend/core-data';
 import { Combobox, Switch } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { useCallback, useEffect, useState } from 'react'
 import { wrapFieldsWithMeta } from 'tinacms';
-import { getPlacesURL, getPlaceURL } from '../../src/helpers/core-data';
 
 interface CustomTinaFieldProps {
   field: any,
   input: any,
   meta: any
-};
+}
 
 const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   const [places, setPlaces] = useState<any>();

@@ -1,13 +1,13 @@
 ---
-import { getTranslations } from '../../../i18n/server';
-import Layout from "../../../layouts/Layout.astro";
-import Search from '../../../components/map/Search';
+import Search from '@apps/search/Search';
+import { getTranslations } from '@i18n/server';
+import Layout from "@layouts/Layout.astro";
 
 const { t } = await getTranslations(Astro.currentLocale);
-
 ---
 
 <Layout
+  t={t}
   title={t('map')}
   tab="map"
   map

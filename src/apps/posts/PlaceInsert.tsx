@@ -1,8 +1,8 @@
 import { CoreDataContextProvider } from '@performant-software/core-data';
 import { useState } from 'react';
-import config from '../../public/config.json';
-import PlaceDetailModal from './PlaceDetailModal';
-import PlacesMap from "./PlacesMap";
+import config from '../../../public/config.json';
+import PlaceDetailModal from '@components/PlaceDetailModal';
+import PlacesMap from "@components/PlacesMap";
 
 const PlaceInsert = (props: any) => {
   const [open, setOpen] = useState<boolean>(false);

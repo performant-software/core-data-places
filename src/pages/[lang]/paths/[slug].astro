@@ -1,8 +1,8 @@
 ---
-import { fetchPath } from '../../../helpers/tina-cms';
-import { getTranslations } from '../../../i18n/server';
-import Layout from "../../../layouts/Layout.astro";
-import PathViewer from "../../../components/PathViewer";
+import PathViewer from "@apps/paths/PathViewer";
+import { fetchPath } from '@backend/tina-cms';
+import { getTranslations } from '@i18n/server';
+import Layout from "@layouts/Layout.astro";
 
 const { slug } = Astro.params;
 const path = await fetchPath(slug);
@@ -12,6 +12,7 @@ const title = path?.title || t('paths')
 ---
 
 <Layout
+  t={t}
   tab='paths'
   title={title}
 >

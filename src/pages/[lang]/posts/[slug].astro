@@ -1,16 +1,19 @@
 ---
-import Container from '../../../components/Container.astro';
-import PlaceDetailModal from '../../../components/PlaceDetailModal';
-import PostContent from '../../../components/PostContent';
-import { fetchPost } from '../../../helpers/tina-cms';
-import Layout from '../../../layouts/Layout.astro';
+import PostContent from '@apps/posts/PostContent';
+import { fetchPost } from '@backend/tina-cms';
+import Container from '@components/Container.astro';
+import { getTranslations } from '@i18n/server';
+import Layout from '@layouts/Layout.astro';
 
 const { slug } = Astro.params;
 const post = await fetchPost(slug);
+
+const { t } = getTranslations(Astro.currentLocale);
 ---
 
 <Layout
   footer
+  t={t}
   tab='posts'
   title={slug}
 >
@@ -23,7 +26,4 @@ const post = await fetchPost(slug);
       client:only
     />
   </Container>
-  <PlaceDetailModal
-    client:only
-  />
 </Layout>

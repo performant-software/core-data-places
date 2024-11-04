@@ -1,3 +1,6 @@
+import IframeEmbed from '@components/IframeEmbed';
+import PlacesMap from '@components/PlacesMap';
+import { useTranslations } from '@i18n/client';
 import {
   ArrowLeftCircleIcon,
   ArrowRightCircleIcon,
@@ -9,9 +12,6 @@ import { RuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
-import PlacesMap from './PlacesMap';
-import IframeEmbed from './IframeEmbed';
-import { useTranslations } from '../i18n/client';
 
 export interface PathViewerProps {
   path: any;

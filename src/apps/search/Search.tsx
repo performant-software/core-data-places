@@ -1,17 +1,16 @@
+import MapView from '@apps/search/MapView';
+import SearchRoutes from '@apps/search/SearchRoutes';
+import TranslationContext from '@apps/search/TranslationContext';
+import TypesenseSearch from '@apps/search/TypesenseSearch';
+import { useTranslations } from '@i18n/client';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, Router, RuntimeConfig } from '@peripleo/peripleo';
-import MapView from './MapView';
-import SearchRoutes from './SearchRoutes';
-import TranslationContext from './TranslationContext';
-import TypesenseSearch from './TypesenseSearch';
-import { useTranslations } from '../../i18n/client';
 
 const Search = () => {
   const { t } = useTranslations();
 
   return (
     <RuntimeConfig
-      //@ts-ignore
       path='/config.json'
       preprocess={PeripleoUtils.normalize}
     >

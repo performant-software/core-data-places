@@ -1,9 +1,9 @@
+import SearchBox from '@apps/search/SearchBox';
+import SearchCount from '@apps/search/SearchCount';
+import SearchFilters from '@apps/search/SearchFilters';
+import SearchResultsList from '@apps/search/SearchResultsList';
 import { useHoverState } from '@peripleo/peripleo';
 import { useCallback } from 'react';
-import SearchFilters from './SearchFilters';
-import SearchBox from './SearchBox';
-import SearchCount from './SearchCount';
-import SearchResultsList from './SearchResultsList';
 
 const SearchPanel = () => {
   const { hover, setHover } = useHoverState();

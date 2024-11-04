@@ -1,4 +1,4 @@
-import { client } from '../../tina/__generated__/databaseClient';
+import { client } from '@tina/databaseClient';
 
 export const fetchAbout = async () => {
   const response = await client.queries.about({ relativePath: 'about.mdx' });

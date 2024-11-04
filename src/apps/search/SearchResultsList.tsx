@@ -1,3 +1,4 @@
+import SearchHighlight from '@apps/search/SearchHighlight';
 import { type Feature, useNavigate } from '@peripleo/peripleo';
 import { Typesense as TypesenseUtils, useCachedHits } from '@performant-software/core-data';
 import { Building } from 'lucide-react';
@@ -5,7 +6,6 @@ import { useCallback, useMemo } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 import config from '../../../public/config.json';
-import SearchHighlight from './SearchHighlight';
 
 interface HitComponentProps {
   hit: any;

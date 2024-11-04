@@ -1,94 +1,93 @@
 ---
+import { fetchAbout } from '@backend/tina-cms';
+import Container from '@components/Container.astro';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
-import Container from '../components/Container.astro';
-import { fetchAbout } from '../helpers/tina-cms';
-import { getTranslations } from '../i18n/server';
 import config from '../../public/config.json';
 
+const { t } = Astro.props;
 const { title } = await fetchAbout();
-const { t } = await getTranslations(Astro.currentLocale);
 ---
 
 <div
   class='bg-white w-full'
 >
-    <Container
-      className='flex flex-col gap-8 py-12 items-center'
+  <Container
+    className='flex flex-col gap-8 py-12 items-center'
+  >
+    <div
+      class='flex flex-col md:flex-row gap-6 align-middle justify-center items-center'
     >
-        <div
-          class='flex flex-col md:flex-row gap-6 align-middle justify-center items-center'
+      <div
+        class='w-20 h-20 rounded-full bg-blue-600'
+      />
+      <p
+        class='text-5xl font-serif self-center'
+      >
+        { title }
+      </p>
+    </div>
+    <p
+      class='text-center'
+    >
+      { t('footerText') }
+    </p>
+    <div
+      class='flex flex-row justify-center gap-6 object-contain'
+    >
+      <div
+        class='w-10 h-10 bg-blue-600 rounded-full'
+      />
+      <div
+        class='w-10 h-10 bg-blue-600 rounded-full'
+      />
+      <div
+        class='w-10 h-10 bg-blue-600 rounded-full'
+      />
+      <div
+        class='w-10 h-10 bg-blue-600 rounded-full'
+      />
+    </div>
+    <div
+      class='flex flex-row justify-center gap-8'
+    >
+      <a
+        href={config.core_data.url}
+        target='_blank'
+      >
+        <button
+          class='p-3 rounded-lg bg-blue-600 hover:bg-blue-800 text-white flex flex-row gap-3'
         >
-            <div
-              class='w-20 h-20 rounded-full bg-blue-600'
-            />
-            <p
-              class='text-5xl font-serif self-center'
-            >
-                { title }
-            </p>
-        </div>
-        <p
-          class='text-center'
+          <p>
+            { t('coreDataLogin') }
+          </p>
+          <ArrowTopRightOnSquareIcon
+            className='h-6 w-6'
+          />
+        </button>
+      </a>
+      <a
+        href='/admin/index.html'
+        target='_blank'
+      >
+        <button
+          class='p-3 rounded-lg bg-blue-600 hover:bg-blue-800 text-white flex flex-row gap-3'
         >
-            { t('footerText') }
-        </p>
-        <div
-          class='flex flex-row justify-center gap-6 object-contain'
-        >
-            <div
-              class='w-10 h-10 bg-blue-600 rounded-full'
-            />
-            <div
-              class='w-10 h-10 bg-blue-600 rounded-full'
-            />
-            <div
-              class='w-10 h-10 bg-blue-600 rounded-full'
-            />
-            <div
-              class='w-10 h-10 bg-blue-600 rounded-full'
-            />
-        </div>
-        <div
-          class='flex flex-row justify-center gap-8'
-        >
-            <a
-              href={config.core_data.url}
-              target='_blank'
-            >
-                <button
-                  class='p-3 rounded-lg bg-blue-600 hover:bg-blue-800 text-white flex flex-row gap-3'
-                >
-                    <p>
-                        { t('coreDataLogin') }
-                    </p>
-                    <ArrowTopRightOnSquareIcon
-                      className='h-6 w-6'
-                    />
-                </button>
-            </a>
-            <a
-              href='/admin/index.html'
-              target='_blank'
-            >
-                <button
-                  class='p-3 rounded-lg bg-blue-600 hover:bg-blue-800 text-white flex flex-row gap-3'
-                >
-                    <p>
-                        { t('tinaLogin') }
-                    </p>
-                    <ArrowTopRightOnSquareIcon
-                      className='h-6 w-6'
-                    />
-                </button>
-            </a>
-        </div>
-        <div
-          class='h-[2px] bg-neutral-dark rounded-full w-full'
-        />
-        <p
-          class='text-center text-sm'
-        >
-            { t('footerCopyright') }
-        </p>
-    </Container>
+          <p>
+            { t('tinaLogin') }
+          </p>
+          <ArrowTopRightOnSquareIcon
+            className='h-6 w-6'
+          />
+        </button>
+      </a>
+    </div>
+    <div
+      class='h-[2px] bg-neutral-dark rounded-full w-full'
+    />
+    <p
+      class='text-center text-sm'
+    >
+      { t('footerCopyright') }
+    </p>
+  </Container>
 </div>

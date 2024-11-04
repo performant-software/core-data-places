@@ -1,32 +1,38 @@
 ---
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import clsx from 'clsx';
-import Footer from './Footer.astro';
-import Header from './Header.astro';
+import Footer from '@layouts/Footer.astro';
+import Header from '@layouts/Header.astro';
 import '@performant-software/core-data/style.css';
 import '@performant-software/geospatial/style.css';
 import '@peripleo/maplibre/peripleo-maplibre.css';
 import '@peripleo/peripleo/default-theme';
-import '../styles/index.css';
+import '@styles/index.css';
 
 const currentLocale = Astro.currentLocale;
 
+const TabKeys = {
+  map: 'map',
+  paths: 'paths',
+  posts: 'posts'
+};
+
 const Tabs = {
   map: {
-    key: 'map',
-    url: getRelativeLocaleUrl(currentLocale, 'map')
+    key: TabKeys.map,
+    url: getRelativeLocaleUrl(currentLocale, TabKeys.map)
   },
   paths: {
-    key: 'paths',
-    url: getRelativeLocaleUrl(currentLocale, 'paths')
+    key: TabKeys.paths,
+    url: getRelativeLocaleUrl(currentLocale, TabKeys.paths)
   },
   posts: {
-    key: 'posts',
-    url: getRelativeLocaleUrl(currentLocale, 'posts')
+    key: TabKeys.posts,
+    url: getRelativeLocaleUrl(currentLocale, TabKeys.posts)
   }
 };
 
-const { footer, title, tab } = Astro.props;
+const { footer, title, t, tab } = Astro.props;
 const isMap = tab === Tabs.map.key;
 ---
 
@@ -47,6 +53,7 @@ const isMap = tab === Tabs.map.key;
 >
   <Header
     currentTab={tab}
+    t={t}
     tabs={Tabs}
   />
   <main
@@ -55,7 +62,9 @@ const isMap = tab === Tabs.map.key;
     <slot />
   </main>
   { footer && (
-    <Footer />
+    <Footer
+      t={t}
+    />
   )}
 </body>
 </html>

@@ -1,8 +1,8 @@
+import TranslationContext from '@apps/search/TranslationContext';
 import { useSearchBox, useCachedHits } from '@performant-software/core-data';
 import clsx from 'clsx';
 import { useContext, useMemo } from 'react';
 import _ from 'underscore';
-import TranslationContext from './TranslationContext';
 
 interface Props {
   className?: string;

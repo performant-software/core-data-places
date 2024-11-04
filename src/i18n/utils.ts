@@ -1,6 +1,6 @@
-import _ from 'underscore';
 import i18n from './i18n.json';
 import userDefinedFields from './userDefinedFields.json';
+import _ from 'underscore';
 
 export const TRANSLATION_PREFIX = 't_';
 
@@ -20,9 +20,13 @@ export const getTranslationKey = (key) => {
   return `${TRANSLATION_PREFIX}${key.replaceAll('-', '').replaceAll(' ', '').replaceAll('.', '_')}`;
 };
 
-export const buildTranslations = (data) => {
+interface TranslationData {
+  [key: string]: string
+}
+
+export const buildTranslations = (data: TranslationData) => {
   /**
-   * TODO: Comment me
+   * Build the list of translations based on the passed data.
    */
   const translations = {};
 
@@ -33,7 +37,7 @@ export const buildTranslations = (data) => {
   });
 
   /**
-   * TODO: Comment me.
+   * Build the list of default translations based on "@i18n/i18n.json".
    */
   const defaultTranslations = {};
 

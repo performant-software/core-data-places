@@ -1,8 +1,5 @@
 ---
-import { getTranslations } from '../i18n/server';
-
-const { date, category, title, author, slug, imageUrl, blurb } = Astro.props;
-const { t } = await getTranslations(Astro.currentLocale);
+const { date, category, title, author, slug, imageUrl, blurb, t } = Astro.props;
 ---
 
 <article

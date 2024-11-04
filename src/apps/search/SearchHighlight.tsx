@@ -1,7 +1,7 @@
+import TranslationContext from '@apps/search/TranslationContext';
+import Badge from '@components/Badge';
 import { useContext, useMemo } from 'react';
 import { Highlight } from 'react-instantsearch';
-import TranslationContext from './TranslationContext';
-import Badge from '../Badge';
 
 interface Props {
   attribute: string;

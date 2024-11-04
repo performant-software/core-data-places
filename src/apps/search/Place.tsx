@@ -1,3 +1,4 @@
+import TranslationContext from '@apps/search/TranslationContext';
 import {
   CoreData as CoreDataUtils,
   PlaceDetails,
@@ -12,11 +13,7 @@ import {
   usePlacesService,
 } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
-import {
-  type AnnotationPage,
-  useCurrentRoute,
-  useNavigate,
-} from '@peripleo/peripleo';
+import { type AnnotationPage, useCurrentRoute, useNavigate } from '@peripleo/peripleo';
 import { X } from 'lucide-react';
 import {
   useCallback,
@@ -26,7 +23,6 @@ import {
 } from 'react';
 import _ from 'underscore';
 import './Place.css';
-import TranslationContext from './TranslationContext';
 
 type CallbackFunction = (count: number) => void;
 

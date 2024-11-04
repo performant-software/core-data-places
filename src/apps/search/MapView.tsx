@@ -1,3 +1,5 @@
+import SearchResultTooltip from '@apps/search/SearchResultTooltip';
+import TranslationContext from '@apps/search/TranslationContext';
 import {
     LayerMenu,
     OverlayLayers,
@@ -21,9 +23,7 @@ import {
 } from 'react';
 import _ from 'underscore';
 import config from '../../../public/config.json';
-import SearchResultTooltip from './SearchResultTooltip';
-import TranslationContext from './TranslationContext';
-  
+
 const SEARCH_LAYER = 'search-results';
 
 const TOOLTIP_LAYERS = [

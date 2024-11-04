@@ -1,8 +1,8 @@
 import { useSearchBox } from '@performant-software/core-data';
+import tailwindConfig from '@root/tailwind.config.mjs';
 import { Search, X } from 'lucide-react';
 import { type FormEvent, useCallback, useRef } from 'react';
 import resolveConfig from 'tailwindcss/resolveConfig';
-import tailwindConfig from '../../../tailwind.config.mjs';
 
 const SearchBox = () => {
   const { query, refine } = useSearchBox();

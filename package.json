@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "node build.mjs && tinacms dev -c \"astro dev\"",
-    "start": "astro dev",
+    "start": "node build.mjs && tinacms dev -c \"astro dev\"",
     "build": "node build.mjs && tinacms build && astro build",
     "preview": "astro preview"
   },
@@ -23,6 +22,7 @@
     "@astrojs/react": "^3.0.10",
     "@astrojs/sitemap": "^3.0.5",
     "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/ts-plugin": "^1.10.4",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
     "@nanostores/react": "^0.7.1",

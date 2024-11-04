@@ -1,7 +1,7 @@
 import { Disclosure, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useTranslations } from '@i18n/client';
 import _ from 'underscore';
-import { useTranslations } from '../i18n/client';
 import LanguagePicker from './LanguagePicker';
 
 interface Props {
