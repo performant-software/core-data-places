@@ -1,3 +1,4 @@
+import RelatedRecords from '@apps/search/RelatedRecords';
 import TranslationContext from '@apps/search/TranslationContext';
 import {
   CoreData as CoreDataUtils,
@@ -15,7 +16,7 @@ import {
 import { LocationMarkers } from '@performant-software/geospatial';
 import { type AnnotationPage, useCurrentRoute, useNavigate } from '@peripleo/peripleo';
 import { X } from 'lucide-react';
-import {
+import React, {
   useCallback,
   useContext,
   useMemo,
@@ -118,88 +119,14 @@ const Place = () => {
             layers={place.place_layers}
           />
         )}
-        <RelatedItemsList>
-          <RelatedItem
-            count={mediaCount}
-            id='media_contents'
-            label={t('relatedMedia')}
-            loading={mediaLoading}
-          >
-            <RelatedMedia
-              emptyMessage={t('none')}
-              key={uuid}
-              onLoad={() => (
-                PlacesService.fetchRelatedManifests(uuid)
-                  .then(setRelatedMediaCount)
-                  .finally(() => setMediaLoading(false))
-              )}
-            />
-          </RelatedItem>
-          <RelatedItem
-            count={organizationsCount}
-            id='organizations'
-            key={uuid}
-            label={t('relatedOrganizations')}
-            loading={organizationsLoading}
-          >
-            <RelatedOrganizations
-              emptyMessage={t('none')}
-              onLoad={() => (
-                PlacesService.fetchRelatedOrganizations(uuid)
-                  .then((resp: AnnotationPage<any>) => setRelatedCount(resp, setOrganizationsCount))
-                  .finally(() => setOrganizationsLoading(false))
-              )}
-            />
-          </RelatedItem>
-          <RelatedItem
-            count={peopleCount}
-            id='people'
-            label={t('relatedPeople')}
-            loading={peopleLoading}
-          >
-            <RelatedPeople
-              emptyMessage={t('none')}
-              key={uuid}
-              onLoad={() => (
-                PlacesService.fetchRelatedPeople(uuid)
-                  .then((resp: AnnotationPage<any>) => setRelatedCount(resp, setPeopleCount))
-                  .finally(() => setPeopleLoading(false))
-              )}
-            />
-          </RelatedItem>
-          <RelatedItem
-            count={placesCount}
-            id='places'
-            label={t('relatedPlaces')}
-            loading={placesLoading}
-          >
-            <RelatedPlaces
-              emptyMessage={t('none')}
-              key={uuid}
-              onLoad={() => (
-                PlacesService.fetchRelatedPlaces(uuid)
-                  .then((resp: AnnotationPage<any>) => setRelatedCount(resp, setPlacesCount))
-                  .finally(() => setPlacesLoading(false))
-              )}
-            />
-          </RelatedItem>
-          <RelatedItem
-            count={taxonomiesCount}
-            id='taxomonies'
-            label={t('relatedTaxonomies')}
-            loading={taxonomiesLoading}
-          >
-            <RelatedTaxonomies
-              emptyMessage={t('none')}
-              key={uuid}
-              onLoad={() => (
-                PlacesService.fetchRelatedTaxonomies(uuid)
-                  .then((resp: AnnotationPage<any>) => setRelatedCount(resp, setTaxonomiesCount))
-                  .finally(() => setTaxonomiesLoading(false))
-              )}
-            />
-          </RelatedItem>
-        </RelatedItemsList>
+        <RelatedRecords
+          key={uuid}
+          onLoadMedia={() => PlacesService.fetchRelatedManifests(uuid)}
+          onLoadOrganizations={() => PlacesService.fetchRelatedOrganizations(uuid)}
+          onLoadPeople={() => PlacesService.fetchRelatedPeople(uuid)}
+          onLoadPlaces={() => PlacesService.fetchRelatedPlaces(uuid)}
+          onLoadTaxonomies={() => PlacesService.fetchRelatedTaxonomies(uuid)}
+        />
       </aside>
       { placeData && (
         <LocationMarkers

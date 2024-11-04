@@ -1,6 +1,5 @@
 import SearchResultTooltip from '@apps/search/SearchResultTooltip';
 import TranslationContext from '@apps/search/TranslationContext';
-import config from '@config';
 import {
     LayerMenu,
     OverlayLayers,
@@ -34,7 +33,8 @@ const TOOLTIP_LAYERS = [
 ];
 
 const MapView = () => {
-  const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(useRuntimeConfig());
+  const config = useRuntimeConfig<any>();
+  const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(config);
 
   const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));
   const [overlays, setOverlays] = useState([]);
@@ -46,6 +46,16 @@ const MapView = () => {
   const route = useCurrentRoute();
 
   const { t } = useContext(TranslationContext);
+
+  const boundingBoxOptions = useMemo(() => ({
+    padding: {
+      top: 100,
+      bottom: config.search.timeline ? 350 : 100,
+      left: 380,
+      right: 120
+    },
+    maxZoom: 14
+  }), []);
 
   /**
    * If we're on the place detail page or refining results by the map view port, we'll suppress the auto-bounding box
@@ -72,30 +82,22 @@ const MapView = () => {
       >
         <Zoom />
         { baseLayers.length > 1 && (
-        <LayerMenu
-          baseLayer={baseLayer?.name}
-          baseLayers={baseLayers}
-          baseLayersLabel={t('baseLayers')}
-          dataLayers={dataLayers}
-          onChangeBaseLayer={setBaseLayer}
-          onChangeOverlays={setOverlays}
-          overlaysLabel={t('overlays')}
-        />
+          <LayerMenu
+            baseLayer={baseLayer?.name}
+            baseLayers={baseLayers}
+            baseLayersLabel={t('baseLayers')}
+            dataLayers={dataLayers}
+            onChangeBaseLayer={setBaseLayer}
+            onChangeOverlays={setOverlays}
+            overlaysLabel={t('overlays')}
+          />
         )}
       </Controls>
       <OverlayLayers
         overlays={overlays}
       />
       <SearchResultsLayer
-        boundingBoxOptions={{
-          padding: {
-            top: 100,
-            bottom: 100,
-            left: 380,
-            right: 120
-          },
-          maxZoom: 14
-        }}
+        boundingBoxOptions={boundingBoxOptions}
         cluster={!!config.search.cluster_radius}
         clusterRadius={config.search.cluster_radius}
         fitBoundingBox={fitBoundingBox}

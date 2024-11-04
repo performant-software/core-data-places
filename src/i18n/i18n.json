@@ -35,21 +35,45 @@
     "tinaLabel": "Related Media",
     "defaultValue": "Related Media"
   },
+  "relatedMediaEmpty": {
+    "tinaLabel": "No related media",
+    "defaultValue": "No related media"
+  },
   "relatedOrganizations": {
     "tinaLabel": "Related Organizations",
     "defaultValue": "Related Organizations"
+  },
+  "relatedOrganizationsEmpty": {
+    "tinaLabel": "No related organizations",
+    "defaultValue": "No related organizations"
   },
   "relatedPeople": {
     "tinaLabel": "Related People",
     "defaultValue": "Related People"
   },
+  "relatedPeopleEmpty": {
+    "tinaLabel": "No related people",
+    "defaultValue": "No related people"
+  },
   "relatedPlaces": {
     "tinaLabel": "Related Places",
     "defaultValue": "Related Places"
   },
+  "relatedPlacesEmpty": {
+    "tinaLabel": "No related places",
+    "defaultValue": "No related places"
+  },
   "relatedTaxonomies": {
     "tinaLabel": "Related Taxonomies",
     "defaultValue": "Related Taxonomies"
+  },
+  "relatedMediaEmpty": {
+    "tinaLabel": "No related taxonomies",
+    "defaultValue": "No related taxonomies"
+  },
+  "loadMore": {
+    "tinaLabel": "Load More",
+    "defaultValue": "Load More"
   },
   "none": {
     "tinaLabel": "None",

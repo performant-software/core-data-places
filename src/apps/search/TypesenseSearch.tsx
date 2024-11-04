@@ -9,6 +9,7 @@ import {
   InstantSearch,
   useGeoSearch,
   useInfiniteHits,
+  useRange,
   useRefinementList,
   useSearchBox
 } from 'react-instantsearch';
@@ -32,6 +33,7 @@ const SearchProvider = (props: { children: ReactNode }) => {
         host={typesense.host}
         indexName={typesense.index_name}
         protocol={typesense.protocol}
+        useRange={useRange}
         useRefinementList={useRefinementList}
       >
         { props.children }
