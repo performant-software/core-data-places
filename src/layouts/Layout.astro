@@ -1,6 +1,4 @@
 ---
-import { getRelativeLocaleUrl } from 'astro:i18n';
-import clsx from 'clsx';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
 import '@performant-software/core-data/style.css';
@@ -8,6 +6,10 @@ import '@performant-software/geospatial/style.css';
 import '@peripleo/maplibre/peripleo-maplibre.css';
 import '@peripleo/peripleo/default-theme';
 import '@styles/index.css';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import clsx from 'clsx';
+import _ from 'underscore';
+import config from '../../public/config.json';
 
 const currentLocale = Astro.currentLocale;
 
@@ -34,6 +36,11 @@ const Tabs = {
 
 const { footer, title, t, tab } = Astro.props;
 const isMap = tab === Tabs.map.key;
+
+const tabs = {
+  map: Tabs.map,
+  ..._.pick(Tabs, config.content)
+};
 ---
 
 <!DOCTYPE html>
@@ -54,7 +61,7 @@ const isMap = tab === Tabs.map.key;
   <Header
     currentTab={tab}
     t={t}
-    tabs={Tabs}
+    tabs={tabs}
   />
   <main
     class='w-full relative bg-neutral-light flex flex-col flex-grow'

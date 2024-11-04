@@ -30,6 +30,9 @@ export default defineConfig({
           global: 'globalThis',
         },
       },
+      ssr: {
+        noExternal: ['clsx', '@phosphor-icons/*', '@radix-ui/*']
+      }
     },
     resolve: {
       preserveSymlinks: true,

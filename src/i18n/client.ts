@@ -19,7 +19,7 @@ export const useTranslations = () => {
    * Builds the list of translations and sets the value on the state.
    */
   const onLoad = useCallback((response) => {
-    const translationData = buildTranslations(response?.data?.ui || {});
+    const translationData = buildTranslations(response?.data?.i18n || {});
     setTranslations(translationData);
   }, []);
 
@@ -31,7 +31,7 @@ export const useTranslations = () => {
 
     client
       .queries
-      .ui({ relativePath: `${language}.json` })
+      .i18n({ relativePath: `${language}.json` })
       .then(onLoad);
   }, []);
 

@@ -14,6 +14,10 @@ const LanguagePicker = (props: Props) => {
 
   const value = useMemo(() => `/${currentLocale}/`, [currentLocale]);
 
+  if (locales.length <= 1) {
+    return null;
+  }
+
   return (
     <Listbox
       value={value}

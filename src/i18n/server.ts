@@ -7,8 +7,8 @@ import { buildTranslations, getTranslation } from './utils';
  * @param language
  */
 export const getTranslations = async (language: string) => {
-  const response = await databaseClient.queries.ui({ relativePath: `${language}.json` });
-  const data = response?.data?.ui || {};
+  const response = await databaseClient.queries.i18n({ relativePath: `${language}.json` });
+  const data = response?.data?.i18n || {};
   const translations = buildTranslations(data);
 
   return {

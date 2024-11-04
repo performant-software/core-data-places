@@ -1,4 +1,5 @@
 {
+    "content": ["paths", "posts"],
     "i18n": {
       "defaultLocale": "en",
       "locales": ["en", "fr"]
@@ -37,8 +38,7 @@
     "search": {
       "cluster_radius": 6,
       "result_card": {
-        "title": "name",
-        "subtitle": "6e89decd-b884-47ef-a052-a2f49ab4c33c.0.name"
+        "title": "name"
       }
     },
     "typesense": {
@@ -47,9 +47,7 @@
       "protocol": "https",
       "api_key": "PSNp8MUfQBInjahcHQ3l76jChrHZHqmj",
       "index_name": "scavenger_hunt",
-      "query_by": "name,6e89decd-b884-47ef-a052-a2f49ab4c33c.name",
-      "facets": {
-      }
+      "query_by": "name"
     },
     "core_data": {
       "url": "https://staging.coredata.cloud",
