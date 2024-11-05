@@ -12,6 +12,7 @@ const title = path?.title || t('paths')
 ---
 
 <Layout
+  fullscreen
   t={t}
   tab='paths'
   title={title}
@@ -19,7 +20,7 @@ const title = path?.title || t('paths')
   { path && (
     <PathViewer
       path={path}
-      client:only
+      client:only='react'
     />
   )}
 </Layout>

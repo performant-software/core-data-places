@@ -13,6 +13,7 @@ import clsx from 'clsx';
 import _ from 'underscore';
 
 const currentLocale = Astro.currentLocale;
+const lang = getLanguageFromUrl(Astro.url.pathname);
 
 const TabKeys = {
   map: 'map',
@@ -35,8 +36,7 @@ const Tabs = {
   }
 };
 
-const { footer, title, t, tab } = Astro.props;
-const isMap = tab === Tabs.map.key;
+const { footer, fullscreen, title, t, tab } = Astro.props;
 
 const tabs = {
   map: Tabs.map,
@@ -45,34 +45,37 @@ const tabs = {
 ---
 
 <!DOCTYPE html>
-<html lang={getLanguageFromUrl(Astro.url.pathname)}>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-	<title>{title}</title>
-</head>
-<body
-  class={clsx(
-    'flex h-full sm:min-h-screen flex-col bg-white text-neutral-dark mx-auto',
-    { '3xl:bg-neutral-dark 3xl:max-w-screen-3xl': !isMap }
-  )}
-  transition:animate="initial"
+<html
+  lang={lang}
 >
-  <Header
-    currentTab={tab}
-    t={t}
-    tabs={tabs}
-  />
-  <main
-    class='w-full relative bg-neutral-light flex flex-col flex-grow'
+  <head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width'>
+    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+    <title>{title}</title>
+  </head>
+  <body
+    class={clsx(
+      'flex h-full sm:min-h-screen flex-col bg-white text-neutral-dark mx-auto',
+      { '3xl:bg-neutral-dark 3xl:max-w-screen-3xl': !fullscreen }
+    )}
+    transition:animate='initial'
   >
-    <slot />
-  </main>
-  { footer && (
-    <Footer
+    <Header
+      currentTab={tab}
+      fullscreen={fullscreen}
       t={t}
+      tabs={tabs}
     />
-  )}
-</body>
+    <main
+      class='w-full relative bg-neutral-light flex flex-col flex-grow'
+    >
+      <slot />
+    </main>
+    { footer && (
+      <Footer
+        t={t}
+      />
+    )}
+  </body>
 </html>

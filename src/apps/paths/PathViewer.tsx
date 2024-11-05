@@ -10,7 +10,12 @@ import {
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { RuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 
 export interface PathViewerProps {
@@ -25,15 +30,27 @@ const PathViewer = (props: PathViewerProps) => {
 
   const { t } = useTranslations();
 
+  /**
+   * Memo-izes the current place.
+   */
+  const place = useMemo(() => path?.path[current] && path.path[current].place, [current, path]);
+
+  /**
+   * Memo-izes the array of place IDs.
+   */
+  const placeIds = useMemo(() => place && place.uuid
+    ? [place.uuid]
+    : path.path.map(({ place: { uuid }}) => uuid), [place]);
+
+  /**
+   * Scrolls to the top of the content div when the current path changes.
+   */
   useEffect(() => {
-    contentDiv &&
-      contentDiv.current &&
-      setTimeout(() => {
-        contentDiv.current.scroll({
-          top: 0,
-          behavior: 'smooth',
-        });
-      }, 50);
+    const { current: instance } = contentDiv;
+
+    if (instance) {
+      instance.scroll({ top: 0, behavior: 'smooth' });
+    }
   }, [current]);
 
   return (
@@ -42,7 +59,7 @@ const PathViewer = (props: PathViewerProps) => {
       preprocess={PeripleoUtils.normalize}
     >
       <div
-        className='w-full flex flex-row flex-grow relative'
+        className='w-full flex flex-row flex-grow relative h-[calc(100vh-96px)]'
       >
         { path && (
           <div
@@ -77,22 +94,13 @@ const PathViewer = (props: PathViewerProps) => {
         <div
           className='w-1/2'
         >
-          { path && current >= 0 && (
-            <PlacesMap
-              buffer={path.path[current].place?.buffer}
-              animate={path.path[current].place?.animate}
-              layer={path.path[current].place?.layer}
-              mapId={path.path[current].place.uuid}
-              placeIds={[path.path[current].place.uuid]}
-            />
-          )}
-          { path && current < 0 && (
-            <PlacesMap
-              animate={false}
-              mapId='cover'
-              placeIds={path.path.map(({ place: { uuid }}) => uuid)}
-            />
-          )}
+          <PlacesMap
+            buffer={place?.buffer}
+            animate={place?.animate}
+            layer={place?.layer}
+            mapId={place?.uuid || 'cover'}
+            placeIds={placeIds}
+          />
         </div>
         <div
           className='w-1/2 overflow-y-scroll bg-neutral-dark text-white'

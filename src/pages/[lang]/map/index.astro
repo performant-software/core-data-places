@@ -7,10 +7,10 @@ const { t } = await getTranslations(Astro.currentLocale);
 ---
 
 <Layout
+  fullscreen
   t={t}
   title={t('map')}
   tab="map"
-  map
 >
   <Search
     client:only="react"

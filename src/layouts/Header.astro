@@ -11,8 +11,7 @@ const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
 const currentUrl = Astro.url;
 
-const { currentTab, t, tabs } = Astro.props;
-const isMap = currentTab === tabs.map;
+const { currentTab, fullscreen, t, tabs } = Astro.props;
 
 const { title } = await fetchAbout();
 ---
@@ -20,7 +19,7 @@ const { title } = await fetchAbout();
 <div
   class={clsx(
     'hidden md:inline-block w-full max-w-screen-3xl 3xl:mx-auto bg-white z-10',
-    { 'shadow-md': !isMap }
+    { 'shadow-md': !fullscreen }
   )}
 >
   <Container
