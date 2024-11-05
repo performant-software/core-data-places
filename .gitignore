@@ -31,4 +31,8 @@ node_modules
 # Ignore user-defined fields
 /src/i18n/userDefinedFields.json
 
+# Temporary directory
 tmp/
+
+# TinaCMS content
+content/

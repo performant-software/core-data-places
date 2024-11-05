@@ -1,5 +1,6 @@
 ---
 import config from '@config';
+import { getLanguageFromUrl } from '@i18n/client';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
 import '@performant-software/core-data/style.css';
@@ -44,11 +45,11 @@ const tabs = {
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={getLanguageFromUrl(Astro.url.pathname)}>
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 	<title>{title}</title>
 </head>
 <body

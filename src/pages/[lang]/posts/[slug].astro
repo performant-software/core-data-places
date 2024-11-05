@@ -8,7 +8,7 @@ import Layout from '@layouts/Layout.astro';
 const { slug } = Astro.params;
 const post = await fetchPost(slug);
 
-const { t } = getTranslations(Astro.currentLocale);
+const { t } = await getTranslations(Astro.currentLocale);
 ---
 
 <Layout

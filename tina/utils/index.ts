@@ -5,7 +5,7 @@
  * https://github.com/tinacms/tinacms/issues/4654
  */
 
-import config from '../../config.json';
+import config from '../../public/config.json';
 import _ from 'underscore';
 
 const buildSearchParameters = (params: any) => {
