@@ -3,14 +3,16 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 
 const init = async () => {
+  const dir = '/opt/build/repo/tina/tmp';
+  
   // Create the temporary directory
-  if (!fs.existsSync(process.env.TINA_LOCAL_CONTENT_PATH)) {
-    fs.mkdirSync(process.env.TINA_LOCAL_CONTENT_PATH);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
   }
 
   // Clone the content repo into the temporary directory
   const url = `https://github.com/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}.git`;
-  child_process.execSync(`git clone ${url} ${process.env.TINA_LOCAL_CONTENT_PATH}`);
+  child_process.execSync(`git clone ${url} ${dir}`);
 };
 
 dotenv.config();
