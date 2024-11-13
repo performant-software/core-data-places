@@ -16,7 +16,9 @@ npm install && netlify dev
 #### Create a content repository
 On GitHub, create a new content repository. The posts and paths records you create will be stored here, as well as any i18n and your project config.
 
-Use the [core-data-tina-cms-content](https://github.com/performant-software/core-data-tina-cms-content) repository as your template and modify the `/content/settings/config.json` as appropriate for your project. Make sure to set the properties in the `typesense` and `core_data` sections correctly.
+Copy the `/public/config.json` file into your content repository to `/content/settings/config.json` and adjust the configuration as desired.
+
+**Note:** Do not commit any project specific changes to `/public/config.json` in this repository.
 
 #### Create a new Personal Access Token
 
