@@ -20,6 +20,34 @@ Copy the `/public/config.json` file into your content repository to `/content/se
 
 **Note:** Do not commit any project specific changes to `/public/config.json` in this repository.
 
+| Key                         | Type    | Description                                                                                                                                                    |
+|-----------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| content                     | Array   | Array of content keys to allow for data entry and routing: "posts", "paths"                                                                                    |
+| i18n                        | Object  | Astro i18n configuration                                                                                                                                       |
+| i18n.default_locale         | String  | The default locale                                                                                                                                             |
+| i18n.locales                | Array   | A list of all available locales                                                                                                                                |
+| layers                      | Array   | A list of available map layers                                                                                                                                 |
+| layers.name                 | String  | The name of the map layer to display in the UI                                                                                                                 |
+| layers.layer_type           | String  | Map layer type: "raster" or "vector"                                                                                                                           |
+| layers.url                  | String  | URL to the map server                                                                                                                                          |
+| layers.overlay              | Boolean | If `true`, map layer will be rendered as overlay layer. If `false`, map layer will be rendered as base layer                                                   |
+| search                      | Object  | Search UI configuration                                                                                                                                        |
+| search.cluster_radius       | Number  | If provided, search results will be clustered for the given radius (in miles)                                                                                  |
+| search.result_card          | Object  | Search result card configuration                                                                                                                               |
+| search.result_card.title    | String  | Path to the value in the Typesense document that should be used as the card title. This value can contain nested objects (e.g. `<relationship-id>.0.name`).    |
+| search.result_card.subtitle | String  | Path to the value in the Typesense document that should be used as the card subtitle. This value can contain nested objects (e.g. `<relationship-id>.0.name`). |
+| search.timeline             | Boolean | If `true`, a timeline component will display in the search results based on the events within the project. Search results can be filtered by related events.   |
+| typesense                   | Object  | Typesense index connection information                                                                                                                         |
+| typesense.host              | String  | Typesense host URL                                                                                                                                             |
+| typesense.port              | Number  | Typesense host port                                                                                                                                            |
+| typesense.protocol          | String  | Typesense host protocol. Typically "https" or "http"                                                                                                           |
+| typesense.api_key           | String  | Typesense search API key. **NOTE:** This should be a read-only key.                                                                                            |
+| typesense.index_name        | String  | Name of the Typesense collection                                                                                                                               |
+| typesense.query_by          | String  | Typesense attributes to query when a search is executed                                                                                                        |
+| core_data                   | Object  | Core Data configuration                                                                                                                                        |
+| core_data.url               | String  | URL of the Core Data application                                                                                                                               |
+| core_data.project_ids       | Array   | Numeric array of Core Data project IDs to be included                                                                                                          |
+
 #### Create a new Personal Access Token
 
 In your developer settings, create a new personal access token with access to your newly created repository with read/write permissions to code.
