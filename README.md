@@ -20,6 +20,8 @@ Copy the `/public/config.json` file into your content repository to `/content/se
 
 **Note:** Do not commit any project specific changes to `/public/config.json` in this repository.
 
+**Note:** Changes to `config.json` will require a re-build of the site.
+
 | Key                         | Type    | Description                                                                                                                                                    |
 |-----------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | content                     | Array   | Array of content keys to allow for data entry and routing: "posts", "paths"                                                                                    |
