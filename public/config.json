@@ -20,7 +20,10 @@
     "cluster_radius": 6,
     "result_card": {
       "title": "name"
-    }
+    },
+    "timeline": false,
+    "zoom_to_place": false,
+    "max_zoom": 8
   },
   "typesense": {
     "host": "example.typesense.com",

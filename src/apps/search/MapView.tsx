@@ -54,7 +54,7 @@ const MapView = () => {
       left: 380,
       right: 120
     },
-    maxZoom: 14
+    maxZoom: config.search.max_zoom || 14,
   }), []);
 
   /**
