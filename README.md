@@ -39,6 +39,8 @@ Copy the `/public/config.json` file into your content repository to `/content/se
 | search.result_card.title    | String  | Path to the value in the Typesense document that should be used as the card title. This value can contain nested objects (e.g. `<relationship-id>.0.name`).    |
 | search.result_card.subtitle | String  | Path to the value in the Typesense document that should be used as the card subtitle. This value can contain nested objects (e.g. `<relationship-id>.0.name`). |
 | search.timeline             | Boolean | If `true`, a timeline component will display in the search results based on the events within the project. Search results can be filtered by related events.   |
+| search.max_zoom             | Number  | The maximum zoom level to allow when the map view transitions to a set of bounds (a single place, or mulitple places).                                         |
+| search.zoom_to_place        | Boolean | If `true` or not specified, clicking on an individual place marker or search result will zoom the map to its location (using the max zoom).                    |
 | typesense                   | Object  | Typesense index connection information                                                                                                                         |
 | typesense.host              | String  | Typesense host URL                                                                                                                                             |
 | typesense.port              | Number  | Typesense host port                                                                                                                                            |
