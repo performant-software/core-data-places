@@ -133,7 +133,7 @@ const Place = () => {
         <LocationMarkers
           animate
           boundingBoxOptions={bboxOptions}
-          fitBoundingBox={_.get(config.search, "zoom_to_place", true)}
+          fitBoundingBox={_.get(config.search, 'zoom_to_place', true)}
           data={placeData}
           layerId='current'
         />
