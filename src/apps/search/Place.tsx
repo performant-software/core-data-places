@@ -121,7 +121,7 @@ const Place = () => {
           />
         )}
         <RelatedRecords
-          key={uuid}
+          key={`related-${uuid}`}
           onLoadMedia={() => PlacesService.fetchRelatedManifests(uuid)}
           onLoadOrganizations={() => PlacesService.fetchRelatedOrganizations(uuid)}
           onLoadPeople={() => PlacesService.fetchRelatedPeople(uuid)}
