@@ -14,9 +14,13 @@ npm install && netlify dev
 ## Getting Started
 
 #### Create a content repository
-On GitHub, create a new content repository. The posts and paths records you create will be stored here, as well as any i18n and your project config.
+On GitHub, create a new content repository. The posts and paths records you create will be stored here, as well as any i18n, your project configuration, and default user accounts.
 
+###### Configuration
 Copy the `/public/config.json` file into your content repository to `/content/settings/config.json` and adjust the configuration as desired.
+
+###### Users
+Copy the `/data/users.json` file into your content repository to `/content/users/index.json`. This will seed TinaCMS with the initial set of user accounts, which can be used to setup accounts for other users, then removed.
 
 **Note:** Do not commit any project specific changes to `/public/config.json` in this repository.
 
