@@ -60,7 +60,7 @@ const HitComponent = (props: HitComponentProps) => {
               <SearchHighlight
                 attribute={config.search.result_card.title}
                 badge
-                className='text-sm'
+                className='text-sm line-clamp-3 leading-6'
                 hit={hit}
               />
             )}
