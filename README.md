@@ -46,6 +46,7 @@ Copy the `/public/config.json` file into your content repository to `/content/se
 | typesense.api_key           | String  | Typesense search API key. **NOTE:** This should be a read-only key.                                                                                            |
 | typesense.index_name        | String  | Name of the Typesense collection                                                                                                                               |
 | typesense.query_by          | String  | Typesense attributes to query when a search is executed                                                                                                        |
+| typesense.default_sort      | String  | Typesense attribute to sort by when no search is entered or as a tiebreaker. Search relevance score will always take priority over this attribute.             |
 | core_data                   | Object  | Core Data configuration                                                                                                                                        |
 | core_data.url               | String  | URL of the Core Data application                                                                                                                               |
 | core_data.project_ids       | Array   | Numeric array of Core Data project IDs to be included                                                                                                          |
