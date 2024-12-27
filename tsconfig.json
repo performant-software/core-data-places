@@ -20,9 +20,11 @@
       "@styles/*": ["src/styles/*"],
       "@tina/*": ["tina/__generated__/*"]
     },
-    "plugins": [{
-      "name": "@astrojs/ts-plugin"
-    }],
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ],
     "resolveJsonModule": true,
     "target": "ESNext",
     "ts-node": {
@@ -32,8 +34,8 @@
         "module": ""
       }
     },
-    "types": [
-      "vite/client"
-    ]
-  }
+    "types": ["vite/client"]
+  },
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
 }
