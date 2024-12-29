@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { createMediaHandler } from 'next-tinacms-s3/dist/handlers';
 import ServerlessHttp from 'serverless-http';
-import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs';
+import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs/dist/index.js';
 import Keycloak from "next-auth/providers/keycloak"
 
 dotenv.config();
