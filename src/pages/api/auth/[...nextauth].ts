@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import { TinaAuthJSOptions } from 'tinacms-authjs';
+import { TinaAuthJSOptions } from 'tinacms-authjs/dist/index.js';
 import { databaseClient } from '@tina/databaseClient';
 import Keycloak from 'next-auth/providers/keycloak';
 
