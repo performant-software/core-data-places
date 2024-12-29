@@ -1,13 +1,9 @@
 {
   "users": [
     {
-      "name": "Administrator",
-      "email": "admin@example.com",
-      "username": "admin@example.com",
-      "password": {
-        "value": "password",
-        "passwordChangeRequired": true
-      }
+      "name": "bekka",
+      "email": "rebecca@performantsoftware.com",
+      "username": "bekka"
     }
   ]
 }
