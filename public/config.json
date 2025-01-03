@@ -1,13 +1,8 @@
 {
-  "content": [
-    "paths",
-    "posts"
-  ],
+  "content": ["paths", "posts"],
   "i18n": {
     "default_locale": "en",
-    "locales": [
-      "en"
-    ]
+    "locales": ["en"]
   },
   "layers": [
     {
@@ -36,10 +31,6 @@
   },
   "core_data": {
     "url": "https://staging.coredata.cloud",
-    "project_ids": [
-      1,
-      2,
-      3
-    ]
+    "project_ids": [1, 2, 3]
   }
 }
