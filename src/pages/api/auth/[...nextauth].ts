@@ -17,7 +17,10 @@ const NextAuthOptions = TinaAuthJSOptions({
   ]
 });
 
-export default (req, res) => {
-  console.log(req);
+export const GET = (req, res) => {
   return NextAuth(NextAuthOptions)(req, res);
+}
+
+export const POST = (req, res) => {
+    return NextAuth(NextAuthOptions)(req, res);
 }
