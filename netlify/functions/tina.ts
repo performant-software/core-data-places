@@ -9,6 +9,7 @@ import { createMediaHandler } from 'next-tinacms-s3/dist/handlers';
 import ServerlessHttp from 'serverless-http';
 import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs/dist/index.js';
 import Keycloak from "next-auth/providers/keycloak"
+import NextAuth from 'next-auth';
 
 dotenv.config();
 
@@ -69,13 +70,13 @@ app.get('/api/tina/i18n/:language', async (req, res) => {
   res.send(i18n);
 });
 
-// app.post('/api/auth/signin/keycloak', async (req, res) => {
-//   NextAuth(NextAuthOptions)(req, res);
-// });
+app.post('/api/auth/*', (req, res) => {
+  return NextAuth(NextAuthOptions)(req, res);
+});
 
-// app.get('/api/auth/signin/keycloak', async (req, res) => {
-//   NextAuth(NextAuthOptions)(req, res);
-// });
+app.get('/api/auth/*', (req, res) => {
+  return NextAuth(NextAuthOptions)(req, res);
+});
 
 app.post('/api/tina/*', async (req, res) => {
   tinaBackend(req, res);
