@@ -1,11 +1,11 @@
 import '@apps/search/SearchFilters.css';
+import SearchFilter from '@apps/search/SearchFilter';
 import TranslationContext from '@apps/search/TranslationContext';
 import { FacetListsGrouped, FacetStateContext, useGeoSearchToggle } from '@performant-software/core-data';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Switch from '@radix-ui/react-switch';
 import { Settings2, X } from 'lucide-react';
 import { useContext, useState } from 'react';
-import { RefinementList } from 'react-instantsearch';
 
 interface FacetStateContextType {
   attributes: string[];
@@ -71,7 +71,7 @@ const SearchFilters = () => {
           <FacetListsGrouped
             attributes={attributes}
             renderList={(attribute: string) => (
-              <RefinementList
+              <SearchFilter
                 attribute={attribute}
               />
             )}

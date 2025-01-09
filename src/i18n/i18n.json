@@ -140,30 +140,51 @@
     "defaultValue": "+{{count}}"
   },
   "title": {
-    "tinaLabel": "Name"
+    "tinaLabel": "Name",
+    "defaultValue": "Name"
   },
   "root": {
-    "tinaLabel": "Root"
+    "tinaLabel": "Root",
+    "defaultValue": "Places"
   },
   "owner_project": {
-    "tinaLabel": "Owner Project"
+    "tinaLabel": "Owner Project",
+    "defaultValue": "Owner Project"
   },
   "all_projects": {
-    "tinaLabel": "All Projects"
+    "tinaLabel": "All Projects",
+    "defaultValue": "All Projects"
   },
   "owner_project_id": {
-    "tinaLabel": "Owner Project -> ID"
+    "tinaLabel": "Owner Project -> ID",
+    "defaultValue": "Owner Project"
   },
   "all_projects_id": {
-    "tinaLabel": "All Projects -> ID"
+    "tinaLabel": "All Projects -> ID",
+    "defaultValue": "All Projects"
   },
   "owner_project_name": {
-    "tinaLabel": "Owner Project -> Name"
+    "tinaLabel": "Owner Project -> Name",
+    "defaultValue": "Owner Project"
   },
   "all_projects_name": {
-    "tinaLabel": "All Projects -> Name"
+    "tinaLabel": "All Projects -> Name",
+    "defaultValue": "All Projects"
   },
   "event_range": {
-    "tinaLabel": "Event Range"
+    "tinaLabel": "Event Range",
+    "defaultValue": "Event Range"
+  },
+  "name": {
+    "tinaLabel": "Name",
+    "defaultValue": "Name"
+  },
+  "names": {
+    "tinaLabel": "Names",
+    "defaultValue": "Names"
+  },
+  "id": {
+    "tinaLabel": "ID",
+    "defaultValue": "ID"
   }
 }
