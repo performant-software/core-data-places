@@ -9,11 +9,11 @@ const init = async () => {
 
   try {
     if (isLocal) {
-      const response = await fetch(configPath);
-      config = await response.json();
-    } else {
       const file = fs.readFileSync(configPath);
       config = JSON.parse(file);
+    } else {
+      const response = await fetch(configPath);
+      config = await response.json();
     }
   } catch (e) {
     throw new Error(`Error loading config:\n${e}`);
