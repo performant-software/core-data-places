@@ -30,7 +30,9 @@ const SearchProvider = (props: { children: ReactNode }) => {
     >
       <FacetStateContextProvider
         apiKey={typesense.api_key}
+        exclude={typesense.facets?.exclude}
         host={typesense.host}
+        include={typesense.facets?.include}
         indexName={typesense.index_name}
         protocol={typesense.protocol}
         useRange={useRange}

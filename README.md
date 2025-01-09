@@ -34,7 +34,7 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 | i18n.locales                | Array   | A list of all available locales                                                                                                                                |
 | layers                      | Array   | A list of available map layers                                                                                                                                 |
 | layers.name                 | String  | The name of the map layer to display in the UI                                                                                                                 |
-| layers.layer_type           | String  | Map layer type: "raster" or "vector"                                                                                                                           |
+| layers.layer_type           | String  | Map layer type: "raster", "vector", or "georeference"                                                                                                          |
 | layers.url                  | String  | URL to the map server                                                                                                                                          |
 | layers.overlay              | Boolean | If `true`, map layer will be rendered as overlay layer. If `false`, map layer will be rendered as base layer                                                   |
 | search                      | Object  | Search UI configuration                                                                                                                                        |
@@ -52,6 +52,9 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 | typesense.api_key           | String  | Typesense search API key. **NOTE:** This should be a read-only key.                                                                                            |
 | typesense.index_name        | String  | Name of the Typesense collection                                                                                                                               |
 | typesense.query_by          | String  | Typesense attributes to query when a search is executed                                                                                                        |
+| typesense.facets            | Object  | Facet configuration                                                                                                                                            |
+| typesense.facets.exclude    | Array   | Array of facet names to exclude                                                                                                                                |
+| typesense.facets.include    | Array   | Array of facet names to include                                                                                                                                |
 | core_data                   | Object  | Core Data configuration                                                                                                                                        |
 | core_data.url               | String  | URL of the Core Data application                                                                                                                               |
 | core_data.project_ids       | Array   | Numeric array of Core Data project IDs to be included                                                                                                          |
