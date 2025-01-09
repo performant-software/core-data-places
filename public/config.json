@@ -31,7 +31,8 @@
     "protocol": "https",
     "api_key": "abcdefg",
     "index_name": "core_data_places",
-    "query_by": "name"
+    "query_by": "name",
+    "default_sort": "name"
   },
   "core_data": {
     "url": "https://staging.coredata.cloud",
