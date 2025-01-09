@@ -8,7 +8,7 @@ const init = async () => {
   let config;
 
   try {
-    if (isLocal) {
+    if (isLocal === "true") {
       const file = fs.readFileSync(configPath);
       config = JSON.parse(file);
     } else {
