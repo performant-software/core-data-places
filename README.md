@@ -38,12 +38,13 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 | layers.url                  | String  | URL to the map server                                                                                                                                          |
 | layers.overlay              | Boolean | If `true`, map layer will be rendered as overlay layer. If `false`, map layer will be rendered as base layer                                                   |
 | search                      | Object  | Search UI configuration                                                                                                                                        |
-| search.cluster_radius       | Number  | If provided, search results will be clustered for the given radius (in miles)                                                                                  |
+| search.cluster_radius       | Number  | If provided, search results will be clustered for the given radius (in miles) (Note: mutually exclusive with `search.polygons`)                                |
 | search.result_card          | Object  | Search result card configuration                                                                                                                               |
 | search.result_card.title    | String  | Path to the value in the Typesense document that should be used as the card title. This value can contain nested objects (e.g. `<relationship-id>.0.name`).    |
 | search.result_card.subtitle | String  | Path to the value in the Typesense document that should be used as the card subtitle. This value can contain nested objects (e.g. `<relationship-id>.0.name`). |
 | search.timeline             | Boolean | If `true`, a timeline component will display in the search results based on the events within the project. Search results can be filtered by related events.   |
 | search.max_zoom             | Number  | The maximum zoom level to allow when the map view transitions to a set of bounds (a single place, or mulitple places).                                         |
+| search.polygons             | Boolean | Whether to show polygons in the map search view (when available) (Note: mutually exclusive with `search.cluster_radius`)                                       |
 | search.zoom_to_place        | Boolean | If `true` or not specified, clicking on an individual place marker or search result will zoom the map to its location (using the max zoom).                    |
 | typesense                   | Object  | Typesense index connection information                                                                                                                         |
 | typesense.host              | String  | Typesense host URL                                                                                                                                             |
