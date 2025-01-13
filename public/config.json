@@ -20,26 +20,21 @@
     "cluster_radius": 6,
     "result_card": {
       "title": "name"
-    },
-    "timeline": false,
-    "zoom_to_place": true,
-    "max_zoom": 14
+    }
   },
   "typesense": {
-    "host": "example.typesense.com",
+    "host": "1vyxlhdzsnjie975p-1.a1.typesense.net",
     "port": 443,
     "protocol": "https",
-    "api_key": "abcdefg",
-    "index_name": "core_data_places",
-    "query_by": "name",
+    "api_key": "2bPTbng2DB59xshFE4CM6lFQeKCrms6Y",
+    "index_name": "places",
+    "query_by": "name,names",
     "default_sort": "name"
   },
   "core_data": {
-    "url": "https://staging.coredata.cloud",
+    "url": "https://app.coredata.cloud",
     "project_ids": [
-      1,
-      2,
-      3
+      48
     ]
   }
 }
