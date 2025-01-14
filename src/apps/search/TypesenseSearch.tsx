@@ -46,9 +46,23 @@ const SearchProvider = (props: { children: ReactNode }) => {
 
 const TypesenseSearch = (props: { children: ReactNode }) => {
   const config = useRuntimeConfig<any>();
+
+  const typesenseConfig = useMemo(() => {
+    // Exclude the geometry field (which contains polygons) when polygon map results
+    // are disabled. This saves bandwidth and loading time caused by unnecessarily
+    // loading extremely large polygons (i.e. > 1MB in some cases).
+    if (config.polygons) {
+      return {
+        ...config.typesense,
+        exclude_fields: config.typesense.exclude_fields ? `${config.typesense.exclude_fields},geometry` : 'geometry'
+      }
+    }
+
+    return config.typesense
+  }, [config])
   
-  const adapter = useMemo(() => TypesenseUtils.createTypesenseAdapter(config.typesense), []);
-  const routing = useMemo(() => TypesenseUtils.createRouting(config.typesense), []);
+  const adapter = useMemo(() => TypesenseUtils.createTypesenseAdapter(typesenseConfig), []);
+  const routing = useMemo(() => TypesenseUtils.createRouting(typesenseConfig), []);
 
   return (
     <InstantSearch
