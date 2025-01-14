@@ -1,5 +1,5 @@
 import fs from 'fs';
-import config from './public/config.json' assert { type: 'json' };
+import config from './public/config.json' with { type: 'json' };
 
 const CONTEXT_SEPARATOR = '->';
 
