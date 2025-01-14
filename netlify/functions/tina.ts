@@ -7,9 +7,9 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { createMediaHandler } from 'next-tinacms-s3/dist/handlers';
 import ServerlessHttp from 'serverless-http';
-import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs/dist/index.js';
-import Keycloak from "next-auth/providers/keycloak"
-import NextAuth from 'next-auth';
+// import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs/dist/index.js';
+// import Keycloak from "next-auth/providers/keycloak"
+// import NextAuth from 'next-auth';
 
 dotenv.config();
 
@@ -21,24 +21,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
-export const NextAuthOptions = TinaAuthJSOptions({
-  databaseClient,
-  secret: process.env.NEXTAUTH_SECRET!,
-  debug: true,
-  uidProp: 'username',
-  providers: [
-    Keycloak({
-      clientId: process.env.AUTH_KEYCLOAK_ID,
-      clientSecret: process.env.AUTH_KEYCLOAK_SECRET,
-      issuer: process.env.AUTH_KEYCLOAK_ISSUER
-    })
-  ]
-});
+
 const authProvider = isLocal
   ? LocalBackendAuthProvider()
-  : AuthJsBackendAuthProvider({
-    authOptions: NextAuthOptions
-  });
+  : LocalBackendAuthProvider();
 
 const tinaBackend = TinaNodeBackend({
   authProvider,
@@ -70,13 +56,13 @@ app.get('/api/tina/i18n/:language', async (req, res) => {
   res.send(i18n);
 });
 
-app.post('/api/auth/*', (req, res) => {
-  return NextAuth(NextAuthOptions)(req, res);
-});
+// app.post('/api/auth/*', (req, res) => {
+//   return NextAuth(NextAuthOptions)(req, res);
+// });
 
-app.get('/api/auth/*', (req, res) => {
-  return NextAuth(NextAuthOptions)(req, res);
-});
+// app.get('/api/auth/*', (req, res) => {
+//   return NextAuth(NextAuthOptions)(req, res);
+// });
 
 app.post('/api/tina/*', async (req, res) => {
   tinaBackend(req, res);

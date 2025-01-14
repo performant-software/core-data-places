@@ -13,12 +13,6 @@
   status = 200
   force = true
 
-[[redirects]]
-  from = "/api/auth/*"
-  to = "/.netlify/functions/tina"
-  status = 200
-  force = true
-
 [dev]
   command = "npm start"
   port = 3000
