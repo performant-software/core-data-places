@@ -6,6 +6,8 @@ import tailwind from '@astrojs/tailwind';
 import { defineConfig } from 'astro/config';
 import config from './public/config.json';
 
+import auth from 'auth-astro';
+
 const { locales, default_locale: defaultLocale } = config.i18n;
 
 // https://astro.build/config
@@ -19,12 +21,7 @@ export default defineConfig({
   },
   output: 'server',
   adapter: netlify(),
-  integrations: [
-    mdx(),
-    tailwind(),
-    sitemap(),
-    react()
-  ],
+  integrations: [mdx(), tailwind(), sitemap(), react(), auth()],
   vite: {
     optimizeDeps: {
       esbuildOptions: {
