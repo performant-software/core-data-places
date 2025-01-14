@@ -1,27 +1,17 @@
-import dotenv from "dotenv";
-import fs from "fs";
+import dotenv from 'dotenv';
+import fs from 'fs';
 
 const init = async () => {
-  const configPath = process.env.CONFIG_URL;
-  const isLocal = process.env.TINA_PUBLIC_IS_LOCAL;
+  const configUrl = process.env.CONFIG_URL;
 
-  let config;
-
-  try {
-    if (isLocal === "true") {
-      const file = fs.readFileSync(configPath);
-      config = JSON.parse(file);
-    } else {
-      const response = await fetch(configPath);
-      config = await response.json();
-    }
-  } catch (e) {
-    throw new Error(`Error loading config:\n${e}`);
+  if (configUrl) {
+    const response = await fetch(configUrl);
+    const config = await response.json();
+    const content = JSON.stringify(config, null, 2);
+    fs.writeFileSync('./public/config.json', content, 'utf8');
+  } else {
+    console.log('Using local config.')
   }
-
-  const content = JSON.stringify(config, null, 2);
-
-  fs.writeFileSync("./public/config.json", content, "utf8");
 };
 
 dotenv.config();
