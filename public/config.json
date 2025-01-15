@@ -21,21 +21,25 @@
     "result_card": {
       "title": "name"
     },
-    "polygons": true
+    "timeline": false,
+    "zoom_to_place": true,
+    "max_zoom": 14
   },
   "typesense": {
-    "host": "1vyxlhdzsnjie975p-1.a1.typesense.net",
+    "host": "example.typesense.com",
     "port": 443,
     "protocol": "https",
-    "api_key": "2bPTbng2DB59xshFE4CM6lFQeKCrms6Y",
-    "index_name": "dev",
-    "query_by": "name,names",
+    "api_key": "abcdefg",
+    "index_name": "core_data_places",
+    "query_by": "name",
     "default_sort": "name"
   },
   "core_data": {
-    "url": "https://app.coredata.cloud",
+    "url": "https://staging.coredata.cloud",
     "project_ids": [
-      48
+      1,
+      2,
+      3
     ]
   }
 }
