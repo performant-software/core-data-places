@@ -1,16 +1,15 @@
 import { fetchI18n } from '@backend/tina-server';
 import { databaseClient } from '@tina/databaseClient';
 import { TinaNodeBackend, LocalBackendAuthProvider } from '@tinacms/datalayer';
-import { getSession } from 'auth-astro/server';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import { createMediaHandler } from 'next-tinacms-s3/dist/handlers';
 import ServerlessHttp from 'serverless-http';
-// import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs/dist/index.js';
-// import Keycloak from "next-auth/providers/keycloak"
-// import NextAuth from 'next-auth';
+import authConfig from '@root/auth.config';
+import { Session } from '@auth/core/types';
+import { Auth } from '@auth/core';
 
 dotenv.config();
 
@@ -23,11 +22,30 @@ app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 
+async function getSession(req: Request, options = authConfig): Promise<Session | null> {
+  // @ts-ignore
+  options.secret ??= process.env.AUTH_SECRET
+  options.trustHost ??= true
+  options.providers[0].options.clientId = process.env.AUTH_KEYCLOAK_ID
+  options.providers[0].options.clientSecret = process.env.AUTH_KEYCLOAK_SECRET
+  options.providers[0].options.issuer = process.env.AUTH_KEYCLOAK_ISSUER
+
+  const url = new URL(`${options.prefix}/session`, req.url)
+  const response = await Auth(new Request(url, { headers: req.headers }), options)
+  const { status = 200 } = response
+
+  const data = await response.json()
+
+  if (!data || !Object.keys(data).length) return null
+  if (status === 200) return data
+  throw new Error(data.message)
+}
+
 const CustomBackendAuth = () => {
   return {
     isAuthorized: async (req, res) : Promise<{ isAuthorized: true } | { isAuthorized: false, errorCode: number, errorMessage: string }> => {
         // Validate the token here
-      const session = await getSession(req);
+      const session = await getSession(req, authConfig);
       if (!session || !session.user) {
         return {
           errorCode: 401,
@@ -84,13 +102,13 @@ app.get('/api/tina/i18n/:language', async (req, res) => {
 //   return NextAuth(NextAuthOptions)(req, res);
 // });
 
-// app.post('/api/tina/*', async (req, res) => {
-//   tinaBackend(req, res);
-// });
+app.post('/api/tina/*', async (req, res) => {
+  tinaBackend(req, res);
+});
 
-// app.get('/api/tina/*', async (req, res) => {
-//   tinaBackend(req, res);
-// });
+app.get('/api/tina/*', async (req, res) => {
+  tinaBackend(req, res);
+});
 
 
 app.get('/api/s3/media', mediaHandler);
