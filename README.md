@@ -54,6 +54,7 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 | typesense.index_name        | String  | Name of the Typesense collection                                                                                                                               |
 | typesense.query_by          | String  | Typesense attributes to query when a search is executed                                                                                                        |
 | typesense.default_sort      | String  | Typesense attribute to sort by when no search is entered or as a tiebreaker. Search relevance score will always take priority over this attribute.             |
+| typesense.exclude_fields    | String  | Fields to exclude from the Typesense search response                                                                                                           |
 | typesense.facets            | Object  | Facet configuration                                                                                                                                            |
 | typesense.facets.exclude    | Array   | Array of facet names to exclude                                                                                                                                |
 | typesense.facets.include    | Array   | Array of facet names to include                                                                                                                                |
