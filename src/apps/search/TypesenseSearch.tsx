@@ -51,7 +51,7 @@ const TypesenseSearch = (props: { children: ReactNode }) => {
     // Exclude the geometry field (which contains polygons) when polygon map results
     // are disabled. This saves bandwidth and loading time caused by unnecessarily
     // loading extremely large polygons (i.e. > 1MB in some cases).
-    if (config.polygons) {
+    if (!config.search.polygons) {
       return {
         ...config.typesense,
         exclude_fields: config.typesense.exclude_fields ? `${config.typesense.exclude_fields},geometry` : 'geometry'
