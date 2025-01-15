@@ -1,6 +1,7 @@
 import { fetchI18n } from '@backend/tina-server';
 import { databaseClient } from '@tina/databaseClient';
 import { TinaNodeBackend, LocalBackendAuthProvider } from '@tinacms/datalayer';
+import { getSession } from 'auth-astro/server';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -22,9 +23,28 @@ app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 
+const CustomBackendAuth = () => {
+  return {
+    isAuthorized: async (req, res) : Promise<{ isAuthorized: true } | { isAuthorized: false, errorCode: number, errorMessage: string }> => {
+        // Validate the token here
+      const session = await getSession(req);
+      if (!session || !session.user) {
+        return {
+          errorCode: 401,
+          errorMessage: "oops",
+          isAuthorized: false
+        }
+      }
+      return {
+        isAuthorized: true,
+      }
+    },
+  }
+}
+
 const authProvider = isLocal
   ? LocalBackendAuthProvider()
-  : LocalBackendAuthProvider();
+  : CustomBackendAuth();
 
 const tinaBackend = TinaNodeBackend({
   authProvider,
@@ -64,13 +84,13 @@ app.get('/api/tina/i18n/:language', async (req, res) => {
 //   return NextAuth(NextAuthOptions)(req, res);
 // });
 
-app.post('/api/tina/*', async (req, res) => {
-  tinaBackend(req, res);
-});
+// app.post('/api/tina/*', async (req, res) => {
+//   tinaBackend(req, res);
+// });
 
-app.get('/api/tina/*', async (req, res) => {
-  tinaBackend(req, res);
-});
+// app.get('/api/tina/*', async (req, res) => {
+//   tinaBackend(req, res);
+// });
 
 
 app.get('/api/s3/media', mediaHandler);
