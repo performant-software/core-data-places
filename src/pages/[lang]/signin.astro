@@ -6,7 +6,6 @@ import { getSession } from "auth-astro/server";
 
 const session = await getSession(Astro.request);
 console.log(session);
-console.log(Astro.request);
 ---
 
 <Layout t={t} title="sign in">
@@ -14,6 +13,8 @@ console.log(Astro.request);
   <button id="logout">Logout</button>
 
   {session ? <p>Hello {session.user?.name} </p> : <p>You are not logged in.</p>}
+
+  <!-- <AuthTest client:load /> -->
 
   <script>
     const { signIn, signOut } = await import("auth-astro/client");
