@@ -10,7 +10,6 @@ import ServerlessHttp from 'serverless-http';
 import authConfig from '@root/auth.config';
 import { Session } from '@auth/core/types';
 import { Auth } from '@auth/core';
-import crypto  from 'crypto';
 
 dotenv.config();
 
@@ -104,10 +103,12 @@ app.get('/api/tina/i18n/:language', async (req, res) => {
 // });
 
 app.post('/api/tina/*', async (req, res) => {
+  console.info(`Node.js version: ${process.version}`);
   tinaBackend(req, res);
 });
 
 app.get('/api/tina/*', async (req, res) => {
+  console.info(`Node.js version: ${process.version}`);
   tinaBackend(req, res);
 });
 
