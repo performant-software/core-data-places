@@ -108,7 +108,6 @@ app.post('/api/tina/*', async (req, res) => {
 });
 
 app.get('/api/tina/*', async (req, res) => {
-  console.info(`Node.js version: ${process.version}`);
   tinaBackend(req, res);
 });
 
