@@ -16,8 +16,6 @@ export class CustomAuthProvider extends AbstractAuthProvider {
   }
   async getUser() {
     // Returns a truthy value, the user is logged in and if it returns a falsy value the user is not logged in.
-    // const session = await getSession(new Request('/admin'));
-    // const { data: session } = useSession();
     const session = await fetch('/api/auth/session').then((res) => (res.json()));
     return (session == null ? void 0 : session.user) || false;
   }
