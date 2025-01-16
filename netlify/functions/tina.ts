@@ -30,7 +30,7 @@ async function getSession(req: Request, options = authConfig): Promise<Session |
   options.providers[0].options.clientSecret = process.env.AUTH_KEYCLOAK_SECRET
   options.providers[0].options.issuer = process.env.AUTH_KEYCLOAK_ISSUER
 
-  const url = new URL(`${options.prefix}/session`, req.url)
+  const url = new URL(`/api/auth/session`, process.env.PUBLIC_BASE_URL)
   const response = await Auth(new Request(url, { headers: req.headers }), options)
   const { status = 200 } = response
 
@@ -44,12 +44,12 @@ async function getSession(req: Request, options = authConfig): Promise<Session |
 const CustomBackendAuth = () => {
   return {
     isAuthorized: async (req, res) : Promise<{ isAuthorized: true } | { isAuthorized: false, errorCode: number, errorMessage: string }> => {
-        // Validate the token here
+      // Validate the token here
       const session = await getSession(req, authConfig);
       if (!session || !session.user) {
         return {
           errorCode: 401,
-          errorMessage: "oops",
+          errorMessage: "User is unauthenticated",
           isAuthorized: false
         }
       }
