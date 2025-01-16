@@ -10,6 +10,7 @@ import ServerlessHttp from 'serverless-http';
 import authConfig from '@root/auth.config';
 import { Session } from '@auth/core/types';
 import { Auth } from '@auth/core';
+import crypto  from 'crypto';
 
 dotenv.config();
 
