@@ -98,10 +98,11 @@ const MapView = () => {
       />
       <SearchResultsLayer
         boundingBoxOptions={boundingBoxOptions}
-        cluster={!!config.search.cluster_radius}
-        clusterRadius={config.search.cluster_radius}
+        cluster={!config.search.polygons && !!config.search.cluster_radius}
+        clusterRadius={config.search.polygons ? undefined : config.search.cluster_radius}
         fitBoundingBox={fitBoundingBox}
         layerId={SEARCH_LAYER}
+        showPolygons={config.search.polygons}
       />
       <Tooltip
         content={(target, event) => (
