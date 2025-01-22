@@ -5,7 +5,6 @@ const { t } = await getTranslations(Astro.currentLocale);
 import { getSession } from "auth-astro/server";
 
 const session = await getSession(Astro.request);
-console.log(session);
 ---
 
 <Layout t={t} title="sign in">
