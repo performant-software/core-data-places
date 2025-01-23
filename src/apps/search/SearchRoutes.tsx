@@ -1,4 +1,5 @@
 import Place from '@apps/search/Place';
+import Organization from '@apps/search/Organization';
 import SearchPanel from '@apps/search/SearchPanel';
 import SearchTimeline from '@apps/search/SearchTimeline';
 import { CoreDataContextProvider } from '@performant-software/core-data';
@@ -13,6 +14,10 @@ const SearchRoutes = () => {
       projectIds={config.core_data.project_ids}
     >
       <Routes>
+        <Route
+          match='/organizations/'
+          element={<Organization />}
+        />
         <Route
           match='/places/'
           element={<Place />}

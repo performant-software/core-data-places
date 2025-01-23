@@ -54,7 +54,7 @@ const MapView = () => {
       left: 380,
       right: 120
     },
-    maxZoom: config.search.max_zoom || 14,
+    maxZoom: config.map.max_zoom || 14,
   }), []);
 
   /**
@@ -98,9 +98,10 @@ const MapView = () => {
       />
       <SearchResultsLayer
         boundingBoxOptions={boundingBoxOptions}
-        cluster={!!config.search.cluster_radius}
-        clusterRadius={config.search.cluster_radius}
+        cluster={!!config.map.cluster_radius}
+        clusterRadius={config.map.cluster_radius}
         fitBoundingBox={fitBoundingBox}
+        geometry={config.map.geometry}
         layerId={SEARCH_LAYER}
       />
       <Tooltip

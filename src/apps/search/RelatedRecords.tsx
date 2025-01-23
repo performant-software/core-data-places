@@ -4,7 +4,9 @@ import {
   RelatedItemsList,
   RelatedMedia,
   RelatedOrganizations,
-  RelatedPeople, RelatedPlaces, RelatedTaxonomies
+  RelatedPeople,
+  RelatedPlaces,
+  RelatedTaxonomies
 } from '@performant-software/core-data';
 import React, { useCallback, useContext, useState } from 'react';
 import _ from 'underscore';
