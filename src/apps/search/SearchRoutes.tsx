@@ -26,8 +26,10 @@ const SearchRoutes = () => {
           element={(
             <>
               <SearchPanel />
-              { config.search.timeline && (
-                <SearchTimeline />
+              { config.search.event_range && (
+                <SearchTimeline
+                  attribute={config.search.event_range}
+                />
               )}
             </>
           )}

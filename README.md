@@ -43,11 +43,11 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 | map.max_zoom                | Number  | The maximum zoom level to allow when the map view transitions to a set of bounds (a single place, or mulitple places).                                         |
 | map.zoom_to_place           | Boolean | If `true` or not specified, clicking on an individual place marker or search result will zoom the map to its location (using the max zoom).                    |
 | search                      | Object  | Search UI configuration                                                                                                                                        |
+| search.event_range          | String  | Path to the event_range_facet attribute. If provided, the Timeline component will be rendered on the search.                                                   |
 | search.result_card          | Object  | Search result card configuration                                                                                                                               |
 | search.result_card.title    | String  | Path to the value in the Typesense document that should be used as the card title. This value can contain nested objects (e.g. `<relationship-id>.0.name`).    |
 | search.result_card.subtitle | String  | Path to the value in the Typesense document that should be used as the card subtitle. This value can contain nested objects (e.g. `<relationship-id>.0.name`). |
 | search.route                | String  | The navigation route to use when clicking on a search result card (e.g. "/places", "/organizations", etc)                                                      |
-| search.timeline             | Boolean | If `true`, a timeline component will display in the search results based on the events within the project. Search results can be filtered by related events.   |
 | typesense                   | Object  | Typesense index connection information                                                                                                                         |
 | typesense.host              | String  | Typesense host URL                                                                                                                                             |
 | typesense.port              | Number  | Typesense host port                                                                                                                                            |

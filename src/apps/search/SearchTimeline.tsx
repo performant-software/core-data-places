@@ -4,11 +4,18 @@ import { List } from 'lucide-react';
 import React, { useState } from 'react';
 import { useRange } from 'react-instantsearch';
 
-const SearchTimeline = () => {
+interface Props {
+  attribute: string;
+}
+
+const SearchTimeline = (props: Props) => {
   const [currentEvent, setCurrentEvent] = useState<any>();
   const [events, setEvents] = useState<Array<any>>();
   const [listView, setListView] = useState<boolean>(false);
   const [selectedEvent, setSelectedEvent] = useState<any>();
+
+  const { attribute } = props;
+  const { range, refine, start } = useRange({ attribute });
 
   return (
     <footer
@@ -32,7 +39,9 @@ const SearchTimeline = () => {
         }}
         onClick={(event: any) => setCurrentEvent(event)}
         onLoad={(events: Array<any>) => setEvents(events)}
-        useRange={useRange}
+        range={range}
+        refine={refine}
+        start={start}
         zoom={10}
       />
       { currentEvent && (
