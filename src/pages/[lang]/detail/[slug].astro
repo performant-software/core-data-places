@@ -1,0 +1,42 @@
+---
+import type { GetStaticPaths } from "astro";
+import Container from "@components/Container.astro";
+import { getTranslations } from "@i18n/server";
+import Layout from "@layouts/Layout.astro";
+import { getEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import config from "@config";
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+const { slug } = Astro.params;
+
+const data = await getEntry("events", slug);
+
+export const prerender = true;
+
+export const getStaticPaths = (async () => {
+  const pages = await getCollection("events");
+  if (!pages || !pages.length) {
+    return [];
+  }
+  let routes = [];
+  for (const lang of config.i18n.locales) {
+    const locPages = pages.map((page) => ({
+      params: {
+        lang: lang,
+        slug: page.id,
+      },
+    }));
+    routes = [...routes, ...locPages];
+  }
+  return routes;
+}) satisfies GetStaticPaths;
+---
+
+<Layout footer t={t} title={data.data.name}>
+  <Container className="py-12">
+    <h1 class="font-bold text-2xl">{data.data.name}</h1>
+    <p>{data.data.description}</p>
+  </Container>
+</Layout>
