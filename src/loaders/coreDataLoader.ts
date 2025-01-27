@@ -36,6 +36,15 @@ export async function getRelations(
   return relatedRecords;
 }
 
+export async function fetchItemData(model: string, uuid: string) {
+  const url = new URL(
+    `/core_data/public/v1/${model}/${uuid}?project_ids=${config.core_data.project_ids}`,
+    config.core_data.url
+  );
+  const response = await fetch(url).then((res) => res.json());
+  return Object.values(response) ? Object.values(response)[0] : null;
+}
+
 export async function fetchModelData(options: {
   projectId: number | number[];
   model: string;
