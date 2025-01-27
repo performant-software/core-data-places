@@ -6,17 +6,32 @@ import Layout from "@layouts/Layout.astro";
 import { getEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import config from "@config";
+import { getRelations, fetchItemData } from "@root/src/loaders/coreDataLoader";
+import { relatedModelTypes } from "@root/src/loaders/coreDataLoader";
+
+export const prerender = config.static_build;
 
 const { t } = await getTranslations(Astro.currentLocale);
 
 const { model, slug } = Astro.params;
 
-const data = await getEntry(model, slug);
+let data: any;
 
-export const prerender = true;
+if (config.static_build) {
+  // @ts-ignore
+  data = await getEntry(model, slug);
+} else {
+  const response = await fetchItemData(model, slug);
+  const relations = await getRelations(model, slug, relatedModelTypes);
+  // @ts-ignore
+  data = { data: { ...response, relatedRecords: relations } };
+}
 
 export const getStaticPaths = (async () => {
-  const models = config.static_pages;
+  if (!config.static_build) {
+    return [];
+  }
+  const models = config.detail_pages;
   let routes = [];
   for (const model of models) {
     // @ts-ignore
@@ -26,6 +41,7 @@ export const getStaticPaths = (async () => {
         const locPages = pages.map((page) => ({
           params: {
             lang: lang,
+            // @ts-ignore
             slug: page.id,
             model: model,
           },
@@ -52,7 +68,7 @@ export const getStaticPaths = (async () => {
                 <h2 class="capitalize text-xl font-semibold">{`Related ${key}`}</h2>
                 <ul>
                   {data.data.relatedRecords[key].map((record) =>
-                    config.static_pages.includes(key) ? (
+                    config.detail_pages.includes(key) ? (
                       <a href={`/${key}/${record.uuid}`}>
                         <li>{record.name}</li>
                       </a>
