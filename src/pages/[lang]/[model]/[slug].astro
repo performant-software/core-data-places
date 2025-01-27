@@ -9,35 +9,62 @@ import config from "@config";
 
 const { t } = await getTranslations(Astro.currentLocale);
 
-const { slug } = Astro.params;
+const { model, slug } = Astro.params;
 
-const data = await getEntry("events", slug);
+const data = await getEntry(model, slug);
 
 export const prerender = true;
 
 export const getStaticPaths = (async () => {
-  const pages = await getCollection("events");
-  if (!pages || !pages.length) {
-    return [];
-  }
+  const models = config.static_pages;
   let routes = [];
-  for (const lang of config.i18n.locales) {
-    const locPages = pages.map((page) => ({
-      params: {
-        lang: lang,
-        slug: page.id,
-        model: "events",
-      },
-    }));
-    routes = [...routes, ...locPages];
+  for (const model of models) {
+    // @ts-ignore
+    const pages = await getCollection(model);
+    if (pages && pages.length) {
+      for (const lang of config.i18n.locales) {
+        const locPages = pages.map((page) => ({
+          params: {
+            lang: lang,
+            slug: page.id,
+            model: model,
+          },
+        }));
+        routes = [...routes, ...locPages];
+      }
+    }
   }
   return routes;
 }) satisfies GetStaticPaths;
 ---
 
 <Layout footer t={t} title={data.data.name}>
-  <Container className="py-12">
+  <Container className="flex flex-col py-12 gap-12 w-full">
     <h1 class="font-bold text-2xl">{data.data.name}</h1>
-    <p>{data.data.description}</p>
+    {data.data.description ? <p>{data.data.description}</p> : null}
+    <div class="flex flex-col gap-6">
+      {
+        data?.data?.relatedRecords &&
+          Object.keys(data.data.relatedRecords).map((key) =>
+            data.data.relatedRecords[key]?.length ? (
+              <div class="flex flex-col gap-4">
+                {/* TODO: this string should come from i18n */}
+                <h2 class="capitalize text-xl font-semibold">{`Related ${key}`}</h2>
+                <ul>
+                  {data.data.relatedRecords[key].map((record) =>
+                    config.static_pages.includes(key) ? (
+                      <a href={`/${key}/${record.uuid}`}>
+                        <li>{record.name}</li>
+                      </a>
+                    ) : (
+                      <li>{record.name}</li>
+                    )
+                  )}
+                </ul>
+              </div>
+            ) : null
+          )
+      }
+    </div>
   </Container>
 </Layout>
