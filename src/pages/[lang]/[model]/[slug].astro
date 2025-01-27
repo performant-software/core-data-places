@@ -26,6 +26,7 @@ export const getStaticPaths = (async () => {
       params: {
         lang: lang,
         slug: page.id,
+        model: "events",
       },
     }));
     routes = [...routes, ...locPages];
