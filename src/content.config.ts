@@ -7,10 +7,11 @@ const models = config.static_pages;
 let cols = {};
 
 for (const model of models) {
-  cols[model.model] = defineCollection({
+  cols[model] = defineCollection({
     loader: coreDataLoader({
       projectId: config.core_data.project_ids,
       model: model,
+      getRelations: true,
     }),
   });
 }
