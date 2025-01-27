@@ -70,10 +70,5 @@
     "url": "https://app.coredata.cloud",
     "project_ids": [2]
   },
-  "static_pages": [
-    {
-      "model": "events",
-      "relations": []
-    }
-  ]
+  "static_pages": ["events", "places"]
 }
