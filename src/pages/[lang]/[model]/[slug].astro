@@ -3,32 +3,21 @@ import type { GetStaticPaths } from "astro";
 import Container from "@components/Container.astro";
 import { getTranslations } from "@i18n/server";
 import Layout from "@layouts/Layout.astro";
-import { getEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import config from "@config";
-import { getRelations, fetchItemData } from "@root/src/loaders/coreDataLoader";
-import { relatedModelTypes } from "@root/src/loaders/coreDataLoader";
 
-export const prerender = config.static_build;
+export const prerender = import.meta.env.PUBLIC_STATIC_BUILD;
 
 const { t } = await getTranslations(Astro.currentLocale);
 
 const { model, slug } = Astro.params;
 
-let data: any;
+const apiUrl = new URL(`/api/${model}/${slug}.json`, Astro.url.origin);
 
-if (config.static_build) {
-  // @ts-ignore
-  data = await getEntry(model, slug);
-} else {
-  const response = await fetchItemData(model, slug);
-  const relations = await getRelations(model, slug, relatedModelTypes);
-  // @ts-ignore
-  data = { data: { ...response, relatedRecords: relations } };
-}
+const data = await fetch(apiUrl).then((res) => res.json());
 
 export const getStaticPaths = (async () => {
-  if (!config.static_build) {
+  if (!import.meta.env.PUBLIC_STATIC_BUILD) {
     return [];
   }
   const models = config.detail_pages;
@@ -54,20 +43,20 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 ---
 
-<Layout footer t={t} title={data.data.name}>
+<Layout footer t={t} title={data.name}>
   <Container className="flex flex-col py-12 gap-12 w-full">
-    <h1 class="font-bold text-2xl">{data.data.name}</h1>
-    {data.data.description ? <p>{data.data.description}</p> : null}
+    <h1 class="font-bold text-2xl">{data.name}</h1>
+    {data.description ? <p>{data.description}</p> : null}
     <div class="flex flex-col gap-6">
       {
-        data?.data?.relatedRecords &&
-          Object.keys(data.data.relatedRecords).map((key) =>
-            data.data.relatedRecords[key]?.length ? (
+        data?.relatedRecords &&
+          Object.keys(data.relatedRecords).map((key) =>
+            data.relatedRecords[key]?.length ? (
               <div class="flex flex-col gap-4">
                 {/* TODO: this string should come from i18n */}
                 <h2 class="capitalize text-xl font-semibold">{`Related ${key}`}</h2>
                 <ul>
-                  {data.data.relatedRecords[key].map((record) =>
+                  {data.relatedRecords[key].map((record) =>
                     config.detail_pages.includes(key) ? (
                       <a href={`/${key}/${record.uuid}`}>
                         <li>{record.name}</li>
