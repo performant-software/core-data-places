@@ -1,5 +1,6 @@
 import type { Loader, LoaderContext } from "astro/loaders";
 import config from "@config";
+import { AstroIntegrationLogger } from "astro";
 
 export const relatedModelTypes = [
   "events",
@@ -9,13 +10,27 @@ export const relatedModelTypes = [
   "places",
 ];
 
+export const createProjectIdString = (ids: string[] | number[]) => {
+  let str = "";
+  if (!ids.length) {
+    return str;
+  }
+  for (let i = 0; i < ids.length; i++) {
+    if (i > 0) {
+      str += "&";
+    }
+    str += `project_ids[]=${ids[i]}`;
+  }
+  return str;
+};
+
 export async function getRelation(
   model: string,
   uuid: string,
   relatedModel: string
 ) {
   const url = new URL(
-    `/core_data/public/v1/${model}/${uuid}/${relatedModel}?project_ids=${config.core_data.project_ids}`,
+    `/core_data/public/v1/${model}/${uuid}/${relatedModel}?${createProjectIdString(config.core_data.project_ids)}`,
     config.core_data.url
   );
   const response = await fetch(url).then((res) => res.json());
@@ -25,9 +40,11 @@ export async function getRelation(
 export async function getRelations(
   model: string,
   uuid: string,
-  relatedModels: string[]
+  relatedModels: string[],
+  logger?: AstroIntegrationLogger
 ) {
   let relatedRecords: { [key: string]: any } = {};
+  logger && logger.info(`fetching related records for ${uuid}`);
   for (let i = 0; i < relatedModels.length; i++) {
     const relatedModel = relatedModels[i];
     const relations = await getRelation(model, uuid, relatedModel);
@@ -38,27 +55,30 @@ export async function getRelations(
 
 export async function fetchItemData(model: string, uuid: string) {
   const url = new URL(
-    `/core_data/public/v1/${model}/${uuid}?project_ids=${config.core_data.project_ids}`,
+    `/core_data/public/v1/${model}/${uuid}?${createProjectIdString(config.core_data.project_ids)}`,
     config.core_data.url
   );
   const response = await fetch(url).then((res) => res.json());
   return Object.values(response) ? Object.values(response)[0] : null;
 }
 
-export async function fetchModelData(options: {
-  projectId: number | number[];
-  model: string;
-  getRelations?: boolean;
-}) {
+export async function fetchModelData(
+  options: {
+    projectId: number | number[] | string | string[];
+    model: string;
+    getRelations?: boolean;
+  },
+  logger?: AstroIntegrationLogger
+) {
   const url = new URL(
-    `/core_data/public/v1/${options.model}?project_ids=${config.core_data.project_ids}`,
+    `/core_data/public/v1/${options.model}?${createProjectIdString(config.core_data.project_ids)}`,
     config.core_data.url
   );
   let response = await fetch(url).then((res) => res.json());
   if (response?.list?.pages != 1) {
     response = await fetch(
       new URL(
-        `/core_data/public/v1/${options.model}?project_ids=${config.core_data.project_ids}&per_page=${response?.list?.count}`,
+        `/core_data/public/v1/${options.model}?${createProjectIdString(config.core_data.project_ids)}&per_page=${response?.list?.count}`,
         config.core_data.url
       )
     ).then((res) => res.json());
@@ -72,7 +92,8 @@ export async function fetchModelData(options: {
     const relatedRecords = await getRelations(
       options.model,
       item.uuid,
-      relatedModelTypes
+      relatedModelTypes,
+      logger
     );
     fullResponse.push({ ...item, relatedRecords: relatedRecords });
   }
@@ -80,7 +101,7 @@ export async function fetchModelData(options: {
 }
 
 export function coreDataLoader(options: {
-  projectId: number | number[];
+  projectId: number | number[] | string | string[];
   model: string;
   getRelations?: boolean;
 }): Loader {
@@ -90,12 +111,11 @@ export function coreDataLoader(options: {
       const { generateDigest, logger, parseData, store } = context;
       const startTime = Date.now();
       logger.info("Loading item data");
-      const response = await fetchModelData(options);
+      const response = await fetchModelData(options, logger);
       const fetchedTime = Date.now();
       logger.info(`Data fetched in ${fetchedTime - startTime}ms`);
       logger.info(`Updating datastore for ${options.model}`);
       for (const item of response) {
-        logger.info(`Updating item ${item.name}`);
         const data = await parseData({
           id: item.uuid,
           data: item,
