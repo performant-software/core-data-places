@@ -11,6 +11,8 @@ import { relatedModelTypes } from "@root/src/loaders/coreDataLoader";
 
 export const prerender = config.static_build;
 
+const lang = Astro.currentLocale;
+
 const { t } = await getTranslations(Astro.currentLocale);
 
 const { model, slug } = Astro.params;
@@ -69,7 +71,7 @@ export const getStaticPaths = (async () => {
                 <ul>
                   {data.data.relatedRecords[key].map((record) =>
                     config.detail_pages.includes(key) ? (
-                      <a href={`/${key}/${record.uuid}`}>
+                      <a href={`/${lang}/${key}/${record.uuid}`}>
                         <li>{record.name}</li>
                       </a>
                     ) : (
