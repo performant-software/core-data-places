@@ -3,6 +3,7 @@ import type { GetStaticPaths } from "astro";
 import Container from "@components/Container.astro";
 import { getTranslations } from "@i18n/server";
 import Layout from "@layouts/Layout.astro";
+import { getEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import config from "@config";
 
@@ -12,12 +13,19 @@ const { t } = await getTranslations(Astro.currentLocale);
 
 const { model, slug } = Astro.params;
 
-const apiUrl = new URL(`/api/${model}/${slug}.json`, Astro.url.origin);
+let data: any;
 
-const data = await fetch(apiUrl).then((res) => res.json());
+if (prerender) {
+  // @ts-ignore
+  const entryResponse = await getEntry(model, slug);
+  data = entryResponse.data;
+} else {
+  const apiUrl = new URL(`/api/${model}/${slug}.json`, Astro.url.origin);
+  data = await fetch(apiUrl).then((res) => res.json());
+}
 
 export const getStaticPaths = (async () => {
-  if (!import.meta.env.PUBLIC_STATIC_BUILD) {
+  if (!config.static_build) {
     return [];
   }
   const models = config.detail_pages;
