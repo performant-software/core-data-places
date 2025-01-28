@@ -64,7 +64,7 @@ export async function fetchItemData(model: string, uuid: string) {
 
 export async function fetchModelData(
   options: {
-    projectId: number | number[];
+    projectId: number | number[] | string | string[];
     model: string;
     getRelations?: boolean;
   },
@@ -101,7 +101,7 @@ export async function fetchModelData(
 }
 
 export function coreDataLoader(options: {
-  projectId: number | number[];
+  projectId: number | number[] | string | string[];
   model: string;
   getRelations?: boolean;
 }): Loader {

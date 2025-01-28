@@ -5,7 +5,7 @@ import config from "@config";
 import { getRelations, fetchItemData } from "@root/src/loaders/coreDataLoader";
 import { relatedModelTypes } from "@root/src/loaders/coreDataLoader";
 
-export const prerender = true;
+export const prerender = process.env.PUBLIC_STATIC_BUILD;
 
 export const GET: APIRoute = async ({ params }) => {
   let data: any;
