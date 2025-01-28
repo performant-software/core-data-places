@@ -8,7 +8,7 @@ import { getCollection } from "astro:content";
 import config from "@config";
 
 // TODO: I haven't figured out how to get this to be set by config or env variable
-export const prerender = process.env.PUBLIC_STATIC_BUILD;
+export const prerender = false;
 
 const { t } = await getTranslations(Astro.currentLocale);
 

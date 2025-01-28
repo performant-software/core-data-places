@@ -5,13 +5,13 @@ import config from "@config";
 import { getRelations, fetchItemData } from "@root/src/loaders/coreDataLoader";
 import { relatedModelTypes } from "@root/src/loaders/coreDataLoader";
 
-export const prerender = process.env.PUBLIC_STATIC_BUILD;
+export const prerender = false;
 
 export const GET: APIRoute = async ({ params }) => {
   let data: any;
   const { model, slug } = params;
 
-  if (import.meta.env.PUBLIC_STATIC_BUILD) {
+  if (config.static_build) {
     // @ts-ignore
     data = await getEntry(model, slug);
   } else {
@@ -30,7 +30,7 @@ export const GET: APIRoute = async ({ params }) => {
 };
 
 export const getStaticPaths = (async () => {
-  if (!import.meta.env.PUBLIC_STATIC_BUILD) {
+  if (!config.static_build) {
     return [];
   }
   const models = config.detail_pages;
