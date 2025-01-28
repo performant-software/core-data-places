@@ -69,7 +69,7 @@ export const getStaticPaths = (async () => {
                 <ul>
                   {data.relatedRecords[key].map((record) =>
                     config.detail_pages.includes(key) ? (
-                      <a href={`${lang}/${key}/${record.uuid}`}>
+                      <a href={`/${lang}/${key}/${record.uuid}`}>
                         <li>{record.name}</li>
                       </a>
                     ) : (
