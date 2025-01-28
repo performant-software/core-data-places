@@ -1,4 +1,4 @@
-import RelatedRecords from '@apps/search/RelatedRecords';
+import RelatedRecords from '@apps/search/panels/RelatedRecords';
 import { EventDetails, useEventsService } from '@performant-software/core-data';
 import React from 'react';
 

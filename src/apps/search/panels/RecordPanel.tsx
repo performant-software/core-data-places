@@ -1,29 +1,30 @@
+import RelatedRecords from '@apps/search/panels/RelatedRecords';
+import UserDefinedFieldView from '@components/UserDefinedFieldView';
 import { HeaderImage, KeyValueList } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
 import { X } from 'lucide-react';
-import React, { useMemo, type ReactNode } from 'react';
+import React, { useMemo, type ReactNode, useCallback } from 'react';
 import _ from 'underscore';
 
-interface Image {
-  name: string;
-  src: string;
-}
-
-interface Item {
-  uuid: string;
-  name: string;
-  user_defined: Array<{ [key: string]: string }>;
-}
-
 interface Props {
-  children: ReactNode,
+  children?: ReactNode,
   className?: string;
   geometry?: any;
-  item: Item;
-  image?: Image;
-  onClose(): void;
+  id: string;
+  image?: {
+    name: string,
+    src: string
+  };
+  name: string;
+  onClose?(): void;
+  onLoadMedia?(): Promise<any>;
+  onLoadOrganizations?(): Promise<any>;
+  onLoadPeople?(): Promise<any>;
+  onLoadPlaces?(): Promise<any>;
+  onLoadTaxonomies?(): Promise<any>;
+  userDefined?: { [key: string]: string };
 }
 
 const RecordPanel = (props: Props) => {
@@ -43,13 +44,30 @@ const RecordPanel = (props: Props) => {
   }), [config]);
 
   /**
+   * Renders the user-defined field value for the passed data type.
+   */
+  const renderUserDefined = useCallback((type: string, value: any) => (
+    <UserDefinedFieldView
+      type={type}
+      value={value}
+    />
+  ), []);
+
+  /**
    * Memo-izes user defined field values.
    *
    * @type {UserDefinedField[]|*[]}
    */
   const userDefined = useMemo(() => (
-    props.item?.user_defined ? Object.values(props.item.user_defined) : []
-  ), [props.item]);
+    _.chain(props.userDefined || [])
+      .values()
+      .filter((u) => Boolean(u.value))
+      .map(({ label, type, value }) => ({
+        label,
+        value: renderUserDefined(type, value)
+      }))
+      .value()
+  ), [renderUserDefined, props.userDefined]);
 
   return (
     <aside
@@ -83,19 +101,29 @@ const RecordPanel = (props: Props) => {
           src={props.image.src}
         />
       )}
-      { props.item && (
+      { props.name && (
         <h1
           className='ps-3 pe-7 font-medium'
         >
-          { props.item.name }
+          { props.name }
         </h1>
       )}
-      { userDefined && (
-        <KeyValueList
-          items={userDefined}
-        />
+      { props.children && (
+        <div
+          className='ps-3 pe-7 text-sm'
+        >
+          { props.children }
+        </div>
       )}
-      { props.children }
+      { userDefined && (
+        <div
+          className='ps-3'
+        >
+          <KeyValueList
+            items={userDefined}
+          />
+        </div>
+      )}
       { props.geometry && (
         <LocationMarkers
           animate
@@ -105,6 +133,14 @@ const RecordPanel = (props: Props) => {
           layerId='current'
         />
       )}
+      <RelatedRecords
+        key={`related-${props.id}`}
+        onLoadMedia={props.onLoadMedia}
+        onLoadOrganizations={props.onLoadOrganizations}
+        onLoadPeople={props.onLoadPeople}
+        onLoadPlaces={props.onLoadPlaces}
+        onLoadTaxonomies={props.onLoadTaxonomies}
+      />
     </aside>
   );
 };

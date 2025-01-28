@@ -1,5 +1,4 @@
-import RelatedRecords from '@apps/search/RelatedRecords';
-import RecordPanel from '@apps/search/RecordPanel';
+import RecordPanel from '@apps/search/panels/RecordPanel';
 import { useTranslations } from '@i18n/client';
 import {
   CoreData as CoreDataUtils,
@@ -8,6 +7,7 @@ import {
   usePlacesService
 } from '@performant-software/core-data';
 import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
+import { getPreviewImage } from '@utils/Media';
 import { getCurrentId } from '@utils/router';
 import React, { useCallback, useMemo } from 'react';
 import _ from 'underscore';
@@ -32,24 +32,36 @@ const Place = () => {
   const { data: { place = null } = {} } = useLoader(onLoad, null, [id]);
 
   /**
+   * Loads the first related media record from the Core Data API.
+   */
+  const onLoadMedia = useCallback(() => PlacesService.fetchRelatedMedia(id, { limit: 1 }), [id]);
+  const { data: { media_contents: mediaContents = [] } = {} } = useLoader(onLoadMedia);
+
+  /**
    * Memo-izes the geometry.
    */
   const geometry = useMemo(() => place && CoreDataUtils.toFeature(place), [place]);
 
+  /**
+   * Memo-izes the image.
+   */
+  const image = useMemo(() => getPreviewImage(mediaContents), [mediaContents]);
+
   return (
     <RecordPanel
+      className='place'
       geometry={geometry}
-      item={place}
+      id={id}
+      image={image}
+      name={place?.name}
       onClose={() => navigate('/')}
+      onLoadMedia={() => PlacesService.fetchRelatedManifests(id)}
+      onLoadOrganizations={() => PlacesService.fetchRelatedOrganizations(id)}
+      onLoadPeople={() => PlacesService.fetchRelatedPeople(id)}
+      onLoadPlaces={() => PlacesService.fetchRelatedPlaces(id)}
+      onLoadTaxonomies={() => PlacesService.fetchRelatedTaxonomies(id)}
+      userDefined={place?.user_defined}
     >
-      <RelatedRecords
-        key={`related-${id}`}
-        onLoadMedia={() => PlacesService.fetchRelatedManifests(id)}
-        onLoadOrganizations={() => PlacesService.fetchRelatedOrganizations(id)}
-        onLoadPeople={() => PlacesService.fetchRelatedPeople(id)}
-        onLoadPlaces={() => PlacesService.fetchRelatedPlaces(id)}
-        onLoadTaxonomies={() => PlacesService.fetchRelatedTaxonomies(id)}
-      />
       {!_.isEmpty(place?.place_layers) && (
         <PlaceLayersSelector
           className='place-layers-selector'

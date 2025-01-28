@@ -1,4 +1,4 @@
-import Event from '@apps/search/Event';
+import Event from '@apps/search/timeline/Event';
 import { EventsList, FacetTimeline, Modal } from '@performant-software/core-data';
 import { List } from 'lucide-react';
 import React, { useState } from 'react';

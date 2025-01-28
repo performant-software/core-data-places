@@ -1,0 +1,7 @@
+.user-defined-field-view.rich-text {
+  all: revert;
+}
+
+.user-defined-field-view.rich-text * {
+  all: revert;
+}
