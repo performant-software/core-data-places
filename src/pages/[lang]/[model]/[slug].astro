@@ -6,7 +6,7 @@ import Layout from "@layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import config from "@config";
 
-export const prerender = import.meta.env.PUBLIC_STATIC_BUILD;
+export const prerender = true;
 
 const { t } = await getTranslations(Astro.currentLocale);
 

@@ -5,7 +5,7 @@ import config from "@config";
 import { getRelations, fetchItemData } from "@root/src/loaders/coreDataLoader";
 import { relatedModelTypes } from "@root/src/loaders/coreDataLoader";
 
-export const prerender = import.meta.env.PUBLIC_STATIC_BUILD;
+export const prerender = true;
 
 export const GET: APIRoute = async ({ params }) => {
   let data: any;
@@ -21,7 +21,12 @@ export const GET: APIRoute = async ({ params }) => {
     data = { data: { ...response, relatedRecords: relations } };
   }
 
-  return new Response(JSON.stringify(data.data));
+  return new Response(JSON.stringify(data.data), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 export const getStaticPaths = (async () => {
