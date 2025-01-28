@@ -7,11 +7,14 @@ import { getEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import config from "@config";
 
+// TODO: I haven't figured out how to get this to be set by config or env variable
 export const prerender = true;
 
 const { t } = await getTranslations(Astro.currentLocale);
 
 const { model, slug } = Astro.params;
+
+const lang = Astro.currentLocale;
 
 let data: any;
 
@@ -66,7 +69,7 @@ export const getStaticPaths = (async () => {
                 <ul>
                   {data.relatedRecords[key].map((record) =>
                     config.detail_pages.includes(key) ? (
-                      <a href={`/${key}/${record.uuid}`}>
+                      <a href={`${lang}/${key}/${record.uuid}`}>
                         <li>{record.name}</li>
                       </a>
                     ) : (
