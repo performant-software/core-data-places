@@ -2,10 +2,16 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 
 const init = async () => {
-  const payload = await fetch(process.env.CONFIG_URL).then((response) => response.json());
-  const content = JSON.stringify(payload, null, 2);
+  const configUrl = process.env.CONFIG_URL;
 
-  fs.writeFileSync('./public/config.json', content, 'utf8');
+  if (configUrl) {
+    const response = await fetch(configUrl);
+    const config = await response.json();
+    const content = JSON.stringify(config, null, 2);
+    fs.writeFileSync('./public/config.json', content, 'utf8');
+  } else {
+    console.log('Using local config.')
+  }
 };
 
 dotenv.config();

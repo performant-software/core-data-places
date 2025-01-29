@@ -1,4 +1,4 @@
-import { fetchI18n } from '@backend/tina-cms';
+import { fetchI18n } from '@backend/tina-server';
 import { buildTranslations, getTranslation } from './utils';
 import config from '@config';
 

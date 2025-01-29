@@ -20,7 +20,10 @@
     "cluster_radius": 6,
     "result_card": {
       "title": "name"
-    }
+    },
+    "timeline": false,
+    "zoom_to_place": true,
+    "max_zoom": 14
   },
   "typesense": {
     "host": "example.typesense.com",
@@ -28,7 +31,8 @@
     "protocol": "https",
     "api_key": "abcdefg",
     "index_name": "core_data_places",
-    "query_by": "name"
+    "query_by": "name",
+    "default_sort": "name"
   },
   "core_data": {
     "url": "https://staging.coredata.cloud",

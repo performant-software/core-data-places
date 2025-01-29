@@ -1,5 +1,5 @@
+import { fetchI18n } from '@backend/tina-client';
 import { buildTranslations, getTranslation } from '@i18n/utils';
-import client from '@tina/client';
 import { useCallback, useEffect, useState } from 'react';
 
 export const getLanguageFromUrl = (url: string) => {
@@ -18,8 +18,8 @@ export const useTranslations = () => {
   /**
    * Builds the list of translations and sets the value on the state.
    */
-  const onLoad = useCallback((response) => {
-    const translationData = buildTranslations(response?.data?.i18n || {});
+  const onLoad = useCallback((i18n) => {
+    const translationData = buildTranslations(i18n || {});
     setTranslations(translationData);
   }, []);
 
@@ -29,9 +29,7 @@ export const useTranslations = () => {
   useEffect(() => {
     const language = getLanguageFromUrl(window.location.pathname);
 
-    client
-      .queries
-      .i18n({ relativePath: `${language}.json` })
+    fetchI18n(language)
       .then(onLoad);
   }, []);
 

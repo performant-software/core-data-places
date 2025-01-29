@@ -14,7 +14,7 @@ import {
   usePlacesService,
 } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
-import { type AnnotationPage, useCurrentRoute, useNavigate } from '@peripleo/peripleo';
+import { type AnnotationPage, useCurrentRoute, useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
 import { X } from 'lucide-react';
 import React, {
   useCallback,
@@ -32,6 +32,7 @@ type Place = {
 };
 
 const Place = () => {
+  const config = useRuntimeConfig<any>();
   const [place, setPlace] = useState<Place>();
 
   const [mediaLoading, setMediaLoading] = useState<boolean>(true);
@@ -59,7 +60,7 @@ const Place = () => {
       left: 380,
       right: 120,
     },
-    maxZoom: 14,
+    maxZoom: config.search.max_zoom || 14,
   };
 
   /**
@@ -120,7 +121,7 @@ const Place = () => {
           />
         )}
         <RelatedRecords
-          key={uuid}
+          key={`related-${uuid}`}
           onLoadMedia={() => PlacesService.fetchRelatedManifests(uuid)}
           onLoadOrganizations={() => PlacesService.fetchRelatedOrganizations(uuid)}
           onLoadPeople={() => PlacesService.fetchRelatedPeople(uuid)}
@@ -132,6 +133,7 @@ const Place = () => {
         <LocationMarkers
           animate
           boundingBoxOptions={bboxOptions}
+          fitBoundingBox={_.get(config.search, 'zoom_to_place', true)}
           data={placeData}
           layerId='current'
         />

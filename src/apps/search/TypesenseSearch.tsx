@@ -30,7 +30,9 @@ const SearchProvider = (props: { children: ReactNode }) => {
     >
       <FacetStateContextProvider
         apiKey={typesense.api_key}
+        exclude={typesense.facets?.exclude}
         host={typesense.host}
+        include={typesense.facets?.include}
         indexName={typesense.index_name}
         protocol={typesense.protocol}
         useRange={useRange}
@@ -44,7 +46,7 @@ const SearchProvider = (props: { children: ReactNode }) => {
 
 const TypesenseSearch = (props: { children: ReactNode }) => {
   const config = useRuntimeConfig<any>();
-  
+
   const adapter = useMemo(() => TypesenseUtils.createTypesenseAdapter(config.typesense), []);
   const routing = useMemo(() => TypesenseUtils.createRouting(config.typesense), []);
 
