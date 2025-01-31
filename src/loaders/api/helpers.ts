@@ -3,10 +3,15 @@ import config from "@config";
 
 export const relatedModelTypes = [
   "events",
+  "instances",
+  "items",
+  "manifests",
   "media_contents",
   "organizations",
   "people",
   "places",
+  "taxonomies",
+  "works"
 ];
 
 export const createProjectIdString = (ids: string[] | number[]) => {
