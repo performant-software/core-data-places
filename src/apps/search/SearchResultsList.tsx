@@ -1,6 +1,6 @@
 import SearchHighlight from '@apps/search/SearchHighlight';
 import config from '@config';
-import { type Feature, useNavigate } from '@peripleo/peripleo';
+import { type Feature, useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
 import { Typesense as TypesenseUtils, useCachedHits } from '@performant-software/core-data';
 import { Building } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
@@ -93,6 +93,7 @@ const SearchResultsList = (props: Props) => {
   const { hover, onHoverChange } = props;
   const hits = useCachedHits();
 
+  const { search } = useRuntimeConfig<any>();
   const navigate = useNavigate();
 
   const Row = ({ index, style }: RowProps) => {
@@ -120,7 +121,7 @@ const SearchResultsList = (props: Props) => {
         <HitComponent
           hit={hit}
           isHovered={hover?.id === parseInt(hit?.record_id)}
-          onClick={() => navigate(`/places/${hit.uuid}`)}
+          onClick={() => navigate(`${search.route}/${hit.uuid}`)}
         />
       </div>
     )
