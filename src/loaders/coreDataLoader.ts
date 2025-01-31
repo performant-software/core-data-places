@@ -20,7 +20,6 @@ const loaderDict = {
 };
 
 export function coreDataLoader(options: {
-  projectId: number | number[] | string | string[];
   model: string;
   getRelations?: boolean;
 }): Loader {

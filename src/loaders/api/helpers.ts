@@ -68,7 +68,6 @@ export async function fetchItemData(model: string, uuid: string) {
 
 export async function fetchModelData(
   options: {
-    projectId: number | number[] | string | string[];
     model: string;
     getRelations?: boolean;
   },

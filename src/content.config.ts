@@ -10,7 +10,6 @@ if (import.meta.env.PUBLIC_STATIC_BUILD) {
   for (const model of models) {
     cols[model] = defineCollection({
       loader: coreDataLoader({
-        projectId: config.core_data.project_ids,
         model: model,
         getRelations: true,
       }),
