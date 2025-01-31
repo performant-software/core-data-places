@@ -18,7 +18,8 @@
       "@layouts/*": ["src/layouts/*"],
       "@root/*": ["*"],
       "@styles/*": ["src/styles/*"],
-      "@tina/*": ["tina/__generated__/*"]
+      "@tina/*": ["tina/__generated__/*"],
+      "@utils/*": ["src/utils/*"]
     },
     "plugins": [
       {

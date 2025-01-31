@@ -186,5 +186,17 @@
   "id": {
     "tinaLabel": "ID",
     "defaultValue": "ID"
+  },
+  "startDate": {
+    "tinaLabel": "Start Date",
+    "defaultValue": "Start Date"
+  },
+  "endDate": {
+    "tinaLabel": "End Date",
+    "defaultValue": "End Date"
+  },
+  "date": {
+    "tinaLabel": "Date",
+    "defaultValue": "Date"
   }
 }
