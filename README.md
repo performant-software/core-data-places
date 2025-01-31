@@ -44,6 +44,7 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 | map.zoom_to_place           | Boolean | If `true` or not specified, clicking on an individual place marker or search result will zoom the map to its location (using the max zoom).                    |
 | search                      | Object  | Search UI configuration                                                                                                                                        |
 | search.event_range          | String  | Path to the event_range_facet attribute. If provided, the Timeline component will be rendered on the search.                                                   |
+| search.geosearch            | Boolean | If `true`, the "filter by map bounds" facet will be available.                                                                                                 |
 | search.result_card          | Object  | Search result card configuration                                                                                                                               |
 | search.result_card.title    | String  | Path to the value in the Typesense document that should be used as the card title. This value can contain nested objects (e.g. `<relationship-id>.0.name`).    |
 | search.result_card.subtitle | String  | Path to the value in the Typesense document that should be used as the card subtitle. This value can contain nested objects (e.g. `<relationship-id>.0.name`). |
