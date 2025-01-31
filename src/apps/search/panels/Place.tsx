@@ -7,7 +7,7 @@ import {
   usePlacesService
 } from '@performant-software/core-data';
 import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
-import { getPreviewImage } from '@utils/Media';
+import { getPreviewImage } from '@utils/media';
 import { getCurrentId } from '@utils/router';
 import React, { useCallback, useMemo } from 'react';
 import _ from 'underscore';

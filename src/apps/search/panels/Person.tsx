@@ -1,6 +1,6 @@
 import BasePanel from '@apps/search/panels/BasePanel';
 import { usePeopleService } from '@performant-software/core-data';
-import { getNameView } from '@utils/Person';
+import { getNameView } from '@utils/people';
 import React, { useCallback } from 'react';
 
 const Person = () => {
