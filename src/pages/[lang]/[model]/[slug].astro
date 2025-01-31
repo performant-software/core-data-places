@@ -6,10 +6,10 @@ import Layout from "@layouts/Layout.astro";
 import { getEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import config from "@config";
-import { getRelations, fetchItemData } from "@root/src/loaders/coreDataLoader";
-import { relatedModelTypes } from "@root/src/loaders/coreDataLoader";
+import { getRelations, fetchItemData } from "@root/src/loaders/api/helpers";
+import { relatedModelTypes } from "@root/src/loaders/api/helpers";
 
-export const prerender = config.static_build;
+export const prerender = true;
 
 const lang = Astro.currentLocale;
 
