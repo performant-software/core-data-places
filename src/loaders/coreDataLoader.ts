@@ -13,7 +13,7 @@ export function coreDataLoader(options: {
       const { generateDigest, logger, parseData, store } = context;
       const startTime = Date.now();
       logger.info("Loading item data");
-      const response = await loaderDict[options.model](options, logger);
+      const response = await loaderDict[options.model].fetchAll({ getRelations: options.getRelations }, logger);
       const fetchedTime = Date.now();
       logger.info(`Data fetched in ${fetchedTime - startTime}ms`);
       logger.info(`Updating datastore for ${options.model}`);

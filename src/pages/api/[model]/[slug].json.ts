@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import config from "@config";
 import { getRelations, fetchItemData } from "@root/src/loaders/api/helpers";
 import { relatedModelTypes } from "@root/src/loaders/api/helpers";
+import { loaderDict } from "@root/src/loaders/api";
 
 export const prerender = true;
 
@@ -15,10 +16,7 @@ export const GET: APIRoute = async ({ params }) => {
     // @ts-ignore
     data = await getEntry(model, slug);
   } else {
-    const response = await fetchItemData(model, slug);
-    const relations = await getRelations(model, slug, relatedModelTypes);
-    // @ts-ignore
-    data = { data: { ...response, relatedRecords: relations } };
+    data = loaderDict[model].fetchOne(slug);
   }
 
   return new Response(JSON.stringify(data.data), {

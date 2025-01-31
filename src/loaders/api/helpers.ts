@@ -44,7 +44,7 @@ export async function getRelation(
 export async function getRelations(
   model: string,
   uuid: string,
-  relatedModels: string[],
+  relatedModels: string[] = relatedModelTypes,
   logger?: AstroIntegrationLogger
 ) {
   let relatedRecords: { [key: string]: any } = {};
