@@ -3,7 +3,6 @@ import { AstroIntegrationLogger } from "astro";
 
 const peopleLoader = async (
   options: {
-    projectId: number | number[] | string | string[];
     getRelations?: boolean;
   },
   logger?: AstroIntegrationLogger
