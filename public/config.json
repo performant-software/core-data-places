@@ -31,8 +31,14 @@
   },
   "core_data": {
     "url": "https://staging.coredata.cloud",
-    "project_ids": [1, 2, 3]
+    "project_ids": [
+      1,
+      2,
+      3
+    ]
   },
-  "detail_pages": ["modeltype1", "modeltype2"],
-  "static_build": false
+  "detail_pages": [
+    "modeltype1",
+    "modeltype2"
+  ]
 }
