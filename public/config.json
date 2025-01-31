@@ -1,13 +1,8 @@
 {
-  "content": [
-    "paths",
-    "posts"
-  ],
+  "content": ["paths", "posts"],
   "i18n": {
     "default_locale": "en",
-    "locales": [
-      "en"
-    ]
+    "locales": ["en"]
   },
   "layers": [
     {
@@ -19,31 +14,23 @@
   "search": {
     "cluster_radius": 6,
     "result_card": {
-      "title": "name"
+      "title": "6e89decd-b884-47ef-a052-a2f49ab4c33c.0.name",
+      "subtitle": "name"
     },
-    "timeline": false,
-    "zoom_to_place": true,
-    "max_zoom": 14
+    "timeline": true
   },
   "typesense": {
-    "host": "example.typesense.com",
+    "host": "i74olkjcuy69ze2vp-1.a1.typesense.net",
     "port": 443,
     "protocol": "https",
-    "api_key": "abcdefg",
-    "index_name": "core_data_places",
-    "query_by": "name",
-    "default_sort": "name"
+    "api_key": "PSNp8MUfQBInjahcHQ3l76jChrHZHqmj",
+    "index_name": "scavenger_hunt",
+    "query_by": "name"
   },
   "core_data": {
     "url": "https://staging.coredata.cloud",
-    "project_ids": [
-      1,
-      2,
-      3
-    ]
+    "project_ids": ["43", "44", "45"]
   },
-  "static_pages": [
-    "modeltype1",
-    "modeltype2"
-  ]
+  "detail_pages": ["places", "events"],
+  "static_build": false
 }
