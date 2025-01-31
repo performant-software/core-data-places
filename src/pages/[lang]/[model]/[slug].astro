@@ -19,7 +19,7 @@ const { model, slug } = Astro.params;
 
 let data: any;
 
-if (config.static_build) {
+if (import.meta.env.PUBLIC_STATIC_BUILD) {
   // @ts-ignore
   data = await getEntry(model, slug);
 } else {
@@ -30,7 +30,7 @@ if (config.static_build) {
 }
 
 export const getStaticPaths = (async () => {
-  if (!config.static_build) {
+  if (!import.meta.env.PUBLIC_STATIC_BUILD) {
     return [];
   }
   const models = config.detail_pages;

@@ -6,7 +6,7 @@ const models = config.detail_pages;
 
 let cols = {};
 
-if (config.static_build) {
+if (import.meta.env.PUBLIC_STATIC_BUILD) {
   for (const model of models) {
     cols[model] = defineCollection({
       loader: coreDataLoader({
