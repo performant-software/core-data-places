@@ -1,13 +1,8 @@
 {
-  "content": [
-    "paths",
-    "posts"
-  ],
+  "content": ["paths", "posts"],
   "i18n": {
     "default_locale": "en",
-    "locales": [
-      "en"
-    ]
+    "locales": ["en"]
   },
   "layers": [
     {
@@ -41,5 +36,9 @@
       2,
       3
     ]
-  }
+  },
+  "detail_pages": [
+    "modeltype1",
+    "modeltype2"
+  ]
 }
