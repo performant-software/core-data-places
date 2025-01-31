@@ -2,16 +2,16 @@ import type { APIRoute, GetStaticPaths } from "astro";
 import { getEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import config from "@config";
-import { getRelations, fetchItemData } from "@root/src/loaders/coreDataLoader";
-import { relatedModelTypes } from "@root/src/loaders/coreDataLoader";
+import { getRelations, fetchItemData } from "@root/src/loaders/api/helpers";
+import { relatedModelTypes } from "@root/src/loaders/api/helpers";
 
-export const prerender = false;
+export const prerender = true;
 
 export const GET: APIRoute = async ({ params }) => {
   let data: any;
   const { model, slug } = params;
 
-  if (config.static_build) {
+  if (import.meta.env.PUBLIC_STATIC_BUILD) {
     // @ts-ignore
     data = await getEntry(model, slug);
   } else {
@@ -30,7 +30,7 @@ export const GET: APIRoute = async ({ params }) => {
 };
 
 export const getStaticPaths = (async () => {
-  if (!config.static_build) {
+  if (!import.meta.env.PUBLIC_STATIC_BUILD) {
     return [];
   }
   const models = config.detail_pages;

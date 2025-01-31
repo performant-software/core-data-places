@@ -1,23 +1,7 @@
 import type { Loader, LoaderContext } from "astro/loaders";
 import {
-  eventsLoader,
-  instancesLoader,
-  itemsLoader,
-  organizationsLoader,
-  peopleLoader,
-  placesLoader,
-  worksLoader,
+  loaderDict
 } from "./api";
-
-const loaderDict = {
-  events: eventsLoader,
-  instances: instancesLoader,
-  items: itemsLoader,
-  organizations: organizationsLoader,
-  people: peopleLoader,
-  places: placesLoader,
-  works: worksLoader,
-};
 
 export function coreDataLoader(options: {
   model: string;
