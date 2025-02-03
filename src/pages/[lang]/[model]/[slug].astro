@@ -6,6 +6,7 @@ import Layout from "@layouts/Layout.astro";
 import { getEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import config from "@config";
+import RecordDetail from "@components/RecordDetail/index.astro";
 
 // TODO: I haven't figured out how to get this to be set by config or env variable
 export const prerender = false;
@@ -28,7 +29,7 @@ if (prerender) {
 }
 
 export const getStaticPaths = (async () => {
-  if (!config.static_build) {
+  if (!import.meta.env.PUBLIC_STATIC_BUILD) {
     return [];
   }
   const models = config.detail_pages;
@@ -54,33 +55,4 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 ---
 
-<Layout footer t={t} title={data.name}>
-  <Container className="flex flex-col py-12 gap-12 w-full">
-    <h1 class="font-bold text-2xl">{data.name}</h1>
-    {data.description ? <p>{data.description}</p> : null}
-    <div class="flex flex-col gap-6">
-      {
-        data?.relatedRecords &&
-          Object.keys(data.relatedRecords).map((key) =>
-            data.relatedRecords[key]?.length ? (
-              <div class="flex flex-col gap-4">
-                {/* TODO: this string should come from i18n */}
-                <h2 class="capitalize text-xl font-semibold">{`Related ${key}`}</h2>
-                <ul>
-                  {data.relatedRecords[key].map((record) =>
-                    config.detail_pages.includes(key) ? (
-                      <a href={`/${lang}/${key}/${record.uuid}`}>
-                        <li>{record.name}</li>
-                      </a>
-                    ) : (
-                      <li>{record.name}</li>
-                    )
-                  )}
-                </ul>
-              </div>
-            ) : null
-          )
-      }
-    </div>
-  </Container>
-</Layout>
+<RecordDetail model={model} data={data} />
