@@ -1,0 +1,41 @@
+---
+import Events from "./Events.astro";
+import Instances from "./Instances.astro";
+import Items from "./Items.astro";
+import Organizations from "./Organizations.astro";
+import People from "./People.astro";
+import Places from "./Places.astro";
+import Works from "./Works.astro";
+
+interface Props {
+    model: 'events' | 'instances' | 'items' | 'organizations' | 'people' | 'places' | 'works';
+    data: any;
+}
+
+const { model, data } = Astro.props;
+
+export const getModelComponent = (_model: string) => {
+    switch(_model) {
+        case 'events':
+            return Events;
+        case 'instances':
+            return Instances;
+        case 'items':
+            return Items;
+        case 'organizations':
+            return Organizations;
+        case 'people':
+            return People;
+        case 'places':
+            return Places;
+        case 'works':
+            return Works;
+        default:
+            return null;
+    }
+}
+
+const Component = getModelComponent(model);
+---
+
+<Component data={data} />

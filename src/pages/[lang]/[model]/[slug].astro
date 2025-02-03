@@ -1,0 +1,58 @@
+---
+import type { GetStaticPaths } from "astro";
+import Container from "@components/Container.astro";
+import { getTranslations } from "@i18n/server";
+import Layout from "@layouts/Layout.astro";
+import { getEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import config from "@config";
+import RecordDetail from "@components/RecordDetail/index.astro";
+
+// TODO: I haven't figured out how to get this to be set by config or env variable
+export const prerender = false;
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+const { model, slug } = Astro.params;
+
+const lang = Astro.currentLocale;
+
+let data: any;
+
+if (prerender) {
+  // @ts-ignore
+  const entryResponse = await getEntry(model, slug);
+  data = entryResponse.data;
+} else {
+  const apiUrl = new URL(`/api/${model}/${slug}.json`, Astro.url.origin);
+  data = await fetch(apiUrl).then((res) => res.json());
+}
+
+export const getStaticPaths = (async () => {
+  if (!import.meta.env.PUBLIC_STATIC_BUILD) {
+    return [];
+  }
+  const models = config.detail_pages;
+  let routes = [];
+  for (const model of models) {
+    // @ts-ignore
+    const pages = await getCollection(model);
+    if (pages && pages.length) {
+      for (const lang of config.i18n.locales) {
+        const locPages = pages.map((page) => ({
+          params: {
+            lang: lang,
+            // @ts-ignore
+            slug: page.id,
+            model: model,
+          },
+        }));
+        routes = [...routes, ...locPages];
+      }
+    }
+  }
+  return routes;
+}) satisfies GetStaticPaths;
+---
+
+<RecordDetail model={model} data={data} />
