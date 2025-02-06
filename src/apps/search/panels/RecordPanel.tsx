@@ -40,7 +40,7 @@ const RecordPanel = (props: Props) => {
       left: 380,
       right: 120,
     },
-    maxZoom: config.search.max_zoom || 14,
+    maxZoom: config.map.max_zoom || 14,
   }), [config]);
 
   /**
