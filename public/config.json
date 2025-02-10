@@ -12,11 +12,13 @@
     }
   ],
   "search": {
-    "cluster_radius": 6,
     "result_card": {
       "title": "name"
     },
-    "timeline": false,
+    "timeline": false
+  },
+  "map": {
+    "cluster_radius": 6,
     "zoom_to_place": true,
     "max_zoom": 14
   },
