@@ -43,5 +43,9 @@
       2,
       3
     ]
-  }
+  },
+  "detail_pages": [
+    "modeltype1",
+    "modeltype2"
+  ]
 }
