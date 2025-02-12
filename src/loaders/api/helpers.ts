@@ -67,7 +67,7 @@ export async function getRelations(
   for (let i = 0; i < relatedModels.length; i++) {
     const relatedModel = relatedModels[i];
     const relations = await getRelation(model, uuid, relatedModel);
-    relatedRecords = {...relations, ...relatedRecords};
+    relatedRecords[relatedModel] = relations[relatedModel]
   }
   return relatedRecords;
 }

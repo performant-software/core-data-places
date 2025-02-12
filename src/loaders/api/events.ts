@@ -10,12 +10,12 @@ const eventsLoader = async (
   return fetchModelData({ ...options, model: "events" }, logger);
 };
 
-export const eventLoader = (uuid: string, withRelations: boolean = true) => {
-  const response = fetchItemData("events", uuid);
+export const eventLoader = async (uuid: string, withRelations: boolean = true) => {
+  const response = await fetchItemData("events", uuid);
   if (!withRelations) {
     return response;
   }
-  const relations = getRelations("events", uuid);
+  const relations = await getRelations("events", uuid);
   return ( { ...response, relatedRecords: relations } );
 }
 

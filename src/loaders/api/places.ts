@@ -10,12 +10,12 @@ const placesLoader = async (
   return fetchModelData({ ...options, model: "places" }, logger);
 };
 
-export const placeLoader = (uuid: string, withRelations: boolean = true) => {
-  const response = fetchItemData("places", uuid);
+export const placeLoader = async (uuid: string, withRelations: boolean = true) => {
+  const response = await fetchItemData("places", uuid);
   if (!withRelations) {
     return response;
   }
-  const relations = getRelations("places", uuid);
+  const relations = await getRelations("places", uuid);
   return ( { ...response, relatedRecords: relations } );
 }
 
