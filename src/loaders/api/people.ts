@@ -10,10 +10,13 @@ const peopleLoader = async (
   return fetchModelData({ ...options, model: "people" }, logger);
 };
 
-export const personLoader = (uuid: string) => {
+export const personLoader = (uuid: string, withRelations: boolean = true) => {
   const response = fetchItemData("people", uuid);
+  if (!withRelations) {
+    return response;
+  }
   const relations = getRelations("people", uuid);
-  return ( { data: { ...response, relatedRecords: relations } } );
+  return ( { ...response, relatedRecords: relations } );
 }
 
 export default peopleLoader;

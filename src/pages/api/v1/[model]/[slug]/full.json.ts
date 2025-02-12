@@ -13,20 +13,12 @@ export const GET: APIRoute = async ({ params }) => {
   const singular = singularForms[model];
 
   if (import.meta.env.PUBLIC_STATIC_BUILD && import.meta.env.PUBLIC_STATIC_BUILD != 'false') {
-    let detail: any = {};
     // @ts-ignore
     const entry = await getEntry(model, slug);
     // @ts-ignore
-    Object.keys(entry.data)
-      ?.filter((key) => key !== "relatedRecords")
-      .forEach((key) => {
-        // @ts-ignore
-        detail[key] = entry?.data[key];
-        console.log(detail);
-      });
-    data[singular] = detail;
+    data = entry?.data;
   } else {
-    data = loaderDict[model].fetchOne(slug, false);
+    data = loaderDict[model].fetchOne(slug);
   }
 
   return new Response(JSON.stringify(data), {

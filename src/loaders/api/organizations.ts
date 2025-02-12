@@ -10,10 +10,13 @@ const organizationsLoader = async (
   return fetchModelData({ ...options, model: "organizations" }, logger);
 };
 
-export const organizationLoader = (uuid: string) => {
+export const organizationLoader = (uuid: string, withRelations: boolean = true) => {
   const response = fetchItemData("organizations", uuid);
+  if (!withRelations) {
+    return response;
+  }
   const relations = getRelations("organizations", uuid);
-  return ( { data: { ...response, relatedRecords: relations } } );
+  return ( { ...response, relatedRecords: relations } );
 }
 
 export default organizationsLoader;

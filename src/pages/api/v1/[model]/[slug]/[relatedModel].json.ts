@@ -5,13 +5,13 @@ import config from "@config";
 import { loaderDict } from "@root/src/loaders/api";
 import { getRelation, relatedModelTypes } from "@root/src/loaders/api/helpers";
 
-export const prerender = true;
+export const prerender = false;
 
 export const GET: APIRoute = async ({ params }) => {
   let data: any = {};
   const { model, slug, relatedModel } = params;
 
-  if (import.meta.env.PUBLIC_STATIC_BUILD) {
+  if (import.meta.env.PUBLIC_STATIC_BUILD && import.meta.env.PUBLIC_STATIC_BUILD != 'false') {
     // @ts-ignore
     const entry = await getEntry(model, slug);
     // @ts-ignore
@@ -29,7 +29,7 @@ export const GET: APIRoute = async ({ params }) => {
 };
 
 export const getStaticPaths = (async () => {
-  if (!import.meta.env.PUBLIC_STATIC_BUILD) {
+  if (!import.meta.env.PUBLIC_STATIC_BUILD || import.meta.env.PUBLIC_STATIC_BUILD == 'false') {
     return [];
   }
   const models = config.detail_pages;

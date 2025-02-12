@@ -10,10 +10,13 @@ const worksLoader = async (
   return fetchModelData({ ...options, model: "works" }, logger);
 };
 
-export const workLoader = (uuid: string) => {
+export const workLoader = (uuid: string, withRelations: boolean = true) => {
   const response = fetchItemData("works", uuid);
+  if (!withRelations) {
+    return response;
+  }
   const relations = getRelations("works", uuid);
-  return ( { data: { ...response, relatedRecords: relations } } );
+  return ( { ...response, relatedRecords: relations } );
 }
 
 export default worksLoader;

@@ -10,10 +10,13 @@ const instancesLoader = async (
   return fetchModelData({ ...options, model: "instances" }, logger);
 };
 
-export const instanceLoader = (uuid: string) => {
+export const instanceLoader = (uuid: string, withRelations: boolean = true) => {
   const response = fetchItemData("instances", uuid);
+  if (!withRelations) {
+    return response;
+  }
   const relations = getRelations("instances", uuid);
-  return ( { data: { ...response, relatedRecords: relations } } );
+  return ( { ...response, relatedRecords: relations } );
 }
 
 export default instancesLoader;
