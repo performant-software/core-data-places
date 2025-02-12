@@ -5,7 +5,7 @@ import config from "@config";
 import { loaderDict } from "@root/src/loaders/api";
 import { singularForms } from "@root/src/loaders/api/helpers";
 
-export const prerender = false;
+export const prerender = true;
 
 export const GET: APIRoute = async ({ params }) => {
   let data: any = {};
