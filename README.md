@@ -34,7 +34,7 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 | i18n.locales                | Array   | A list of all available locales                                                                                                                                |
 | layers                      | Array   | A list of available map layers                                                                                                                                 |
 | layers.name                 | String  | The name of the map layer to display in the UI                                                                                                                 |
-| layers.layer_type           | String  | Map layer type: "raster", "vector", or "georeference"                                                                                                          |
+| layers.layer_type           | String  | Map layer type: "raster", "vector", "geojson" or "georeference"                                                                                                          |
 | layers.url                  | String  | URL to the map server                                                                                                                                          |
 | layers.overlay              | Boolean | If `true`, map layer will be rendered as overlay layer. If `false`, map layer will be rendered as base layer                                                   |
 | map                         | Object  | Map configuration                                                                                                                                              |
