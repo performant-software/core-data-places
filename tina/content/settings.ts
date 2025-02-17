@@ -1,3 +1,5 @@
+import TinaMapLayerURLField from '../components/TinaMapLayerURLField';
+import TinaMapLayerOverlaySwitch from '../components/TinaMapLayerOverlaySwitch';
 import { Collection } from '@tinacms/schema-tools';
 
 const Settings: Collection = {
@@ -49,15 +51,24 @@ const Settings: Collection = {
       }, {
         label: 'GeoJSON',
         value: 'geojson'
+      }, {
+        label: 'Georeference',
+        value: 'georeference'
       }]
     }, {
       name: 'url',
       label: 'URL',
-      type: 'string'
+      type: 'string',
+      ui: {
+        component: TinaMapLayerURLField,
+      },
     }, {
       name: 'overlay',
       label: 'Overlay',
-      type: 'boolean'
+      type: 'boolean',
+      ui: {
+        component: TinaMapLayerOverlaySwitch,
+      },
     }]
   }, {
     name: 'search',
