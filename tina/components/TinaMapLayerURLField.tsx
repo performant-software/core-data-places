@@ -44,7 +44,7 @@ const TinaMapLayerURLField = wrapFieldsWithMeta((props: CustomTinaFieldProps) =>
 
   return (
     <div>
-      {isGeoref && mapLibrary && (
+      {isGeoref && mapLibrary?.length > 0 && (
         <>
           <Listbox
             value={props.input.value}
