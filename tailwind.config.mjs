@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 import coreDataConfig from '@performant-software/core-data/tailwind.config';
-import forms from '@tailwindcss/forms';
 import typeography from '@tailwindcss/typography';
 
 export default {
@@ -26,10 +25,9 @@ export default {
 					1000: '#505A6A'
 				},
 			}
-		},
+		}
 	},
 	plugins: [
-		forms,
 		typeography
 	]
 };

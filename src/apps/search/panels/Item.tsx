@@ -2,8 +2,13 @@ import BasePanel from '@apps/search/panels/BasePanel';
 import { useItemsService } from '@performant-software/core-data';
 import React from 'react';
 
-const Item = () => (
+interface Props {
+  className?: string;
+}
+
+const Item = (props: Props) => (
   <BasePanel
+    className={props.className}
     name='item'
     useServiceHook={useItemsService}
   />

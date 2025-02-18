@@ -1,4 +1,4 @@
-import SearchResultTooltip from '@apps/search/SearchResultTooltip';
+import ResultTooltip from '@apps/search/ResultTooltip';
 import TranslationContext from '@apps/search/TranslationContext';
 import {
     LayerMenu,
@@ -15,6 +15,7 @@ import {
   useRuntimeConfig,
   useSelectionValue
 } from '@peripleo/peripleo';
+import { getBoundingBoxOptions } from '@utils/map';
 import {
   useContext,
   useEffect,
@@ -47,15 +48,10 @@ const MapView = () => {
 
   const { t } = useContext(TranslationContext);
 
-  const boundingBoxOptions = useMemo(() => ({
-    padding: {
-      top: 100,
-      bottom: config.search.timeline ? 350 : 100,
-      left: 380,
-      right: 120
-    },
-    maxZoom: config.map.max_zoom || 14,
-  }), []);
+  /**
+   * Sets the bounding box options for the map.
+   */
+  const boundingBoxOptions = useMemo(() => getBoundingBoxOptions(config.map.max_zoom), [config]);
 
   /**
    * If we're on the place detail page or refining results by the map view port, we'll suppress the auto-bounding box
@@ -68,12 +64,13 @@ const MapView = () => {
    */
   useEffect(() => {
     if (selected) {
-      navigate(`/places/${selected.properties.uuid}`);
+      navigate(`${config.search.route}/${selected.properties.uuid}`);
     }
   }, [selected]);
 
   return (
     <Map
+      attributionControl={false}
       className='flex-grow'
       style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
     >
@@ -106,7 +103,7 @@ const MapView = () => {
       />
       <Tooltip
         content={(target, event) => (
-          <SearchResultTooltip
+          <ResultTooltip
             event={event}
             target={target}
           />

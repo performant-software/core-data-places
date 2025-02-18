@@ -3,7 +3,11 @@ import { usePeopleService } from '@performant-software/core-data';
 import { getNameView } from '@utils/people';
 import React, { useCallback } from 'react';
 
-const Person = () => {
+interface Props {
+  className?: string;
+}
+
+const Person = (props: Props) => {
   /**
    * Returns a concatenation of the person's name attributes.
    *
@@ -13,6 +17,8 @@ const Person = () => {
 
   return (
     <BasePanel
+      className={props.className}
+      icon='person'
       name='person'
       renderName={renderName}
       useServiceHook={usePeopleService}

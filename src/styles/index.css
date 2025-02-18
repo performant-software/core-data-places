@@ -1,3 +1,7 @@
+html, body {
+  font-family: Inter;
+}
+
 .ais-RefinementList-item .ais-RefinementList-label {
   display: flex;
   font-size: 0.875rem;
@@ -48,4 +52,13 @@
 .p6o-map-container {
   height: 100%;
   width: 100%;
+}
+
+/* This can be removed after upgrading Peripleo, which accepts a "attributionControl" prop on the Map component */
+.maplibregl-ctrl.maplibregl-ctrl-attrib {
+  display: none;
+}
+
+.p6o-controls-container {
+  overflow: hidden;
 }

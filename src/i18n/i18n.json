@@ -198,5 +198,29 @@
   "date": {
     "tinaLabel": "Date",
     "defaultValue": "Date"
+  },
+  "showMore": {
+    "tinaLabel": "Show More",
+    "defaultValue": "show more"
+  },
+  "showLess": {
+    "tinaLabel": "Show Less",
+    "defaultValue": "show less"
+  },
+  "reset": {
+    "tinaLabel": "Reset",
+    "defaultValue": "Reset"
+  },
+  "facetLabel": {
+    "tinaLabel": "Facet label",
+    "defaultValue": "{{relationship}}: {{field}}"
+  },
+  "list": {
+    "tinaLabel": "List",
+    "defaultValue": "List"
+  },
+  "table": {
+    "tinaLabel": "Table",
+    "defaultValue": "Table"
   }
 }

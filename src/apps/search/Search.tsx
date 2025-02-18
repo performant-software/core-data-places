@@ -1,5 +1,4 @@
-import MapView from '@apps/search/MapView';
-import SearchRoutes from '@apps/search/SearchRoutes';
+import SearchLayout from '@apps/search/SearchLayout';
 import TranslationContext from '@apps/search/TranslationContext';
 import TypesenseSearch from '@apps/search/TypesenseSearch';
 import { useTranslations } from '@i18n/client';
@@ -20,8 +19,7 @@ const Search = () => {
             <TranslationContext.Provider
               value={{ t }}
             >
-              <SearchRoutes />
-              <MapView />
+              <SearchLayout />
             </TranslationContext.Provider>
           </TypesenseSearch>
         </Peripleo>
