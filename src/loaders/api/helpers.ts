@@ -1,7 +1,7 @@
 import { AstroIntegrationLogger } from "astro";
 import config from "@config";
 
-const path = import.meta.env.CORE_DATA_PUBLIC_API_PATH || '/core_data/public/v1/';
+const path = '/core_data/public/v1/';
 
 export const relatedModelTypes = [
   "events",
