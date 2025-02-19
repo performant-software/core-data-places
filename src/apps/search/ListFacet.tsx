@@ -41,6 +41,7 @@ const ListFacet = ({ attribute, className }: Props) => {
               className='flex items-center'
             >
               <Checkbox
+                ariaLabel={item.label}
                 id={`${attribute}-${item.value}`}
                 checked={item.isRefined}
                 onClick={() => refine(item.value)}

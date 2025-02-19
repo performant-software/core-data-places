@@ -17,6 +17,7 @@ const GeosearchFilter = () => {
       className='text-sm flex items-center'
     >
       <Checkbox
+        ariaLabel={t('filterMapBounds')}
         checked={filterByMapBounds}
         id='filterMapBounds'
         onClick={(checked) => setFilterByMapBounds(checked)}
