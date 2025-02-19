@@ -1,5 +1,6 @@
 import TranslationContext from '@apps/search/TranslationContext';
 import { Pill, Typesense as TypesenseUtils } from '@performant-software/core-data';
+import { getFacetLabel } from '@utils/search';
 import { useCallback, useContext } from 'react';
 import { useCurrentRefinements } from 'react-instantsearch';
 import _ from 'underscore';
@@ -11,10 +12,7 @@ const CurrentRefinementsList = () => {
   /**
    * Returns the label for the passed attribute.
    */
-  const getLabel = useCallback((attribute) => {
-    const id = TypesenseUtils.getRelationshipId(attribute) || 'root';
-    return t(id);
-  }, [t]);
+  const getLabel = useCallback((attribute) => getFacetLabel(attribute, t), [t]);
 
   if (_.isEmpty(items)) {
     return null;
