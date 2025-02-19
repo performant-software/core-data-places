@@ -31,14 +31,6 @@
     "tinaLabel": "Map Layers",
     "defaultValue": "Map Layers"
   },
-  "relatedMedia": {
-    "tinaLabel": "Related Media",
-    "defaultValue": "Related Media"
-  },
-  "relatedMediaEmpty": {
-    "tinaLabel": "No related media",
-    "defaultValue": "No related media"
-  },
   "relatedOrganizations": {
     "tinaLabel": "Related Organizations",
     "defaultValue": "Related Organizations"
@@ -222,5 +214,13 @@
   "table": {
     "tinaLabel": "Table",
     "defaultValue": "Table"
+  },
+  "relatedMedia": {
+    "tinaLabel": "Related Media",
+    "defaultValue": "Media ({{count}})"
+  },
+  "relatedMediaItem": {
+    "tinaLabel": "Related Media Item",
+    "defaultValue": "{{name}} ({{count}})"
   }
 }

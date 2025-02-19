@@ -1,9 +1,11 @@
+import ManifestThumbnail, { type Collection } from '@apps/search/ManifestThumbnail';
 import TranslationContext from '@apps/search/TranslationContext';
 import UserDefinedFieldView from '@components/UserDefinedFieldView';
 import {
   BaseService,
   CoreData as CoreDataUtils,
   KeyValueList,
+  MediaGallery,
   RecordDetailPanel,
   useLoader
 } from '@performant-software/core-data';
@@ -13,7 +15,12 @@ import { getBoundingBoxOptions } from '@utils/map';
 import { getNameView } from '@utils/people';
 import { getCurrentId } from '@utils/router';
 import clsx from 'clsx';
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useMemo,
+  useState
+} from 'react';
 import _ from 'underscore';
 
 interface Props {
@@ -29,6 +36,8 @@ interface Props {
 const INVERSE_SUFFIX = '_inverse';
 
 const BasePanel = (props: Props) => {
+  const [manifestUrl, setManifestUrl] = useState<string | undefined>();
+
   const Service = props.useServiceHook();
   const navigate = useNavigate();
   const config = useRuntimeConfig();
@@ -98,6 +107,12 @@ const BasePanel = (props: Props) => {
   const { data: { organizations = [] } = {} } = useLoader(onLoadOrganizations, null, [id]);
 
   /**
+   * Loads the IIIF collection manifest from the Core Data API.
+   */
+  const onLoadManifests = useCallback(() => Service.fetchRelatedManifests(id, { per_page: 0 }), [id]);
+  const { data: collection = {} }: { collection: Collection } = useLoader(onLoadManifests, null, [id]);
+
+  /**
    * Loads the related people from the Core Data API.
    */
   const onLoadPeople = useCallback(() => Service.fetchRelatedPeople(id, { per_page: 0}), [id]);
@@ -143,6 +158,33 @@ const BasePanel = (props: Props) => {
   }, [item, places, props.resolveGeometry]);
 
   /**
+   * Memo-izes the related media items.
+   */
+  const manifest = useMemo(() => {
+    if (_.isEmpty(collection.items)) {
+      return [];
+    }
+
+    const count = _.reduce(collection.items, (memo, item) => memo + item.item_count, 0);
+    const title = t('relatedMedia', { count });
+
+    return [{
+      items: _.map(collection.items, (item) => item),
+      renderItem: (item) => (
+        <ManifestThumbnail
+          className='py-2 px-6'
+          itemCount={item.item_count}
+          name={_.first(item.label?.en)}
+          onClick={() => setManifestUrl(item.id)}
+          thumbnail={item.thumbnail}
+        />
+      ),
+      renderTitle: () => title,
+      title
+    }];
+  }, [collection]);
+
+  /**
    * Memo-izes the name.
    */
   const name = useMemo(() => (item && props.renderName && props.renderName(item)) || item?.name, [item]);
@@ -163,6 +205,7 @@ const BasePanel = (props: Props) => {
       name: item.name,
       onClick: () => navigate(`/items/${item.uuid}`)
     })),
+    ...manifest,
     ...getRelatedRecords(organizations, 'participants', (organization) => ({
       name: organization.name,
       onClick: () => navigate(`/organizations/${organization.uuid}`)
@@ -186,6 +229,7 @@ const BasePanel = (props: Props) => {
     events,
     instances,
     items,
+    manifest,
     organizations,
     people,
     places,
@@ -253,6 +297,12 @@ const BasePanel = (props: Props) => {
           fitBoundingBox={_.get(config.map, 'zoom_to_place', true)}
           data={geometry}
           layerId='current'
+        />
+      )}
+      { manifestUrl && (
+        <MediaGallery
+          manifestUrl={manifestUrl}
+          onClose={() => setManifestUrl(null)}
         />
       )}
     </aside>
