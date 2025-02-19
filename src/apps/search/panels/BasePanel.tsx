@@ -308,7 +308,7 @@ const BasePanel = (props: Props) => {
         title={name}
       >
         { item && props.renderItem && props.renderItem(item) }
-        { userDefined && (
+        { !_.isEmpty(userDefined) && (
           <KeyValueList
             items={userDefined}
           />
