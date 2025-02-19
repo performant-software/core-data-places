@@ -14,7 +14,7 @@ const ListView = (props: Props) => {
   const hits = useCachedHits();
   const navigate = useNavigate();
 
-  const { onPointEnter, onPointLeave } = useHoverable();
+  const { isHover, onPointEnter, onPointLeave } = useHoverable();
 
   /**
    * Navigates to the selected hit.
@@ -37,6 +37,7 @@ const ListView = (props: Props) => {
     >
       <SearchList
         className='flex flex-col'
+        isHighlight={isHover}
         items={hits}
         itemTitle={(hit) => (
           <SearchHighlight
