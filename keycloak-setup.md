@@ -1,6 +1,6 @@
 # Setup Keycloak Users for TinaCMS
 
-## Create user in target Keycloak realm
+## Create SSO user in target Keycloak realm
 
 Goto Realm > Users
 
@@ -18,18 +18,22 @@ Make sure there are no required actions selected.
 
 Create the user by pressing `Create`
 
-## Set Identity Provider Links
+## Create Login User in target KeyCloak realm
 
-From the user screen, navigate to `Identity provider links`
+Goto Realm > Users
 
-![](./docs/identity-1.png)
+![](./docs/users.png)
 
-From the list of `Available identity providers` select the SAML provider
+Select `Add user`
 
-![](./docs/identity-2.png)
+![](./docs/create-user.png)
 
-Click the `Link account` link.
+Create a new user with both username and email set to the email address of the SSO user.
 
-Enter the users email adress in both `User ID` and `Username`. Press the `Link` button.
+Toggle `Email verified` to `Yes`
 
-![](./docs/link-account.png)
+Create a temporary password for the user
+
+![](./docs/password.png)
+
+When the user first logs in they will be required to change it.
