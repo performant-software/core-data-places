@@ -160,7 +160,7 @@ const BasePanel = (props: Props) => {
   /**
    * Memo-izes the related media items.
    */
-  const manifest = useMemo(() => {
+  const relatedManifest = useMemo(() => {
     if (_.isEmpty(collection.items)) {
       return [];
     }
@@ -190,53 +190,67 @@ const BasePanel = (props: Props) => {
   const name = useMemo(() => (item && props.renderName && props.renderName(item)) || item?.name, [item]);
 
   /**
-   * Transforms all the related records.
+   * Transforms the related events.
    */
-  const relatedRecords = useMemo(() => [
-    ...getRelatedRecords(events, 'date', (event) => ({
-      name: event.name,
-      onClick: () => navigate(`/events/${event.uuid}`)
-    })),
-    ...getRelatedRecords(instances, null, (instance) => ({
-      name: instance.name,
-      onClick: () => navigate(`/instances/${instance.uuid}`)
-    })),
-    ...getRelatedRecords(items, null, (item) => ({
-      name: item.name,
-      onClick: () => navigate(`/items/${item.uuid}`)
-    })),
-    ...manifest,
-    ...getRelatedRecords(organizations, 'participants', (organization) => ({
-      name: organization.name,
-      onClick: () => navigate(`/organizations/${organization.uuid}`)
-    })),
-    ...getRelatedRecords(people, 'person', (person) => ({
-      name: getNameView(person),
-      onClick: () => navigate(`/people/${person.uuid}`)
-    })),
-    ...getRelatedRecords(places, 'location', (place) => ({
-      name: place.name,
-      onClick: () => navigate(`/places/${place.uuid}`)
-    })),
-    ...getRelatedRecords(taxonomies, null, (taxonomy) => ({
-      name: taxonomy.name
-    })),
-    ...getRelatedRecords(works, null, (work) => ({
-      name: work.name,
-      onClick: () => navigate(`/works/${work.uuid}`)
-    })),
-  ], [
-    events,
-    instances,
-    items,
-    manifest,
-    organizations,
-    people,
-    places,
-    taxonomies,
-    works,
-    getRelatedRecords
-  ]);
+  const relatedEvents = useMemo(() => getRelatedRecords(events, 'date', (event) => ({
+    name: event.name,
+    onClick: () => navigate(`/events/${event.uuid}`)
+  })), [getRelatedRecords, events]);
+
+  /**
+   * Transforms the related instances.
+   */
+  const relatedInstances = useMemo(() => getRelatedRecords(instances, null, (instance) => ({
+    name: instance.name,
+    onClick: () => navigate(`/instances/${instance.uuid}`)
+  })), [getRelatedRecords, instances]);
+
+  /**
+   * Transforms the related items.
+   */
+  const relatedItems = useMemo(() => getRelatedRecords(items, null, (item) => ({
+    name: item.name,
+    onClick: () => navigate(`/items/${item.uuid}`)
+  })), [getRelatedRecords, items]);
+
+  /**
+   * Transforms the related organizations.
+   */
+  const relatedOrganizations = useMemo(() => getRelatedRecords(organizations, 'participants', (organization) => ({
+    name: organization.name,
+    onClick: () => navigate(`/organizations/${organization.uuid}`)
+  })), [getRelatedRecords, organizations]);
+
+  /**
+   * Transforms the related people.
+   */
+  const relatedPeople = useMemo(() => getRelatedRecords(people, 'person', (person) => ({
+    name: getNameView(person),
+    onClick: () => navigate(`/people/${person.uuid}`)
+  })), [getRelatedRecords, people]);
+
+  /**
+   * Transforms the related places.
+   */
+  const relatedPlaces = useMemo(() => getRelatedRecords(places, 'location', (place) => ({
+    name: place.name,
+    onClick: () => navigate(`/places/${place.uuid}`)
+  })), [getRelatedRecords, places]);
+
+  /**
+   * Transforms the related taxonomies.
+   */
+  const relatedTaxonomies = useMemo(() => getRelatedRecords(taxonomies, null, (taxonomy) => ({
+    name: taxonomy.name
+  })), [getRelatedRecords, taxonomies]);
+
+  /**
+   * Transforms the related works.
+   */
+  const relatedWorks = useMemo(() => getRelatedRecords(works, null, (work) => ({
+    name: work.name,
+    onClick: () => navigate(`/works/${work.uuid}`)
+  })), [getRelatedRecords, works]);
 
   /**
    * Renders the user-defined field value for the passed data type.
@@ -280,7 +294,17 @@ const BasePanel = (props: Props) => {
         count
         icon={props.icon}
         onClose={() => navigate('/')}
-        relations={relatedRecords}
+        relations={[
+          ...relatedEvents,
+          ...relatedInstances,
+          ...relatedItems,
+          ...relatedOrganizations,
+          ...relatedManifest,
+          ...relatedPeople,
+          ...relatedPlaces,
+          ...relatedTaxonomies,
+          ...relatedWorks
+        ]}
         title={name}
       >
         { item && props.renderItem && props.renderItem(item) }
