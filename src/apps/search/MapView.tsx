@@ -78,7 +78,7 @@ const MapView = () => {
         position='topright'
       >
         <Zoom />
-        { baseLayers.length > 1 && (
+        { [...baseLayers, ...dataLayers].length > 1 && (
           <LayerMenu
             baseLayer={baseLayer?.name}
             baseLayers={baseLayers}
