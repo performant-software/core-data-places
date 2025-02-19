@@ -16,7 +16,7 @@ const TinaMapLayerDefaultSwitch = wrapFieldsWithMeta((props: CustomTinaFieldProp
   const [switchColor, setSwitchColor] = useState<string>('!bg-gray-200');
 
   useEffect(() => {
-    // force overlay checked and disabled if layer_type is georeference
+    // force "default" field unchecked and disabled if overlay is unchecked
     const overlayField = props.form.getFieldState(
       `${props.field.name.replace('.default', '.overlay')}`
     );
@@ -40,7 +40,7 @@ const TinaMapLayerDefaultSwitch = wrapFieldsWithMeta((props: CustomTinaFieldProp
   }, [props.input.value, isOverlay])
 
   return (
-    // adapted from switch in TinaPlacePicker.tsx
+    // adapted from TinaMapLayerOverlaySwitch.tsx
     <Switch
       className={`${switchColor} relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
       defaultChecked={props.input.value}
