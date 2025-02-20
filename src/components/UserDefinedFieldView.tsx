@@ -15,6 +15,7 @@ interface Props {
 }
 
 const UserDefinedFieldView = (props: Props) => {
+  // TODO: Replace with our icons
   if (props.type === DataTypes.boolean) {
     return props.value
       ? <CheckIcon className='h-5 w-5' aria-hidden='true' />

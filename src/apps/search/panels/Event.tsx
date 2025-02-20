@@ -5,7 +5,11 @@ import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-compone
 import React, { useCallback } from 'react';
 import _ from 'underscore';
 
-const Event = () => {
+interface Props {
+  className?: string;
+}
+
+const Event = (props: Props) => {
   const { t } = useTranslations();
 
   /**
@@ -22,7 +26,9 @@ const Event = () => {
     }
 
     return (
-      <div>
+      <div
+        className='py-1'
+      >
         <div
           className='py-1 text-muted'
         >
@@ -39,9 +45,13 @@ const Event = () => {
 
   return (
     <BasePanel
+      className={props.className}
+      icon='date'
       name='event'
       renderItem={(event) => (
-        <>
+        <div
+          className='text-sm'
+        >
           { renderDate(event.start_date, getStartDateLabel(event)) }
           { renderDate(event.end_date, t('endDate')) }
           { event.description && (
@@ -51,7 +61,7 @@ const Event = () => {
               { event.description }
             </p>
           )}
-        </>
+        </div>
       )}
       useServiceHook={useEventsService}
     />

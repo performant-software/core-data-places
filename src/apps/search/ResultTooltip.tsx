@@ -12,7 +12,7 @@ interface Props {
   target: Feature | FeatureCluster;
 }
 
-const SearchResultTooltip = (props: Props) => {
+const ResultTooltip = (props: Props) => {
   const { t } = useContext(TranslationContext);
   const hits = useCachedHits();
 
@@ -43,7 +43,7 @@ const SearchResultTooltip = (props: Props) => {
       )}
       { isCluster && count > 0 && (
         <Badge
-          className='text-white bg-blue-600 absolute -top-4 -end-2 dark:border-gray-900 border-2 border-white'
+          className='text-white bg-primary absolute -top-4 -end-2 dark:border-gray-900 border-2 border-white'
           content={t('plusCount', { count })}
         />
       )}
@@ -51,4 +51,4 @@ const SearchResultTooltip = (props: Props) => {
   )
 };
 
-export default SearchResultTooltip;
+export default ResultTooltip;

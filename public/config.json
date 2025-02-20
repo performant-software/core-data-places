@@ -11,16 +11,18 @@
       "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
     }
   ],
+  "map": {
+    "clusterRadius": 6,
+    "geometry": "geometry",
+    "max_zoom": 14,
+    "zoom_to_place": true
+  },
   "search": {
+    "geosearch": true,
     "result_card": {
       "title": "name"
     },
-    "timeline": false
-  },
-  "map": {
-    "cluster_radius": 6,
-    "zoom_to_place": true,
-    "max_zoom": 14
+    "route": "/places"
   },
   "typesense": {
     "host": "example.typesense.com",
@@ -29,7 +31,10 @@
     "api_key": "abcdefg",
     "index_name": "core_data_places",
     "query_by": "name",
-    "default_sort": "name"
+    "default_sort": "name",
+    "overrides": {
+      "geoLocationField": "coordinates"
+    }
   },
   "core_data": {
     "url": "https://staging.coredata.cloud",
@@ -38,9 +43,5 @@
       2,
       3
     ]
-  },
-  "detail_pages": [
-    "modeltype1",
-    "modeltype2"
-  ]
+  }
 }

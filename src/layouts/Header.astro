@@ -1,6 +1,5 @@
 ---
 import { fetchAbout } from '@backend/tina-server';
-import Container from '@components/Container.astro';
 import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
@@ -11,59 +10,48 @@ const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
 const currentUrl = Astro.url;
 
-const { currentTab, fullscreen, t, tabs } = Astro.props;
+const { currentTab, t, tabs } = Astro.props;
 
 const { title } = await fetchAbout();
 ---
 
 <div
-  class={clsx(
-    'hidden md:inline-block w-full max-w-screen-3xl 3xl:mx-auto bg-white z-10',
-    { 'shadow-md': !fullscreen }
-  )}
+  class='flex flex-row justify-between px-6 py-5 align-middle bg-primary text-white h-[80px]'
 >
-  <Container
-    className='flex flex-row justify-between py-8 align-middle'
+  <a
+    class='flex flex-row align-middle gap-6'
+    href={getRelativeLocaleUrl(currentLocale)}
   >
-    <a
-      class='flex flex-row align-middle gap-6'
-      href={getRelativeLocaleUrl(currentLocale)}
-    >
-      <div
-        class='inline-block w-6 h-6 bg-blue-600 rounded-full'
-      />
-      <p
-        class='text-2xl font-serif self-center'
+    <h1>
+      { title }
+    </h1>
+  </a>
+  <div
+    class='flex flex-row gap-x-12 pe-10 align-baseline justify-around'
+  >
+    { _.map(_.keys(tabs), (key) => (
+      <a
+        class='flex flex-col p-y-4 justify-center'
+        href={tabs[key].url}
       >
-        { title }
-      </p>
-    </a>
-    <div
-      class='flex flex-row xl:gap-x-16 lg:gap-x-12 gap-x-4 align-baseline justify-around'
-    >
-      { _.map(_.keys(tabs), (key) => (
-        <a
-          class='flex flex-col p-y-4 justify-center'
-          href={tabs[key].url}
+        <div
+          class={clsx(
+            'flex',
+            'font-light',
+            { 'border-b': key === currentTab }
+          )}
         >
-          <div
-            class={clsx(
-              'flex',
-              { 'font-bold border-b-2 border-b-orange-primary': key === currentTab }
-            )}
-          >
-            { t(key) }
-          </div>
-        </a>
-      ))}
-      <LanguagePicker
-        locales={locales}
-        currentLocale={currentLocale}
-        currentUrl={currentUrl.pathname}
-        client:only='react'
-      />
-    </div>
-  </Container>
+          { t(key) }
+        </div>
+      </a>
+    ))}
+    <LanguagePicker
+      locales={locales}
+      currentLocale={currentLocale}
+      currentUrl={currentUrl.pathname}
+      client:only='react'
+    />
+  </div>
 </div>
 
 <MobileHeader
