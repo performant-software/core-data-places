@@ -1,6 +1,8 @@
 import { AstroIntegrationLogger } from "astro";
 import config from "@config";
 
+const path = '/core_data/public/v1/';
+
 export const relatedModelTypes = [
   "events",
   "instances",
@@ -13,6 +15,19 @@ export const relatedModelTypes = [
   "taxonomies",
   "works"
 ];
+
+export const singularForms = {
+  events: 'event',
+  instances: 'instance',
+  items: 'item',
+  manifests: 'manifest',
+  media_contents: 'media_content',
+  organizations: 'organization',
+  people: 'person',
+  places: 'place',
+  taxonomies: 'taxonomy',
+  works: 'work'
+};
 
 export const createProjectIdString = (ids: string[] | number[]) => {
   let str = "";
@@ -34,17 +49,17 @@ export async function getRelation(
   relatedModel: string
 ) {
   const url = new URL(
-    `/core_data/public/v1/${model}/${uuid}/${relatedModel}?${createProjectIdString(config.core_data.project_ids)}`,
+    `${path}${model}/${uuid}/${relatedModel}?${createProjectIdString(config.core_data.project_ids)}`,
     config.core_data.url
   );
   const response = await fetch(url).then((res) => res.json());
-  return response[relatedModel];
+  return response;
 }
 
 export async function getRelations(
   model: string,
   uuid: string,
-  relatedModels: string[],
+  relatedModels: string[] = relatedModelTypes,
   logger?: AstroIntegrationLogger
 ) {
   let relatedRecords: { [key: string]: any } = {};
@@ -52,18 +67,18 @@ export async function getRelations(
   for (let i = 0; i < relatedModels.length; i++) {
     const relatedModel = relatedModels[i];
     const relations = await getRelation(model, uuid, relatedModel);
-    relatedRecords[relatedModel] = relations;
+    relatedRecords[relatedModel] = relations[relatedModel]
   }
   return relatedRecords;
 }
 
 export async function fetchItemData(model: string, uuid: string) {
   const url = new URL(
-    `/core_data/public/v1/${model}/${uuid}?${createProjectIdString(config.core_data.project_ids)}`,
+    `${path}${model}/${uuid}?${createProjectIdString(config.core_data.project_ids)}`,
     config.core_data.url
   );
   const response = await fetch(url).then((res) => res.json());
-  return Object.values(response) ? Object.values(response)[0] : null;
+  return response;
 }
 
 export async function fetchModelData(
@@ -74,14 +89,14 @@ export async function fetchModelData(
   logger?: AstroIntegrationLogger
 ) {
   const url = new URL(
-    `/core_data/public/v1/${options.model}?${createProjectIdString(config.core_data.project_ids)}`,
+    `${path}${options.model}?${createProjectIdString(config.core_data.project_ids)}`,
     config.core_data.url
   );
   let response = await fetch(url).then((res) => res.json());
   if (response?.list?.pages != 1) {
     response = await fetch(
       new URL(
-        `/core_data/public/v1/${options.model}?${createProjectIdString(config.core_data.project_ids)}&per_page=${response?.list?.count}`,
+        `${path}${options.model}?${createProjectIdString(config.core_data.project_ids)}&per_page=${response?.list?.count}`,
         config.core_data.url
       )
     ).then((res) => res.json());
