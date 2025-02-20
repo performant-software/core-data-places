@@ -1,9 +1,7 @@
 {
   "content": ["paths", "posts"],
-  "content": ["paths", "posts"],
   "i18n": {
     "default_locale": "en",
-    "locales": ["en"]
     "locales": ["en"]
   },
   "layers": [
@@ -14,6 +12,7 @@
     }
   ],
   "map": {
+    "clusterRadius": 6,
     "geometry": "geometry",
     "max_zoom": 14,
     "zoom_to_place": true
@@ -21,28 +20,28 @@
   "search": {
     "geosearch": true,
     "result_card": {
-      "title": "6e89decd-b884-47ef-a052-a2f49ab4c33c.0.name",
-      "subtitle": "name"
+      "title": "name"
     },
     "route": "/places"
   },
   "typesense": {
-    "host": "i74olkjcuy69ze2vp-1.a1.typesense.net",
+    "host": "example.typesense.com",
     "port": 443,
     "protocol": "https",
-    "api_key": "PSNp8MUfQBInjahcHQ3l76jChrHZHqmj",
-    "index_name": "scavenger_hunt",
-    "query_by": "name"
+    "api_key": "abcdefg",
+    "index_name": "core_data_places",
+    "query_by": "name",
+    "default_sort": "name",
+    "overrides": {
+      "geoLocationField": "coordinates"
+    }
   },
   "core_data": {
     "url": "https://staging.coredata.cloud",
     "project_ids": [
-      "43",
-      "44",
-      "45"
+      1,
+      2,
+      3
     ]
-  },
-  "detail_pages": [
-    "works"
-  ]
+  }
 }
