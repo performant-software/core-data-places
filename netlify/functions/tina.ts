@@ -94,16 +94,7 @@ app.get('/api/tina/i18n/:language', async (req, res) => {
   res.send(i18n);
 });
 
-// app.post('/api/auth/*', (req, res) => {
-//   return NextAuth(NextAuthOptions)(req, res);
-// });
-
-// app.get('/api/auth/*', (req, res) => {
-//   return NextAuth(NextAuthOptions)(req, res);
-// });
-
 app.post('/api/tina/*', async (req, res) => {
-  console.info(`Node.js version: ${process.version}`);
   tinaBackend(req, res);
 });
 
