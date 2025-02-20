@@ -169,10 +169,11 @@ const BasePanel = (props: Props) => {
     const title = t('relatedMedia', { count });
 
     return [{
+      horizontal: true,
       items: _.map(collection.items, (item) => item),
       renderItem: (item) => (
         <ManifestThumbnail
-          className='py-2 px-6'
+          className='ps-6 pe-6'
           itemCount={item.item_count}
           name={_.first(item.label?.en)}
           onClick={() => setManifestUrl(item.id)}
