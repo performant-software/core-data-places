@@ -9,7 +9,7 @@ export default defineConfig({
     Keycloak({
       clientId: process.env.AUTH_KEYCLOAK_ID || 'tinacms',
       clientSecret: process.env.AUTH_KEYCLOAK_SECRET || '',
-      issuer: process.env.AUTH_KEYCLOAK_ISSUER || 'https://keycloak.archivengine.com/realms/GBoF'
+      issuer: process.env.AUTH_KEYCLOAK_ISSUER || ''
     }),
   ],
 });
