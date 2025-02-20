@@ -15,7 +15,11 @@
 
 [dev]
   command = "npm start"
+  port = 3000
   targetPort = 4321
 
 [build]
   command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "22.13.0"
