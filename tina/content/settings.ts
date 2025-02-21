@@ -1,6 +1,7 @@
-import TinaMapLayerURLField from '../components/TinaMapLayerURLField';
-import TinaMapLayerOverlaySwitch from '../components/TinaMapLayerOverlaySwitch';
 import { Collection } from '@tinacms/schema-tools';
+import TinaMapLayerDefaultSwitch from '../components/TinaMapLayerDefaultSwitch';
+import TinaMapLayerOverlaySwitch from '../components/TinaMapLayerOverlaySwitch';
+import TinaMapLayerURLField from '../components/TinaMapLayerURLField';
 
 const Settings: Collection = {
   name: 'settings',
@@ -68,6 +69,13 @@ const Settings: Collection = {
       type: 'boolean',
       ui: {
         component: TinaMapLayerOverlaySwitch,
+      },
+    }, {
+      name: 'default',
+      label: 'Visible by default',
+      type: 'boolean',
+      ui: {
+        component: TinaMapLayerDefaultSwitch,
       },
     }]
   }, {

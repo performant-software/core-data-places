@@ -10,7 +10,7 @@ To start, run:
 ```
 npm install && netlify dev
 ```
-
+ 
 ## Getting Started
 
 #### Create a content repository
