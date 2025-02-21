@@ -1,24 +1,21 @@
-import type { APIRoute, GetStaticPaths } from "astro";
-import { getEntry } from "astro:content";
-import { getCollection } from "astro:content";
 import config from "@config";
-import { loaderDict } from "@root/src/loaders/api";
-import { singularForms } from "@root/src/loaders/api/helpers";
+import { loaderDict } from "@loaders/api";
+import { buildStaticEndpoints, modelTypes } from '@loaders/coreDataLoader';
+import type { APIRoute, GetStaticPaths } from "astro";
+import { getCollection, getEntry } from "astro:content";
 
-export const prerender = true;
+export const prerender = !buildStaticEndpoints;
 
 export const GET: APIRoute = async ({ params }) => {
-  let data: any = {};
+  let data: any;
   const { model, slug } = params;
-  const singular = singularForms[model];
 
-  if (import.meta.env.PUBLIC_STATIC_BUILD && import.meta.env.PUBLIC_STATIC_BUILD != 'false') {
+  if (buildStaticEndpoints) {
     // @ts-ignore
     const entry = await getEntry(model, slug);
-    // @ts-ignore
     data = entry?.data;
   } else {
-    data = loaderDict[model].fetchOne(slug);
+    data = await loaderDict[model].fetchOne(slug, false);
   }
 
   return new Response(JSON.stringify(data), {
@@ -30,12 +27,13 @@ export const GET: APIRoute = async ({ params }) => {
 };
 
 export const getStaticPaths = (async () => {
-  if (!import.meta.env.PUBLIC_STATIC_BUILD || import.meta.env.PUBLIC_STATIC_BUILD == 'false') {
+  if (!buildStaticEndpoints) {
     return [];
   }
-  const models = config.detail_pages;
+
   let routes = [];
-  for (const model of models) {
+
+  for (const model of modelTypes) {
     // @ts-ignore
     const pages = await getCollection(model);
     if (pages && pages.length) {

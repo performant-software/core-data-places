@@ -1,7 +1,30 @@
+import { loaderDict } from "@loaders/api";
 import type { Loader, LoaderContext } from "astro/loaders";
-import {
-  loaderDict
-} from "./api";
+
+export const modelTypes = [
+  'events',
+  'instances',
+  'items',
+  'organizations',
+  'people',
+  'places',
+  'works'
+];
+
+export const relatedModelTypes = [
+  "events",
+  "instances",
+  "items",
+  "manifests",
+  "media_contents",
+  "organizations",
+  "people",
+  "places",
+  "taxonomies",
+  "works"
+];
+
+export const buildStaticEndpoints = import.meta.env.PUBLIC_BUILD_STATIC_ENDPOINTS === 'true';
 
 export function coreDataLoader(options: {
   model: string;

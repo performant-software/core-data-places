@@ -1,8 +1,8 @@
 import BasePanel from '@apps/search/panels/BasePanel';
-import { useTranslations } from '@i18n/client';
-import { useEventsService } from '@performant-software/core-data';
+import TranslationContext from '@apps/search/TranslationContext';
+import EventsService from '@backend/api/events';
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import _ from 'underscore';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Event = (props: Props) => {
-  const { t } = useTranslations();
+  const { t } = useContext(TranslationContext);
 
   /**
    * Returns the start date label for the passed event.
@@ -63,7 +63,7 @@ const Event = (props: Props) => {
           )}
         </div>
       )}
-      useServiceHook={useEventsService}
+      service={EventsService}
     />
   );
 };

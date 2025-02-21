@@ -1,17 +1,15 @@
+import { getRelation } from "@loaders/api/helpers";
+import { buildStaticEndpoints, modelTypes, relatedModelTypes } from '@loaders/coreDataLoader';
 import type { APIRoute, GetStaticPaths } from "astro";
-import { getEntry } from "astro:content";
-import { getCollection } from "astro:content";
-import config from "@config";
-import { loaderDict } from "@root/src/loaders/api";
-import { getRelation, relatedModelTypes } from "@root/src/loaders/api/helpers";
+import { getCollection, getEntry } from "astro:content";
 
-export const prerender = true;
+export const prerender = !buildStaticEndpoints;
 
 export const GET: APIRoute = async ({ params }) => {
   let data: any = {};
   const { model, slug, relatedModel } = params;
 
-  if (import.meta.env.PUBLIC_STATIC_BUILD && import.meta.env.PUBLIC_STATIC_BUILD != 'false') {
+  if (buildStaticEndpoints) {
     // @ts-ignore
     const entry = await getEntry(model, slug);
     // @ts-ignore
@@ -29,12 +27,13 @@ export const GET: APIRoute = async ({ params }) => {
 };
 
 export const getStaticPaths = (async () => {
-  if (!import.meta.env.PUBLIC_STATIC_BUILD || import.meta.env.PUBLIC_STATIC_BUILD == 'false') {
+  if (!buildStaticEndpoints) {
     return [];
   }
-  const models = config.detail_pages;
+
   let routes = [];
-  for (const model of models) {
+
+  for (const model of modelTypes) {
     // @ts-ignore
     const pages = await getCollection(model);
     if (pages && pages.length) {
