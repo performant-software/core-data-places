@@ -1,5 +1,5 @@
-import { loaderDict } from "@loaders/api";
-import type { Loader, LoaderContext } from "astro/loaders";
+import { loaderDict } from '@loaders/api';
+import type { Loader, LoaderContext } from 'astro/loaders';
 
 export const modelTypes = [
   'events',
@@ -12,16 +12,16 @@ export const modelTypes = [
 ];
 
 export const relatedModelTypes = [
-  "events",
-  "instances",
-  "items",
-  "manifests",
-  "media_contents",
-  "organizations",
-  "people",
-  "places",
-  "taxonomies",
-  "works"
+  'events',
+  'instances',
+  'items',
+  'manifests',
+  'media_contents',
+  'organizations',
+  'people',
+  'places',
+  'taxonomies',
+  'works'
 ];
 
 export const buildStaticEndpoints = import.meta.env.PUBLIC_BUILD_STATIC_ENDPOINTS === 'true';
@@ -31,11 +31,11 @@ export function coreDataLoader(options: {
   getRelations?: boolean;
 }): Loader {
   return {
-    name: "core-data-loader",
+    name: 'core-data-loader',
     load: async (context: LoaderContext): Promise<void> => {
       const { generateDigest, logger, parseData, store } = context;
       const startTime = Date.now();
-      logger.info("Loading item data");
+      logger.info('Loading item data');
       const response = await loaderDict[options.model].fetchAll({ getRelations: options.getRelations }, logger);
       const fetchedTime = Date.now();
       logger.info(`Data fetched in ${fetchedTime - startTime}ms`);

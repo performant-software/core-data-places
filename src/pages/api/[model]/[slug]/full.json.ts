@@ -1,8 +1,8 @@
-import config from "@config";
-import { loaderDict } from "@loaders/api";
+import config from '@config';
+import { loaderDict } from '@loaders/api';
 import { buildStaticEndpoints, modelTypes } from '@loaders/coreDataLoader';
-import type { APIRoute, GetStaticPaths } from "astro";
-import { getCollection, getEntry } from "astro:content";
+import type { APIRoute, GetStaticPaths } from 'astro';
+import { getCollection, getEntry } from 'astro:content';
 
 export const prerender = !buildStaticEndpoints;
 
@@ -21,7 +21,7 @@ export const GET: APIRoute = async ({ params }) => {
   return new Response(JSON.stringify(data), {
     status: 200,
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
 };

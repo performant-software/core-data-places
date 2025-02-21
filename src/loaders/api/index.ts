@@ -1,10 +1,10 @@
-import eventsLoader, { eventLoader } from "@loaders/api/events";
-import instancesLoader, { instanceLoader } from "@loaders/api/instances";
-import itemsLoader, { itemLoader } from "@loaders/api/items";
-import organizationsLoader, { organizationLoader } from "@loaders/api/organizations";
-import peopleLoader, { personLoader } from "@loaders/api/people";
-import placesLoader, { placeLoader } from "@loaders/api/places";
-import worksLoader, { workLoader } from "@loaders/api/works";
+import eventsLoader, { eventLoader } from '@loaders/api/events';
+import instancesLoader, { instanceLoader } from '@loaders/api/instances';
+import itemsLoader, { itemLoader } from '@loaders/api/items';
+import organizationsLoader, { organizationLoader } from '@loaders/api/organizations';
+import peopleLoader, { personLoader } from '@loaders/api/people';
+import placesLoader, { placeLoader } from '@loaders/api/places';
+import worksLoader, { workLoader } from '@loaders/api/works';
 
 const loaderDict = {
   events: { fetchAll: eventsLoader, fetchOne: eventLoader },

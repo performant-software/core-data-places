@@ -1,6 +1,6 @@
-import config from "@config";
+import config from '@config';
 import { relatedModelTypes } from '@loaders/coreDataLoader';
-import { AstroIntegrationLogger } from "astro";
+import { AstroIntegrationLogger } from 'astro';
 
 const path = '/core_data/public/v1/';
 
@@ -18,13 +18,13 @@ export const singularForms = {
 };
 
 export const createProjectIdString = (ids: string[] | number[]) => {
-  let str = "";
+  let str = '';
   if (!ids.length) {
     return str;
   }
   for (let i = 0; i < ids.length; i++) {
     if (i > 0) {
-      str += "&";
+      str += '&';
     }
     str += `project_ids[]=${ids[i]}`;
   }
