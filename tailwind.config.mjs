@@ -20,7 +20,7 @@ export default {
 				'screen-3xl': '1800px',
 			},
 			colors: {
-				primary: config.customization.primary || coreDataConfig.theme.extend.colors.primary,
+				primary: config.customization?.primary || coreDataConfig.theme.extend.colors.primary,
 				'neutral-dark': '#111928',
 				'neutral-light': '#F5F5F5',
 				gray: {
