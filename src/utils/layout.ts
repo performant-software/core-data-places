@@ -1,3 +1,11 @@
+/**
+ * 
+ * @param primary a color in hex format
+ * @returns true if black text should be used on a background of color primary for contrast, false otherwise
+ * 
+ * (source for formula: https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color)
+ */
+
 export const useBlackText = (primary: string) => {
     if (primary.length !== 7) {
         return false;
