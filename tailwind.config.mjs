@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 import coreDataConfig from '@performant-software/core-data/tailwind.config';
 import typeography from '@tailwindcss/typography';
+import config from './public/config.json';
 
 export default {
 	presets: [
@@ -19,6 +20,7 @@ export default {
 				'screen-3xl': '1800px',
 			},
 			colors: {
+				primary: config.customization.primary || coreDataConfig.theme.extend.colors.primary,
 				'neutral-dark': '#111928',
 				'neutral-light': '#F5F5F5',
 				gray: {

@@ -11,6 +11,9 @@ import '@styles/index.css';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import clsx from 'clsx';
 import _ from 'underscore';
+import { useBlackText } from '@utils/layout';
+
+const primaryText = config.customization?.primary && useBlackText(config.customization.primary) ? 'black' : 'white';
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
@@ -57,6 +60,7 @@ const tabs = {
   <body
     class={clsx(
       'flex h-full sm:min-h-screen flex-col bg-white text-neutral-dark mx-auto',
+      `primary-text-${primaryText}`,
       { '3xl:bg-neutral-dark 3xl:max-w-screen-3xl': !fullscreen }
     )}
     transition:animate='initial'

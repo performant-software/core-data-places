@@ -201,6 +201,35 @@ const Settings: Collection = {
       type: 'string',
       list: true
     }]
+  }, {
+    name: 'customization',
+    label: 'Customization and Branding',
+    type: 'object',
+    defaultItem: () => ({
+      'primary': '#073B4C',
+      'header_title': true
+    }),
+    fields: [{     
+      type: 'string',
+      name: 'primary',
+      label: 'Primary Color',
+      ui: {
+        component: 'color',
+        //@ts-ignore
+        colorFormat: 'hex',
+        colors: ['#073B4C'],
+        widget: 'sketch',
+      }
+    }, {
+      type: 'image',
+      name: 'header_logo',
+      label: 'Header Logo'
+    }, {
+      type: 'boolean',
+      name: 'header_title',
+      label: 'Display Title Text?',
+      description: 'If checked, will display your project\'s title in the header along with the logo (if provided).'
+    }]
   }],
   ui: {
     allowedActions: {
