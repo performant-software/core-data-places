@@ -3,8 +3,10 @@ import TranslationContext from '@apps/search/TranslationContext';
 import useHoverable from '@apps/search/useHoverable';
 import { SearchResultsTable, useCachedHits } from '@performant-software/core-data';
 import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
+import { getColumnLabel, renderFlattenedAttribute } from '@root/src/utils/search';
 import clsx from 'clsx';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
+import _ from 'underscore';
 
 interface Props {
   className?: string;
@@ -18,12 +20,29 @@ const TableView = (props: Props) => {
   const { isHover, onPointEnter, onPointLeave } = useHoverable();
   const navigate = useNavigate();
 
-  const { title } = config.search.result_card;
+  const { title } = config.search.result_card.title_attribute;
+
+  /**
+   * List of columns to display in the search table
+   */
+  const columns = useMemo(() => {
+    if (config.search.result_card.attributes) {
+      return config.search.result_card.attributes.map(att => ({
+        render: (hit) => renderFlattenedAttribute(hit, att.name),
+        label: getColumnLabel(att.name, t),
+        ...att
+      }))
+    }
+
+    return []
+  }, [config])
 
   /**
    * Navigates to the selected hit.
    */
   const onRowClick = useCallback((hit) => navigate(`${config.search.route}/${hit.id}`), []);
+
+  console.log(hits)
 
   return (
     <div
@@ -51,7 +70,7 @@ const TableView = (props: Props) => {
               hit={hit}
             />
           )
-        }]}
+        }, ...columns]}
         isHighlight={isHover}
         onRowClick={onRowClick}
         onRowPointerEnter={onPointEnter}

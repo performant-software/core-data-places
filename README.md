@@ -26,44 +26,47 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 
 **Note:** Changes to `config.json` will require a re-build of the site.
 
-| Key                         | Type    | Description                                                                                                                                                       |
-|-----------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| content                     | Array   | Array of content keys to allow for data entry and routing: "posts", "paths"                                                                                       |
-| i18n                        | Object  | Astro i18n configuration                                                                                                                                          |
-| i18n.default_locale         | String  | The default locale                                                                                                                                                |
-| i18n.locales                | Array   | A list of all available locales                                                                                                                                   |
-| layers                      | Array   | A list of available map layers                                                                                                                                    |
-| layers.name                 | String  | The name of the map layer to display in the UI                                                                                                                    |
-| layers.layer_type           | String  | Map layer type: "raster", "vector", "geojson" or "georeference"                                                                                                          |
-| layers.url                  | String  | URL to the map server                                                                                                                                             |
-| layers.overlay              | Boolean | If `true`, map layer will be rendered as overlay layer. If `false`, map layer will be rendered as base layer                                                      |
-| map                         | Object  | Map configuration                                                                                                                                                 |
-| map.cluster_radius          | Number  | If provided, map points will be clustered for the given radius (in miles). This option is only valid if the `map.geometry` property contains Lat/Lng coordinates. |
-| map.geometry                | String  | Path to the attribute that contains the GeoJSON data to be displayed on the map                                                                                   |
-| map.max_zoom                | Number  | The maximum zoom level to allow when the map view transitions to a set of bounds (a single place, or mulitple places).                                            |
-| map.zoom_to_place           | Boolean | If `true` or not specified, clicking on an individual place marker or search result will zoom the map to its location (using the max zoom).                       |
-| search                      | Object  | Search UI configuration                                                                                                                                           |
-| search.geosearch            | Boolean | If `true`, the "filter by map bounds" facet will be available.                                                                                                    |
-| search.result_card          | Object  | Search result card configuration                                                                                                                                  |
-| search.result_card.title    | String  | Path to the value in the Typesense document that should be used as the card title. This value can contain nested objects (e.g. `<relationship-id>.0.name`).       |
-| search.result_card.subtitle | String  | Path to the value in the Typesense document that should be used as the card subtitle. This value can contain nested objects (e.g. `<relationship-id>.0.name`).    |
-| search.route                | String  | The navigation route to use when clicking on a search result card (e.g. "/places", "/organizations", etc)                                                         |
-| typesense                   | Object  | Typesense index connection information                                                                                                                            |
-| typesense.host              | String  | Typesense host URL                                                                                                                                                |
-| typesense.port              | Number  | Typesense host port                                                                                                                                               |
-| typesense.protocol          | String  | Typesense host protocol. Typically "https" or "http"                                                                                                              |
-| typesense.api_key           | String  | Typesense search API key. **NOTE:** This should be a read-only key.                                                                                               |
-| typesense.index_name        | String  | Name of the Typesense collection                                                                                                                                  |
-| typesense.query_by          | String  | Typesense attributes to query when a search is executed                                                                                                           |
-| typesense.default_sort      | String  | Typesense attribute to sort by when no search is entered or as a tiebreaker. Search relevance score will always take priority over this attribute.                |
-| typesense.exclude_fields    | String  | Fields to exclude from the Typesense search response                                                                                                              |
-| typesense.facets            | Object  | Facet configuration                                                                                                                                               |
-| typesense.facets.exclude    | Array   | Array of facet names to exclude                                                                                                                                   |
-| typesense.facets.include    | Array   | Array of facet names to include                                                                                                                                   |
-| typesense.overrides         | Object  | Overrides for the [typesense-instantsearch-adapter](https://github.com/typesense/typesense-instantsearch-adapter).                                                |
-| core_data                   | Object  | Core Data configuration                                                                                                                                           |
-| core_data.url               | String  | URL of the Core Data application                                                                                                                                  |
-| core_data.project_ids       | Array   | Numeric array of Core Data project IDs to be included                                                                                                             |
+| Key                                   | Type    | Description                                                                                                                                                       |
+|---------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| content                               | Array   | Array of content keys to allow for data entry and routing: "posts", "paths"                                                                                       |
+| i18n                                  | Object  | Astro i18n configuration                                                                                                                                          |
+| i18n.default_locale                   | String  | The default locale                                                                                                                                                |
+| i18n.locales                          | Array   | A list of all available locales                                                                                                                                   |
+| layers                                | Array   | A list of available map layers                                                                                                                                    |
+| layers.name                           | String  | The name of the map layer to display in the UI                                                                                                                    |
+| layers.layer_type                     | String  | Map layer type: "raster", "vector", "geojson" or "georeference"                                                                                                          |
+| layers.url                            | String  | URL to the map server                                                                                                                                             |
+| layers.overlay                        | Boolean | If `true`, map layer will be rendered as overlay layer. If `false`, map layer will be rendered as base layer                                                      |
+| map                                   | Object  | Map configuration                                                                                                                                                 |
+| map.cluster_radius                    | Number  | If provided, map points will be clustered for the given radius (in miles). This option is only valid if the `map.geometry` property contains Lat/Lng coordinates. |
+| map.geometry                          | String  | Path to the attribute that contains the GeoJSON data to be displayed on the map                                                                                   |
+| map.max_zoom                          | Number  | The maximum zoom level to allow when the map view transitions to a set of bounds (a single place, or mulitple places).                                            |
+| map.zoom_to_place                     | Boolean | If `true` or not specified, clicking on an individual place marker or search result will zoom the map to its location (using the max zoom).                       |
+| search                                | Object  | Search UI configuration                                                                                                                                           |
+| search.geosearch                      | Boolean | If `true`, the "filter by map bounds" facet will be available.                                                                                                    |
+| search.result_card                    | Object  | Search result card configuration                                                                                                                                  |
+| search.result_card.title              | String  | Path to the value in the Typesense document that should be used as the card title. This value can contain nested objects (e.g. `<relationship-id>.0.name`).       |
+| search.result_card.subtitle           | String  | Path to the value in the Typesense document that should be used as the card subtitle. This value can contain nested objects (e.g. `<relationship-id>.0.name`).    |
+| search.result_card.attributes         | Array   | Attributes to display in the search list and table                                                                                                                |
+| search.result_card.attributes.name    | String  | Path to the value in the Typesense document that should be used to look up the column value. This value can contain nested objects (e.g. `<relationship-id>.0.name`).|
+| search.result_card.attributes.icon    | String  | Name of the icon that should displayed next to the value in the search list. If not provided, a bullet point will be used.                                        |
+| search.route                          | String  | The navigation route to use when clicking on a search result card (e.g. "/places", "/organizations", etc)                                                         |
+| typesense                             | Object  | Typesense index connection information                                                                                                                            |
+| typesense.host                        | String  | Typesense host URL                                                                                                                                                |
+| typesense.port                        | Number  | Typesense host port                                                                                                                                               |
+| typesense.protocol                    | String  | Typesense host protocol. Typically "https" or "http"                                                                                                              |
+| typesense.api_key                     | String  | Typesense search API key. **NOTE:** This should be a read-only key.                                                                                               |
+| typesense.index_name                  | String  | Name of the Typesense collection                                                                                                                                  |
+| typesense.query_by                    | String  | Typesense attributes to query when a search is executed                                                                                                           |
+| typesense.default_sort                | String  | Typesense attribute to sort by when no search is entered or as a tiebreaker. Search relevance score will always take priority over this attribute.                |
+| typesense.exclude_fields              | String  | Fields to exclude from the Typesense search response                                                                                                              |
+| typesense.facets                      | Object  | Facet configuration                                                                                                                                               |
+| typesense.facets.exclude              | Array   | Array of facet names to exclude                                                                                                                                   |
+| typesense.facets.include              | Array   | Array of facet names to include                                                                                                                                   |
+| typesense.overrides                   | Object  | Overrides for the [typesense-instantsearch-adapter](https://github.com/typesense/typesense-instantsearch-adapter).                                                |
+| core_data                             | Object  | Core Data configuration                                                                                                                                           |
+| core_data.url                         | String  | URL of the Core Data application                                                                                                                                  |
+| core_data.project_ids                 | Array   | Numeric array of Core Data project IDs to be included                                                                                                             |
 
 #### Create a new Personal Access Token
 
