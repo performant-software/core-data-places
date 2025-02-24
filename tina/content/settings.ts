@@ -19,7 +19,7 @@ const Settings: Collection = {
     type: 'object',
     fields: [{
       name: 'default_locale',
-      label: 'Default Locale',
+      label: 'Default locale',
       type: 'string'
     }, {
       name: 'locales',
@@ -41,7 +41,7 @@ const Settings: Collection = {
       type: 'string'
     }, {
       name: 'layer_type',
-      label: 'Layer Type',
+      label: 'Layer type',
       type: 'string',
       options: [{
         label: 'Vector',
@@ -79,16 +79,37 @@ const Settings: Collection = {
       },
     }]
   }, {
-    name: 'search',
-    label: 'Search',
+    name: 'map',
+    label: 'Map',
     type: 'object',
     fields: [{
       name: 'cluster_radius',
       label: 'Cluster Radius',
       type: 'number'
     }, {
+      name: 'geometry',
+      label: 'Geometry',
+      type: 'string'
+    }, {
+      name: 'max_zoom',
+      label: 'Max zoom',
+      type: 'number'
+    }, {
+      name: 'zoom_to_place',
+      label: 'Zoom to place',
+      type: 'boolean'
+    }]
+  }, {
+    name: 'search',
+    label: 'Search',
+    type: 'object',
+    fields: [{
+      name: 'geosearch',
+      label: 'Geosearch',
+      type: 'boolean'
+    }, {
       name: 'result_card',
-      label: 'Result Card',
+      label: 'Result card',
       type: 'object',
       fields: [{
         name: 'title',
@@ -100,9 +121,9 @@ const Settings: Collection = {
         type: 'string'
       }]
     }, {
-      name: 'timeline',
-      label: 'Timeline',
-      type: 'boolean'
+      name: 'route',
+      label: 'Route',
+      type: 'string'
     }]
   }, {
     name: 'typesense',
@@ -122,16 +143,49 @@ const Settings: Collection = {
       type: 'string'
     }, {
       name: 'api_key',
-      label: 'API Key',
+      label: 'API key',
       type: 'string'
     }, {
       name: 'index_name',
-      label: 'Index Name',
+      label: 'Index name',
       type: 'string'
     }, {
       name: 'query_by',
-      label: 'Query By',
+      label: 'Query by',
       type: 'string'
+    }, {
+      name: 'default_sort',
+      label: 'Default sort',
+      type: 'string'
+    }, {
+      name: 'exclude_fields',
+      label: 'Exclude fields',
+      type: 'string',
+      list: true
+    }, {
+      name: 'facets',
+      label: 'Facets',
+      type: 'object',
+      fields: [{
+        name: 'exclude',
+        label: 'Exclude',
+        type: 'string',
+        list: true
+      }, {
+        name: 'include',
+        label: 'Include',
+        type: 'string',
+        list: true
+      }]
+    }, {
+      name: 'overrides',
+      label: 'Overrides',
+      type: 'object',
+      fields: [{
+        name: 'geoLocationField',
+        label: 'Geo-location field',
+        type: 'string'
+      }]
     }]
   }, {
     name: 'core_data',
