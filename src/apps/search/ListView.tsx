@@ -30,10 +30,12 @@ const ListView = (props: Props) => {
    */
   const attributes = useMemo(() => {
     if (config.search.result_card.attributes) {
-      return config.search.result_card.attributes.map(att => ({
-        render: (hit) => renderFlattenedAttribute(hit, att.name),
-        ...att
-      }))
+      return config.search.result_card.attributes
+        .slice(0, 4)
+        .map(att => ({
+          render: (hit) => renderFlattenedAttribute(hit, att.name),
+          ...att
+        }))
     }
 
     return []
@@ -58,7 +60,7 @@ const ListView = (props: Props) => {
         items={hits}
         itemTitle={(hit) => (
           <SearchHighlight
-            attribute={config.search.result_card.title_attribute}
+            attribute={config.search.result_card.title}
             badge
             className='text-sm line-clamp-3 leading-6'
             hit={hit}

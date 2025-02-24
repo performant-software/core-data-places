@@ -20,18 +20,20 @@ const TableView = (props: Props) => {
   const { isHover, onPointEnter, onPointLeave } = useHoverable();
   const navigate = useNavigate();
 
-  const { title } = config.search.result_card.title_attribute;
+  const { title } = config.search.result_card;
 
   /**
    * List of columns to display in the search table
    */
   const columns = useMemo(() => {
     if (config.search.result_card.attributes) {
-      return config.search.result_card.attributes.map(att => ({
-        render: (hit) => renderFlattenedAttribute(hit, att.name),
-        label: getColumnLabel(att.name, t),
-        ...att
-      }))
+      return config.search.result_card.attributes
+        .slice(0, 4)
+        .map(att => ({
+          render: (hit) => renderFlattenedAttribute(hit, att.name),
+          label: getColumnLabel(att.name, t),
+          ...att
+        }))
     }
 
     return []
@@ -41,8 +43,6 @@ const TableView = (props: Props) => {
    * Navigates to the selected hit.
    */
   const onRowClick = useCallback((hit) => navigate(`${config.search.route}/${hit.id}`), []);
-
-  console.log(hits)
 
   return (
     <div
