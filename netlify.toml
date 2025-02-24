@@ -15,7 +15,6 @@
 
 [dev]
   command = "npm start"
-  port = 3000
   targetPort = 4321
 
 [build]
