@@ -24,8 +24,6 @@ export const relatedModelTypes = [
   'works'
 ];
 
-export const buildStaticEndpoints = import.meta.env.PUBLIC_BUILD_STATIC_ENDPOINTS === 'true';
-
 export function coreDataLoader(options: {
   model: string;
   getRelations?: boolean;

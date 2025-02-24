@@ -9,11 +9,12 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",
-    "@types/node": "^14.18.63",
+    "@types/node": "^22.13.5",
     "@types/underscore": "^1.11.15",
     "astro": "^5.1.1",
     "prettier-plugin-astro": "^0.13.0",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "vite": "^6.1.1"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.3",
