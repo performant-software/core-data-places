@@ -10,6 +10,9 @@ To start, run:
 ```
 npm install && netlify dev
 ```
+
+#### Configuration
+Add a `/public/config.dev.json` file, which will be ignored by Git, to copy local config settings when starting the application.
  
 ## Getting Started
 
