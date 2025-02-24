@@ -6,6 +6,11 @@ const useHoverable = () => {
   const { hover, setHover } = useHoverState();
 
   /**
+   * Returns true if the passed hit is currently hovered.
+   */
+  const isHover = useCallback((hit) => hit.uuid === hover?.properties?.uuid, [hover]);
+
+  /**
    * Sets the hover element on the state.
    */
   const onHoverChange = useCallback((nextHover: any) => (
@@ -31,7 +36,7 @@ const useHoverable = () => {
   }, [hover, onHoverChange]);
 
   return {
-    hover,
+    isHover,
     onPointEnter,
     onPointLeave
   };

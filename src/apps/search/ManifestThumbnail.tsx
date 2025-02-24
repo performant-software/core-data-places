@@ -1,4 +1,5 @@
 import TranslationContext from '@apps/search/TranslationContext';
+import { Button, Icon } from '@performant-software/core-data';
 import { Thumbnail } from '@samvera/clover-iiif/primitives';
 import clsx from 'clsx';
 import React, { useContext } from 'react';
@@ -38,18 +39,33 @@ const ManifestThumbnail = (props: Props) => {
     <li
       className={clsx('flex flex-col justify-center', props.className)}
     >
-      <Thumbnail
-        aria-label={label}
-        className='rounded shadow cursor-pointer'
-        onClick={props.onClick}
-        thumbnail={_.map(props.thumbnail, (t) => ({
-          ...t,
-          width: thumbnailWidth,
-          height:thumbnailHeight
-        }))}
-      />
+      { props.thumbnail && (
+        <Thumbnail
+          aria-label={label}
+          className='rounded shadow cursor-pointer'
+          onClick={props.onClick}
+          thumbnail={_.map(props.thumbnail, (t) => ({
+            ...t,
+            width: thumbnailWidth,
+            height:thumbnailHeight
+          }))}
+        />
+      )}
+      { !props.thumbnail && (
+        <Button
+          className='flex items-center justify-center w-[80px] h-[80px]'
+          onClick={props.onClick}
+          rounded
+          secondary
+        >
+          <Icon
+            name='info'
+            size={24}
+          />
+        </Button>
+      )}
       <div
-        className='text-sm whitespace-nowrap'
+        className='text-sm whitespace-nowrap py-2'
       >
         { label }
       </div>

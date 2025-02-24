@@ -1,4 +1,4 @@
-import { fetchModelData } from "./helpers";
+import { fetchItemData, fetchModelData, getRelations } from "./helpers";
 import { AstroIntegrationLogger } from "astro";
 
 const instancesLoader = async (
@@ -9,5 +9,14 @@ const instancesLoader = async (
 ) => {
   return fetchModelData({ ...options, model: "instances" }, logger);
 };
+
+export const instanceLoader = async (uuid: string, withRelations: boolean = true) => {
+  const response = await fetchItemData("instances", uuid);
+  if (!withRelations) {
+    return response;
+  }
+  const relations = await getRelations("instances", uuid);
+  return ( { ...response, relatedRecords: relations } );
+}
 
 export default instancesLoader;

@@ -15,7 +15,7 @@ const TableView = (props: Props) => {
   const hits = useCachedHits();
   const { t } = useContext(TranslationContext);
 
-  const { onPointEnter, onPointLeave } = useHoverable();
+  const { isHover, onPointEnter, onPointLeave } = useHoverable();
   const navigate = useNavigate();
 
   const { title } = config.search.result_card;
@@ -52,6 +52,7 @@ const TableView = (props: Props) => {
             />
           )
         }]}
+        isHighlight={isHover}
         onRowClick={onRowClick}
         onRowPointerEnter={onPointEnter}
         onRowPointerLeave={onPointLeave}
