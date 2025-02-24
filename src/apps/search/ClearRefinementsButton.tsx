@@ -14,7 +14,7 @@ const ClearRefinementsButton = () => {
       type='button'
     >
       <Icon
-        name='close'
+        name='reset'
       />
       { t('reset') }
     </button>
