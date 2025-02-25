@@ -4,7 +4,7 @@ import { useNavigate, useRuntimeConfig, useSelectionState } from '@peripleo/peri
 import { getIcon, getItemLabel } from '@utils/router';
 import { parseFeature } from '@utils/search';
 import clsx from 'clsx';
-import { useCallback, useContext, useMemo } from 'react';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
 
 interface Props {
   className?: string;
@@ -48,6 +48,19 @@ const Selection = (props: Props) => {
     setSelected(null);
     navigate('/');
   }, []);
+
+  /**
+   * If the selection has been cleared, navigate back to the root URL.
+   */
+  useEffect(() => {
+    if (!selected) {
+      navigate('/');
+    }
+  }, [selected]);
+
+  if (!feature) {
+    return null;
+  }
 
   return (
     <aside
