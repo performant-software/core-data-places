@@ -41,7 +41,7 @@ const ResultTooltip = (props: Props) => {
       return (props.target as any)?.features.length - 1;
     }
 
-    return feature.properties?.items?.length;
+    return feature.properties?.items?.length - 1;
   }, [feature, isCluster, props.target]);
 
   /**
