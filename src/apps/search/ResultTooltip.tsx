@@ -70,7 +70,7 @@ const ResultTooltip = (props: Props) => {
           hit={hit}
         />
       )}
-      {  count > 1 && (
+      {  count > 0 && (
         <Badge
           className='text-white bg-primary absolute -top-4 -end-2 dark:border-gray-900 border-2 border-white'
           content={t('plusCount', { count })}
