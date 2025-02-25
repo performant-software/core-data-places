@@ -2,8 +2,10 @@ import SearchHighlight from '@apps/search/SearchHighlight';
 import useHoverable from '@apps/search/useHoverable';
 import { SearchList, useCachedHits } from '@performant-software/core-data';
 import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
+import { renderFlattenedAttribute } from '@root/src/utils/search';
 import clsx from 'clsx';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
+import _ from 'underscore';
 
 interface Props {
   className?: string;
@@ -23,6 +25,22 @@ const ListView = (props: Props) => {
     navigate(`${config.search.route}/${hit.id}`);
   }, []);
 
+  /**
+   * List of attributes to display in the search list
+   */
+  const attributes = useMemo(() => {
+    if (config.search.result_card.attributes) {
+      return config.search.result_card.attributes
+        .slice(0, 4)
+        .map(att => ({
+          render: (hit) => renderFlattenedAttribute(hit, att.name),
+          ...att
+        }));
+    };
+
+    return []
+  }, [config]);
+
   return (
     <aside
       className={clsx(
@@ -36,6 +54,7 @@ const ListView = (props: Props) => {
       )}
     >
       <SearchList
+        attributes={attributes}
         className='flex flex-col'
         isHighlight={isHover}
         items={hits}
