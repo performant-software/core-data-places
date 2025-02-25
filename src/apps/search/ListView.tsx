@@ -35,11 +35,11 @@ const ListView = (props: Props) => {
         .map(att => ({
           render: (hit) => renderFlattenedAttribute(hit, att.name),
           ...att
-        }))
-    }
+        }));
+    };
 
     return []
-  }, [config])
+  }, [config]);
 
   return (
     <aside

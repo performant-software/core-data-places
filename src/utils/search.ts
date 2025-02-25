@@ -24,7 +24,7 @@ export const getFacetLabel = (attribute, t) => {
 /**
  * Tests whether a string contains only integers.
  */
-const isNumber = (str: string) => /^\d+$/.test(str)
+const isNumber = (str: string) => /^\d+$/.test(str);
 
 /**
  * Gets the label for a search column as given by the result_card.attributes config array.
@@ -34,10 +34,10 @@ export const getColumnLabel = (flattenedAtt, t) => {
   const path = flattenedAtt
     .split('.')
     .filter(att => !isNumber(att))
-    .join('.')
+    .join('.');
   
-  return getFacetLabel(path, t)
-}
+  return getFacetLabel(path, t);
+};
 
 /**
  * Given a flattened attribute name, e.g. myobj.hits.0.name,
