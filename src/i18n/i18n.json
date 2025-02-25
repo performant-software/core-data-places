@@ -222,5 +222,37 @@
   "relatedMediaItem": {
     "tinaLabel": "Related Media Item",
     "defaultValue": "{{name}} ({{count}})"
+  },
+  "selectRecord": {
+    "tinaLabel": "Select {{name}}",
+    "defaultValue": "Select {{name}}"
+  },
+  "event": {
+    "tinaLabel": "Event",
+    "defaultValue": "Event"
+  },
+  "instance": {
+    "tinaLabel": "Instance",
+    "defaultValue": "Instance"
+  },
+  "item": {
+    "tinaLabel": "Item",
+    "defaultValue": "Item"
+  },
+  "organization": {
+    "tinaLabel": "Organization",
+    "defaultValue": "Organization"
+  },
+  "person": {
+    "tinaLabel": "Person",
+    "defaultValue": "Person"
+  },
+  "place": {
+    "tinaLabel": "Place",
+    "defaultValue": "Place"
+  },
+  "work": {
+    "tinaLabel": "Work",
+    "defaultValue": "Work"
   }
 }

@@ -20,3 +20,17 @@ export const getFacetLabel = (attribute, t) => {
 
   return value;
 };
+
+/**
+ * Parses the "items" and "names" attributes for the "properties" key in the passed record.
+ *
+ * @param record
+ */
+export const parseFeature = (record) => ({
+  ...record,
+  properties: {
+    ...record.properties || {},
+    items: JSON.parse(record.properties?.items || '[]'),
+    names: JSON.parse(record.properties?.names || '[]')
+  }
+});
