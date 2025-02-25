@@ -217,7 +217,7 @@ const BasePanel = (props: Props) => {
   /**
    * Transforms the related organizations.
    */
-  const relatedOrganizations = useMemo(() => getRelatedRecords(organizations, 'participants', (organization) => ({
+  const relatedOrganizations = useMemo(() => getRelatedRecords(organizations, 'occupation', (organization) => ({
     name: organization.name,
     onClick: () => navigate(`/organizations/${organization.uuid}`)
   })), [getRelatedRecords, organizations]);
