@@ -7,6 +7,8 @@ import {
   useSearchBox
 } from '@performant-software/core-data';
 import clsx from 'clsx';
+import { useCurrentRefinements } from 'react-instantsearch';
+import _ from 'underscore';
 
 interface Props {
   className?: string;
@@ -22,6 +24,7 @@ const Views = {
 };
 
 const Header = (props: Props) => {
+  const { items } = useCurrentRefinements();
   const { query, refine } = useSearchBox();
   const { t } = useTranslations();
 
@@ -36,16 +39,38 @@ const Header = (props: Props) => {
           className='flex items-center'
         >
           <Button
+            className='relative'
             icon
             onClick={() => props.onFiltersChange(!props.filters)}
             primary={props.filters}
           >
             <Icon
               name='filters'
+              size={24}
             />
+            { !_.isEmpty(items) && (
+              <div
+                className={clsx(
+                  'absolute',
+                  'flex',
+                  'items-center',
+                  'justify-center',
+                  '-top-1',
+                  '-right-2',
+                  'w-[20px]',
+                  'h-[20px]',
+                  'bg-red-600',
+                  'text-white',
+                  'text-xs',
+                  'rounded-full'
+                )}
+              >
+                { items.length }
+              </div>
+            )}
           </Button>
           <h2
-            className='text-xl font-semibold text-nowrap px-2'
+            className='text-xl font-semibold text-nowrap px-3'
           >
             { t('root') }
           </h2>
