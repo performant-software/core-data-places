@@ -8,7 +8,14 @@ import Layout from '@layouts/Layout.astro';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import _ from 'underscore';
 
-const { title, subheader, description, heroImage, featureImage } = await fetchAbout();
+const aboutResponse = await fetchAbout();
+const { heroImage, featureImage } = aboutResponse;
+
+// Get localized content, defaulting to the default language if not defined
+const { title } = Astro.currentLocale == config.i18n.default_locale || !aboutResponse[Astro.currentLocale]?.title ? aboutResponse : aboutResponse[Astro.currentLocale];
+const { subheader } = Astro.currentLocale == config.i18n.default_locale || !aboutResponse[Astro.currentLocale]?.subheader ? aboutResponse : aboutResponse[Astro.currentLocale];
+const { description } = Astro.currentLocale == config.i18n.default_locale || !aboutResponse[Astro.currentLocale]?.description ? aboutResponse : aboutResponse[Astro.currentLocale];
+
 const { t } = await getTranslations(Astro.currentLocale);
 
 export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
