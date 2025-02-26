@@ -52,3 +52,11 @@ export const buildTranslations = (data: TranslationData) => {
 
   return _.defaults(translations, defaultTranslations);
 };
+
+export const getLocalizedContent = (data: any, attributes: string[], lang: string, isDefault: boolean) => {
+  let localizedContent: any = {};
+  for (const att of attributes) {
+    localizedContent[att] = isDefault || !data[lang][att] ? data[att] : data[lang][att];
+  }
+  return localizedContent;
+};

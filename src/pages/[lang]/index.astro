@@ -7,14 +7,13 @@ import { getTranslations } from '@i18n/server';
 import Layout from '@layouts/Layout.astro';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import _ from 'underscore';
+import { getLocalizedContent } from '@i18n/utils';
 
 const aboutResponse = await fetchAbout();
 const { heroImage, featureImage } = aboutResponse;
 
 // Get localized content, defaulting to the default language if not defined
-const { title } = Astro.currentLocale == config.i18n.default_locale || !aboutResponse[Astro.currentLocale]?.title ? aboutResponse : aboutResponse[Astro.currentLocale];
-const { subheader } = Astro.currentLocale == config.i18n.default_locale || !aboutResponse[Astro.currentLocale]?.subheader ? aboutResponse : aboutResponse[Astro.currentLocale];
-const { description } = Astro.currentLocale == config.i18n.default_locale || !aboutResponse[Astro.currentLocale]?.description ? aboutResponse : aboutResponse[Astro.currentLocale];
+const { title, subheader, description } = getLocalizedContent(aboutResponse, ['title', 'subheader', 'description'], Astro.currentLocale, Astro.currentLocale == config.i18n.default_locale);
 
 const { t } = await getTranslations(Astro.currentLocale);
 
