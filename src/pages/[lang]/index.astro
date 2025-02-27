@@ -12,8 +12,6 @@ import { getLocalizedContent } from '@i18n/utils';
 const aboutResponse = await fetchAbout();
 const { heroImage, featureImage } = aboutResponse;
 
-console.log(typeof aboutResponse.description);
-
 // Get localized content, defaulting to the default language if not defined
 const { title, subheader, description } = getLocalizedContent(aboutResponse, Astro.currentLocale);
 
