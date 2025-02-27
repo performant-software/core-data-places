@@ -17,8 +17,5 @@ export const useBlackText = (primary: string) => {
     const g = g_ratio <= 0.04045 ? g_ratio/12.92 : ((g_ratio + 0.055)/1.055)**2.4;
     const b = b_ratio <= 0.04045 ? b_ratio/12.92 : ((b_ratio + 0.055)/1.055)**2.4;
     const l = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-    if (l > 0.179) {
-      return true;
-    }
-    return false;
+    return l > 0.179;
 }

@@ -44,7 +44,7 @@ const { title } = await fetchAbout();
               class='h-14'
               src={config.customization?.footer_logo}
             />
-            <h1 class='font-serif font-semibold text-[32px]'>
+            <h1 class='font-serif font-semibold text-[32px] text-center'>
               { title }
             </h1>
           ) : ( 
@@ -53,7 +53,7 @@ const { title } = await fetchAbout();
         }
       </div>
       <div
-        class='flex flex-col md:flex-row gap-x-12 align-baseline justify-around pt-4 pb-8'
+        class='flex flex-col md:flex-row gap-x-12 gap-y-4 items-center align-baseline justify-around pt-4 pb-8'
       >
         { _.map(_.keys(tabs), (key) => (
           <a

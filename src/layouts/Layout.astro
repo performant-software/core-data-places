@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import _ from 'underscore';
 import { useBlackText } from '@utils/layout';
 
-const primaryText = config.customization?.primary && useBlackText(config.customization.primary) ? 'black' : 'white';
+const blackText = config.customization?.primary && useBlackText(config.customization.primary);
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
@@ -60,8 +60,8 @@ const tabs = {
   <body
     class={clsx(
       'flex h-full sm:min-h-screen flex-col bg-white text-neutral-dark mx-auto',
-      `primary-text-${primaryText}`,
-      { '3xl:bg-neutral-dark 3xl:max-w-screen-3xl': !fullscreen }
+      { 'primary-text-white': !blackText },
+      { 'primary-text-black': blackText },
     )}
     transition:animate='initial'
   >
