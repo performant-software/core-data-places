@@ -1,5 +1,5 @@
 import TranslationContext from '@apps/search/TranslationContext';
-import { Pill, Typesense as TypesenseUtils } from '@performant-software/core-data';
+import { Pill } from '@performant-software/core-data';
 import { getFacetLabel } from '@utils/search';
 import { useCallback, useContext } from 'react';
 import { useCurrentRefinements } from 'react-instantsearch';
