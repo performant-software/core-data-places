@@ -1,4 +1,5 @@
 import ResultTooltip from '@apps/search/ResultTooltip';
+import SearchContext from '@apps/search/SearchContext';
 import TranslationContext from '@apps/search/TranslationContext';
 import {
     LayerMenu,
@@ -6,7 +7,7 @@ import {
     Peripleo as PeripleoUtils,
     SearchResultsLayer,
     useGeoSearch
-  } from '@performant-software/core-data';
+} from '@performant-software/core-data';
 import { Map, Tooltip, Zoom } from '@peripleo/maplibre';
 import {
   Controls,
@@ -15,7 +16,6 @@ import {
   useRuntimeConfig,
   useSelectionValue
 } from '@peripleo/peripleo';
-import { getBoundingBoxOptions } from '@utils/map';
 import { parseFeature } from '@utils/search';
 import {
   useContext,
@@ -42,17 +42,12 @@ const MapView = () => {
   const [overlays, setOverlays] = useState([]);
 
   const { isRefinedWithMap } = useGeoSearch();
-
   const navigate = useNavigate();
   const selected = useSelectionValue<any>();
   const route = useCurrentRoute();
 
+  const { boundingBoxOptions } = useContext(SearchContext);
   const { t } = useContext(TranslationContext);
-
-  /**
-   * Sets the bounding box options for the map.
-   */
-  const boundingBoxOptions = useMemo(() => getBoundingBoxOptions(config.map.max_zoom), [config]);
 
   /**
    * If we're on the place detail page or refining results by the map view port, we'll suppress the auto-bounding box

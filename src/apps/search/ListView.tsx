@@ -5,7 +5,6 @@ import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
 import { renderFlattenedAttribute } from '@root/src/utils/search';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
-import _ from 'underscore';
 
 interface Props {
   className?: string;
@@ -17,13 +16,6 @@ const ListView = (props: Props) => {
   const navigate = useNavigate();
 
   const { isHover, onPointEnter, onPointLeave } = useHoverable();
-
-  /**
-   * Navigates to the selected hit.
-   */
-  const onRowClick = useCallback((hit) => {
-    navigate(`${config.search.route}/${hit.id}`);
-  }, []);
 
   /**
    * List of attributes to display in the search list
@@ -40,6 +32,25 @@ const ListView = (props: Props) => {
 
     return []
   }, [config]);
+
+  /**
+   * Navigates to the selected hit.
+   */
+  const onRowClick = useCallback((hit) => {
+    navigate(`${config.search.route}/${hit.id}`);
+  }, []);
+
+  /**
+   * Renders the title for the passed item.
+   */
+  const renderItemTitle = useCallback((item) => (
+    <SearchHighlight
+      attribute={config.search.result_card.title}
+      badge
+      className='text-sm line-clamp-3 leading-6'
+      hit={item}
+    />
+  ), [config]);
 
   return (
     <aside
@@ -58,14 +69,7 @@ const ListView = (props: Props) => {
         className='flex flex-col'
         isHighlight={isHover}
         items={hits}
-        itemTitle={(hit) => (
-          <SearchHighlight
-            attribute={config.search.result_card.title}
-            badge
-            className='text-sm line-clamp-3 leading-6'
-            hit={hit}
-          />
-        )}
+        itemTitle={renderItemTitle}
         onItemClick={onRowClick}
         onItemPointerEnter={onPointEnter}
         onItemPointerLeave={onPointLeave}

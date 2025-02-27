@@ -1,4 +1,5 @@
 import ManifestThumbnail, { type Collection } from '@apps/search/ManifestThumbnail';
+import SearchContext from '@apps/search/SearchContext';
 import TranslationContext from '@apps/search/TranslationContext';
 import UserDefinedFieldView from '@components/UserDefinedFieldView';
 import {
@@ -11,7 +12,6 @@ import {
 } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
 import { useCurrentRoute, useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
-import { getBoundingBoxOptions } from '@utils/map';
 import { getNameView } from '@utils/people';
 import { getCurrentId } from '@utils/router';
 import clsx from 'clsx';
@@ -45,6 +45,8 @@ const BasePanel = (props: Props) => {
 
   const route = useCurrentRoute();
   const id = getCurrentId(route);
+
+  const { boundingBoxOptions } = useContext(SearchContext);
 
   /**
    * Transforms the passed list of items and groups them by the relationship ID.
@@ -135,11 +137,6 @@ const BasePanel = (props: Props) => {
    */
   const onLoadWorks = useCallback(() => Service.fetchRelatedWorks(id, { per_page: 0 }), [id]);
   const { data: { works = [] } = {} } = useLoader(onLoadWorks, null, [id]);
-
-  /**
-   * Memo-izes the bounding box options.
-   */
-  const bboxOptions = useMemo(() => getBoundingBoxOptions(config.map.max_zoom), [config]);
 
   /**
    * Memo-izes the base record.
@@ -318,7 +315,7 @@ const BasePanel = (props: Props) => {
       { geometry && (
         <LocationMarkers
           animate
-          boundingBoxOptions={bboxOptions}
+          boundingBoxOptions={boundingBoxOptions}
           fitBoundingBox={_.get(config.map, 'zoom_to_place', true)}
           data={geometry}
           layerId='current'
