@@ -47,7 +47,7 @@ const ListFacet = ({ attribute, className }: Props) => {
                 onClick={() => refine(item.value)}
               />
               <label
-                className='px-1 truncate w-[120px]'
+                className='px-1 truncate w-[120px] hover:cursor-pointer'
                 htmlFor={`${attribute}-${item.value}`}
               >
                 { item.label }

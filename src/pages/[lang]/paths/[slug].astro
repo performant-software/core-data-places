@@ -1,14 +1,35 @@
 ---
 import PathViewer from "@apps/paths/PathViewer";
-import { fetchPath } from '@backend/tina-server';
+import { fetchPath, fetchPaths } from '@backend/tina-server';
+import config from '@config';
 import { getTranslations } from '@i18n/server';
 import Layout from "@layouts/Layout.astro";
+import _ from 'underscore';
 
 const { slug } = Astro.params;
 const path = await fetchPath(slug);
 
 const { t } = await getTranslations(Astro.currentLocale);
-const title = path?.title || t('paths')
+const title = path?.title || t('paths');
+
+export const getStaticPaths = async () => {
+  const staticPaths = [];
+
+  const locales = config.i18n.locales;
+  const paths = await fetchPaths();
+
+  _.each(locales, (lang) => {
+    _.each(paths, (path) => {
+      staticPaths.push({ params: {
+        lang,
+        slug: path?._sys.filename
+      }})
+    });
+  });
+
+  return staticPaths;
+};
+
 ---
 
 <Layout

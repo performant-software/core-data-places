@@ -1,5 +1,5 @@
 import BasePanel from '@apps/search/panels/BasePanel';
-import { useInstancesService } from '@performant-software/core-data';
+import InstancesService from '@backend/api/instances';
 import React from 'react';
 
 interface Props {
@@ -10,7 +10,7 @@ const Instance = (props: Props) => (
   <BasePanel
     className={props.className}
     name='instance'
-    useServiceHook={useInstancesService}
+    service={InstancesService}
   />
 );
 
