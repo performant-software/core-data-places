@@ -1,5 +1,5 @@
 import BasePanel from '@apps/search/panels/BasePanel';
-import { useItemsService } from '@performant-software/core-data';
+import ItemsService from '@backend/api/items';
 import React from 'react';
 
 interface Props {
@@ -10,7 +10,7 @@ const Item = (props: Props) => (
   <BasePanel
     className={props.className}
     name='item'
-    useServiceHook={useItemsService}
+    service={ItemsService}
   />
 );
 

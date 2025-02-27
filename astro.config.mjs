@@ -4,11 +4,13 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 import { defineConfig } from 'astro/config';
+import { loadEnv } from 'vite';
 import config from './public/config.json';
 
 import auth from 'auth-astro';
 
 const { locales, default_locale: defaultLocale } = config.i18n;
+const { STATIC_BUILD } = loadEnv(process.env.STATIC_BUILD, process.cwd(), '');
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,7 +21,7 @@ export default defineConfig({
       prefixDefaultLocale: true
     }
   },
-  output: 'server',
+  output: STATIC_BUILD === 'true' ? 'static' : 'server',
   adapter: netlify(),
   integrations: [mdx(), tailwind(), sitemap(), react(), auth()],
   vite: {

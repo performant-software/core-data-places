@@ -1,20 +1,8 @@
-import { AstroIntegrationLogger } from "astro";
-import config from "@config";
+import config from '@config';
+import { relatedModelTypes } from '@loaders/coreDataLoader';
+import { AstroIntegrationLogger } from 'astro';
 
 const path = '/core_data/public/v1/';
-
-export const relatedModelTypes = [
-  "events",
-  "instances",
-  "items",
-  "manifests",
-  "media_contents",
-  "organizations",
-  "people",
-  "places",
-  "taxonomies",
-  "works"
-];
 
 export const singularForms = {
   events: 'event',
@@ -30,13 +18,13 @@ export const singularForms = {
 };
 
 export const createProjectIdString = (ids: string[] | number[]) => {
-  let str = "";
+  let str = '';
   if (!ids.length) {
     return str;
   }
   for (let i = 0; i < ids.length; i++) {
     if (i > 0) {
-      str += "&";
+      str += '&';
     }
     str += `project_ids[]=${ids[i]}`;
   }

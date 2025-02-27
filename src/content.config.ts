@@ -1,20 +1,22 @@
+import { coreDataLoader, modelTypes } from '@loaders/coreDataLoader';
 import { defineCollection } from 'astro:content';
-import config from '@config';
-import { coreDataLoader } from './loaders/coreDataLoader';
+import _ from 'underscore';
 
-const models = config.detail_pages;
+const isStaticBuild = !!import.meta.env.STATIC_BUILD;
 
 let cols = {};
 
-if (import.meta.env.PUBLIC_STATIC_BUILD && import.meta.env.PUBLIC_STATIC_BUILD != 'false') {
-  for (const model of models) {
+if (isStaticBuild) {
+  for (const model of modelTypes) {
     cols[model] = defineCollection({
       loader: coreDataLoader({
         model: model,
-        getRelations: true,
+        getRelations: true
       }),
     });
   }
 }
 
 export const collections = cols;
+
+export const hasContentCollection = (name) => isStaticBuild && _.has(cols, name);

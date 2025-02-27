@@ -1,5 +1,5 @@
-import { fetchItemData, fetchModelData, getRelations } from "./helpers";
-import { AstroIntegrationLogger } from "astro";
+import { fetchItemData, fetchModelData, getRelations } from '@loaders/api/helpers';
+import { AstroIntegrationLogger } from 'astro';
 
 const organizationsLoader = async (
   options: {
@@ -7,15 +7,15 @@ const organizationsLoader = async (
   },
   logger?: AstroIntegrationLogger
 ) => {
-  return fetchModelData({ ...options, model: "organizations" }, logger);
+  return fetchModelData({ ...options, model: 'organizations' }, logger);
 };
 
 export const organizationLoader = async (uuid: string, withRelations: boolean = true) => {
-  const response = await fetchItemData("organizations", uuid);
+  const response = await fetchItemData('organizations', uuid);
   if (!withRelations) {
     return response;
   }
-  const relations = await getRelations("organizations", uuid);
+  const relations = await getRelations('organizations', uuid);
   return ( { ...response, relatedRecords: relations } );
 }
 

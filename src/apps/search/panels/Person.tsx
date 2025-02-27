@@ -1,5 +1,5 @@
 import BasePanel from '@apps/search/panels/BasePanel';
-import { usePeopleService } from '@performant-software/core-data';
+import PeopleService from '@backend/api/people';
 import { getNameView } from '@utils/people';
 import React, { useCallback } from 'react';
 
@@ -21,7 +21,7 @@ const Person = (props: Props) => {
       icon='person'
       name='person'
       renderName={renderName}
-      useServiceHook={usePeopleService}
+      service={PeopleService}
     />
   );
 };
