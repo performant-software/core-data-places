@@ -63,8 +63,8 @@ export const isEmptyRichText = (content: any) => {
   return false;
 }
 
-export const getLocalizedContent = (data: any, lang?: string) => {
-  if (!lang || !data[lang]) {
+export const getLocalizedContent = (data: any, lang: string) => {
+  if (!data[lang]) {
     return data;
   }
   let localizedContent: any = {};

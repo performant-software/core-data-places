@@ -15,7 +15,7 @@ const { heroImage, featureImage } = aboutResponse;
 console.log(typeof aboutResponse.description);
 
 // Get localized content, defaulting to the default language if not defined
-const { title, subheader, description } = getLocalizedContent(aboutResponse, Astro.currentLocale !== config.i18n.default_locale && Astro.currentLocale);
+const { title, subheader, description } = getLocalizedContent(aboutResponse, Astro.currentLocale);
 
 const { t } = await getTranslations(Astro.currentLocale);
 
