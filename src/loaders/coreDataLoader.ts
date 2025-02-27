@@ -1,18 +1,39 @@
-import type { Loader, LoaderContext } from "astro/loaders";
-import {
-  loaderDict
-} from "./api";
+import { loaderDict } from '@loaders/api';
+import type { Loader, LoaderContext } from 'astro/loaders';
+
+export const modelTypes = [
+  'events',
+  'instances',
+  'items',
+  'organizations',
+  'people',
+  'places',
+  'works'
+];
+
+export const relatedModelTypes = [
+  'events',
+  'instances',
+  'items',
+  'manifests',
+  'media_contents',
+  'organizations',
+  'people',
+  'places',
+  'taxonomies',
+  'works'
+];
 
 export function coreDataLoader(options: {
   model: string;
   getRelations?: boolean;
 }): Loader {
   return {
-    name: "core-data-loader",
+    name: 'core-data-loader',
     load: async (context: LoaderContext): Promise<void> => {
       const { generateDigest, logger, parseData, store } = context;
       const startTime = Date.now();
-      logger.info("Loading item data");
+      logger.info('Loading item data');
       const response = await loaderDict[options.model].fetchAll({ getRelations: options.getRelations }, logger);
       const fetchedTime = Date.now();
       logger.info(`Data fetched in ${fetchedTime - startTime}ms`);

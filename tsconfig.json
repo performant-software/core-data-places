@@ -16,6 +16,7 @@
       "@config": ["public/config.json"],
       "@i18n/*": ["src/i18n/*"],
       "@layouts/*": ["src/layouts/*"],
+      "@loaders/*": ["src/loaders/*"],
       "@root/*": ["*"],
       "@styles/*": ["src/styles/*"],
       "@tina/*": ["tina/__generated__/*"],

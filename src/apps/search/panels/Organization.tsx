@@ -1,5 +1,5 @@
 import BasePanel from '@apps/search/panels/BasePanel';
-import { useOrganizationsService } from '@performant-software/core-data';
+import OrganizationsService from '@backend/api/organizations';
 import React from 'react';
 
 interface Props {
@@ -18,7 +18,7 @@ const Organization = (props: Props) => (
         { organization.description }
       </p>
     )}
-    useServiceHook={useOrganizationsService}
+    service={OrganizationsService}
   />
 );
 

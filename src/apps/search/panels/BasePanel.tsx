@@ -1,9 +1,9 @@
 import ManifestThumbnail, { type Collection } from '@apps/search/ManifestThumbnail';
 import SearchContext from '@apps/search/SearchContext';
+import Base from '@backend/api/base';
 import TranslationContext from '@apps/search/TranslationContext';
 import UserDefinedFieldView from '@components/UserDefinedFieldView';
 import {
-  BaseService,
   CoreData as CoreDataUtils,
   KeyValueList,
   MediaGallery,
@@ -30,7 +30,7 @@ interface Props {
   renderItem?: (item: any) => JSX.Element;
   renderName?: (item: any) => string;
   resolveGeometry?: (item: any) => any;
-  useServiceHook: () => typeof BaseService;
+  service: Base;
 }
 
 const INVERSE_SUFFIX = '_inverse';
@@ -38,7 +38,6 @@ const INVERSE_SUFFIX = '_inverse';
 const BasePanel = (props: Props) => {
   const [manifestUrl, setManifestUrl] = useState<string | undefined>();
 
-  const Service = props.useServiceHook();
   const navigate = useNavigate();
   const config = useRuntimeConfig();
   const { t } = useContext(TranslationContext);
@@ -81,62 +80,62 @@ const BasePanel = (props: Props) => {
   /**
    * Loads the base record from the Core Data API.
    */
-  const onLoad = useCallback(() => Service.fetchOne(id), [id]);
-  const { data } = useLoader(onLoad, null, [id]);
+  const onLoad = () => props.service.fetchOne(id);
+  const { data } = useLoader(onLoad, null, [id, props.service]);
 
   /**
    * Loads the related events from the Core Data API.
    */
-  const onLoadEvents = useCallback(() => Service.fetchRelatedEvents(id, { per_page: 0 }), [id]);
-  const { data: { events = [] } = {} } = useLoader(onLoadEvents, null, [id]);
+  const onLoadEvents = () => props.service.fetchRelatedEvents(id, { per_page: 0 });
+  const { data: { events = [] } = {} } = useLoader(onLoadEvents, null, [id, props.service]);
 
   /**
    * Loads the related instances from the Core Data API.
    */
-  const onLoadInstances = useCallback(() => Service.fetchRelatedInstances(id, { per_page: 0 }), [id]);
-  const { data: { instances = [] } = {} } = useLoader(onLoadInstances, null, [id]);
+  const onLoadInstances = () => props.service.fetchRelatedInstances(id, { per_page: 0 });
+  const { data: { instances = [] } = {} } = useLoader(onLoadInstances, null, [id, props.service]);
 
   /**
    * Loads the related items from the Core Data API.
    */
-  const onLoadItems = useCallback(() => Service.fetchRelatedItems(id, { per_page: 0 }), [id]);
-  const { data: { items = [] } = {} } = useLoader(onLoadItems, null, [id]);
+  const onLoadItems = () => props.service.fetchRelatedItems(id, { per_page: 0 });
+  const { data: { items = [] } = {} } = useLoader(onLoadItems, null, [id, props.service]);
 
   /**
    * Loads the related organizations from the Core Data API.
    */
-  const onLoadOrganizations = useCallback(() => Service.fetchRelatedOrganizations(id, { per_page: 0 }), [id]);
-  const { data: { organizations = [] } = {} } = useLoader(onLoadOrganizations, null, [id]);
+  const onLoadOrganizations = () => props.service.fetchRelatedOrganizations(id, { per_page: 0 });
+  const { data: { organizations = [] } = {} } = useLoader(onLoadOrganizations, null, [id, props.service]);
 
   /**
    * Loads the IIIF collection manifest from the Core Data API.
    */
-  const onLoadManifests = useCallback(() => Service.fetchRelatedManifests(id, { per_page: 0 }), [id]);
-  const { data: collection = {} }: { collection: Collection } = useLoader(onLoadManifests, null, [id]);
+  const onLoadManifests = () => props.service.fetchRelatedManifests(id, { per_page: 0 });
+  const { data: collection = {} }: { collection: Collection } = useLoader(onLoadManifests, null, [id, props.service]);
 
   /**
    * Loads the related people from the Core Data API.
    */
-  const onLoadPeople = useCallback(() => Service.fetchRelatedPeople(id, { per_page: 0}), [id]);
-  const { data: { people = [] } = {} } = useLoader(onLoadPeople, null, [id]);
+  const onLoadPeople = () => props.service.fetchRelatedPeople(id, { per_page: 0});
+  const { data: { people = [] } = {} } = useLoader(onLoadPeople, null, [id, props.service]);
 
   /**
-   * Loads the related place records from the Core Data API.
+   * Loads the related place records from the Astro API.
    */
-  const onLoadPlaces = useCallback(() => Service.fetchRelatedPlaces(id, { per_page: 0 }), [id]);
-  const { data: { places = [] } = {} } = useLoader(onLoadPlaces, null, [id]);
+  const onLoadPlaces = () => props.service.fetchRelatedPlaces(id, { per_page: 0 });
+  const { data: { places = [] } = {} } = useLoader(onLoadPlaces, null, [id, props.service]);
 
   /**
    * Loads the related taxonomies from the Core Data API.
    */
-  const onLoadTaxonomies = useCallback(() => Service.fetchRelatedTaxonomies(id, { per_page: 0 }), [id]);
-  const { data: { taxonomies = [] } = {} } = useLoader(onLoadTaxonomies, null, [id]);
+  const onLoadTaxonomies = () => props.service.fetchRelatedTaxonomies(id, { per_page: 0 });
+  const { data: { taxonomies = [] } = {} } = useLoader(onLoadTaxonomies, null, [id, props.service]);
 
   /**
    * Loads the related works from the Core Data API.
    */
-  const onLoadWorks = useCallback(() => Service.fetchRelatedWorks(id, { per_page: 0 }), [id]);
-  const { data: { works = [] } = {} } = useLoader(onLoadWorks, null, [id]);
+  const onLoadWorks = () => props.service.fetchRelatedWorks(id, { per_page: 0 });
+  const { data: { works = [] } = {} } = useLoader(onLoadWorks, null, [id, props.service]);
 
   /**
    * Memo-izes the base record.

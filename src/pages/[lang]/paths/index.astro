@@ -2,6 +2,7 @@
 import { fetchPaths } from '@backend/tina-server';
 import Card from '@components/Card.astro';
 import Container from '@components/Container.astro';
+import config from '../../../../public/config.json';
 import { getTranslations } from '@i18n/server';
 import Layout from '@layouts/Layout.astro';
 import { getRelativeLocaleUrl } from 'astro:i18n';
@@ -9,6 +10,9 @@ import _ from 'underscore';
 
 const { t } = await getTranslations(Astro.currentLocale);
 const paths = await fetchPaths();
+
+export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
+
 ---
 
 <Layout

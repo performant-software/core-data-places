@@ -1,10 +1,7 @@
 import BasePanel from '@apps/search/panels/BasePanel';
+import PlacesService from '@backend/api/places';
 import { useTranslations } from '@i18n/client';
-import {
-  CoreData as CoreDataUtils,
-  PlaceLayersSelector,
-  usePlacesService
-} from '@performant-software/core-data';
+import { CoreData as CoreDataUtils, PlaceLayersSelector } from '@performant-software/core-data';
 import clsx from 'clsx';
 import React from 'react';
 import _ from 'underscore';
@@ -37,7 +34,7 @@ const Place = (props: Props) => {
         </>
       )}
       resolveGeometry={(place) => CoreDataUtils.toFeatureCollection([place])}
-      useServiceHook={usePlacesService}
+      service={PlacesService}
     />
   );
 };

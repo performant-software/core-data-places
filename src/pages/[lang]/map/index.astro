@@ -1,9 +1,14 @@
 ---
 import Search from '@apps/search/Search';
+import config from '../../../../public/config.json';
 import { getTranslations } from '@i18n/server';
 import Layout from "@layouts/Layout.astro";
+import _ from 'underscore';
 
 const { t } = await getTranslations(Astro.currentLocale);
+
+export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
+
 ---
 
 <Layout
