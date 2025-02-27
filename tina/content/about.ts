@@ -23,7 +23,7 @@ const textFields = (isBody: boolean): TinaField<false>[] => ([{
 
 const localeFields: TinaField<false>[] = _.map(_.filter(config.i18n.locales, (lang) => (lang !== config.i18n.default_locale)), (lang) => ({
   name: lang,
-  label: lang,
+  label: lang.toUpperCase(),
   type: 'object',
   fields: textFields(false)
 }));
