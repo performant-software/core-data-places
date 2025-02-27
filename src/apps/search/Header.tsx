@@ -50,20 +50,20 @@ const Header = (props: Props) => {
             />
             { !_.isEmpty(items) && (
               <div
-                className={clsx(
-                  'absolute',
-                  'flex',
-                  'items-center',
-                  'justify-center',
-                  '-top-1',
-                  '-right-2',
-                  'w-[20px]',
-                  'h-[20px]',
-                  'bg-red-600',
-                  'text-white',
-                  'text-xs',
-                  'rounded-full'
-                )}
+                className={`
+                  absolute
+                  flex
+                  items-center
+                  justify-center
+                  -top-1
+                  -right-2
+                  w-[20px]
+                  h-[20px]
+                  bg-red-600
+                  text-white
+                  text-xs
+                  rounded-full
+                `}
               >
                 { items.length }
               </div>
