@@ -3,19 +3,54 @@ import CurrentRefinementsList from '@apps/search/CurrentRefinementsList';
 import GeosearchFilter from '@apps/search/GeosearchFilter';
 import ListFacet from '@apps/search/ListFacet';
 import RangeFacet from '@apps/search/RangeFacet';
+import SelectFacet from '@apps/search/SelectFacet';
 import TranslationContext from '@apps/search/TranslationContext';
 import { FacetStateContext } from '@performant-software/core-data';
+import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import _ from 'underscore';
+
+const TYPE_LIST = 'list';
+const TYPE_SELECT = 'select';
 
 interface Props {
   className?: string;
 }
 
 const Facets = (props: Props) => {
+  const config = useRuntimeConfig();
   const { attributes, rangeAttributes } = useContext(FacetStateContext);
   const { t } = useContext(TranslationContext);
+
+  const renderFacet = useCallback((attribute, index) => {
+    const { facets = {} } = config.search;
+    const type = facets[attribute] || TYPE_LIST;
+
+    if (type === TYPE_LIST) {
+      return (
+        <ListFacet
+          attribute={attribute}
+          className={clsx({
+            'border-b border-neutral-200': index < attribute.length - 1
+          })}
+        />
+      );
+    }
+
+    if (type === TYPE_SELECT) {
+      return (
+        <SelectFacet
+          attribute={attribute}
+          className={clsx({
+            'border-b border-neutral-200': index < attribute.length - 1
+          })}
+        />
+      );
+    }
+
+    return null;
+  }, []);
 
   return (
     <aside
@@ -52,14 +87,7 @@ const Facets = (props: Props) => {
           })}
         />
       ))}
-      { _.map(attributes, (attribute, index) => (
-        <ListFacet
-          attribute={attribute}
-          className={clsx({
-            'border-b border-neutral-200': index < attribute.length - 1
-          })}
-        />
-      ))}
+      { _.map(attributes, renderFacet) }
     </aside>
   );
 };
