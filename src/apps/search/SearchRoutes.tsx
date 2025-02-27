@@ -4,6 +4,7 @@ import Item from '@apps/search/panels/Item';
 import Organization from '@apps/search/panels/Organization';
 import Person from '@apps/search/panels/Person';
 import Place from '@apps/search/panels/Place';
+import Selection from '@apps/search/Selection';
 import Work from '@apps/search/panels/Work';
 import { CoreDataContextProvider } from '@performant-software/core-data';
 import { Route, Routes, useRuntimeConfig } from '@peripleo/peripleo';
@@ -48,6 +49,10 @@ const SearchRoutes = (props: Props) => {
         <Route
           match='/work/'
           element={<Work className={props.className} />}
+        />
+        <Route
+          match='/select'
+          element={<Selection className={props.className} />}
         />
       </Routes>
     </CoreDataContextProvider>

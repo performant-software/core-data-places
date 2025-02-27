@@ -16,6 +16,7 @@ import {
   useSelectionValue
 } from '@peripleo/peripleo';
 import { getBoundingBoxOptions } from '@utils/map';
+import { parseFeature } from '@utils/search';
 import {
   useContext,
   useEffect,
@@ -64,7 +65,14 @@ const MapView = () => {
    */
   useEffect(() => {
     if (selected) {
-      navigate(`${config.search.route}/${selected.properties.uuid}`);
+      const { properties = {} }: any = parseFeature(selected);
+
+      if (properties.items.length === 1) {
+        const [item,] = properties.items;
+        navigate(`${config.search.route}/${item.uuid}`);
+      } else {
+        navigate('/select');
+      }
     }
   }, [selected]);
 
