@@ -12,9 +12,14 @@
     "@types/node": "^22.13.5",
     "@types/underscore": "^1.11.15",
     "astro": "^5.1.1",
+<<<<<<< HEAD
     "prettier-plugin-astro": "^0.13.0",
     "ts-node": "^10.9.2",
     "vite": "^6.1.1"
+=======
+    "prettier-plugin-astro": "^0.14.1",
+    "ts-node": "^10.9.2"
+>>>>>>> 782890f (WIP)
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.3",

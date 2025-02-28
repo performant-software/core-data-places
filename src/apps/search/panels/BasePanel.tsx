@@ -12,6 +12,8 @@ import {
 } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
 import { useCurrentRoute, useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
+import { itemLoader } from '@root/src/loaders/api/items';
+import { getBoundingBoxOptions } from '@utils/map';
 import { getNameView } from '@utils/people';
 import { getCurrentId } from '@utils/router';
 import clsx from 'clsx';
@@ -27,6 +29,7 @@ interface Props {
   className?: string;
   icon?: string;
   name: string;
+  exclusions?: string[];
   renderItem?: (item: any) => JSX.Element;
   renderName?: (item: any) => string;
   resolveGeometry?: (item: any) => any;
@@ -44,6 +47,8 @@ const BasePanel = (props: Props) => {
 
   const route = useCurrentRoute();
   const id = getCurrentId(route);
+
+  const exclude = props.exclusions || [];
 
   const { boundingBoxOptions } = useContext(SearchContext);
 
@@ -140,7 +145,17 @@ const BasePanel = (props: Props) => {
   /**
    * Memo-izes the base record.
    */
-  const item = useMemo(() => data && data[props.name], [data, props.name]);
+  const item = useMemo(() => {
+    let item;
+    if(data) {
+      item = {
+        ..._.omit(data[props.name], ...exclude),
+        user_defined: _.omit(data[props.name].user_defined, ...exclude)
+      }
+    }
+    return item;
+  },
+  [data, props.name]);
 
   /**
    * Memo-izes the geometry.
@@ -275,6 +290,25 @@ const BasePanel = (props: Props) => {
       .value()
   ), [item, renderUserDefined]);
 
+
+  /**
+   * Memo-izes included relations
+   */
+  const relations = () => {
+    let ret = [];
+
+    if(!exclude.includes('relatedEvents')) ret = ret.concat(relatedEvents);
+    if(!exclude.includes('relatedInstances')) ret = ret.concat(relatedInstances);
+    if(!exclude.includes('relatedItems')) ret = ret.concat(relatedItems);
+    if(!exclude.includes('relatedOrganizations')) ret = ret.concat(relatedOrganizations);
+    if(!exclude.includes('relatedManifest')) ret = ret.concat(relatedManifest);
+    if(!exclude.includes('relatedPlaces')) ret = ret.concat(relatedPlaces);
+    if(!exclude.includes('relatedTaxonomies')) ret = ret.concat(relatedTaxonomies);
+    if(!exclude.includes('relatedWorks')) ret = ret.concat(relatedWorks);
+
+    return ret;
+  };
+
   return (
     <aside
       className={clsx(
@@ -291,17 +325,7 @@ const BasePanel = (props: Props) => {
         count
         icon={props.icon}
         onClose={() => navigate('/')}
-        relations={[
-          ...relatedEvents,
-          ...relatedInstances,
-          ...relatedItems,
-          ...relatedOrganizations,
-          ...relatedManifest,
-          ...relatedPeople,
-          ...relatedPlaces,
-          ...relatedTaxonomies,
-          ...relatedWorks
-        ]}
+        relations={relations()}
         title={name}
       >
         { item && props.renderItem && props.renderItem(item) }
