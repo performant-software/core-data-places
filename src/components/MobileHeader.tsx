@@ -22,7 +22,7 @@ const MobileHeader = (props: Props) => {
   return (
     <Disclosure 
       as='div' 
-      className='md:hidden w-full bg-white shadow-md z-10'
+      className='md:hidden w-full bg-primary shadow-md z-10'
     >
       {({ open }) => (
         <>
@@ -73,7 +73,7 @@ const MobileHeader = (props: Props) => {
             leaveTo='transform scale-95 opacity-0'
           >
             <Disclosure.Panel
-              className='md:hidden bg-white'
+              className='md:hidden bg-primary'
             >
               <div
                 className='space-y-1 pb-3 pt-2'
@@ -81,7 +81,7 @@ const MobileHeader = (props: Props) => {
                 { _.map(_.keys(props.tabs), (key) => (
                   <Disclosure.Button
                     as='a'
-                    className='block bg-white hover:bg-orange-primary/10 py-4 text-base text-center font-bold'
+                    className='block bg-primary hover:bg-white hover:text-black py-4 text-base text-center font-bold'
                     href={props.tabs[key].url}
                     key={key}
                   >

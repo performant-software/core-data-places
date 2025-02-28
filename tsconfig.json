@@ -20,6 +20,7 @@
       "@root/*": ["*"],
       "@styles/*": ["src/styles/*"],
       "@tina/*": ["tina/__generated__/*"],
+      "@types/*": ["src/types/*"],
       "@utils/*": ["src/utils/*"]
     },
     "plugins": [

@@ -30,7 +30,7 @@ class Base {
    * @param id
    * @param params
    */
-  async fetchRelatedEvents(id: string, params: { [key: string]: string }) {
+  async fetchRelatedEvents(id: string, params: { [key: string]: any }) {
     return this.sendRequest(`/api/${this.name}/${id}/events.json`, params);
   }
 
@@ -40,7 +40,7 @@ class Base {
    * @param id
    * @param params
    */
-  async fetchRelatedInstances(id: string, params: { [key: string]: string }) {
+  async fetchRelatedInstances(id: string, params: { [key: string]: any }) {
     return this.sendRequest(`/api/${this.name}/${id}/instances.json`, params);
   }
 
@@ -50,7 +50,7 @@ class Base {
    * @param id
    * @param params
    */
-  async fetchRelatedItems(id: string, params: { [key: string]: string }) {
+  async fetchRelatedItems(id: string, params: { [key: string]: any }) {
     return this.sendRequest(`/api/${this.name}/${id}/items.json`, params);
   }
 
@@ -60,7 +60,7 @@ class Base {
    * @param id
    * @param params
    */
-  async fetchRelatedOrganizations(id: string, params: { [key: string]: string }) {
+  async fetchRelatedOrganizations(id: string, params: { [key: string]: any }) {
     return this.sendRequest(`/api/${this.name}/${id}/organizations.json`, params);
   }
 
@@ -70,7 +70,7 @@ class Base {
    * @param id
    * @param params
    */
-  async fetchRelatedManifests(id: string, params: { [key: string]: string }) {
+  async fetchRelatedManifests(id: string, params: { [key: string]: any }) {
     return this.sendRequest(`/api/${this.name}/${id}/manifests.json`, params);
   }
 
@@ -80,7 +80,7 @@ class Base {
    * @param id
    * @param params
    */
-  async fetchRelatedPeople(id: string, params: { [key: string]: string }) {
+  async fetchRelatedPeople(id: string, params: { [key: string]: any }) {
     return this.sendRequest(`/api/${this.name}/${id}/people.json`, params);
   }
 
@@ -90,7 +90,7 @@ class Base {
    * @param id
    * @param params
    */
-  async fetchRelatedPlaces(id: string, params: { [key: string]: string }) {
+  async fetchRelatedPlaces(id: string, params: { [key: string]: any }) {
     return this.sendRequest(`/api/${this.name}/${id}/places.json`, params);
   }
 
@@ -100,7 +100,7 @@ class Base {
    * @param id
    * @param params
    */
-  async fetchRelatedTaxonomies(id: string, params: { [key: string]: string }) {
+  async fetchRelatedTaxonomies(id: string, params: { [key: string]: any }) {
     return this.sendRequest(`/api/${this.name}/${id}/taxonomies.json`, params);
   }
 
@@ -110,7 +110,7 @@ class Base {
    * @param id
    * @param params
    */
-  async fetchRelatedWorks(id: string, params: { [key: string]: string }) {
+  async fetchRelatedWorks(id: string, params: { [key: string]: any }) {
     return this.sendRequest(`/api/${this.name}/${id}/works.json`, params);
   }
 
@@ -122,7 +122,7 @@ class Base {
    * @param baseUrl
    * @param params
    */
-  async sendRequest(baseUrl: string, params: { [key: string]: string } = null) {
+  async sendRequest(baseUrl: string, params: { [key: string]: any } = null) {
     const url = [baseUrl];
 
     // Append the params if not empty
