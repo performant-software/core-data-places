@@ -201,6 +201,69 @@ const Settings: Collection = {
       type: 'string',
       list: true
     }]
+  }, {
+    name: 'customization',
+    label: 'Customization and Branding',
+    type: 'object',
+    defaultItem: () => ({
+      'primary': '#073B4C',
+      'header_title': true,
+      'footer_title': true,
+      'footer_login': true
+    }),
+    fields: [{     
+      type: 'string',
+      name: 'primary',
+      label: 'Primary Color',
+      ui: {
+        component: 'color',
+        //@ts-ignore
+        colorFormat: 'hex',
+        colors: ['#073B4C'],
+        widget: 'sketch',
+      }
+    }, {
+      type: 'image',
+      name: 'header_logo',
+      label: 'Header Logo'
+    }, {
+      type: 'boolean',
+      name: 'header_title',
+      label: 'Header - Display Title Text?',
+      description: 'If checked, will display your project\'s title in the header along with the logo (if provided).'
+    }, {
+      type: 'image',
+      name: 'footer_logo',
+      label: 'Footer Logo'
+    }, {
+      type: 'boolean',
+      name: 'footer_title',
+      label: 'Footer - Display Title Text?',
+      description: 'If checked, will display your project\'s title in the footer along with the logo (if provided).'
+    }, {
+      type: 'object',
+      name: 'footer_orgs',
+      label: 'Footer Organizations',
+      description: 'List of logos to display in the footer, e.g. partners or sponsors',
+      list: true,
+      fields: [{
+        type: 'image',
+        name: 'logo',
+        label: 'Logo/Image'
+      }, {
+        type: 'string',
+        name: 'url',
+        label: 'Link'
+      }, {
+        type: 'string',
+        name: 'alt',
+        label: 'Image alt text'
+      }]
+    }, {
+      type: 'boolean',
+      name: 'footer_login',
+      label: 'Display Core Data and CMS login buttons in footer?'
+    }]
   }],
   ui: {
     allowedActions: {
