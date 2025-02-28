@@ -1,18 +1,47 @@
 {
-  "content": ["paths", "posts"],
+  "content": [
+    "paths",
+    "posts"
+  ],
+  "detail_pages": [
+    "works"
+  ],
   "i18n": {
     "default_locale": "en",
-    "locales": ["en"]
+    "locales": [
+      "en"
+    ]
   },
   "layers": [
     {
       "name": "Maptiler DataViz Style",
       "layer_type": "vector",
-      "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
+      "url": "https://api.maptiler.com/maps/dataviz/style.json?key=DICl11L0kocVzMWdoynh"
+    },
+    {
+      "name": "USGS Imagery Topo (MapServer)",
+      "layer_type": "raster",
+      "url": "https://basemap.nationalmap.gov/arcgis/services/USGSImageryTopo/MapServer/WMSServer?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0&styles=default"
+    },
+    {
+      "name": "USGS Topo (MapServer)",
+      "layer_type": "raster",
+      "url": "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0&styles=default"
+    },
+    {
+      "name": "New Jersey Natural Earth (WMS)",
+      "layer_type": "raster",
+      "url": "https://img.nj.gov/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015",
+      "overlay": true
+    },
+    {
+      "name": "US States",
+      "layer_type": "geojson",
+      "url": "gz_2010_us_040_00_20m.json",
+      "overlay": true
     }
   ],
   "map": {
-    "clusterRadius": 6,
     "geometry": "geometry",
     "max_zoom": 14,
     "zoom_to_place": true
@@ -22,26 +51,29 @@
     "result_card": {
       "title": "name"
     },
+    "result_filtering": {
+      "places": {
+        "exclude": [
+          "relatedOrganizations"
+        ]
+      }
+    },
     "route": "/places"
   },
   "typesense": {
-    "host": "example.typesense.com",
+    "host": "i74olkjcuy69ze2vp-1.a1.typesense.net",
     "port": 443,
     "protocol": "https",
-    "api_key": "abcdefg",
-    "index_name": "core_data_places",
-    "query_by": "name",
-    "default_sort": "name",
-    "overrides": {
-      "geoLocationField": "coordinates"
-    }
+    "api_key": "PSNp8MUfQBInjahcHQ3l76jChrHZHqmj",
+    "index_name": "scavenger_hunt",
+    "query_by": "name"
   },
   "core_data": {
     "url": "https://staging.coredata.cloud",
     "project_ids": [
-      1,
-      2,
-      3
+      "43",
+      "44",
+      "45"
     ]
   }
 }

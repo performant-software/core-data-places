@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../lorin-core-data-test"
+		},
+		{
+			"path": "../pss-scavenger-hunt-content"
+		},
+		{
+			"path": "../pan-african-data-content"
+		},
+		{
+			"path": "../gbof-c19nyc-staging-content"
+		}
+	],
+	"settings": {
+		"editor.formatOnSave": true
+	}
+}
