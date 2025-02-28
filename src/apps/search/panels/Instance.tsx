@@ -7,15 +7,18 @@ interface Props {
   className?: string;
 }
 
-const Instance = (props: Props) => (
-  <BasePanel
-    className={props.className}
-    name='instance'
-    exclusions={exclusions}
-    service={InstancesService}
-  />
-);
+const Instance = (props: Props) => {
+  const config: any = useRuntimeConfig();
 
+  const exclusions = config.search.result_filtering && config.search.result_filtering.instances ? config.search.result_filtering.instances.exclude : [];
+    return (
+    <BasePanel
+      className={props.className}
+      name='instance'
+      exclusions={exclusions}
+      service={InstancesService}
+    />
+  );
 };
 
 export default Instance;
