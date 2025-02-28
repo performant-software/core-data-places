@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import _ from 'underscore';
 import { useBlackText } from '@utils/layout';
 
-const blackText = config.customization?.primary && useBlackText(config.customization.primary);
+const blackText = config.branding?.primary && useBlackText(config.branding.primary);
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
