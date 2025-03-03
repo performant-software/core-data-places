@@ -23,6 +23,9 @@ const Facets = (props: Props) => {
   const { attributes, rangeAttributes } = useContext(FacetStateContext);
   const { t } = useContext(TranslationContext);
 
+  /**
+   * Renders the facet for the passed attribute.
+   */
   const renderFacet = useCallback((attribute, index) => {
     const { facets = {} } = config.search;
     const type = facets[attribute] || TYPE_LIST;
