@@ -31,3 +31,10 @@ export const getPlaceURL = (id: string, params = {}) => {
 
   return `${url}?${searchParams}`;
 };
+
+export const getMediaURL = (params = {}) => {
+  const url = `${config.core_data.url}/core_data/public/v1/media_content`;
+  const searchParams = buildSearchParameters(params);
+
+  return `${url}?${searchParams}`;
+};
