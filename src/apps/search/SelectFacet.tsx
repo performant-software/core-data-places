@@ -8,9 +8,10 @@ import _ from 'underscore';
 interface Props {
   attribute: string;
   className: string;
+  icon?: string;
 }
 
-const SelectFacet = ({ attribute, className}: Props) => {
+const SelectFacet = ({ attribute, className, icon }: Props) => {
   const [selected, setSelected] = useState([]);
   const { items, refine, searchForItems } = useRefinementList({ attribute });
 
@@ -53,6 +54,7 @@ const SelectFacet = ({ attribute, className}: Props) => {
     <Facet
       attribute={attribute}
       className={clsx('select-facet', 'text-sm', className)}
+      icon={icon}
     >
       <Combobox
         className='py-2 combobox'

@@ -6,9 +6,10 @@ import { useRange } from 'react-instantsearch';
 interface Props {
   attribute: string,
   className?: string;
+  icon?: string;
 }
 
-const RangeFacet = ({ attribute, className }: Props) => {
+const RangeFacet = ({ attribute, className, icon }: Props) => {
   const { start, range, refine } = useRange({ attribute });
   const { min, max } = range;
 
@@ -28,6 +29,7 @@ const RangeFacet = ({ attribute, className }: Props) => {
     <Facet
       attribute={attribute}
       className={className}
+      icon={icon}
     >
       <Slider
         max={max}

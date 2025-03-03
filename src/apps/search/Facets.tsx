@@ -12,6 +12,7 @@ import { useCallback, useContext } from 'react';
 import _ from 'underscore';
 
 const TYPE_LIST = 'list';
+const TYPE_RANGE = 'range';
 const TYPE_SELECT = 'select';
 
 interface Props {
@@ -24,36 +25,50 @@ const Facets = (props: Props) => {
   const { t } = useContext(TranslationContext);
 
   /**
+   * Returns the `search.facets` value for the passed attribute key populated with the passed default values.
+   */
+  const getFacetConfiguration = useCallback((attribute, defaults = {}) => {
+    const { facets = {} } = config.search;
+    const facet = _.defaults(facets[attribute] || {}, defaults);
+
+    return facet;
+  }, [config]);
+
+  /**
    * Renders the facet for the passed attribute.
    */
-  const renderFacet = useCallback((attribute, index) => {
-    const { facets = {} } = config.search;
-    const type = facets[attribute] || TYPE_LIST;
+  const renderFacet = useCallback((attribute, type) => {
+    const facet = getFacetConfiguration(attribute, { type });
 
-    if (type === TYPE_LIST) {
+    if (facet.type === TYPE_LIST) {
       return (
         <ListFacet
           attribute={attribute}
-          className={clsx({
-            'border-b border-neutral-200': index < attribute.length - 1
-          })}
+          icon={facet.icon}
         />
       );
     }
 
-    if (type === TYPE_SELECT) {
+    if (facet.type === TYPE_SELECT) {
       return (
         <SelectFacet
           attribute={attribute}
-          className={clsx({
-            'border-b border-neutral-200': index < attribute.length - 1
-          })}
+          icon={facet.icon}
+        />
+      );
+    }
+
+    if (facet.type === TYPE_RANGE) {
+      return (
+        <RangeFacet
+          attribute={attribute}
+          icon={facet.icon}
         />
       );
     }
 
     return null;
-  }, []);
+  }, [getFacetConfiguration]);
 
   return (
     <aside
@@ -82,15 +97,8 @@ const Facets = (props: Props) => {
       </div>
       <CurrentRefinementsList />
       <GeosearchFilter />
-      { _.map(rangeAttributes, (attribute, index) => (
-        <RangeFacet
-          attribute={attribute}
-          className={clsx({
-          'border-b border-neutral-200': index < attribute.length - 1
-          })}
-        />
-      ))}
-      { _.map(attributes, renderFacet) }
+      { _.map(rangeAttributes, (attribute) => renderFacet(attribute, TYPE_RANGE)) }
+      { _.map(attributes, (attribute) => renderFacet(attribute, TYPE_LIST)) }
     </aside>
   );
 };
