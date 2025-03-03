@@ -62,9 +62,9 @@ const ResultTooltip = (props: Props) => {
           hit={hit}
         />
       )}
-      { !isCluster && config.search.result_card.subtitle && (
+      { !isCluster && config.search.result_card.attributes && config.search.result_card.attributes.length > 0 && (
         <SearchHighlight
-          attribute={config.search.result_card.subtitle}
+          attribute={config.search.result_card.attributes[0].name}
           className='truncate'
           badge={!isCluster}
           hit={hit}
