@@ -202,13 +202,11 @@ const Settings: Collection = {
       list: true
     }]
   }, {
-    name: 'customization',
+    name: 'branding',
     label: 'Customization and Branding',
     type: 'object',
     defaultItem: () => ({
       'primary': '#073B4C',
-      'header_title': true,
-      'footer_title': true,
       'footer_login': true
     }),
     fields: [{     
@@ -228,18 +226,18 @@ const Settings: Collection = {
       label: 'Header Logo'
     }, {
       type: 'boolean',
-      name: 'header_title',
-      label: 'Header - Display Title Text?',
-      description: 'If checked, will display your project\'s title in the header along with the logo (if provided).'
+      name: 'header_hide_title',
+      label: 'Hide title in header?',
+      description: 'If checked, will only display the provided logo and not the text title in the header.'
     }, {
       type: 'image',
       name: 'footer_logo',
       label: 'Footer Logo'
     }, {
       type: 'boolean',
-      name: 'footer_title',
-      label: 'Footer - Display Title Text?',
-      description: 'If checked, will display your project\'s title in the footer along with the logo (if provided).'
+      name: 'footer_hide_title',
+      label: 'Hide title in footer?',
+      description: 'If checked, will only display the provided logo and not the text title in the footer.'
     }, {
       type: 'object',
       name: 'footer_orgs',

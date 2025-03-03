@@ -16,9 +16,9 @@ const { title } = await fetchAbout();
     className='flex flex-col py-12 items-center divide-y-2 divide-secondary'
   >
     {
-      config.customization?.footer_orgs && ( 
+      config.branding?.footer_orgs && ( 
         <div class='flex flex-row gap-12 justify-center flex-wrap py-8 w-full'>
-          { _.map(config.customization.footer_orgs, (org) => {
+          { _.map(config.branding.footer_orgs, (org) => {
             if (org.url) {
               return (
                 <a href={org.url}>
@@ -39,16 +39,20 @@ const { title } = await fetchAbout();
         class='flex flex-col md:flex-row gap-6 align-middle justify-center items-center pt-8'
       >
         {
-          config.customization?.footer_title ? ( 
-            config.customization?.footer_logo && <img           
-              class='h-14'
-              src={config.customization?.footer_logo}
-            />
-            <h1 class='font-serif font-semibold text-[32px] text-center'>
-              { title }
-            </h1>
+          !config.branding?.footer_hide_title ? (
+            <>
+              { 
+                config.branding?.footer_logo && <img           
+                  class='h-14'
+                  src={config.branding?.footer_logo}
+                />
+              }
+              <h1 class='font-serif font-semibold text-[32px] text-center'>
+                { title }
+              </h1>
+            </>
           ) : ( 
-            <img src={config.customization?.footer_logo} class='h-32' />
+            <img src={config.branding?.footer_logo} class='h-32' />
           )
         }
       </div>
@@ -68,7 +72,7 @@ const { title } = await fetchAbout();
       </div>
     </div>
     {
-      config.customization?.footer_login && (
+      config.branding?.footer_login && (
         <div
           class='flex flex-row justify-center gap-8 py-8 w-full'
         >
