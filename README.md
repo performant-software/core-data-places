@@ -70,6 +70,17 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 | core_data                             | Object  | Core Data configuration                                                                                                                                           |
 | core_data.url                         | String  | URL of the Core Data application                                                                                                                                  |
 | core_data.project_ids                 | Array   | Numeric array of Core Data project IDs to be included                                                                                                             |
+| branding                              | Object  | Branding configuration                                                                                                                                            |
+| branding.primary                      | String  | Primary theme color for website, in hex format (must be full six-digit hex, e.g. `#ffffff`)                                                                       |
+| branding.header_logo                  | String  | URL of logo image to appear in header                                                                                                                             |
+| branding.header_hide_title            | Boolean | If true, suppresses the text title from the header                                                                                                                |
+| branding.footer_logo                  | String  | URL of logo image to appear in footer                                                                                                                             |
+| branding.footer_hide_logo             | Boolean | If true, suppresses the text title from the footer and displays a larger version of the logo                                                                      |
+| branding.footer_orgs                  | Array   | Logos and links for organizations/partners to appear in footer                                                                                                    |
+| branding.footer_orgs.logo             | String  | URL of logo of an included organization                                                                                                                           |
+| branding.footer_orgs.url              | String  | URL to which the logo of this org should link                                                                                                                     |
+| branding.footer_orgs.alt              | String  | Alt text for the logo of this org (e.g. the org title)                                                                                                            |
+| branding.footer_login                 | Boolean | If true, displays links in the footer to log into Core Data and TinaCMS                                                                                           |
 
 #### Create a new Personal Access Token
 

@@ -25,12 +25,12 @@ const { title } = await fetchAbout();
       href={getRelativeLocaleUrl(currentLocale)}
     >
       <!-- @ts-ignore -->
-      { config.customization?.header_logo && ( 
+      { config.branding?.header_logo && ( 
         // @ts-ignore
-        <img src={config.customization.header_logo} alt={title} class="h-10" />
+        <img src={config.branding.header_logo} alt={title} class="h-10" />
       )}
       <!-- @ts-ignore -->
-      { config.customization?.header_title && ( 
+      { !config.branding?.header_hide_title && ( 
         <h1>
           { title }
         </h1>
