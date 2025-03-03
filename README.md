@@ -52,8 +52,14 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 | search.result_card.subtitle           | String  | Path to the value in the Typesense document that should be used as the card subtitle. This value can contain nested objects (e.g. `<relationship-id>.0.name`).    |
 | search.result_card.attributes         | Array   | Attributes to display in the search list and table                                                                                                                |
 | search.result_card.attributes.name    | String  | Path to the value in the Typesense document that should be used to look up the column value. This value can contain nested objects (e.g. `<relationship-id>.0.name`).|
-| search.result_card.attributes.icon    | String  | Name of the icon that should displayed next to the value in the search list. If not provided, a bullet point will be used.                                        |
-| search.route                          | String  | The navigation route to use when clicking on a search result card (e.g. "/places", "/organizations", etc)                                                         |
+| search.result_card.attributes.icon    | String  | Name of the icon that should displayed next to the value in the search list. If not provided, a bullet point will be used.
+| search.result_filtering.events.exclude | Array | List of attributes, user defined fields and associations to be excluded from the Search Detail card. See [below](##### Search detail filtering) 
+| search.result_filtering.instances.exclude | Array | List of attributes, user defined fields and associations to be excluded from the Search Detail card. See [below](##### Search detail filtering) 
+| search.result_filtering.organizations.exclude | Array | List of attributes, user defined fields and associations to be excluded from the Search Detail card. See [below](##### Search detail filtering) 
+| search.result_filtering.people.exclude | Array | List of attributes, user defined fields and associations to be excluded from the Search Detail card. See [below](##### Search detail filtering) 
+| search.result_filtering.places.exclude | Array | List of attributes, user defined fields and associations to be excluded from the Search Detail card. See [below](##### Search detail filtering) 
+| search.result_filtering.works.exclude | Array | List of attributes, user defined fields and associations to be excluded from the Search Detail card. See [below](##### Search detail filtering) 
+| search.route                          | String  | The navigation route to use when clicking on a search result card (e.g. "/places", "/organizations", etc) |                                                        
 | typesense                             | Object  | Typesense index connection information                                                                                                                            |
 | typesense.host                        | String  | Typesense host URL                                                                                                                                                |
 | typesense.port                        | Number  | Typesense host port                                                                                                                                               |
@@ -61,7 +67,8 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 | typesense.api_key                     | String  | Typesense search API key. **NOTE:** This should be a read-only key.                                                                                               |
 | typesense.index_name                  | String  | Name of the Typesense collection                                                                                                                                  |
 | typesense.query_by                    | String  | Typesense attributes to query when a search is executed                                                                                                           |
-| typesense.default_sort                | String  | Typesense attribute to sort by when no search is entered or as a tiebreaker. Search relevance score will always take priority over this attribute.                |
+| typesense.default_sort                | String  | Typesense attribute to sort by when no search is entered or as a tiebreaker. Search relevance score will always take priority over this attribute.                
+|
 | typesense.exclude_fields              | String  | Fields to exclude from the Typesense search response                                                                                                              |
 | typesense.facets                      | Object  | Facet configuration                                                                                                                                               |
 | typesense.facets.exclude              | Array   | Array of facet names to exclude                                                                                                                                   |
@@ -70,6 +77,45 @@ Copy the `/data/users.json` file into your content repository to `/content/users
 | core_data                             | Object  | Core Data configuration                                                                                                                                           |
 | core_data.url                         | String  | URL of the Core Data application                                                                                                                                  |
 | core_data.project_ids                 | Array   | Numeric array of Core Data project IDs to be included                                                                                                             |
+
+##### Search detail filtering
+
+You can filter what is shown in the detail pane when clicking an item in the search view. This is accomplished by adding a result_filtering object to the search block in the config.json file in the content directory. 
+
+- To filter native fields add the name of the native field to the exclude array:
+
+~~~~
+"exclude":["name"]
+~~~~
+
+- To filter user-defined fields add the GUID of the field to the exclude array:
+
+~~~~
+"exclude":["name", "2f400af6-ee3f-42e4-8321-7b92c5a7cd23"]
+~~~~
+
+- To filter one-to-many relationships (*Currently the only defined one-to-many relationship is `place_layers` in the `Place` model.*) add the relationship name to the exclude array
+
+~~~~
+"exclude":["name", "2f400af6-ee3f-42e4-8321-7b92c5a7cd23", "place_layers"]
+~~~~
+
+- To filter related records add the related record type to the exclude array.
+
+The following related records can be excluded:
+
+- relatedEvents
+- relatedInstances
+- relatedItems
+- relatedOrganizations
+- relatedManifest
+- relatedPlaces
+- relatedTaxonomies
+- relatedWorks
+
+~~~~
+"exclude":["name", "2f400af6-ee3f-42e4-8321-7b92c5a7cd23", "place_layers", "relatedOrganizations"]
+~~~~
 
 #### Create a new Personal Access Token
 
