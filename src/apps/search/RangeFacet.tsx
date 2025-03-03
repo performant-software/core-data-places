@@ -10,7 +10,7 @@ interface Props {
 }
 
 const RangeFacet = ({ attribute, className, icon }: Props) => {
-  const { start, range, refine } = useRange({ attribute });
+  const { canRefine, start, range, refine } = useRange({ attribute });
   const { min, max } = range;
 
   const [value, setValue] = useState([min, max]);
@@ -24,6 +24,13 @@ const RangeFacet = ({ attribute, className, icon }: Props) => {
   useEffect(() => {
     setValue([from, to]);
   }, [from, to]);
+
+  /**
+   * Only display if the facet is available to refine.
+   */
+  if (!canRefine) {
+    return null;
+  }
 
   return (
     <Facet
