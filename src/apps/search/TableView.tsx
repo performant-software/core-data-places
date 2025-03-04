@@ -1,6 +1,7 @@
 import SearchHighlight from '@apps/search/SearchHighlight';
 import TranslationContext from '@apps/search/TranslationContext';
 import useHoverable from '@apps/search/useHoverable';
+import useSelectable from '@apps/search/useSelectable';
 import { SearchResultsTable, useCachedHits } from '@performant-software/core-data';
 import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
 import { getColumnLabel, renderFlattenedAttribute } from '@root/src/utils/search';
@@ -15,10 +16,11 @@ interface Props {
 const TableView = (props: Props) => {
   const config = useRuntimeConfig<any>();
   const hits = useCachedHits();
+  const navigate = useNavigate();
   const { t } = useContext(TranslationContext);
 
   const { isHover, onPointEnter, onPointLeave } = useHoverable();
-  const navigate = useNavigate();
+  const { isSelected } = useSelectable();
 
   const { title } = config.search.result_card;
 
@@ -71,7 +73,7 @@ const TableView = (props: Props) => {
             />
           )
         }, ...columns]}
-        isHighlight={isHover}
+        isHighlight={(item) => isHover(item) || isSelected(item)}
         onRowClick={onRowClick}
         onRowPointerEnter={onPointEnter}
         onRowPointerLeave={onPointLeave}

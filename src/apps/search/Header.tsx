@@ -33,7 +33,7 @@ const Header = (props: Props) => {
       className={clsx('bg-neutral-100 flex items-center justify-between px-6 py-5 shadow', props.className)}
     >
       <div
-        className='flex items-center gap-x-10 w-3/4'
+        className='flex items-center gap-x-12 w-3/4'
       >
         <div
           className='flex items-center'
@@ -70,7 +70,7 @@ const Header = (props: Props) => {
             )}
           </Button>
           <h2
-            className='text-xl font-semibold text-nowrap px-3'
+            className='text-xl font-bold text-nowrap px-3'
           >
             { t('root') }
           </h2>
@@ -91,6 +91,7 @@ const Header = (props: Props) => {
           rounded
         >
           <Button
+            className='text-smd'
             primary={props.view === Views.list}
             onClick={() => props.onViewChange(Views.list)}
           >
@@ -100,6 +101,7 @@ const Header = (props: Props) => {
             { t('list') }
           </Button>
           <Button
+            className='text-smd'
             primary={props.view === Views.table}
             onClick={() => props.onViewChange(Views.table)}
           >

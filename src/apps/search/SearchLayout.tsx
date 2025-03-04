@@ -12,7 +12,7 @@ import { useMemo, useState } from 'react';
 
 const DEFAULT_MAX_ZOOM = 14;
 
-const DEFAULT_PADDING_TOP = 100;
+const DEFAULT_PADDING_TOP = 80;
 const DEFAULT_PADDING_BOTTOM = 100;
 const DEFAULT_PADDING_LEFT = 120;
 const DEFAULT_PADDING_RIGHT = 120;
@@ -70,12 +70,12 @@ const SearchLayout = () => {
       }}
     >
       <div
-        className='absolute left-0 right-0 bottom-0 top-[80px]'
+        className='absolute left-0 right-0 bottom-0 top-[64px]'
       >
         <MapView />
       </div>
       <Header
-        className='h-[80px]'
+        className='h-[64px]'
         filters={filters}
         onFiltersChange={setFilters}
         onViewChange={setView}
