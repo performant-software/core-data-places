@@ -57,22 +57,24 @@ const PlacesMap = (props: Props) => {
       <Map
         style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
       >
-        <Controls
-          position='topright'
-        >
-          <Zoom />
-          { baseLayers.length > 1 && (
-            <LayerMenu
-              baseLayer={baseLayer?.name}
-              baseLayers={baseLayers}
-              baseLayersLabel={'Base Layers'}
-              dataLayers={dataLayers}
-              onChangeBaseLayer={setBaseLayer}
-              onChangeOverlays={setOverlays}
-              overlaysLabel={'Overlays'}
-            />
-          )}
-        </Controls>
+        <div onClick={(e: any) => { e.stopPropagation(); }}>
+          <Controls
+            position='topright'
+          >
+            <Zoom />
+            { baseLayers.length > 1 && (
+              <LayerMenu
+                baseLayer={baseLayer?.name}
+                baseLayers={baseLayers}
+                baseLayersLabel={'Base Layers'}
+                dataLayers={dataLayers}
+                onChangeBaseLayer={setBaseLayer}
+                onChangeOverlays={setOverlays}
+                overlaysLabel={'Overlays'}
+              />
+            )}
+          </Controls>
+        </div>
         <OverlayLayers
           overlays={overlays}
           key={`overlay-${props.mapId}`}
