@@ -33,7 +33,7 @@ const Header = (props: Props) => {
       className={clsx('bg-neutral-100 flex items-center justify-between px-6 py-5 shadow', props.className)}
     >
       <div
-        className='flex items-center gap-x-10 w-3/4'
+        className='flex items-center gap-x-12 w-3/4'
       >
         <div
           className='flex items-center'
