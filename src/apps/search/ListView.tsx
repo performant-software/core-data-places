@@ -1,5 +1,6 @@
 import SearchHighlight from '@apps/search/SearchHighlight';
 import useHoverable from '@apps/search/useHoverable';
+import useSelectable from '@apps/search/useSelectable';
 import { SearchList, useCachedHits } from '@performant-software/core-data';
 import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
 import { renderFlattenedAttribute } from '@root/src/utils/search';
@@ -16,6 +17,7 @@ const ListView = (props: Props) => {
   const navigate = useNavigate();
 
   const { isHover, onPointEnter, onPointLeave } = useHoverable();
+  const { isSelected } = useSelectable();
 
   /**
    * List of attributes to display in the search list
@@ -67,7 +69,7 @@ const ListView = (props: Props) => {
       <SearchList
         attributes={attributes}
         className='flex flex-col'
-        isHighlight={isHover}
+        isHighlight={(item) => isHover(item) || isSelected(item)}
         items={hits}
         itemTitle={renderItemTitle}
         onItemClick={onRowClick}

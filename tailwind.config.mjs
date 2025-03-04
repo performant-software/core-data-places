@@ -13,12 +13,6 @@ export default {
 	],
 	theme: {
 		extend: {
-			screens: {
-				'3xl': '1800px',
-			},
-			maxWidth: {
-				'screen-3xl': '1800px',
-			},
 			colors: {
 				primary: config.branding?.primary || coreDataConfig.theme.extend.colors.primary,
 				'neutral-dark': '#111928',
@@ -26,6 +20,15 @@ export default {
 				gray: {
 					1000: '#505A6A'
 				},
+			},
+			fontSize: {
+				'smd': '0.938rem'
+			},
+			maxWidth: {
+				'screen-3xl': '1800px',
+			},
+			screens: {
+				'3xl': '1800px',
 			}
 		}
 	},
