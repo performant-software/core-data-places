@@ -70,7 +70,7 @@ const Header = (props: Props) => {
             )}
           </Button>
           <h2
-            className='text-xl font-semibold text-nowrap px-3'
+            className='text-xl font-bold text-nowrap px-3'
           >
             { t('root') }
           </h2>
