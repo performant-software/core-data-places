@@ -91,6 +91,7 @@ const Header = (props: Props) => {
           rounded
         >
           <Button
+            className='text-smd'
             primary={props.view === Views.list}
             onClick={() => props.onViewChange(Views.list)}
           >
@@ -100,6 +101,7 @@ const Header = (props: Props) => {
             { t('list') }
           </Button>
           <Button
+            className='text-smd'
             primary={props.view === Views.table}
             onClick={() => props.onViewChange(Views.table)}
           >
