@@ -1,7 +1,8 @@
 import Facet from '@apps/search/Facet';
 import { Slider } from '@performant-software/core-data';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRange } from 'react-instantsearch';
+import config from '@config';
 
 interface Props {
   attribute: string,
@@ -12,11 +13,28 @@ interface Props {
 const RangeFacet = ({ attribute, className, icon }: Props) => {
   const { canRefine, start, range, refine } = useRange({ attribute });
   const { min, max } = range;
+  const isDate = useMemo(() => (config.search.date_facets?.includes(attribute)), [attribute]);
 
-  const [value, setValue] = useState([min, max]);
+  const getDisplayValue = (_value: number, _isDate: boolean) => (
+    _isDate ? (new Date(_value*1000)).getFullYear() : _value
+  );
 
-  const from = Math.max(min, Number.isFinite(start[0]) ? start[0] : min);
-  const to = Math.min(max, Number.isFinite(start[1]) ? start[1] : max);
+  const getValue = (_display: number, _isDate: boolean) => (
+    _isDate ? Math.round((new Date(_display, 5)).getTime()/1000) : _display
+  );
+
+  const displayMin = useMemo(() => (
+    getDisplayValue(min, isDate)
+  ), [isDate, range]);
+
+  const displayMax = useMemo(() => (
+    getDisplayValue(max, isDate)
+  ), [isDate, range])
+
+  const [value, setValue] = useState([displayMin, displayMax]);
+
+  const from = Math.max(displayMin, Number.isFinite(start[0]) ? getDisplayValue(start[0], isDate) : displayMin);
+  const to = Math.min(displayMax, Number.isFinite(start[1]) ? getDisplayValue(start[1], isDate) : displayMax);
 
   /**
    * Sets the value on the state when the from/to values change.
@@ -39,10 +57,10 @@ const RangeFacet = ({ attribute, className, icon }: Props) => {
       icon={icon}
     >
       <Slider
-        max={max}
-        min={min}
+        max={displayMax}
+        min={displayMin}
         onValueChange={setValue}
-        onValueCommit={refine}
+        onValueCommit={(value) => refine([getValue(value[0], isDate), getValue(value[1], isDate)])}
         value={value}
       />
     </Facet>

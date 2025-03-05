@@ -179,11 +179,11 @@
     "tinaLabel": "ID",
     "defaultValue": "ID"
   },
-  "startDate": {
+  "start_date": {
     "tinaLabel": "Start Date",
     "defaultValue": "Start Date"
   },
-  "endDate": {
+  "end_date": {
     "tinaLabel": "End Date",
     "defaultValue": "End Date"
   },
