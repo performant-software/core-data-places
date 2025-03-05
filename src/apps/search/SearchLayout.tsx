@@ -90,30 +90,29 @@ const SearchLayout = () => {
       <div
         className='flex flex-grow h-[calc(100vh-160px)]'
       >
-        { (view === Views.list || filters) && (
+        <div
+          className={clsx('flex', { 'flex-grow': view === Views.list })}
+        >
           <div
-            className={clsx('flex', { 'flex-grow': view === Views.list })}
+            className='flex flex-col'
           >
-            { filters && (
-              <div
-                className='flex flex-col'
-              >
-                <Facets
-                  className='w-[240px]'
-                />
-              </div>
-            )}
-            { view === Views.list && (
-              <div
-                className='flex flex-col'
-              >
-                <ListView
-                  className='w-[350px]'
-                />
-              </div>
-            )}
+            <Facets
+              className={clsx(
+                'w-[240px]',
+                { 'hidden': !filters }
+              )}
+            />
           </div>
-        )}
+          { view === Views.list && (
+            <div
+              className='flex flex-col'
+            >
+              <ListView
+                className='w-[350px]'
+              />
+            </div>
+          )}
+        </div>
         { view === Views.table && (
           <div
             className='flex flex-grow items-end'
