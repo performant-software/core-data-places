@@ -16,6 +16,15 @@ class Base {
   }
 
   /**
+   * Calls the `/api/:name/index.json` endpoint.
+   *
+   * @param params
+   */
+  fetchAll(params: { [key: string]: any }) {
+    return this.sendRequest(`/api/${this.name}/index.json`, params);
+  }
+
+  /**
    * Calls the `/api/:name/:id/index.json` endpoint.
    *
    * @param id

@@ -1,7 +1,7 @@
-import { getPlacesURL, getPlaceURL } from '../utils'
+import PlacesService from '@backend/api/places';
 import { Combobox, Switch } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { wrapFieldsWithMeta } from 'tinacms';
 
 interface CustomTinaFieldProps {
@@ -20,16 +20,6 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
   }
-
-  const fetchPlace = useCallback((id) => {
-    const url = getPlaceURL(id);
-    return fetch(url).then((response) => response.json());
-  }, []);
-
-  const fetchPlaces = useCallback((params = {}) => {
-    const url = getPlacesURL(params);
-    return fetch(url).then((response) => response.json());
-  }, []);
 
   const toggleAnimate = (e: any) => {
     const newData = {
@@ -67,18 +57,20 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   };
 
   useEffect(() => {
-    fetchPlaces({ per_page: 0 })
-      .then((data) => setPlaces(data.places));
+    PlacesService
+      .fetchAll({ per_page: 0 })
+      .then((data) => setPlaces(data));
   }, []);
 
   useEffect(() => {
     const { uuid } = props.input.value;
 
     if (uuid) {
-      fetchPlace(uuid)
-        .then((data) => setSelectedPlace(data.place));
+      PlacesService
+        .fetchOne(uuid)
+        .then(({ place }) => setSelectedPlace(place));
     }
-  }, []);
+  }, [props.input.value]);
 
   useEffect(() => {
     places && setFilteredPlaces(query === '' ? places : places.filter((place) => place.name.toLowerCase().includes(query.toLowerCase())));
@@ -225,7 +217,7 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
               />
             </div>
           </div>
-          { selectedPlace.place_layers.length > 0 && (
+          { selectedPlace.place_layers?.length > 0 && (
             <fieldset>
               <legend
                 className='text-base font-semibold leading-6 text-gray-900'
