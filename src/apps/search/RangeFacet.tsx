@@ -6,10 +6,11 @@ import { useRange } from 'react-instantsearch';
 interface Props {
   attribute: string,
   className?: string;
+  icon?: string;
 }
 
-const RangeFacet = ({ attribute, className }: Props) => {
-  const { start, range, refine } = useRange({ attribute });
+const RangeFacet = ({ attribute, className, icon }: Props) => {
+  const { canRefine, start, range, refine } = useRange({ attribute });
   const { min, max } = range;
 
   const [value, setValue] = useState([min, max]);
@@ -24,10 +25,18 @@ const RangeFacet = ({ attribute, className }: Props) => {
     setValue([from, to]);
   }, [from, to]);
 
+  /**
+   * Only display if the facet is available to refine.
+   */
+  if (!canRefine) {
+    return null;
+  }
+
   return (
     <Facet
       attribute={attribute}
       className={className}
+      icon={icon}
     >
       <Slider
         max={max}

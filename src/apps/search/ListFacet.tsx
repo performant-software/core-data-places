@@ -8,9 +8,10 @@ import _ from 'underscore';
 interface Props {
   attribute: string,
   className?: string;
+  icon?: string;
 }
 
-const ListFacet = ({ attribute, className }: Props) => {
+const ListFacet = ({ attribute, className, icon }: Props) => {
   const {
     canToggleShowMore,
     isShowingMore,
@@ -29,6 +30,7 @@ const ListFacet = ({ attribute, className }: Props) => {
     <Facet
       attribute={attribute}
       className={className}
+      icon={icon}
     >
       <ul>
         { _.map(items, (item, index) => (

@@ -104,6 +104,38 @@ const Settings: Collection = {
     label: 'Search',
     type: 'object',
     fields: [{
+      name: 'facets',
+      label: 'Facets',
+      type: 'object',
+      list: true,
+      ui: {
+        itemProps: (item) => {
+          return { label: item?.name }
+        }
+      },
+      fields: [{
+        name: 'name',
+        label: 'Name',
+        type: 'string',
+        required: true
+      }, {
+        name: 'icon',
+        label: 'Icon',
+        type: 'string'
+      }, {
+        name: 'type',
+        label: 'Type',
+        type: 'string',
+        list: true,
+        options: [{
+          value: 'list',
+          label: 'List',
+        }, {
+          value: 'select',
+          label: 'Select',
+        }]
+      }]
+    }, {
       name: 'geosearch',
       label: 'Geosearch',
       type: 'boolean'
