@@ -13,7 +13,13 @@ interface Props {
 
 const SelectFacet = ({ attribute, className, icon }: Props) => {
   const [selected, setSelected] = useState([]);
-  const { items, refine, searchForItems } = useRefinementList({ attribute });
+
+  const {
+    isFromSearch,
+    items,
+    refine,
+    searchForItems
+  } = useRefinementList({ attribute });
 
   /**
    * Returns true if the passed item is currently selected.
@@ -47,8 +53,10 @@ const SelectFacet = ({ attribute, className, icon }: Props) => {
    * Set the selected items when the component is mounted.
    */
   useEffect(() => {
-    setSelected(_.where(items, { isRefined: true }));
-  }, []);
+    if (!isFromSearch) {
+      setSelected(_.where(items, { isRefined: true }));
+    }
+  }, [items]);
 
   return (
     <Facet
