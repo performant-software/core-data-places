@@ -107,7 +107,18 @@ const Settings: Collection = {
       name: 'facets',
       label: 'Facets',
       type: 'object',
+      list: true,
+      ui: {
+        itemProps: (item) => {
+          return { label: item?.name }
+        }
+      },
       fields: [{
+        name: 'name',
+        label: 'Name',
+        type: 'string',
+        required: true
+      }, {
         name: 'icon',
         label: 'Icon',
         type: 'string'
