@@ -27,9 +27,9 @@ const Facets = (props: Props) => {
   /**
    * Returns the `search.facets` value for the passed attribute key populated with the passed default values.
    */
-  const getFacetConfiguration = useCallback((attribute, defaults = {}) => {
+  const getFacetConfiguration = useCallback((name, defaults = {}) => {
     const { facets = {} } = config.search;
-    const facet = _.defaults(facets[attribute] || {}, defaults);
+    const facet = _.defaults(_.findWhere(facets, { name }) || {}, defaults);
 
     return facet;
   }, [config]);
