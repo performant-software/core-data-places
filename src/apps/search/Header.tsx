@@ -7,6 +7,7 @@ import {
   useSearchBox
 } from '@performant-software/core-data';
 import clsx from 'clsx';
+import { useMemo } from 'react';
 import { useCurrentRefinements } from 'react-instantsearch';
 import _ from 'underscore';
 
@@ -28,6 +29,11 @@ const Header = (props: Props) => {
   const { query, refine } = useSearchBox();
   const { t } = useTranslations();
 
+  /**
+   * Memo-izes the number of value values applied.
+   */
+  const facetCount = useMemo(() => _.reduce(items, (memo, item) => memo + item.refinements.length, 0), [items]);
+
   return (
     <div
       className={clsx('bg-neutral-100 flex items-center justify-between px-6 py-5 shadow', props.className)}
@@ -48,7 +54,7 @@ const Header = (props: Props) => {
               name='filters'
               size={24}
             />
-            { !_.isEmpty(items) && (
+            { facetCount > 0 && (
               <div
                 className={`
                   absolute
@@ -65,7 +71,7 @@ const Header = (props: Props) => {
                   rounded-full
                 `}
               >
-                { items.length }
+                { facetCount }
               </div>
             )}
           </Button>
