@@ -10,6 +10,7 @@ interface SearchContextType {
     },
     maxZoom: number
   };
+  controlsClass?: string;
 }
 
 const SearchContext = createContext<SearchContextType>(null);

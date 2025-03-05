@@ -10,13 +10,13 @@ import {
 } from '@performant-software/core-data';
 import { Map, Tooltip, Zoom } from '@peripleo/maplibre';
 import {
-  Controls,
   useCurrentRoute,
   useNavigate,
   useRuntimeConfig,
   useSelectionValue
 } from '@peripleo/peripleo';
 import { parseFeature } from '@utils/search';
+import clsx from 'clsx';
 import {
   useContext,
   useEffect,
@@ -46,7 +46,7 @@ const MapView = () => {
   const selected = useSelectionValue<any>();
   const route = useCurrentRoute();
 
-  const { boundingBoxOptions } = useContext(SearchContext);
+  const { boundingBoxOptions, controlsClass } = useContext(SearchContext);
   const { t } = useContext(TranslationContext);
 
   /**
@@ -77,8 +77,12 @@ const MapView = () => {
       className='flex-grow'
       style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
     >
-      <Controls
-        position='topright'
+      <div
+        className={clsx(
+          'p6o-controls-container',
+          'topright',
+          controlsClass
+        )}
       >
         <Zoom />
         { [...baseLayers, ...dataLayers].length > 1 && (
@@ -92,7 +96,7 @@ const MapView = () => {
             overlaysLabel={t('overlays')}
           />
         )}
-      </Controls>
+      </div>
       <OverlayLayers
         overlays={overlays}
       />

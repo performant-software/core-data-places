@@ -63,10 +63,16 @@ const SearchLayout = () => {
     maxZoom: config.map.max_zoom || DEFAULT_MAX_ZOOM
   }), [config, left, id, view]);
 
+  /**
+   * Memo-izes the class to apply to the map controls container.
+   */
+  const controlsClass = useMemo(() => id ? 'me-[350px]' : null, [id]);
+
   return (
     <SearchContext.Provider
       value={{
-        boundingBoxOptions
+        boundingBoxOptions,
+        controlsClass
       }}
     >
       <div
