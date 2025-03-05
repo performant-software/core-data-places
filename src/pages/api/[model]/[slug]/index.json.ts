@@ -42,16 +42,15 @@ export const getStaticPaths = (async () => {
     // @ts-ignore
     const pages = await getCollection(model);
     if (pages && pages.length) {
-      for (const lang of config.i18n.locales) {
-        const locPages = pages.map((page) => ({
-          params: {
-            // @ts-ignore
-            slug: page.id,
-            model: model,
-          },
-        }));
-        routes = [...routes, ...locPages];
-      }
+      const locPages = pages.map((page) => ({
+        params: {
+          // @ts-ignore
+          slug: page.id,
+          model: model,
+        },
+      }));
+
+      routes = [...routes, ...locPages];
     }
   }
   return routes;

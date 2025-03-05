@@ -25,7 +25,7 @@ export const GET: APIRoute = async ({ params }) => {
 };
 
 export const getStaticPaths = (async () => {
-  let routes = [];
+  const routes = [];
 
   for (const model of modelTypes) {
     routes.push({ params: { model } });
