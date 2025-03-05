@@ -280,9 +280,8 @@ const BasePanel = (props: Props) => {
       className={clsx(
         'flex',
         'flex-col',
-        'bg-white/80',
+        'bg-white',
         'backdrop-blur',
-        'shadow',
         'overflow-y-auto',
         props.className
       )}
