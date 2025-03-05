@@ -5,6 +5,10 @@ import fs from 'fs';
 const TEMP_DIR = './tmp';
 
 const init = async () => {
+  if (!(process.env.GITHUB_OWNER && process.env.GITHUB_REPO)) {
+    return;
+  }
+
   // Remove the temporary directory if it exists
   if (fs.existsSync(TEMP_DIR)) {
     fs.rmSync(TEMP_DIR, { recursive: true });
