@@ -18,7 +18,6 @@ import clsx from 'clsx';
 import React, {
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState
 } from 'react';
