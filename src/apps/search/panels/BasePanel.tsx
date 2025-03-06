@@ -18,6 +18,7 @@ import clsx from 'clsx';
 import React, {
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState
 } from 'react';
@@ -87,55 +88,55 @@ const BasePanel = (props: Props) => {
    * Loads the related events from the Core Data API.
    */
   const onLoadEvents = () => props.service.fetchRelatedEvents(id, { per_page: 0 });
-  const { data: { events = [] } = {} } = useLoader(onLoadEvents, null, [id, props.service]);
+  const { data: { events = null } = {} } = useLoader(onLoadEvents, null, [id, props.service]);
 
   /**
    * Loads the related instances from the Core Data API.
    */
   const onLoadInstances = () => props.service.fetchRelatedInstances(id, { per_page: 0 });
-  const { data: { instances = [] } = {} } = useLoader(onLoadInstances, null, [id, props.service]);
+  const { data: { instances = null } = {} } = useLoader(onLoadInstances, null, [id, props.service]);
 
   /**
    * Loads the related items from the Core Data API.
    */
   const onLoadItems = () => props.service.fetchRelatedItems(id, { per_page: 0 });
-  const { data: { items = [] } = {} } = useLoader(onLoadItems, null, [id, props.service]);
+  const { data: { items = null } = {} } = useLoader(onLoadItems, null, [id, props.service]);
 
   /**
    * Loads the related organizations from the Core Data API.
    */
   const onLoadOrganizations = () => props.service.fetchRelatedOrganizations(id, { per_page: 0 });
-  const { data: { organizations = [] } = {} } = useLoader(onLoadOrganizations, null, [id, props.service]);
+  const { data: { organizations = null } = {} } = useLoader(onLoadOrganizations, null, [id, props.service]);
 
   /**
    * Loads the IIIF collection manifest from the Core Data API.
    */
   const onLoadManifests = () => props.service.fetchRelatedManifests(id, { per_page: 0 });
-  const { data: collection = {} }: { collection: Collection } = useLoader(onLoadManifests, null, [id, props.service]);
+  const { data: collection = {}, loading: collectionLoading }: { collection: Collection, loading: boolean } = useLoader(onLoadManifests, null, [id, props.service]);
 
   /**
    * Loads the related people from the Core Data API.
    */
   const onLoadPeople = () => props.service.fetchRelatedPeople(id, { per_page: 0});
-  const { data: { people = [] } = {} } = useLoader(onLoadPeople, null, [id, props.service]);
+  const { data: { people = null } = {} } = useLoader(onLoadPeople, null, [id, props.service]);
 
   /**
    * Loads the related place records from the Astro API.
    */
   const onLoadPlaces = () => props.service.fetchRelatedPlaces(id, { per_page: 0 });
-  const { data: { places = [] } = {} } = useLoader(onLoadPlaces, null, [id, props.service]);
+  const { data: { places = null } = {} } = useLoader(onLoadPlaces, null, [id, props.service]);
 
   /**
    * Loads the related taxonomies from the Core Data API.
    */
   const onLoadTaxonomies = () => props.service.fetchRelatedTaxonomies(id, { per_page: 0 });
-  const { data: { taxonomies = [] } = {} } = useLoader(onLoadTaxonomies, null, [id, props.service]);
+  const { data: { taxonomies = null } = {} } = useLoader(onLoadTaxonomies, null, [id, props.service]);
 
   /**
    * Loads the related works from the Core Data API.
    */
   const onLoadWorks = () => props.service.fetchRelatedWorks(id, { per_page: 0 });
-  const { data: { works = [] } = {} } = useLoader(onLoadWorks, null, [id, props.service]);
+  const { data: { works = null } = {} } = useLoader(onLoadWorks, null, [id, props.service]);
 
   /**
    * Memo-izes the base record.
@@ -289,6 +290,17 @@ const BasePanel = (props: Props) => {
       <RecordDetailPanel
         count
         icon={props.icon}
+        loading={!(
+          events &&
+          instances &&
+          items &&
+          organizations &&
+          !collectionLoading &&
+          people &&
+          places &&
+          taxonomies &&
+          works
+        )}
         onClose={() => navigate('/')}
         relations={[
           ...relatedEvents,
