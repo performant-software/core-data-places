@@ -30,9 +30,7 @@ const CurrentRefinementsList = () => {
           { _.map(item.refinements, (refinement) => (
             <Pill
               className='text-xs font-light my-1'
-              label={`${getLabel(item.label)}: ${config.search.date_facets?.includes(item.label) 
-                ? refinement.label.replace(refinement.value.toString(), (new Date(refinement.value*1000)).getFullYear().toString()) 
-                : refinement.label}`}
+              label={`${getLabel(item.label)}: ${refinement.label}`}
               onRemove={() => refine(refinement)}
               primary
             />
