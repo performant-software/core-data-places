@@ -4,7 +4,6 @@ import { getFacetLabel } from '@utils/search';
 import { useCallback, useContext } from 'react';
 import { useCurrentRefinements } from 'react-instantsearch';
 import _ from 'underscore';
-import config from '@config';
 
 const CurrentRefinementsList = () => {
   const { items, refine } = useCurrentRefinements();
