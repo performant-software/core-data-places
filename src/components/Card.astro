@@ -1,5 +1,5 @@
 ---
-const { date, category, title, author, slug, imageUrl, blurb, t } = Astro.props;
+const { alt, date, category, title, author, slug, imageUrl, blurb, t } = Astro.props;
 ---
 
 <article
@@ -10,7 +10,7 @@ const { date, category, title, author, slug, imageUrl, blurb, t } = Astro.props;
   >
     { imageUrl && (
       <img
-        alt=''
+        alt={alt || ''}
         src={imageUrl}
         class='aspect-[16/9] w-full bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
         height={256}
