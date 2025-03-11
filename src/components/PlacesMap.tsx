@@ -2,7 +2,6 @@ import PlacesService from '@backend/api/places';
 import Map from '@components/Map';
 import { CoreData as CoreDataUtils } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
-import { useSelectionValue } from '@peripleo/peripleo';
 import React, { useEffect, useMemo, useState } from 'react';
 import _ from 'underscore';
 
