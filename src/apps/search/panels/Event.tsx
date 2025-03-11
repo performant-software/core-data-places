@@ -15,7 +15,7 @@ const Event = (props: Props) => {
   /**
    * Returns the start date label for the passed event.
    */
-  const getStartDateLabel = useCallback((event) => event.end_date ? t('startDate') : t('date'), [t]);
+  const getStartDateLabel = useCallback((event) => event.end_date ? t('start_date') : t('date'), [t]);
 
   /**
    * Renders the label and value for the passed date.
@@ -53,7 +53,7 @@ const Event = (props: Props) => {
           className='text-sm'
         >
           { renderDate(event.start_date, getStartDateLabel(event)) }
-          { renderDate(event.end_date, t('endDate')) }
+          { renderDate(event.end_date, t('end_date')) }
           { event.description && (
             <p
               className='py-2'
