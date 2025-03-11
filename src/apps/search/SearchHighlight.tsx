@@ -1,4 +1,4 @@
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import Badge from '@components/Badge';
 import { useContext, useMemo } from 'react';
 import { Highlight } from 'react-instantsearch';

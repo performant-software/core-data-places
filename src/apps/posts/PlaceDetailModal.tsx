@@ -1,11 +1,12 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { PlaceDetails } from '@performant-software/core-data';
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 
 interface Props {
   onClose(): void;
   open: boolean;
-  placeId: string;
+  place: {
+    name: string
+  };
 }
 
 const PlaceDetailModal = (props: Props) => (
@@ -48,11 +49,13 @@ const PlaceDetailModal = (props: Props) => (
             leaveTo='opacity-0 scale-95'
           >
             <Dialog.Panel
-              className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all'
+              className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-3'
             >
-              <PlaceDetails
-                id={props.placeId}
-              />
+              <h1
+                className='pr-6 font-medium'
+              >
+                { props.place.name }
+              </h1>
             </Dialog.Panel>
           </Transition.Child>
         </div>

@@ -1,4 +1,4 @@
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import { Button, Icon } from '@performant-software/core-data';
 import { Thumbnail } from '@samvera/clover-iiif/primitives';
 import clsx from 'clsx';

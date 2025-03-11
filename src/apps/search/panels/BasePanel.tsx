@@ -1,8 +1,8 @@
 import ManifestThumbnail, { type Collection } from '@apps/search/ManifestThumbnail';
 import SearchContext from '@apps/search/SearchContext';
 import Base from '@backend/api/base';
-import TranslationContext from '@apps/search/TranslationContext';
 import UserDefinedFieldView from '@components/UserDefinedFieldView';
+import TranslationContext from '@contexts/TranslationContext';
 import {
   CoreData as CoreDataUtils,
   KeyValueList,
@@ -11,7 +11,7 @@ import {
   useLoader
 } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
-import { useCurrentRoute, useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
+import { useCurrentRoute, useNavigate, useRuntimeConfig, useSelectionState } from '@peripleo/peripleo';
 import { getNameView } from '@utils/people';
 import { getCurrentId } from '@utils/router';
 import clsx from 'clsx';
@@ -41,6 +41,7 @@ const BasePanel = (props: Props) => {
   const navigate = useNavigate();
   const config = useRuntimeConfig();
   const { t } = useContext(TranslationContext);
+  const { setSelected } = useSelectionState();
 
   const route = useCurrentRoute();
   const id = getCurrentId(route);
@@ -76,6 +77,11 @@ const BasePanel = (props: Props) => {
 
     return transformedRecords;
   }, [t]);
+
+  const onClose = useCallback(() => {
+    navigate('/');
+    setSelected(null);
+  }, []);
 
   /**
    * Loads the base record from the Core Data API.
@@ -289,7 +295,7 @@ const BasePanel = (props: Props) => {
       <RecordDetailPanel
         count
         icon={props.icon}
-        onClose={() => navigate('/')}
+        onClose={onClose}
         relations={[
           ...relatedEvents,
           ...relatedInstances,

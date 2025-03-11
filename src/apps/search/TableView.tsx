@@ -1,7 +1,7 @@
 import SearchHighlight from '@apps/search/SearchHighlight';
-import TranslationContext from '@apps/search/TranslationContext';
 import useHoverable from '@apps/search/useHoverable';
 import useSelectable from '@apps/search/useSelectable';
+import TranslationContext from '@contexts/TranslationContext';
 import { SearchResultsTable, useCachedHits } from '@performant-software/core-data';
 import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
 import { getColumnLabel, renderFlattenedAttribute } from '@root/src/utils/search';
