@@ -17,6 +17,7 @@ const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   const [filteredMedia, setFilteredMedia] = useState<any>();
   const [selectedMedia, setSelectedMedia] = useState<any>();
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -31,15 +32,21 @@ const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
     const newData = {
       ...props.input.value,
       uuid: e.uuid,
-      title: e.name,
-      manifest_url: e.manifest_url
+      title: e.title,
+      manifest_url: e.manifest_url,
+      content_url: e.content_url,
+      content_preview_url: e.content_preview_url
     };
     props.input.onChange(newData);
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchMedia({ per_page: 0 })
-      .then((data) => setMedia(data.places));
+      .then((data) => {
+        setMedia(data.media_contents);
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -50,14 +57,16 @@ const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
     media && setFilteredMedia(query === '' ? media : media.filter((item) => item.name.toLowerCase().includes(query.toLowerCase())));
   }, [media, query]);
 
-  return (
+  return loading ? <p>Loading media content...</p> : (
     <div>
       <Combobox
         onChange={onUpdateMedia}
         value={{
           title: props.input.value?.title,
           uuid: props.input.value?.uuid,
-          manifest_url: props.input.value?.manifest_url
+          manifest_url: props.input.value?.manifest_url,
+          content_url: props.input.value?.content_url,
+          content_preview_url: props.input.value?.content_preview_url
         }}
       >
         <div
@@ -68,7 +77,7 @@ const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
           >
             <Combobox.Input
               className='w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-              displayValue={(place: { title: string, uuid: string}) => place?.title}
+              displayValue={(media: { title: string, uuid: string}) => media?.title}
               onChange={(event) => setQuery(event.target.value)}
               placeholder='Type to Search'
             />
@@ -85,7 +94,7 @@ const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
               <Combobox.Options
                 className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
               >
-                { filteredMedia.map((place) => (
+                { filteredMedia.map((media) => (
                   <Combobox.Option
                     className={({ active }) =>
                       classNames(
@@ -93,11 +102,13 @@ const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
                         active ? 'bg-indigo-600 text-white' : 'text-gray-900'
                       )
                     }
-                    key={place.uuid}
+                    key={media.uuid}
                     value={{
-                      title: place.name,
-                      uuid: place.uuid,
-                      manifest_url: place.manifest_url
+                      title: media.name,
+                      uuid: media.uuid,
+                      manifest_url: media.manifest_url,
+                      content_url: media.content_url,
+                      content_preview_url: media.content_preview_url
                   }}
                   >
                     {({ active, selected }) => (
@@ -105,7 +116,7 @@ const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
                         <span
                           className={classNames('block truncate', selected && 'font-semibold')}
                         >
-                          { place.name }
+                          { media.name }
                         </span>
                         { selected && (
                           <span
@@ -139,8 +150,10 @@ const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
         <div
           className='my-8 flex flex-col gap-8'
         >
-          <Viewer
-            iiifContent={selectedMedia.manifest_url}
+          <img
+            src={selectedMedia.content_preview_url}
+            alt={selectedMedia.title}
+            className='w-96'
           />
         </div>
       )}

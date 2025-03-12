@@ -17,6 +17,7 @@ import {
   useState
 } from 'react';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
+import CoreDataMedia from '@components/CoreDataMedia';
 
 export interface PathViewerProps {
   path: any;
@@ -122,7 +123,7 @@ const PathViewer = (props: PathViewerProps) => {
                   >
                     <TinaMarkdown
                       content={path.path[current].blurb}
-                      components={{ iframe: IframeEmbed }}
+                      components={{ iframe: IframeEmbed, core_data_media: CoreDataMedia }}
                     />
                   </article>
                 </>

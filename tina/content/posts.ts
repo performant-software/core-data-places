@@ -144,6 +144,16 @@ const Posts: Collection = {
                   name: "manifest_url",
                   label: "Manifest URL",
                   type: "string"
+                },
+                {
+                  name: "content_url",
+                  label: "Content URL",
+                  type: "string"
+                },
+                {
+                  name: "content_preview_url",
+                  label: "Content Preview URL",
+                  type: "string"
                 }
               ],
               ui: {
