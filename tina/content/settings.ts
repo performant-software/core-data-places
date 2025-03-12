@@ -124,7 +124,92 @@ const Settings: Collection = {
       name: 'route',
       label: 'Route',
       type: 'string'
-    }]
+    },
+  {
+    name: 'result_filtering',
+    label: 'Result Filtering',
+    type: 'object',
+    fields: [
+      {
+        name: 'events',
+        label: 'Events',
+        type: 'object',
+        fields: [
+          {
+            name: 'exclude',
+            label: 'Exclude',
+            type: 'string',
+            list: true,
+          }
+        ]
+      },
+      {
+        name: 'instances',
+        label: 'Instances',
+        type: 'object',
+        fields: [
+          {
+            name: 'exclude',
+            label: 'Exclude',
+            type: 'string',
+            list: true,
+          }
+        ]
+      },
+      {
+        name: 'organizations',
+        label: 'Organizations',
+        type: 'object',
+        fields: [
+          {
+            name: 'exclude',
+            label: 'Exclude',
+            type: 'string',
+            list: true,
+          }
+        ]
+      },
+      {
+        name: 'people',
+        label: 'People',
+        type: 'object',
+        fields: [
+          {
+            name: 'exclude',
+            label: 'Exclude',
+            type: 'string',
+            list: true,
+          }
+        ]
+      },
+      {
+        name: 'places',
+        label: 'Places',
+        type: 'object',
+        fields: [
+          {
+            name: 'exclude',
+            label: 'Exclude',
+            type: 'string',
+            list: true,
+          }
+        ]
+      },
+      {
+        name: 'works',
+        label: 'Works',
+        type: 'object',
+        fields: [
+          {
+            name: 'exclude',
+            label: 'Exclude',
+            type: 'string',
+            list: true,
+          }
+        ]
+      }
+    ]
+  }]
   }, {
     name: 'typesense',
     label: 'Typesense',
