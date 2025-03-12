@@ -35,6 +35,7 @@ export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ para
       { _.map(posts, (post) => (
         <Card
           imageUrl={post?.cardImage}
+          alt={post?.imageAlt}
           slug={getRelativeLocaleUrl(Astro.currentLocale, `posts/${post._sys.filename}`)}
           t={t}
           title={post.title}

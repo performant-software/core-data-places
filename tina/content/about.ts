@@ -42,9 +42,19 @@ const About: Collection = {
       label: 'Hero Image'
     },
     {
+      type: 'string',
+      name: 'heroImageAlt',
+      label: 'Hero Image alt text'
+    },
+    {
       type: 'image',
       name: 'featureImage',
       label: 'Feature Image'
+    },
+    {
+      type: 'string',
+      name: 'featureImageAlt',
+      label: 'Feature Image alt text'
     }
   ],
   ui: {
