@@ -13,6 +13,8 @@ const branch =
   process.env.HEAD ||
   'main';
 
+const deployContext = process.env.DEPLOY_CONTEXT || 'deploy-preview';
+
 export default isLocal
   ? createLocalDatabase()
   : createDatabase({
@@ -23,7 +25,7 @@ export default isLocal
       token: process.env.GITHUB_PERSONAL_ACCESS_TOKEN!,
     }),
     databaseAdapter: new MongodbLevel<string, Record<string, unknown>>({
-      collectionName: `${process.env.GITHUB_REPO}-${branch}`,
+      collectionName: `${process.env.GITHUB_REPO}-${branch}-${deployContext}`,
       dbName: process.env.MONGODB_NAME!,
       mongoUri: process.env.MONGODB_URI!,
     })
