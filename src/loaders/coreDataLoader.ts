@@ -5,6 +5,7 @@ export const modelTypes = [
   'events',
   'instances',
   'items',
+  'media_contents',
   'organizations',
   'people',
   'places',

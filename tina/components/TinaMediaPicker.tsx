@@ -1,9 +1,9 @@
 import { getMediaURL } from '../utils'
-import { Combobox, Switch } from '@headlessui/react';
+import { Combobox } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { useCallback, useEffect, useState } from 'react'
 import { wrapFieldsWithMeta } from 'tinacms';
-import Viewer from '@samvera/clover-iiif/viewer';
+import MediaContentsService from '@backend/api/mediaContents';
 
 interface CustomTinaFieldProps {
   field: any,
@@ -42,11 +42,12 @@ const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
 
   useEffect(() => {
     setLoading(true);
-    fetchMedia({ per_page: 0 })
+    MediaContentsService
+      .fetchAll({ per_page: 0 })
       .then((data) => {
-        setMedia(data.media_contents);
+        setMedia(data);
         setLoading(false);
-      });
+      })
   }, []);
 
   useEffect(() => {

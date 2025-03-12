@@ -11,7 +11,7 @@ if (isStaticBuild) {
     cols[model] = defineCollection({
       loader: coreDataLoader({
         model: model,
-        getRelations: true
+        getRelations: model !== 'media_contents'
       }),
     });
   }

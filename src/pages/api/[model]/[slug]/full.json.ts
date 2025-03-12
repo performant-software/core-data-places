@@ -28,7 +28,7 @@ export const GET: APIRoute = async ({ params }) => {
 export const getStaticPaths = (async () => {
   let routes = [];
 
-  for (const model of modelTypes) {
+  for (const model of modelTypes.filter((model) => (model !== 'media_contents'))) {
     // @ts-ignore
     const pages = await getCollection(model);
     if (pages && pages.length) {
