@@ -1,5 +1,5 @@
 import PlaceInsert from '@apps/posts/PlaceInsert';
-import CoreDataMedia from '@components/CoreDataMedia';
+import MediaInsert from '@components/MediaInsert';
 import IframeEmbed from '@components/IframeEmbed';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { RuntimeConfig } from '@peripleo/peripleo';
@@ -30,7 +30,7 @@ const PostContent = (props: PostContentProps) => (
           components={{
             place: PlaceInsert,
             iframe: IframeEmbed,
-            core_data_media: CoreDataMedia
+            core_data_media: MediaInsert
           }}
           content={props.content}
         />

@@ -11,7 +11,7 @@ export const GET: APIRoute = async ({ params }) => {
   if (hasContentCollection(model)) {
     // @ts-ignore
     const entries = await getCollection(model);
-    data = entries?.map((entry) => entry.data);
+    data = entries?.map((entry: any) => entry.data);
   } else {
     data = await loaderDict[model].fetchAll();
   }
@@ -28,7 +28,7 @@ export const getStaticPaths = (async () => {
   const routes = [];
 
   for (const model of modelTypes) {
-    routes.push({ params: { model } });
+    routes.push({ params: { model: model.model } });
   }
 
   return routes;
