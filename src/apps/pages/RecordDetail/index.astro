@@ -1,0 +1,147 @@
+---
+import Relations from "./Relations.astro";
+import UserDefined from "./UserDefined.astro";
+import { Icon } from '@performant-software/core-data/ssr'
+import MediaContents from "./MediaContents";
+import Container from "@components/Container.astro";
+import { getNameView } from "@root/src/utils/people";
+
+interface Props {
+  excludes: string[];
+  lang: string;
+  name: string;
+  record: any;
+}
+
+const { excludes, lang, name, record } = Astro.props;
+
+const relations = {
+  events: {},
+  instances: {},
+  items: {},
+  media_contents: {},
+  organizations: {},
+  people: {},
+  places: {},
+  taxonomies: {},
+  works: {}
+}
+
+// group relations by the UUID of the relationship
+for (const modelType of Object.keys(record.relatedRecords)) {
+  if (record.relatedRecords[modelType] && modelType !== 'media_contents') {
+    record.relatedRecords[modelType].forEach(rel => {
+      if (excludes.includes(rel.project_model_relationship_uuid)) {
+        return
+      }
+
+      const relationArray = relations[modelType][rel.project_model_relationship_uuid]
+      if (relationArray) {
+        relationArray.push(rel)
+      } else {
+        relations[modelType][rel.project_model_relationship_uuid] = [rel]
+      }
+    })
+  }
+}
+---
+<Container className="py-6 w-full">
+  <button
+    class="absolute top-[26px] rounded-full w-8 h-8 flex items-center justify-center"
+    id="backButton"
+    role="button"
+  >
+    <Icon
+      name="left_arrow"
+      size={30}
+    />
+  </button>
+  <div class="ml-12 divide-y divide-solid divide-[#e5e5e5]">
+    <h1 class="font-bold text-3xl text-neutral-800 mt-0 mb-6">{name}</h1>
+    <slot />
+    <UserDefined
+      record={record}
+    />
+    {Object.keys(relations.media_contents).map((uuid) => (
+      <MediaContents
+        client:only="react"
+        data={relations.media_contents[uuid]}
+        lang={lang}
+        uuid={uuid}
+      />
+    ))}
+    {Object.keys(relations.events).map((uuid) => (
+      <Relations
+        data={relations.events[uuid]}
+        icon='date'
+        model="events"
+        resolveName={event => event.name}
+        uuid={uuid}
+      />
+    ))}
+    {Object.keys(relations.instances).map((uuid) => (
+      <Relations
+        data={relations.instances[uuid]}
+        model="instances"
+        resolveName={instance => instance.name}
+        uuid={uuid}
+      />
+    ))}
+    {Object.keys(relations.items).map((uuid) => (
+      <Relations
+        data={relations.items[uuid]}
+        model="items"
+        resolveName={item => item.name}
+        uuid={uuid}
+      />
+    ))}
+    {Object.keys(relations.organizations).map((uuid) => (
+      <Relations
+        data={relations.organizations[uuid]}
+        icon="occupation"
+        model="organizations"
+        resolveName={organization => organization.name}
+        uuid={uuid}
+      />
+    ))}
+    {Object.keys(relations.people).map((uuid) => (
+      <Relations
+        data={relations.people[uuid]}
+        icon="person"
+        model="people"
+        resolveName={person => getNameView(person)}
+        uuid={uuid}
+      />
+    ))}
+    {Object.keys(relations.places).map((uuid) => (
+      <Relations
+        data={relations.places[uuid]}
+        icon="location"
+        model="places"
+        resolveName={place => place.name}
+        uuid={uuid}
+      />
+    ))}
+    {Object.keys(relations.taxonomies).map((uuid) => (
+      <Relations
+        data={relations.taxonomies[uuid]}
+        model="taxonomies"
+        resolveName={item => item.name}
+        uuid={uuid}
+      />
+    ))}
+    {Object.keys(relations.works).map((uuid) => (
+      <Relations
+        data={relations.works[uuid]}
+        model="works"
+        resolveName={work => work.name}
+        uuid={uuid}
+      />
+    ))}
+  </div>
+</Container>
+
+<script>
+  const backButton = document.querySelector('#backButton')
+  backButton.addEventListener('click', () => history.back())
+</script>

@@ -40,8 +40,11 @@ export async function getRelation(
     `${path}${model}/${uuid}/${relatedModel}?${createProjectIdString(config.core_data.project_ids)}&per_page=-1`,
     config.core_data.url
   );
-  const response = await fetch(url).then((res) => res.json());
-  return response;
+
+  const response = await fetch(url);
+  const json = await response.json();
+
+  return json;
 }
 
 export async function getRelations(

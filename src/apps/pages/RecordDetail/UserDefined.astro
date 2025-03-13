@@ -1,0 +1,24 @@
+---
+import { getTranslations } from "@i18n/server";
+import UserDefinedFieldView from "@components/UserDefinedFieldView";
+
+const { record } = Astro.props
+
+const lang = Astro.currentLocale;
+const { t } = await getTranslations(lang);
+---
+{record.user_defined && (
+  <>
+    {Object.keys(record.user_defined).map(uuid => (
+      <div class="py-6">
+        <h2 class="capitalize text-lg font-semibold">{t(uuid)}</h2>
+        <div class="text-neutral-800 break-words">              
+          <UserDefinedFieldView
+            type={record.user_defined[uuid].type}
+            value={record.user_defined[uuid].value}
+          />
+        </div>
+      </div>
+    ))}
+  </>
+)}

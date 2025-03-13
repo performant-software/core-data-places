@@ -5,6 +5,8 @@ import { getTranslations } from '@i18n/server';
 import Layout from "@layouts/Layout.astro";
 import _ from 'underscore';
 
+const { lang } = Astro.params
+
 const { t } = await getTranslations(Astro.currentLocale);
 
 export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
@@ -19,5 +21,6 @@ export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ para
 >
   <Search
     client:only="react"
+    lang={lang}
   />
 </Layout>

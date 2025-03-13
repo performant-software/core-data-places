@@ -16,7 +16,7 @@ export const personLoader = async (uuid: string, withRelations: boolean = true) 
     return response;
   }
   const relations = await getRelations('people', uuid);
-  return ( { ...response, relatedRecords: relations } );
+  return ( { ...response.person, relatedRecords: relations } );
 }
 
 export default peopleLoader;

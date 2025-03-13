@@ -16,7 +16,7 @@ export const itemLoader = async (uuid: string, withRelations: boolean = true) =>
     return response;
   }
   const relations = await getRelations('items', uuid);
-  return ( { ...response, relatedRecords: relations } );
+  return ( { ...response.item, relatedRecords: relations } );
 }
 
 export default itemsLoader;
