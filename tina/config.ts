@@ -13,12 +13,13 @@ const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 const localContentPath = process.env.TINA_LOCAL_CONTENT_PATH;
 const useSSO = !!process.env.AUTH_KEYCLOAK_ISSUER;
 
+const defaultAuth = new UsernamePasswordAuthJSProvider();
+const customAuth = new CustomAuthProvider();
+// Why do it in this extremely convoluted way? Great question, I'd love to know that myself, but this is the literal only thing I've found that works
+const authProvider = isLocal ? new LocalAuthProvider() : !useSSO == false ? defaultAuth : customAuth;
+
 export default defineConfig({
-  authProvider: isLocal
-    ? new LocalAuthProvider()
-    : useSSO
-      ? new CustomAuthProvider()
-      : new UsernamePasswordAuthJSProvider(),
+  authProvider,
   build: {
     outputFolder: 'admin',
     publicFolder: 'public',

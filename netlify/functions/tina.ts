@@ -22,6 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
+const useSSO = !!process.env.AUTH_KEYCLOAK_ISSUER;
 
 async function getSession(req: Request, options = authConfig): Promise<Session | null> {
   // @ts-ignore
@@ -63,7 +64,7 @@ const CustomBackendAuth = () => {
 
 const authProvider = isLocal
   ? LocalBackendAuthProvider()
-  : !!process.env.AUTH_KEYCLOAK_ISSUER
+  : useSSO
     ? CustomBackendAuth()
     : AuthJsBackendAuthProvider({
       authOptions: TinaAuthJSOptions({
