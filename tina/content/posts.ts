@@ -122,7 +122,7 @@ const Posts: Collection = {
           ],
         },
         {
-          name: "core_data_media",
+          name: "media",
           label: "Core Data Media",
           fields: [
             {

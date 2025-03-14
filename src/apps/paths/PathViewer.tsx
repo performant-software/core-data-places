@@ -123,7 +123,7 @@ const PathViewer = (props: PathViewerProps) => {
                   >
                     <TinaMarkdown
                       content={path.path[current].blurb}
-                      components={{ iframe: IframeEmbed, core_data_media: MediaInsert }}
+                      components={{ iframe: IframeEmbed, media: MediaInsert }}
                     />
                   </article>
                 </>

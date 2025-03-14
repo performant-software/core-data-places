@@ -30,7 +30,7 @@ const PostContent = (props: PostContentProps) => (
           components={{
             place: PlaceInsert,
             iframe: IframeEmbed,
-            core_data_media: MediaInsert
+            media: MediaInsert
           }}
           content={props.content}
         />
