@@ -10,6 +10,7 @@ import ServerlessHttp from 'serverless-http';
 import authConfig from '@root/auth.config';
 import { Session } from '@auth/core/types';
 import { Auth } from '@auth/core';
+import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs';
 
 dotenv.config();
 
@@ -62,7 +63,15 @@ const CustomBackendAuth = () => {
 
 const authProvider = isLocal
   ? LocalBackendAuthProvider()
-  : CustomBackendAuth();
+  : !!process.env.AUTH_KEYCLOAK_ISSUER
+    ? CustomBackendAuth()
+    : AuthJsBackendAuthProvider({
+      authOptions: TinaAuthJSOptions({
+        databaseClient,
+        secret: process.env.NEXTAUTH_SECRET!,
+        debug: true
+      })
+    })
 
 const tinaBackend = TinaNodeBackend({
   authProvider,
