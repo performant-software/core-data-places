@@ -187,6 +187,14 @@
     "tinaLabel": "End Date",
     "defaultValue": "End Date"
   },
+  "start_year": {
+    "tinaLabel": "Start Year",
+    "defaultValue": "Start Year"
+  },
+  "end_year": {
+    "tinaLabel": "End Year",
+    "defaultValue": "End Year"
+  },
   "date": {
     "tinaLabel": "Date",
     "defaultValue": "Date"

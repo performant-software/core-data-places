@@ -21,6 +21,11 @@ const Posts: Collection = {
       type: 'image'
     },
     {
+      name: 'imageAlt',
+      label: 'Card Image alt text',
+      type: 'string'
+    },
+    {
       type: 'rich-text',
       name: 'body',
       label: 'Body',

@@ -20,6 +20,11 @@ const Paths: Collection = {
       type: 'image'
     },
     {
+      name: 'imageAlt',
+      label: 'Cover Image alt text',
+      type: 'string'
+    },
+    {
       name: 'description',
       label: 'Description',
       type: 'rich-text',

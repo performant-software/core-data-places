@@ -10,7 +10,7 @@ import _ from 'underscore';
 import { getLocalizedContent } from '@i18n/utils';
 
 const aboutResponse = await fetchAbout();
-const { heroImage, featureImage } = aboutResponse;
+const { heroImage, featureImage, heroImageAlt, featureImageAlt } = aboutResponse;
 
 // Get localized content, defaulting to the default language if not defined
 const { title, subheader, description } = getLocalizedContent(aboutResponse, Astro.currentLocale);
@@ -30,6 +30,7 @@ export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ para
     title={title}
     subheader={subheader}
     image={heroImage}
+    alt={heroImageAlt}
   />
   <Container
     className="my-12 grid lg:grid-cols-2 gap-16"
@@ -49,7 +50,7 @@ export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ para
       </article>
     </div>
     <img
-      alt=""
+      alt={featureImageAlt || ''}
       src={featureImage}
       class="w-full"
     />

@@ -1,7 +1,7 @@
 ---
 import Container from './Container.astro';
 
-const { title, subheader, image } = Astro.props;
+const { alt, title, subheader, image } = Astro.props;
 ---
 
 <div 
@@ -11,7 +11,7 @@ const { title, subheader, image } = Astro.props;
     class='relative isolate overflow-hidden h-[400px]'
   >
     <img
-      alt=''
+      alt={alt || ''}
       src={image}
       class='absolute inset-0 -z-10 h-full w-full object-cover'
     />
