@@ -12,15 +12,12 @@ import {
 } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
 import { useCurrentRoute, useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
-import { itemLoader } from '@root/src/loaders/api/items';
-import { getBoundingBoxOptions } from '@utils/map';
 import { getNameView } from '@utils/people';
 import { getCurrentId } from '@utils/router';
 import clsx from 'clsx';
 import React, {
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState
 } from 'react';
