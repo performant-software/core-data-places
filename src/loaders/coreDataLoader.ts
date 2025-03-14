@@ -2,14 +2,47 @@ import { loaderDict } from '@loaders/api';
 import type { Loader, LoaderContext } from 'astro/loaders';
 
 export const modelTypes = [
-  'events',
-  'instances',
-  'items',
-  'organizations',
-  'people',
-  'places',
-  'works'
-];
+  {
+    model: 'events',
+    getRelations: true,
+    fetchOne: true
+  },
+  {
+    model: 'instances',
+    getRelations: true,
+    fetchOne: true
+  },
+  {
+    model: 'items',
+    getRelations: true,
+    fetchOne: true
+  },
+  {
+    model: 'media_contents',
+    getRelations: false,
+    fetchOne: false
+  },
+  {
+    model: 'organizations',
+    getRelations: true,
+    fetchOne: true
+  },
+  {
+    model: 'people',
+    getRelations: true,
+    fetchOne: true
+  },
+  {
+    model: 'places',
+    getRelations: true,
+    fetchOne: true
+  },
+  {
+    model: 'works',
+    getRelations: true,
+    fetchOne: true
+  }
+]
 
 export const relatedModelTypes = [
   'events',

@@ -1,4 +1,5 @@
 import PlaceInsert from '@apps/posts/PlaceInsert';
+import MediaInsert from '@components/MediaInsert';
 import IframeEmbed from '@components/IframeEmbed';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { RuntimeConfig } from '@peripleo/peripleo';
@@ -28,7 +29,8 @@ const PostContent = (props: PostContentProps) => (
         <TinaMarkdown
           components={{
             place: PlaceInsert,
-            iframe: IframeEmbed
+            iframe: IframeEmbed,
+            media: MediaInsert
           }}
           content={props.content}
         />

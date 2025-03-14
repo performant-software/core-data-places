@@ -13,7 +13,7 @@ export const GET: APIRoute = async ({ params }) => {
 
   if (hasContentCollection(model)) {
     // @ts-ignore
-    const entry = await getEntry(model, slug);
+    const entry: any = await getEntry(model, slug);
     let detail: any = {};
 
     Object.keys(entry.data)
@@ -38,15 +38,15 @@ export const GET: APIRoute = async ({ params }) => {
 export const getStaticPaths = (async () => {
   let routes = [];
 
-  for (const model of modelTypes) {
+  for (const model of modelTypes.filter((model) => (model.fetchOne))) {
     // @ts-ignore
-    const pages = await getCollection(model);
+    const pages = await getCollection(model.model);
     if (pages && pages.length) {
       const locPages = pages.map((page) => ({
         params: {
           // @ts-ignore
           slug: page.id,
-          model: model,
+          model: model.model,
         },
       }));
 
