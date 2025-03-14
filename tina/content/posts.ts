@@ -1,6 +1,6 @@
-import SearchResultsInput from '../components/SearchResultsInput';
 import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection } from '@tinacms/schema-tools';
+import Visualizations from '@root/tina/content/visualizations';
 
 const Posts: Collection = {
   name: 'post',
@@ -115,41 +115,8 @@ const Posts: Collection = {
               }
             }
           ],
-        }, {
-          name: 'data_table',
-          label: 'Table',
-          fields: [{
-            name: 'title',
-            label: 'Title',
-            type: 'string',
-            required: true,
-            isTitle: true
-          }, {
-            name: 'data',
-            label: 'Data',
-            type: 'string',
-            ui: {
-              component: SearchResultsInput
-            }
-          }]
-        }, {
-          name: 'map',
-          label: 'Map',
-          fields: [{
-            name: 'title',
-            label: 'Title',
-            type: 'string',
-            required: true,
-            isTitle: true
-          }, {
-            name: 'data',
-            label: 'Data',
-            type: 'string',
-            ui: {
-              component: SearchResultsInput
-            }
-          }]
-        }
+        },
+        ...Visualizations
       ]
     },
   ],

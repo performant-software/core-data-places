@@ -1,11 +1,12 @@
 import PlaceInsert from '@apps/posts/PlaceInsert';
 import IframeEmbed from '@components/IframeEmbed';
-import MapEmbed from '@components/MapEmbed';
-import TableEmbed from '@components/TableEmbed';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/client';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, RuntimeConfig } from '@peripleo/peripleo';
+import EventsByYear from '@visualizations/EventsByYear';
+import Map from '@visualizations/Map';
+import Table from '@visualizations/Table';
 import { TinaMarkdown, TinaMarkdownContent } from 'tinacms/dist/rich-text';
 
 interface PostContentProps {
@@ -38,10 +39,11 @@ const PostContent = (props: PostContentProps) => {
             >
               <TinaMarkdown
                 components={{
-                  place: PlaceInsert,
+                  data_table: Table,
+                  events_by_year: EventsByYear,
                   iframe: IframeEmbed,
-                  data_table: TableEmbed,
-                  map: MapEmbed
+                  map: Map,
+                  place: PlaceInsert
                 }}
                 content={props.content}
               />

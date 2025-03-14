@@ -1,7 +1,7 @@
-import JsonUpload from './JsonUpload';
 import { wrapFieldsWithMeta } from 'tinacms';
+import JsonUpload from './JsonUpload';
 
-const SearchResultsInput = wrapFieldsWithMeta((props) => {
+const MapInput = wrapFieldsWithMeta((props) => {
   return (
     <JsonUpload
       onChange={(value) => props.input.onChange(value)}
@@ -10,4 +10,4 @@ const SearchResultsInput = wrapFieldsWithMeta((props) => {
   );
 });
 
-export default SearchResultsInput;
+export default MapInput;

@@ -21,8 +21,9 @@
       "@root/*": ["*"],
       "@styles/*": ["src/styles/*"],
       "@tina/*": ["tina/__generated__/*"],
-      "@types/*": ["src/types/*"],
-      "@utils/*": ["src/utils/*"]
+      "@types": ["src/types.ts"],
+      "@utils/*": ["src/utils/*"],
+      "@visualizations/*": ["src/visualizations/*"]
     },
     "plugins": [
       {

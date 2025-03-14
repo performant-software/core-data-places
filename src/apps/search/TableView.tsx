@@ -3,8 +3,9 @@ import useHoverable from '@apps/search/useHoverable';
 import useSelectable from '@apps/search/useSelectable';
 import TranslationContext from '@contexts/TranslationContext';
 import { SearchResultsTable, useCachedHits } from '@performant-software/core-data';
+import { ObjectJs as ObjectUtils } from '@performant-software/shared-components';
 import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
-import { getColumnLabel, renderFlattenedAttribute } from '@root/src/utils/search';
+import { getAttributes, getColumnLabel } from '@root/src/utils/search';
 import clsx from 'clsx';
 import { useCallback, useContext, useMemo } from 'react';
 import _ from 'underscore';
@@ -27,19 +28,11 @@ const TableView = (props: Props) => {
   /**
    * List of columns to display in the search table
    */
-  const columns = useMemo(() => {
-    if (config.search.result_card.attributes) {
-      return config.search.result_card.attributes
-        .slice(0, 4)
-        .map(att => ({
-          render: (hit) => renderFlattenedAttribute(hit, att.name),
-          label: getColumnLabel(att.name, t),
-          ...att
-        }))
-    }
-
-    return []
-  }, [config])
+  const columns = useMemo(() => _.map(getAttributes(config), (attr) => ({
+    render: (hit) => ObjectUtils.getNestedValue(hit, attr.name),
+    label: getColumnLabel(attr.name, t),
+    ...attr
+  })), [config]);
 
   /**
    * Navigates to the selected hit.

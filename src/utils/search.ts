@@ -1,6 +1,7 @@
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
 
 const DEFAULT_JSON_FILENAME = 'search-results.json';
+const MAX_ATTRIBUTES = 4;
 
 /**
  * Adds a link to the document and downloads the passed file.
@@ -8,17 +9,17 @@ const DEFAULT_JSON_FILENAME = 'search-results.json';
  * @param file
  */
 export const download = (file) => {
-  const link = document.createElement('a')
-  const url = URL.createObjectURL(file)
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(file);
 
-  link.href = url
-  link.download = file.name
-  document.body.appendChild(link)
-  link.click()
+  link.href = url;
+  link.download = file.name;
+  document.body.appendChild(link);
+  link.click();
 
-  document.body.removeChild(link)
-  window.URL.revokeObjectURL(url)
-}
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+};
 
 /**
  * Exports the passed set of hits as a JSON file.
@@ -31,6 +32,13 @@ export const exportAsJSON = (hits, filename = DEFAULT_JSON_FILENAME) => {
 
   download(file);
 };
+
+/**
+ * Returns the attributes from the "result_card" prop.
+ *
+ * @param config
+ */
+export const getAttributes = (config) => config.search.result_card.attributes?.slice(0, MAX_ATTRIBUTES);
 
 /**
  * Returns the facet label for the passed attribute.
@@ -72,27 +80,3 @@ export const getColumnLabel = (flattenedAtt, t) => {
  * @param str
  */
 const isNumber = (str: string) => /^\d+$/.test(str);
-
-/**
- * Given a flattened attribute name, e.g. myobj.hits.0.name,
- * extracts the value from the passed hit.
- */
-export const renderFlattenedAttribute = (hit, flattenedAtt) => {
-  const path = flattenedAtt.split('.');
-
-  let val = hit;
-
-  for (const pathItem of path) {
-    if (!val) {
-      return val;
-    }
-
-    if (isNumber(pathItem)) {
-      val = val[parseInt(pathItem)];
-    } else {
-      val = val[pathItem];
-    }
-  }
-
-  return val;
-};
