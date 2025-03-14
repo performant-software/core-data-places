@@ -42,7 +42,7 @@
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "abstract-level": "^1.0.4",
-    "auth-astro": "4.2.0",
+    "auth-astro": "^4.2.0",
     "clsx": "^2.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
