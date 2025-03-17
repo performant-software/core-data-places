@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
-const useSSO = !!process.env.AUTH_KEYCLOAK_ISSUER;
+const useSSO = process.env.TINA_PUBLIC_AUTH_USE_KEYCLOAK === 'true';
 
 async function getSession(req: Request, options = authConfig): Promise<Session | null> {
   // @ts-ignore
