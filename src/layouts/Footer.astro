@@ -80,7 +80,7 @@ const { title } = await fetchAbout();
             href={config.core_data.url}
             target='_blank'
           >
-            <Button client:only rounded className='bg-white'>
+            <Button client:only rounded className='bg-white text-black hover:text-inherit'>
               <p>
                 { t('coreDataLogin') }
               </p>
@@ -90,7 +90,7 @@ const { title } = await fetchAbout();
             href='/admin/index.html'
             target='_blank'
           >
-            <Button client:only rounded className='bg-white'>
+            <Button client:only rounded className='bg-white text-black hover:text-inherit'>
               <p>
                 { t('tinaLogin') }
               </p>
