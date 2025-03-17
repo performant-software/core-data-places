@@ -47,7 +47,6 @@ const BasePanel = (props: Props) => {
   const id = getCurrentId(route);
 
   const exclude = props.exclusions || [];
-  console.log(exclude);
 
   const { boundingBoxOptions } = useContext(SearchContext);
 
