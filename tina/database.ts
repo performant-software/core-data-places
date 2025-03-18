@@ -23,7 +23,7 @@ export default isLocal
       token: process.env.GITHUB_PERSONAL_ACCESS_TOKEN!,
     }),
     databaseAdapter: new MongodbLevel<string, Record<string, unknown>>({
-      collectionName: `${process.env.GITHUB_REPO}-${branch}`,
+      collectionName: process.env.MONGODB_COLLECTION_NAME || `${process.env.GITHUB_REPO}-${branch}`,
       dbName: process.env.MONGODB_NAME!,
       mongoUri: process.env.MONGODB_URI!,
     })

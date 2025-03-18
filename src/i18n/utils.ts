@@ -52,3 +52,27 @@ export const buildTranslations = (data: TranslationData) => {
 
   return _.defaults(translations, defaultTranslations);
 };
+
+export const isEmptyRichText = (content: any) => {
+  if (!(typeof content == 'object')) {
+    return false;
+  }
+  if (Object.keys(content).includes('children') && (!content.children || !content.children.length)) {
+    return true;
+  }
+  return false;
+}
+
+export const getLocalizedContent = (data: any, lang: string) => {
+  if (!data[lang]) {
+    return data;
+  }
+  let localizedContent: any = {};
+  for (const att of Object.keys(data[lang])) {
+    localizedContent[att] = data[lang][att] && !isEmptyRichText(data[lang][att]) ? data[lang][att] : data[att];
+  }
+  return ({
+    ...data,
+    ...localizedContent
+  });
+};

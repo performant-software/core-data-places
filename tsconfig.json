@@ -7,7 +7,7 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "outDir": "dist",
     "paths": {
       "@apps/*": ["src/apps/*"],
@@ -16,13 +16,18 @@
       "@config": ["public/config.json"],
       "@i18n/*": ["src/i18n/*"],
       "@layouts/*": ["src/layouts/*"],
+      "@loaders/*": ["src/loaders/*"],
       "@root/*": ["*"],
       "@styles/*": ["src/styles/*"],
-      "@tina/*": ["tina/__generated__/*"]
+      "@tina/*": ["tina/__generated__/*"],
+      "@types/*": ["src/types/*"],
+      "@utils/*": ["src/utils/*"]
     },
-    "plugins": [{
-      "name": "@astrojs/ts-plugin"
-    }],
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ],
     "resolveJsonModule": true,
     "target": "ESNext",
     "ts-node": {
@@ -32,8 +37,8 @@
         "module": ""
       }
     },
-    "types": [
-      "vite/client"
-    ]
-  }
+    "types": ["vite/client"]
+  },
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
 }

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import config from './public/config.json' assert { type: 'json' };
+import config from './public/config.json' with { type: 'json' };
 
 const CONTEXT_SEPARATOR = '->';
 
@@ -33,6 +33,13 @@ const init = async () => {
         tinaLabel: getLabel(field),
         defaultValue: field.label
       };
+
+      if (field.inverse_label) {
+        fields[`${field.identifier}_inverse`] = {
+          tinaLabel: field.inverse_label,
+          defaultValue: field.inverse_label
+        }
+      }
     });
   }
 

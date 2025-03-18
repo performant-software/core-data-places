@@ -1,4 +1,5 @@
-import SearchResultTooltip from '@apps/search/SearchResultTooltip';
+import ResultTooltip from '@apps/search/ResultTooltip';
+import SearchContext from '@apps/search/SearchContext';
 import TranslationContext from '@apps/search/TranslationContext';
 import {
     LayerMenu,
@@ -6,15 +7,16 @@ import {
     Peripleo as PeripleoUtils,
     SearchResultsLayer,
     useGeoSearch
-  } from '@performant-software/core-data';
+} from '@performant-software/core-data';
 import { Map, Tooltip, Zoom } from '@peripleo/maplibre';
 import {
-  Controls,
   useCurrentRoute,
   useNavigate,
   useRuntimeConfig,
   useSelectionValue
 } from '@peripleo/peripleo';
+import { parseFeature } from '@utils/search';
+import clsx from 'clsx';
 import {
   useContext,
   useEffect,
@@ -40,22 +42,12 @@ const MapView = () => {
   const [overlays, setOverlays] = useState([]);
 
   const { isRefinedWithMap } = useGeoSearch();
-
   const navigate = useNavigate();
   const selected = useSelectionValue<any>();
   const route = useCurrentRoute();
 
+  const { boundingBoxOptions, controlsClass } = useContext(SearchContext);
   const { t } = useContext(TranslationContext);
-
-  const boundingBoxOptions = useMemo(() => ({
-    padding: {
-      top: 100,
-      bottom: config.search.timeline ? 350 : 100,
-      left: 380,
-      right: 120
-    },
-    maxZoom: config.search.max_zoom || 14,
-  }), []);
 
   /**
    * If we're on the place detail page or refining results by the map view port, we'll suppress the auto-bounding box
@@ -68,20 +60,32 @@ const MapView = () => {
    */
   useEffect(() => {
     if (selected) {
-      navigate(`/places/${selected.properties.uuid}`);
+      const { properties = {} }: any = parseFeature(selected);
+
+      if (properties.items.length === 1) {
+        const [item,] = properties.items;
+        navigate(`${config.search.route}/${item.uuid}`);
+      } else {
+        navigate('/select');
+      }
     }
   }, [selected]);
 
   return (
     <Map
+      attributionControl={false}
       className='flex-grow'
       style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
     >
-      <Controls
-        position='topright'
+      <div
+        className={clsx(
+          'p6o-controls-container',
+          'topright',
+          controlsClass
+        )}
       >
         <Zoom />
-        { baseLayers.length > 1 && (
+        { [...baseLayers, ...dataLayers].length > 1 && (
           <LayerMenu
             baseLayer={baseLayer?.name}
             baseLayers={baseLayers}
@@ -92,21 +96,21 @@ const MapView = () => {
             overlaysLabel={t('overlays')}
           />
         )}
-      </Controls>
+      </div>
       <OverlayLayers
         overlays={overlays}
       />
       <SearchResultsLayer
         boundingBoxOptions={boundingBoxOptions}
-        cluster={!config.search.polygons && !!config.search.cluster_radius}
-        clusterRadius={config.search.polygons ? undefined : config.search.cluster_radius}
+        cluster={!!config.map.cluster_radius}
+        clusterRadius={config.map.cluster_radius}
         fitBoundingBox={fitBoundingBox}
+        geometry={config.map.geometry}
         layerId={SEARCH_LAYER}
-        showPolygons={config.search.polygons}
       />
       <Tooltip
         content={(target, event) => (
-          <SearchResultTooltip
+          <ResultTooltip
             event={event}
             target={target}
           />

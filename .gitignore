@@ -36,3 +36,9 @@ tmp/
 
 # TinaCMS content
 content/
+
+# Development config
+/public/config.dev.json
+
+# Workspaces
+*.code-workspace

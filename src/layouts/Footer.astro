@@ -2,90 +2,105 @@
 import { fetchAbout } from '@backend/tina-server';
 import Container from '@components/Container.astro';
 import config from '@config';
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
+import { Button } from '@performant-software/core-data';
+import _ from 'underscore';
 
-const { t } = Astro.props;
+const { t, tabs } = Astro.props;
 const { title } = await fetchAbout();
 ---
 
 <div
-  class='bg-white w-full'
+  class='bg-primary w-full'
 >
   <Container
-    className='flex flex-col gap-8 py-12 items-center'
+    className='flex flex-col py-12 items-center divide-y-2 divide-secondary'
   >
-    <div
-      class='flex flex-col md:flex-row gap-6 align-middle justify-center items-center'
-    >
+    {
+      config.branding?.footer_orgs && ( 
+        <div class='flex flex-row gap-12 justify-center flex-wrap py-8 w-full'>
+          { _.map(config.branding.footer_orgs, (org) => {
+            if (org.url) {
+              return (
+                <a href={org.url}>
+                  <img src={org.logo} alt={org.alt} class='h-24 object-contain' />
+                </a>
+              )
+            } else {
+              return (
+                <img src={org.logo} alt={org.alt} class='h-24 object-contain' />
+              )
+            }
+          })}
+        </div>
+      )
+    }
+    <div class='flex flex-col items-center w-full'>
       <div
-        class='w-20 h-20 rounded-full bg-blue-600'
-      />
-      <p
-        class='text-5xl font-serif self-center'
+        class='flex flex-col md:flex-row gap-6 align-middle justify-center items-center pt-8'
       >
-        { title }
-      </p>
-    </div>
-    <p
-      class='text-center'
-    >
-      { t('footerText') }
-    </p>
-    <div
-      class='flex flex-row justify-center gap-6 object-contain'
-    >
+        {
+          !config.branding?.footer_hide_title ? (
+            <>
+              { 
+                config.branding?.footer_logo && <img           
+                  class='h-14'
+                  src={config.branding?.footer_logo}
+                />
+              }
+              <h1 class='font-serif font-semibold text-[32px] text-center'>
+                { title }
+              </h1>
+            </>
+          ) : ( 
+            <img src={config.branding?.footer_logo} class='h-32' />
+          )
+        }
+      </div>
       <div
-        class='w-10 h-10 bg-blue-600 rounded-full'
-      />
-      <div
-        class='w-10 h-10 bg-blue-600 rounded-full'
-      />
-      <div
-        class='w-10 h-10 bg-blue-600 rounded-full'
-      />
-      <div
-        class='w-10 h-10 bg-blue-600 rounded-full'
-      />
-    </div>
-    <div
-      class='flex flex-row justify-center gap-8'
-    >
-      <a
-        href={config.core_data.url}
-        target='_blank'
+        class='flex flex-col md:flex-row gap-x-12 gap-y-4 items-center align-baseline justify-around pt-4 pb-8'
       >
-        <button
-          class='p-3 rounded-lg bg-blue-600 hover:bg-blue-800 text-white flex flex-row gap-3'
+        { _.map(_.keys(tabs), (key) => (
+          <a
+            class='flex flex-col p-y-4 justify-center'
+            href={tabs[key].url}
+          >
+            <div>
+              { t(key) }
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+    {
+      config.branding?.footer_login && (
+        <div
+          class='flex flex-row justify-center gap-8 py-8 w-full'
         >
-          <p>
-            { t('coreDataLogin') }
-          </p>
-          <ArrowTopRightOnSquareIcon
-            className='h-6 w-6'
-          />
-        </button>
-      </a>
-      <a
-        href='/admin/index.html'
-        target='_blank'
-      >
-        <button
-          class='p-3 rounded-lg bg-blue-600 hover:bg-blue-800 text-white flex flex-row gap-3'
-        >
-          <p>
-            { t('tinaLogin') }
-          </p>
-          <ArrowTopRightOnSquareIcon
-            className='h-6 w-6'
-          />
-        </button>
-      </a>
-    </div>
-    <div
-      class='h-[2px] bg-neutral-dark rounded-full w-full'
-    />
+          <a
+            href={config.core_data.url}
+            target='_blank'
+          >
+            <Button client:only rounded className='bg-white text-black hover:text-inherit'>
+              <p>
+                { t('coreDataLogin') }
+              </p>
+            </Button>
+          </a>
+          <a
+            href='/admin/index.html'
+            target='_blank'
+          >
+            <Button client:only rounded className='bg-white text-black hover:text-inherit'>
+              <p>
+                { t('tinaLogin') }
+              </p>
+            </Button>
+          </a>
+        </div>
+      )
+    }
     <p
-      class='text-center text-sm'
+      class='text-center text-sm py-8 w-full'
     >
       { t('footerCopyright') }
     </p>

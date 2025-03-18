@@ -2,10 +2,31 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "./node_modules/.bin/astro dev",
-      "name": "Development server",
+      "name": "netlify dev",
+      "type": "node",
       "request": "launch",
-      "type": "node-terminal"
+      "skipFiles": ["<node_internals>/**"],
+      "outFiles": ["${workspaceFolder}/.netlify/functions-serve/**/*.js"],
+      "program": "${workspaceFolder}/node_modules/.bin/netlify",
+      "args": ["dev", "--edge-inspect-brk"],
+      "console": "integratedTerminal",
+      "env": { "BROWSER": "none" },
+      "serverReadyAction": {
+        "pattern": "Server now ready on (https?://[\\w:.-]+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      }
+    },
+    {
+      "name": "netlify functions:serve",
+      "type": "node",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "outFiles": ["${workspaceFolder}/.netlify/functions-serve/**/*.js"],
+      "program": "${workspaceFolder}/node_modules/.bin/netlify",
+      "args": ["functions:serve"],
+      "console": "integratedTerminal"
     }
   ]
 }
+

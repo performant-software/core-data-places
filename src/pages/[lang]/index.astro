@@ -2,12 +2,22 @@
 import { fetchAbout } from '@backend/tina-server';
 import Container from '@components/Container.astro';
 import Hero from '@components/Hero.astro';
+import config from '@config';
 import { getTranslations } from '@i18n/server';
 import Layout from '@layouts/Layout.astro';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
+import _ from 'underscore';
+import { getLocalizedContent } from '@i18n/utils';
 
-const { title, subheader, description, heroImage, featureImage } = await fetchAbout();
+const aboutResponse = await fetchAbout();
+const { heroImage, featureImage, heroImageAlt, featureImageAlt } = aboutResponse;
+
+// Get localized content, defaulting to the default language if not defined
+const { title, subheader, description } = getLocalizedContent(aboutResponse, Astro.currentLocale);
+
 const { t } = await getTranslations(Astro.currentLocale);
+
+export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
 
 ---
 
@@ -20,6 +30,7 @@ const { t } = await getTranslations(Astro.currentLocale);
     title={title}
     subheader={subheader}
     image={heroImage}
+    alt={heroImageAlt}
   />
   <Container
     className="my-12 grid lg:grid-cols-2 gap-16"
@@ -39,7 +50,7 @@ const { t } = await getTranslations(Astro.currentLocale);
       </article>
     </div>
     <img
-      alt=""
+      alt={featureImageAlt || ''}
       src={featureImage}
       class="w-full"
     />

@@ -1,13 +1,14 @@
-import { getPlaceURL } from '@backend/core-data';
+import PlacesService from '@backend/api/places';
 import {
+  CoreData as CoreDataUtils,
   LayerMenu,
-  PlaceMarkers,
   Peripleo as PeripleoUtils,
   OverlayLayers
 } from '@performant-software/core-data';
+import { LocationMarkers } from '@performant-software/geospatial';
 import { Map, Zoom } from '@peripleo/maplibre';
 import { Peripleo, Controls, useRuntimeConfig } from '@peripleo/peripleo';
-import { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import _ from 'underscore';
 
 interface Props {
@@ -23,64 +24,61 @@ const PlacesMap = (props: Props) => {
 
   const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));
   const [overlays, setOverlays] = useState([]);
-
-  const urls = useMemo(() => _.map(props.placeIds, getPlaceURL), [props.placeIds]);
+  const [places, setPlaces] = useState([]);
 
   /**
-   * Commenting this section out for now as the warped image layers are not currently working with the current
-   * version of Peripleo. We'll need to update Periple to 0.7.4 and set the MapLibre `preserveDrawingBuffer` prop
-   * to "true".
+   * Converts the set of places into a FeatureCollection.
+   *
+   * @type {FeatureCollection<Geometry, Properties>}
    */
-  // const PlacesService = usePlacesService();
-  // const onLoad = useCallback((places) => {
-  //   const layers = _.flatten(
-  //     _.map(places, (place) => _.filter(place.place_layers, (pl) => props.layer.includes(pl.id)))
-  //   );
-  //
-  //   setOverlays(layers);
-  // }, [props.layer]);
-  //
-  // useEffect(() => {
-  //   const loaders = _.map(props.placeIds, (id) => (
-  //     PlacesService
-  //       .fetchOne(id)
-  //       .then((data) => data.place)
-  //   ));
-  //
-  //   Promise
-  //     .all(loaders)
-  //     .then(onLoad);
-  // }, [props.placeIds]);
+  const data = useMemo(() => CoreDataUtils.toFeatureCollection(places), [places]);
+
+  /**
+   * Loads the data for all the passed place IDs and sets it one the data.
+   */
+  useEffect(() => {
+    const loaders = _.map(props.placeIds, (id) => (
+      PlacesService
+        .fetchOne(id)
+        .then((data) => data.place)
+    ));
+
+    Promise
+      .all(loaders)
+      .then((data) => setPlaces(data));
+  }, [props.placeIds]);
 
   return (
     <Peripleo>
       <Map
         style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
       >
-        <Controls
-          position='topright'
-        >
-          <Zoom />
-          { baseLayers.length > 1 && (
-            <LayerMenu
-              baseLayer={baseLayer?.name}
-              baseLayers={baseLayers}
-              baseLayersLabel={'Base Layers'}
-              dataLayers={dataLayers}
-              onChangeBaseLayer={setBaseLayer}
-              onChangeOverlays={setOverlays}
-              overlaysLabel={'Overlays'}
-            />
-          )}
-        </Controls>
+        <div onClick={(e: any) => { e.stopPropagation(); }}>
+          <Controls
+            position='topright'
+          >
+            <Zoom />
+            { baseLayers.length > 1 && (
+              <LayerMenu
+                baseLayer={baseLayer?.name}
+                baseLayers={baseLayers}
+                baseLayersLabel={'Base Layers'}
+                dataLayers={dataLayers}
+                onChangeBaseLayer={setBaseLayer}
+                onChangeOverlays={setOverlays}
+                overlaysLabel={'Overlays'}
+              />
+            )}
+          </Controls>
+        </div>
         <OverlayLayers
           overlays={overlays}
           key={`overlay-${props.mapId}`}
         />
-        <PlaceMarkers
-          urls={urls}
-          buffer={props.buffer}
+        <LocationMarkers
           animate={props.animate}
+          buffer={props.buffer}
+          data={data}
           key={`markers-${props.mapId}`}
         />
       </Map>

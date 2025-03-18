@@ -37,7 +37,7 @@ const SearchHighlight = (props: Props) => {
       />
       { props.badge && count > 1 && (
         <Badge
-          className='ms-2 text-white bg-blue-600'
+          className='ms-2 text-white bg-primary'
           content={t('plusCount', { count })}
         />
       )}

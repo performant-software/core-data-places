@@ -5,9 +5,13 @@ import fs from 'fs';
 const TEMP_DIR = './tmp';
 
 const init = async () => {
+  if (!(process.env.GITHUB_OWNER && process.env.GITHUB_REPO)) {
+    return;
+  }
+
   // Remove the temporary directory if it exists
   if (fs.existsSync(TEMP_DIR)) {
-    fs.rmdirSync(TEMP_DIR, { recursive: true });
+    fs.rmSync(TEMP_DIR, { recursive: true });
   }
 
   // Clone the content repo into the temporary directory
@@ -18,7 +22,7 @@ const init = async () => {
   fs.cpSync(`${TEMP_DIR}/content`, './content', { recursive: true });
 
   // Remove the temporary directory.
-  fs.rmdirSync(TEMP_DIR, { recursive: true });
+  fs.rmSync(TEMP_DIR, { recursive: true });
 };
 
 dotenv.config();

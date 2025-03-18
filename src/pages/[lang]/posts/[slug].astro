@@ -1,14 +1,35 @@
 ---
 import PostContent from '@apps/posts/PostContent';
-import { fetchPost } from '@backend/tina-server';
+import { fetchPost, fetchPosts } from '@backend/tina-server';
 import Container from '@components/Container.astro';
+import config from '../../../../public/config.json';
 import { getTranslations } from '@i18n/server';
 import Layout from '@layouts/Layout.astro';
+import _ from 'underscore';
 
 const { slug } = Astro.params;
 const post = await fetchPost(slug);
 
 const { t } = await getTranslations(Astro.currentLocale);
+
+export const getStaticPaths = async () => {
+  const staticPaths = [];
+
+  const locales = config.i18n.locales;
+  const posts = await fetchPosts();
+
+  _.each(locales, (lang) => {
+    _.each(posts, (post) => {
+      staticPaths.push({ params: {
+        lang,
+        slug: post?._sys.filename
+      }});
+    });
+  });
+
+  return staticPaths;
+};
+
 ---
 
 <Layout

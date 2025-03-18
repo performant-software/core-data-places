@@ -1,3 +1,4 @@
+import TinaMediaPicker from '../components/TinaMediaPicker';
 import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection } from '@tinacms/schema-tools';
 
@@ -18,6 +19,11 @@ const Paths: Collection = {
       name: 'image',
       label: 'Cover Image',
       type: 'image'
+    },
+    {
+      name: 'imageAlt',
+      label: 'Cover Image alt text',
+      type: 'string'
     },
     {
       name: 'description',
@@ -51,6 +57,47 @@ const Paths: Collection = {
               ui: {
                 parse: (val?: number)=>val || 0,
                 format: (val?: number)=> val === 0 ? null : val
+              }
+            }
+          ]
+        },
+        {
+          name: "media",
+          label: "Core Data Media",
+          fields: [
+            {
+              name: "media",
+              label: "Media",
+              type: "object",
+              fields: [
+                {
+                  name: "title",
+                  label: "Title",
+                  type: "string",
+                },
+                {
+                  name: "uuid",
+                  label: "UUID",
+                  type: "string"
+                },
+                {
+                  name: "manifest_url",
+                  label: "Manifest URL",
+                  type: "string"
+                },
+                {
+                  name: "content_url",
+                  label: "Content URL",
+                  type: "string"
+                },
+                {
+                  name: "content_preview_url",
+                  label: "Content Preview URL",
+                  type: "string"
+                }
+              ],
+              ui: {
+                component: TinaMediaPicker
               }
             }
           ]
