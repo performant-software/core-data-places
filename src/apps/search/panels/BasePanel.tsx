@@ -300,6 +300,7 @@ const BasePanel = (props: Props) => {
     if(!exclude.includes('relatedItems')) ret = ret.concat(relatedItems);
     if(!exclude.includes('relatedOrganizations')) ret = ret.concat(relatedOrganizations);
     if(!exclude.includes('relatedManifest')) ret = ret.concat(relatedManifest);
+    if(!exclude.includes('relatedPeople')) ret = ret.concat(relatedPeople);
     if(!exclude.includes('relatedPlaces')) ret = ret.concat(relatedPlaces);
     if(!exclude.includes('relatedTaxonomies')) ret = ret.concat(relatedTaxonomies);
     if(!exclude.includes('relatedWorks')) ret = ret.concat(relatedWorks);
