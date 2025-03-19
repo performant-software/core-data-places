@@ -39,3 +39,6 @@ tmp/
 
 # Development config
 /public/config.dev.json
+
+# Workspaces
+*.code-workspace

@@ -10,6 +10,7 @@ import ServerlessHttp from 'serverless-http';
 import authConfig from '@root/auth.config';
 import { Session } from '@auth/core/types';
 import { Auth } from '@auth/core';
+import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
+const useSSO = process.env.TINA_PUBLIC_AUTH_USE_KEYCLOAK === 'true';
 
 async function getSession(req: Request, options = authConfig): Promise<Session | null> {
   // @ts-ignore
@@ -63,7 +65,15 @@ const CustomBackendAuth = () => {
 
 const authProvider = isLocal
   ? LocalBackendAuthProvider()
-  : CustomBackendAuth();
+  : useSSO
+    ? CustomBackendAuth()
+    : AuthJsBackendAuthProvider({
+      authOptions: TinaAuthJSOptions({
+        databaseClient,
+        secret: process.env.NEXTAUTH_SECRET!,
+        debug: true
+      })
+    })
 
 const tinaBackend = TinaNodeBackend({
   authProvider,

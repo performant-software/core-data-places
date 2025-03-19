@@ -1,4 +1,5 @@
 import IframeEmbed from '@components/IframeEmbed';
+import MediaInsert from '@components/MediaInsert';
 import PlacesMap from '@components/PlacesMap';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/client';
@@ -144,7 +145,10 @@ const PathViewer = (props: PathViewerProps) => {
                       >
                         <TinaMarkdown
                           content={path.path[current].blurb}
-                          components={{ iframe: IframeEmbed }}
+                          components={{
+                            iframe: IframeEmbed,
+                            media: MediaInsert
+                        }}
                         />
                       </article>
                     </>

@@ -1,5 +1,6 @@
 import PlaceInsert from '@apps/posts/PlaceInsert';
 import IframeEmbed from '@components/IframeEmbed';
+import MediaInsert from '@components/MediaInsert'
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/client';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
@@ -43,6 +44,7 @@ const PostContent = (props: PostContentProps) => {
                   events_by_year: EventsByYear,
                   iframe: IframeEmbed,
                   map: Map,
+                  media: MediaInsert,
                   place: PlaceInsert
                 }}
                 content={props.content}

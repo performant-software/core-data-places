@@ -8,10 +8,10 @@ let cols = {};
 
 if (isStaticBuild) {
   for (const model of modelTypes) {
-    cols[model] = defineCollection({
+    cols[model.model] = defineCollection({
       loader: coreDataLoader({
-        model: model,
-        getRelations: true
+        model: model.model,
+        getRelations: model.getRelations
       }),
     });
   }
