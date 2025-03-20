@@ -348,8 +348,8 @@ const BasePanel = (props: Props) => {
         <LocationMarkers
           animate
           boundingBoxOptions={boundingBoxOptions}
-          fitBoundingBox={_.get(config.map, 'zoom_to_place', true)}
           data={geometry}
+          fitBoundingBox={_.get(config.map, 'zoom_to_place', true)}
           layerId='current'
         />
       )}

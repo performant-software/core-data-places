@@ -60,13 +60,17 @@ export const parseFeature = (feature) => {
    * @see https://github.com/maplibre/maplibre-gl-js/issues/1325
    */
   for (const key in feature.properties) {
+    let value = properties[key] = feature.properties[key];
+
     if (typeof feature.properties[key] === 'string') {
       try {
-        properties[key] = JSON.parse(feature.properties[key] as string);
+        value = JSON.parse(feature.properties[key] as string);
       } catch (e) {
-        properties[key] = feature.properties[key];
+        value = feature.properties[key];
       }
     }
+
+    properties[key] = value;
   }
 
   return {

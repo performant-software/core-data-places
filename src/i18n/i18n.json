@@ -262,5 +262,9 @@
   "work": {
     "tinaLabel": "Work",
     "defaultValue": "Work"
+  },
+  "multipleLocations": {
+    "tinaLabel": "Multiple locations",
+    "defaultValue": "Multiple locations"
   }
 }

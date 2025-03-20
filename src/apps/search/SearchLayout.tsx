@@ -6,7 +6,7 @@ import SearchContext from '@apps/search/SearchContext';
 import SearchRoutes from '@apps/search/SearchRoutes';
 import TableView from '@apps/search/TableView';
 import { useCurrentRoute, useRuntimeConfig } from '@peripleo/peripleo';
-import { getCurrentId } from '@utils/router';
+import { getCurrentId, getCurrentPath } from '@utils/router';
 import clsx from 'clsx';
 import { useMemo, useState } from 'react';
 
@@ -23,6 +23,8 @@ const PADDING_RIGHT_DETAIL = 380;
 const PADDING_LEFT_FILTERS_TABLE = 620;
 const PADDING_LEFT_TABLE = 380;
 
+const PATH_SELECT = 'select';
+
 const SearchLayout = () => {
   const [filters, setFilters] = useState<boolean>(false);
   const [view, setView] = useState<string>(Views.list);
@@ -30,6 +32,7 @@ const SearchLayout = () => {
   const config = useRuntimeConfig();
   const route = useCurrentRoute();
   const id = getCurrentId(route);
+  const path = getCurrentPath(route);
 
   /**
    * Memo-izes the left padding.
@@ -51,6 +54,11 @@ const SearchLayout = () => {
   }, [filters, view]);
 
   /**
+   * Sets the variable to `true` if the record detail panel or selection panel is open.
+   */
+  const rightOpen = useMemo(() => id || path === PATH_SELECT, [id, path]);
+
+  /**
    * Updates the bounding box padding based on the layout configuration.
    */
   const boundingBoxOptions = useMemo(() => ({
@@ -58,15 +66,15 @@ const SearchLayout = () => {
       top: DEFAULT_PADDING_TOP,
       bottom: view === Views.table ? PADDING_BOTTOM_TABLE : DEFAULT_PADDING_BOTTOM,
       left,
-      right: id ? PADDING_RIGHT_DETAIL: DEFAULT_PADDING_RIGHT
+      right: rightOpen ? PADDING_RIGHT_DETAIL: DEFAULT_PADDING_RIGHT
     },
     maxZoom: config.map.max_zoom || DEFAULT_MAX_ZOOM
-  }), [config, left, id, view]);
+  }), [config, left, rightOpen, view]);
 
   /**
    * Memo-izes the class to apply to the map controls container.
    */
-  const controlsClass = useMemo(() => id ? 'me-[350px]' : null, [id]);
+  const controlsClass = useMemo(() => rightOpen ? 'me-[350px]' : null, [id, rightOpen]);
 
   return (
     <SearchContext.Provider

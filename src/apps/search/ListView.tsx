@@ -48,8 +48,9 @@ const ListView = (props: Props) => {
   const renderItemTitle = useCallback((item) => (
     <SearchHighlight
       attribute={config.search.result_card.title}
-      badge
-      className='text-sm line-clamp-3 leading-6'
+      classNames={{
+        highlight: 'text-sm line-clamp-3 leading-6'
+      }}
       hit={item}
     />
   ), [config]);

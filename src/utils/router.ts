@@ -9,6 +9,16 @@ export const getCurrentId = (route: string) => {
 };
 
 /**
+ * Returns the current path for the passed route.
+ *
+ * @param route
+ */
+export const getCurrentPath = (route: string) => {
+  const [path,] = route.split('/').filter(Boolean);
+  return path;
+};
+
+/**
  * Returns the icon based on the passed route.
  *
  * @param route
