@@ -1,13 +1,14 @@
 import PlacesService from '@backend/api/places';
 import {
   CoreData as CoreDataUtils,
+  Icon,
   LayerMenu,
   Peripleo as PeripleoUtils,
   OverlayLayers
 } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
-import { Map, Zoom } from '@peripleo/maplibre';
-import { Peripleo, Controls, useRuntimeConfig } from '@peripleo/peripleo';
+import { Map, ZoomControl } from '@peripleo/maplibre';
+import { Peripleo, useRuntimeConfig } from '@peripleo/peripleo';
 import React, { useEffect, useMemo, useState } from 'react';
 import _ from 'underscore';
 
@@ -54,10 +55,15 @@ const PlacesMap = (props: Props) => {
         style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
       >
         <div onClick={(e: any) => { e.stopPropagation(); }}>
-          <Controls
-            position='topright'
+          <div
+            className='absolute top-0 right-0 flex flex-col py-3 px-3 gap-y-2'
           >
-            <Zoom />
+            <ZoomControl
+              zoomIn={<Icon name='zoom_in' />}
+              zoomInProps={{ className: 'p6o-control p6o-control-btn' }}
+              zoomOut={<Icon name='zoom_out' />}
+              zoomOutProps={{ className: 'p6o-control p6o-control-btn' }}
+            />
             { baseLayers.length > 1 && (
               <LayerMenu
                 baseLayer={baseLayer?.name}
@@ -69,7 +75,7 @@ const PlacesMap = (props: Props) => {
                 overlaysLabel={'Overlays'}
               />
             )}
-          </Controls>
+          </div>
         </div>
         <OverlayLayers
           overlays={overlays}
