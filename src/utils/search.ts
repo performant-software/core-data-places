@@ -1,4 +1,5 @@
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
+import _ from 'underscore';
 
 const DEFAULT_JSON_FILENAME = 'search-results.json';
 const MAX_ATTRIBUTES = 4;
@@ -73,6 +74,14 @@ export const getColumnLabel = (flattenedAtt, t) => {
 
   return getFacetLabel(path, t);
 };
+
+/**
+ * Returns the value at the passed path for the passed hit.
+ *
+ * @param hit
+ * @param path
+ */
+export const getHitValue = (hit, path) => _.get(hit, path.split('.'));
 
 /**
  * Tests whether a string contains only integers.

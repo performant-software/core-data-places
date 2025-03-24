@@ -5,7 +5,7 @@ import TranslationContext from '@contexts/TranslationContext';
 import { SearchResultsTable, useCachedHits } from '@performant-software/core-data';
 import { ObjectJs as ObjectUtils } from '@performant-software/shared-components';
 import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
-import { getAttributes, getColumnLabel } from '@root/src/utils/search';
+import { getAttributes, getColumnLabel, getHitValue } from '@root/src/utils/search';
 import clsx from 'clsx';
 import { useCallback, useContext, useMemo } from 'react';
 import _ from 'underscore';
@@ -29,7 +29,7 @@ const TableView = (props: Props) => {
    * List of columns to display in the search table
    */
   const columns = useMemo(() => _.map(getAttributes(config), (attr) => ({
-    render: (hit) => ObjectUtils.getNestedValue(hit, attr.name),
+    render: (hit) => getHitValue(hit, attr.name),
     label: getColumnLabel(attr.name, t),
     ...attr
   })), [config]);

@@ -4,7 +4,7 @@ import useSelectable from '@apps/search/useSelectable';
 import { SearchList, useCachedHits } from '@performant-software/core-data';
 import { ObjectJs as ObjectUtils } from '@performant-software/shared-components';
 import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
-import { getAttributes } from '@utils/search';
+import { getAttributes, getHitValue } from '@utils/search';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
 import _ from 'underscore';
@@ -25,7 +25,7 @@ const ListView = (props: Props) => {
    * List of attributes to display in the search list
    */
   const attributes = useMemo(() => _.map(getAttributes(config), (attr) => ({
-    render: (hit) => ObjectUtils.getNestedValue(hit, attr.name),
+    render: (hit) => getHitValue(hit, attr.name),
     ...attr
   })), [config]);
 
