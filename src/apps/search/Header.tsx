@@ -21,6 +21,7 @@ interface Props {
   onViewChange: (view: string) => void;
   timeline?: boolean;
   view?: string;
+  tableView?: boolean;
 }
 
 const Views = {
@@ -98,7 +99,7 @@ const Header = (props: Props) => {
             value={query}
           />
         </div>
-        <ButtonGroup
+        { props.tableView && <ButtonGroup
           rounded
         >
           <Button
@@ -122,7 +123,7 @@ const Header = (props: Props) => {
             />
             { t('table') }
           </Button>
-        </ButtonGroup>
+        </ButtonGroup> }
         {config.timeline?.date_range_facet && (
           <div
             className='flex items-center gap-x-2'
