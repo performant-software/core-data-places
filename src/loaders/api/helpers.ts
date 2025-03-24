@@ -37,7 +37,7 @@ export async function getRelation(
   relatedModel: string
 ) {
   const url = new URL(
-    `${path}${model}/${uuid}/${relatedModel}?${createProjectIdString(config.core_data.project_ids)}`,
+    `${path}${model}/${uuid}/${relatedModel}?${createProjectIdString(config.core_data.project_ids)}&per_page=-1`,
     config.core_data.url
   );
   const response = await fetch(url).then((res) => res.json());
