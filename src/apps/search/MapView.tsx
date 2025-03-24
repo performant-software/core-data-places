@@ -1,41 +1,21 @@
-import Tooltip from '@apps/search/Tooltip';
 import SearchContext from '@apps/search/SearchContext';
-import TranslationContext from '@apps/search/TranslationContext';
+import Tooltip from '@apps/search/Tooltip';
+import Map from '@components/Map';
 import {
-  Icon,
-  LayerMenu,
-  OverlayLayers,
-  Peripleo as PeripleoUtils,
   SearchResultsLayer,
   Typesense as TypesenseUtils,
   useCachedHits,
   useGeoSearch,
   useSearching
 } from '@performant-software/core-data';
-import {
-  HoverTooltip,
-  Map,
-  ZoomControl,
-  useSelectionValue
-} from '@peripleo/maplibre';
+import { HoverTooltip, useSelectionValue } from '@peripleo/maplibre';
 import { useCurrentRoute, useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
-import { parseFeature } from '@utils/search';
-import clsx from 'clsx';
-import {
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from 'react';
+import { parseFeature } from '@utils/map';
+import { useContext, useEffect, useMemo, } from 'react';
 import _ from 'underscore';
 
 const MapView = () => {
   const config = useRuntimeConfig<any>();
-  const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(config);
-
-  const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));
-  const [overlays, setOverlays] = useState([]);
-
   const { isRefinedWithMap } = useGeoSearch();
   const navigate = useNavigate();
   const { selected } = useSelectionValue() || {};
@@ -44,7 +24,6 @@ const MapView = () => {
   const searching  = useSearching();
 
   const { boundingBoxOptions, controlsClass } = useContext(SearchContext);
-  const { t } = useContext(TranslationContext);
 
   /**
    * Memo-izes the data to be displayed on the map as a feature collection.
@@ -91,34 +70,10 @@ const MapView = () => {
 
   return (
     <Map
-      attributionControl={false}
-      className='flex-grow'
-      style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
+      classNames={{
+        controls: controlsClass
+      }}
     >
-      <div
-        className={clsx('absolute top-0 right-0 flex flex-col py-3 px-3 gap-y-2', controlsClass)}
-      >
-        <ZoomControl
-          zoomIn={<Icon name='zoom_in' />}
-          zoomInProps={{ className: 'p6o-control p6o-control-btn' }}
-          zoomOut={<Icon name='zoom_out' />}
-          zoomOutProps={{ className: 'p6o-control p6o-control-btn' }}
-        />
-        { [...baseLayers, ...dataLayers].length > 1 && (
-          <LayerMenu
-            baseLayer={baseLayer?.name}
-            baseLayers={baseLayers}
-            baseLayersLabel={t('baseLayers')}
-            dataLayers={dataLayers}
-            onChangeBaseLayer={setBaseLayer}
-            onChangeOverlays={setOverlays}
-            overlaysLabel={t('overlays')}
-          />
-        )}
-      </div>
-      <OverlayLayers
-        overlays={overlays}
-      />
       <SearchResultsLayer
         boundingBoxOptions={boundingBoxOptions}
         data={data}

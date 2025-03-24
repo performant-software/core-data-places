@@ -1,6 +1,6 @@
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
 import { useHoverState, useRuntimeConfig } from '@peripleo/peripleo';
-import { parseFeature } from '@utils/search';
+import { parseFeature } from '@utils/map';
 import { useCallback, useMemo } from 'react';
 import _ from 'underscore';
 

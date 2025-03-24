@@ -1,4 +1,4 @@
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import { Checkbox, useGeoSearchToggle } from '@performant-software/core-data';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useContext } from 'react';

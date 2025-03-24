@@ -263,6 +263,14 @@
     "tinaLabel": "Work",
     "defaultValue": "Work"
   },
+  "export": {
+    "tinaLabel": "Export",
+    "defaultValue": "Export"
+  },
+  "json": {
+    "tinaLabel": "JSON",
+    "defaultValue": "JSON"
+  },
   "multipleLocations": {
     "tinaLabel": "Multiple locations",
     "defaultValue": "Multiple locations"

@@ -4,7 +4,7 @@ import GeosearchFilter from '@apps/search/GeosearchFilter';
 import ListFacet from '@apps/search/ListFacet';
 import RangeFacet from '@apps/search/RangeFacet';
 import SelectFacet from '@apps/search/SelectFacet';
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import { FacetStateContext } from '@performant-software/core-data';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';

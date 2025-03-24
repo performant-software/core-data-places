@@ -2,10 +2,12 @@ import SearchHighlight from '@apps/search/SearchHighlight';
 import useHoverable from '@apps/search/useHoverable';
 import useSelectable from '@apps/search/useSelectable';
 import { SearchList, useCachedHits } from '@performant-software/core-data';
+import { ObjectJs as ObjectUtils } from '@performant-software/shared-components';
 import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
-import { renderFlattenedAttribute } from '@root/src/utils/search';
+import { getAttributes, getHitValue } from '@utils/search';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
+import _ from 'underscore';
 
 interface Props {
   className?: string;
@@ -22,18 +24,10 @@ const ListView = (props: Props) => {
   /**
    * List of attributes to display in the search list
    */
-  const attributes = useMemo(() => {
-    if (config.search.result_card.attributes) {
-      return config.search.result_card.attributes
-        .slice(0, 4)
-        .map(att => ({
-          render: (hit) => renderFlattenedAttribute(hit, att.name),
-          ...att
-        }));
-    };
-
-    return []
-  }, [config]);
+  const attributes = useMemo(() => _.map(getAttributes(config), (attr) => ({
+    render: (hit) => getHitValue(hit, attr.name),
+    ...attr
+  })), [config]);
 
   /**
    * Navigates to the selected hit.

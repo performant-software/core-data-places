@@ -1,4 +1,4 @@
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import { Icon } from '@performant-software/core-data';
 import { useContext } from 'react';
 import { useClearRefinements, useCurrentRefinements } from 'react-instantsearch';

@@ -1,9 +1,9 @@
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import { SelectRecordPanel } from '@performant-software/core-data';
 import { useSelection } from '@peripleo/maplibre';
 import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
 import { getIcon, getItemLabel } from '@utils/router';
-import { parseFeature } from '@utils/search';
+import { parseFeature } from '@utils/map';
 import clsx from 'clsx';
 import {
   useCallback,

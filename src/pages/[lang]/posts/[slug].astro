@@ -44,7 +44,7 @@ export const getStaticPaths = async () => {
     <PostContent
       content={post?.body}
       title={post?.title}
-      client:only
+      client:only='react'
     />
   </Container>
 </Layout>

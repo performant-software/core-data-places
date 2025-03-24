@@ -1,4 +1,4 @@
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import { Pill } from '@performant-software/core-data';
 import { getFacetLabel } from '@utils/search';
 import { useCallback, useContext } from 'react';
