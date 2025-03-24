@@ -1,5 +1,5 @@
 import Facet from '@apps/search/Facet';
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import { Checkbox, Icon } from '@performant-software/core-data';
 import { useContext } from 'react';
 import { useRefinementList } from 'react-instantsearch';

@@ -1,10 +1,10 @@
 import SearchHighlight from '@apps/search/SearchHighlight';
-import TranslationContext from '@apps/search/TranslationContext';
 import Badge from '@components/Badge';
-import config from '@config';
+import TranslationContext from '@contexts/TranslationContext';
 import { useCachedHits } from '@performant-software/core-data';
+import { useRuntimeConfig } from '@peripleo/peripleo';
 import type { Feature, FeatureCluster } from '@peripleo/peripleo';
-import { parseFeature } from '@utils/search';
+import { parseFeature } from '@utils/map';
 import { useContext, useMemo } from 'react';
 import _ from 'underscore';
 
@@ -14,6 +14,7 @@ interface Props {
 }
 
 const ResultTooltip = (props: Props) => {
+  const config = useRuntimeConfig();
   const { t } = useContext(TranslationContext);
   const hits = useCachedHits();
 

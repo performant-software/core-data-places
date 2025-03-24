@@ -1,9 +1,11 @@
+import ExportButton from '@apps/search/ExportButton';
 import { useTranslations } from '@i18n/client';
 import {
   Button,
   ButtonGroup,
   Icon,
   Input,
+  useCachedHits,
   useSearchBox
 } from '@performant-software/core-data';
 import clsx from 'clsx';
@@ -28,6 +30,7 @@ const Header = (props: Props) => {
   const { items } = useCurrentRefinements();
   const { query, refine } = useSearchBox();
   const { t } = useTranslations();
+  const hits = useCachedHits();
 
   /**
    * Memo-izes the number of value values applied.
@@ -137,16 +140,7 @@ const Header = (props: Props) => {
       {/*    </Button>*/}
       {/*  </div>*/}
       </div>
-      {/* Commenting out this functionality for now, as we do not have details on the export functionality. */}
-      {/*<Button*/}
-      {/*  primary*/}
-      {/*  rounded*/}
-      {/*>*/}
-      {/*  <Icon*/}
-      {/*    name='export'*/}
-      {/*  />*/}
-      {/*  Export*/}
-      {/*</Button>*/}
+      <ExportButton />
     </div>
   );
 };
