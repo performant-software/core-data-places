@@ -1,24 +1,16 @@
 import ResultTooltip from '@apps/search/ResultTooltip';
-import SearchContext, { useSearchConfig } from '@apps/search/SearchContext';
-import TranslationContext from '@apps/search/TranslationContext';
+import SearchContext from '@apps/search/SearchContext';
+import Map from '@components/Map';
+import { SearchResultsLayer, useGeoSearch } from '@performant-software/core-data';
+import { Tooltip } from '@peripleo/maplibre';
 import {
-    LayerMenu,
-    OverlayLayers,
-    Peripleo as PeripleoUtils,
-    SearchResultsLayer,
-    useGeoSearch
-} from '@performant-software/core-data';
-import { Map, Tooltip, Zoom } from '@peripleo/maplibre';
-import { useCurrentRoute, useNavigate, useSelectionValue } from '@peripleo/peripleo';
-import { parseFeature } from '@utils/search';
-import clsx from 'clsx';
-import {
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from 'react';
-import _ from 'underscore';
+  useCurrentRoute,
+  useNavigate,
+  useRuntimeConfig,
+  useSelectionValue
+} from '@peripleo/peripleo';
+import { parseFeature } from '@utils/map';
+import { useContext, useEffect, useMemo, } from 'react';
 
 const SEARCH_LAYER = 'search-results';
 
@@ -30,19 +22,13 @@ const TOOLTIP_LAYERS = [
 ];
 
 const MapView = () => {
-  const config = useSearchConfig();
-  const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(config);
-
-  const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));
-  const [overlays, setOverlays] = useState([]);
-
+  const config = useRuntimeConfig<any>();
   const { isRefinedWithMap } = useGeoSearch();
   const navigate = useNavigate();
   const selected = useSelectionValue<any>();
   const route = useCurrentRoute();
 
   const { boundingBoxOptions, controlsClass } = useContext(SearchContext);
-  const { t } = useContext(TranslationContext);
 
   /**
    * If we're on the place detail page or refining results by the map view port, we'll suppress the auto-bounding box
@@ -59,7 +45,7 @@ const MapView = () => {
 
       if (properties.items.length === 1) {
         const [item,] = properties.items;
-        navigate(`${config.route}/${item.uuid}`);
+        navigate(`${config.search.route}/${item.uuid}`);
       } else {
         navigate('/select');
       }
@@ -68,50 +54,29 @@ const MapView = () => {
 
   return (
     <Map
-      attributionControl={false}
-      className='flex-grow'
-      style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
+      classNames={{
+        controls: controlsClass
+      }}
     >
-      <div
-        className={clsx(
-          'p6o-controls-container',
-          'topright',
-          controlsClass
-        )}
-      >
-        <Zoom />
-        { [...baseLayers, ...dataLayers].length > 1 && (
-          <LayerMenu
-            baseLayer={baseLayer?.name}
-            baseLayers={baseLayers}
-            baseLayersLabel={t('baseLayers')}
-            dataLayers={dataLayers}
-            onChangeBaseLayer={setBaseLayer}
-            onChangeOverlays={setOverlays}
-            overlaysLabel={t('overlays')}
-          />
-        )}
-      </div>
-      <OverlayLayers
-        overlays={overlays}
-      />
-      <SearchResultsLayer
-        boundingBoxOptions={boundingBoxOptions}
-        cluster={!!config.map.cluster_radius}
-        clusterRadius={config.map.cluster_radius}
-        fitBoundingBox={fitBoundingBox}
-        geometry={config.map.geometry}
-        layerId={SEARCH_LAYER}
-      />
-      <Tooltip
-        content={(target, event) => (
-          <ResultTooltip
-            event={event}
-            target={target}
-          />
-        )}
-        layerId={TOOLTIP_LAYERS}
-      />
+      <>
+        <SearchResultsLayer
+          boundingBoxOptions={boundingBoxOptions}
+          cluster={!!config.map.cluster_radius}
+          clusterRadius={config.map.cluster_radius}
+          fitBoundingBox={fitBoundingBox}
+          geometry={config.map.geometry}
+          layerId={SEARCH_LAYER}
+        />
+        <Tooltip
+          content={(target, event) => (
+            <ResultTooltip
+              event={event}
+              target={target as any}
+            />
+          )}
+          layerId={TOOLTIP_LAYERS}
+        />
+      </>
     </Map>
   );
 };

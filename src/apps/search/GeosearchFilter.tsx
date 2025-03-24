@@ -1,14 +1,14 @@
-import { useSearchConfig } from '@apps/search/SearchContext';
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import { Checkbox, useGeoSearchToggle } from '@performant-software/core-data';
+import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useContext } from 'react';
 
 const GeosearchFilter = () => {
-  const config = useSearchConfig();
+  const config = useRuntimeConfig<any>();
   const { filterByMapBounds, setFilterByMapBounds } = useGeoSearchToggle();
   const { t } = useContext(TranslationContext);
 
-  if (!config.geosearch) {
+  if (!config.search?.geosearch) {
     return null;
   }
 

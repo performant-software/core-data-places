@@ -1,20 +1,21 @@
-import { useSearchConfig } from '@apps/search/SearchContext';
 import SearchHighlight from '@apps/search/SearchHighlight';
-import TranslationContext from '@apps/search/TranslationContext';
 import useHoverable from '@apps/search/useHoverable';
 import useSelectable from '@apps/search/useSelectable';
+import TranslationContext from '@contexts/TranslationContext';
 import { SearchResultsTable, useCachedHits } from '@performant-software/core-data';
+import { ObjectJs as ObjectUtils } from '@performant-software/shared-components';
 import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
-import { getColumnLabel, renderFlattenedAttribute } from '@root/src/utils/search';
+import { getAttributes, getColumnLabel, getHitValue } from '@root/src/utils/search';
 import clsx from 'clsx';
 import { useCallback, useContext, useMemo } from 'react';
+import _ from 'underscore';
 
 interface Props {
   className?: string;
 }
 
 const TableView = (props: Props) => {
-  const config = useSearchConfig();
+  const config = useRuntimeConfig<any>();
   const hits = useCachedHits();
   const navigate = useNavigate();
   const { t } = useContext(TranslationContext);
@@ -22,29 +23,21 @@ const TableView = (props: Props) => {
   const { isHover, onPointEnter, onPointLeave } = useHoverable();
   const { isSelected } = useSelectable();
 
-  const { title } = config.result_card;
+  const { title } = config.search.result_card;
 
   /**
    * List of columns to display in the search table
    */
-  const columns = useMemo(() => {
-    if (config.result_card.attributes) {
-      return config.result_card.attributes
-        .slice(0, 4)
-        .map(att => ({
-          render: (hit) => renderFlattenedAttribute(hit, att.name),
-          label: getColumnLabel(att.name, t),
-          ...att
-        }))
-    }
-
-    return []
-  }, [config]);
+  const columns = useMemo(() => _.map(getAttributes(config), (attr) => ({
+    render: (hit) => getHitValue(hit, attr.name),
+    label: getColumnLabel(attr.name, t),
+    ...attr
+  })), [config]);
 
   /**
    * Navigates to the selected hit.
    */
-  const onRowClick = useCallback((hit) => navigate(`${config.route}/${hit.id}`), []);
+  const onRowClick = useCallback((hit) => navigate(`${config.search.route}/${hit.id}`), []);
 
   return (
     <div

@@ -1,12 +1,11 @@
-import { useSearchConfig } from '@apps/search/SearchContext';
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
-import { useHoverState } from '@peripleo/peripleo';
-import { parseFeature } from '@utils/search';
+import { useHoverState, useRuntimeConfig } from '@peripleo/peripleo';
+import { parseFeature } from '@utils/map';
 import { useCallback, useMemo } from 'react';
 import _ from 'underscore';
 
 const useHoverable = () => {
-  const config = useSearchConfig();
+  const config = useRuntimeConfig();
   const { hover, setHover } = useHoverState();
 
   const feature = useMemo(() => parseFeature(hover), [hover]);

@@ -1,31 +1,18 @@
-import { useSearchConfig } from '@apps/search/SearchContext';
 import PlacesService from '@backend/api/places';
-import {
-  CoreData as CoreDataUtils,
-  LayerMenu,
-  Peripleo as PeripleoUtils,
-  OverlayLayers
-} from '@performant-software/core-data';
+import Map from '@components/Map';
+import { CoreData as CoreDataUtils } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
-import { Map, Zoom } from '@peripleo/maplibre';
-import { Peripleo, Controls } from '@peripleo/peripleo';
 import React, { useEffect, useMemo, useState } from 'react';
 import _ from 'underscore';
 
 interface Props {
   animate?: boolean;
   buffer?: number;
-  layer?: number[];
   mapId?: string;
   placeIds: string[];
 }
 
 const PlacesMap = (props: Props) => {
-  const config = useSearchConfig();
-  const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(config);
-
-  const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));
-  const [overlays, setOverlays] = useState([]);
   const [places, setPlaces] = useState([]);
 
   /**
@@ -51,40 +38,14 @@ const PlacesMap = (props: Props) => {
   }, [props.placeIds]);
 
   return (
-    <Peripleo>
-      <Map
-        style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
-      >
-        <div onClick={(e: any) => { e.stopPropagation(); }}>
-          <Controls
-            position='topright'
-          >
-            <Zoom />
-            { baseLayers.length > 1 && (
-              <LayerMenu
-                baseLayer={baseLayer?.name}
-                baseLayers={baseLayers}
-                baseLayersLabel={'Base Layers'}
-                dataLayers={dataLayers}
-                onChangeBaseLayer={setBaseLayer}
-                onChangeOverlays={setOverlays}
-                overlaysLabel={'Overlays'}
-              />
-            )}
-          </Controls>
-        </div>
-        <OverlayLayers
-          overlays={overlays}
-          key={`overlay-${props.mapId}`}
-        />
-        <LocationMarkers
-          animate={props.animate}
-          buffer={props.buffer}
-          data={data}
-          key={`markers-${props.mapId}`}
-        />
-      </Map>
-    </Peripleo>
+    <Map>
+      <LocationMarkers
+        animate={props.animate}
+        buffer={props.buffer || undefined}
+        data={data}
+        layerId={`markers-${props.mapId}`}
+      />
+    </Map>
   );
 };
 

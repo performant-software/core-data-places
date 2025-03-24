@@ -5,7 +5,7 @@ import ListFacet from '@apps/search/ListFacet';
 import RangeFacet from '@apps/search/RangeFacet';
 import { useSearchConfig } from '@apps/search/SearchContext';
 import SelectFacet from '@apps/search/SelectFacet';
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import { FacetStateContext } from '@performant-software/core-data';
 import clsx from 'clsx';
 import { useCallback, useContext } from 'react';
