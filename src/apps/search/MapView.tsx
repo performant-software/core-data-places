@@ -1,5 +1,5 @@
 import ResultTooltip from '@apps/search/ResultTooltip';
-import SearchContext from '@apps/search/SearchContext';
+import SearchContext, { useSearchConfig } from '@apps/search/SearchContext';
 import TranslationContext from '@apps/search/TranslationContext';
 import {
     LayerMenu,
@@ -9,12 +9,7 @@ import {
     useGeoSearch
 } from '@performant-software/core-data';
 import { Map, Tooltip, Zoom } from '@peripleo/maplibre';
-import {
-  useCurrentRoute,
-  useNavigate,
-  useRuntimeConfig,
-  useSelectionValue
-} from '@peripleo/peripleo';
+import { useCurrentRoute, useNavigate, useSelectionValue } from '@peripleo/peripleo';
 import { parseFeature } from '@utils/search';
 import clsx from 'clsx';
 import {
@@ -35,7 +30,7 @@ const TOOLTIP_LAYERS = [
 ];
 
 const MapView = () => {
-  const config = useRuntimeConfig<any>();
+  const config = useSearchConfig();
   const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(config);
 
   const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));
@@ -64,7 +59,7 @@ const MapView = () => {
 
       if (properties.items.length === 1) {
         const [item,] = properties.items;
-        navigate(`${config.search.route}/${item.uuid}`);
+        navigate(`${config.route}/${item.uuid}`);
       } else {
         navigate('/select');
       }

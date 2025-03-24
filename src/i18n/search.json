@@ -1,0 +1,10 @@
+{
+  "index_events": {
+    "tinaLabel": "Search: events",
+    "defaultValue": "events"
+  },
+  "index_participants": {
+    "tinaLabel": "Search: participants",
+    "defaultValue": "participants"
+  }
+}

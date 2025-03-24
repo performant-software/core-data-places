@@ -1,3 +1,4 @@
+import { useSearchConfig } from '@apps/search/SearchContext';
 import PlacesService from '@backend/api/places';
 import {
   CoreData as CoreDataUtils,
@@ -7,7 +8,7 @@ import {
 } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
 import { Map, Zoom } from '@peripleo/maplibre';
-import { Peripleo, Controls, useRuntimeConfig } from '@peripleo/peripleo';
+import { Peripleo, Controls } from '@peripleo/peripleo';
 import React, { useEffect, useMemo, useState } from 'react';
 import _ from 'underscore';
 
@@ -20,7 +21,8 @@ interface Props {
 }
 
 const PlacesMap = (props: Props) => {
-  const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(useRuntimeConfig());
+  const config = useSearchConfig();
+  const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(config);
 
   const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));
   const [overlays, setOverlays] = useState([]);

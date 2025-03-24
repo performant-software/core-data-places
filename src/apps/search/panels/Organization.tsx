@@ -1,23 +1,21 @@
 import BasePanel from '@apps/search/panels/BasePanel';
 import OrganizationsService from '@backend/api/organizations';
+import { useRuntimeConfig } from '@peripleo/peripleo';
 import React from 'react';
-import {useRuntimeConfig} from '@peripleo/peripleo';
 
 interface Props {
   className?: string;
 }
 
 const Organization = (props: Props) => {
-  const config: any = useRuntimeConfig();
-
-  const exclusions = config.search.result_filtering && config.search.result_filtering.organizations ? config.search.result_filtering.organizations.exclude : [];
+  const config = useRuntimeConfig();
 
   return (
     <BasePanel
       className={props.className}
       icon='participants'
       name='organization'
-      exclusions={exclusions}
+      exclusions={config.result_filtering?.organizations?.exclude}
       renderItem={(organization) => (
         <p
           className='text-sm'

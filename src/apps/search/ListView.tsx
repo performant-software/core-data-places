@@ -1,8 +1,9 @@
+import { useSearchConfig } from '@apps/search/SearchContext';
 import SearchHighlight from '@apps/search/SearchHighlight';
 import useHoverable from '@apps/search/useHoverable';
 import useSelectable from '@apps/search/useSelectable';
 import { SearchList, useCachedHits } from '@performant-software/core-data';
-import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
+import { useNavigate } from '@peripleo/peripleo';
 import { renderFlattenedAttribute } from '@root/src/utils/search';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const ListView = (props: Props) => {
-  const config = useRuntimeConfig();
+  const config = useSearchConfig();
   const hits = useCachedHits();
   const navigate = useNavigate();
 
@@ -23,8 +24,8 @@ const ListView = (props: Props) => {
    * List of attributes to display in the search list
    */
   const attributes = useMemo(() => {
-    if (config.search.result_card.attributes) {
-      return config.search.result_card.attributes
+    if (config.result_card.attributes) {
+      return config.result_card.attributes
         .slice(0, 4)
         .map(att => ({
           render: (hit) => renderFlattenedAttribute(hit, att.name),
@@ -39,7 +40,7 @@ const ListView = (props: Props) => {
    * Navigates to the selected hit.
    */
   const onRowClick = useCallback((hit) => {
-    navigate(`${config.search.route}/${hit.id}`);
+    navigate(`${config.route}/${hit.id}`);
   }, []);
 
   /**
@@ -47,7 +48,7 @@ const ListView = (props: Props) => {
    */
   const renderItemTitle = useCallback((item) => (
     <SearchHighlight
-      attribute={config.search.result_card.title}
+      attribute={config.result_card.title}
       badge
       className='text-sm line-clamp-3 leading-6'
       hit={item}

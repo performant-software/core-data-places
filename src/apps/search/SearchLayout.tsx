@@ -5,10 +5,15 @@ import ListView from '@apps/search/ListView';
 import SearchContext from '@apps/search/SearchContext';
 import SearchRoutes from '@apps/search/SearchRoutes';
 import TableView from '@apps/search/TableView';
-import { useCurrentRoute, useRuntimeConfig } from '@peripleo/peripleo';
+import { useCurrentRoute } from '@peripleo/peripleo';
 import { getCurrentId } from '@utils/router';
 import clsx from 'clsx';
-import { useMemo, useState } from 'react';
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 
 const DEFAULT_MAX_ZOOM = 14;
 
@@ -27,7 +32,8 @@ const SearchLayout = () => {
   const [filters, setFilters] = useState<boolean>(false);
   const [view, setView] = useState<string>(Views.list);
 
-  const config = useRuntimeConfig();
+  const { searchConfig: config, setBoundingBox, setControlsClass } = useContext(SearchContext);
+
   const route = useCurrentRoute();
   const id = getCurrentId(route);
 
@@ -53,7 +59,7 @@ const SearchLayout = () => {
   /**
    * Updates the bounding box padding based on the layout configuration.
    */
-  const boundingBoxOptions = useMemo(() => ({
+  useEffect(() => setBoundingBox({
     padding: {
       top: DEFAULT_PADDING_TOP,
       bottom: view === Views.table ? PADDING_BOTTOM_TABLE : DEFAULT_PADDING_BOTTOM,
@@ -66,15 +72,10 @@ const SearchLayout = () => {
   /**
    * Memo-izes the class to apply to the map controls container.
    */
-  const controlsClass = useMemo(() => id ? 'me-[350px]' : null, [id]);
+  useEffect(() => setControlsClass(id ? 'me-[350px]' : null), [id]);
 
   return (
-    <SearchContext.Provider
-      value={{
-        boundingBoxOptions,
-        controlsClass
-      }}
-    >
+    <>
       <div
         className='absolute left-0 right-0 bottom-0 top-[64px]'
       >
@@ -130,7 +131,7 @@ const SearchLayout = () => {
           />
         </div>
       </div>
-    </SearchContext.Provider>
+    </>
   );
 };
 

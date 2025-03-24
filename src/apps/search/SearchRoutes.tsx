@@ -14,7 +14,7 @@ interface Props {
 }
 
 const SearchRoutes = (props: Props) => {
-  const config: any = useRuntimeConfig();
+  const config = useRuntimeConfig();
 
   return (
     <CoreDataContextProvider

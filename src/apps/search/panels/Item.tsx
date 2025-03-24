@@ -1,22 +1,20 @@
 import BasePanel from '@apps/search/panels/BasePanel';
 import ItemsService from '@backend/api/items';
+import { useRuntimeConfig } from '@peripleo/peripleo';
 import React from 'react';
-import {useRuntimeConfig} from '@peripleo/peripleo';
 
 interface Props {
   className?: string;
 }
 
 const Item = (props: Props) => {
-  const config: any = useRuntimeConfig();
-
-  const exclusions = config.search.result_filtering && config.search.result_filtering.items ? config.search.result_filtering.items.exclude : [];
+  const config = useRuntimeConfig();
 
   return (
     <BasePanel
       className={props.className}
       name='item'
-      exclusions={exclusions}
+      exclusions={config.result_filtering?.items?.exclude}
       service={ItemsService}
     />
   );

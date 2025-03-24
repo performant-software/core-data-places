@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node build.config.mjs && node build.fields.mjs && node build.content.mjs && tinacms dev -c \"astro dev\"",
-    "build": "node build.config.mjs && node build.fields.mjs && node build.content.mjs && tinacms build && astro build",
+    "start": "node build.config.mjs && node build.fields.mjs && node build.content.mjs && node build.search.mjs && tinacms dev -c \"astro dev\"",
+    "build": "node build.config.mjs && node build.fields.mjs && node build.content.mjs && node build.search.mjs && tinacms build && astro build",
     "preview": "astro preview"
   },
   "devDependencies": {
@@ -24,7 +24,7 @@
     "@astrojs/tailwind": "^5.1.4",
     "@astrojs/ts-plugin": "^1.10.4",
     "@auth/core": "^0.37.4",
-    "@headlessui/react": "^1.7.18",
+    "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.1.1",
     "@nanostores/react": "^0.7.1",
     "@netlify/functions": "^2.8.2",

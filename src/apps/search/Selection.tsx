@@ -1,6 +1,7 @@
+import { useSearchConfig } from '@apps/search/SearchContext';
 import TranslationContext from '@apps/search/TranslationContext';
 import { SelectRecordPanel } from '@performant-software/core-data';
-import { useNavigate, useRuntimeConfig, useSelectionState } from '@peripleo/peripleo';
+import { useNavigate, useSelectionState } from '@peripleo/peripleo';
 import { getIcon, getItemLabel } from '@utils/router';
 import { parseFeature } from '@utils/search';
 import clsx from 'clsx';
@@ -11,12 +12,12 @@ interface Props {
 }
 
 const Selection = (props: Props) => {
-  const config = useRuntimeConfig<any>();
+  const config = useSearchConfig();
   const navigate = useNavigate();
   const { selected, setSelected } = useSelectionState<any>();
   const { t } = useContext(TranslationContext);
 
-  const { route } = config.search;
+  const { route } = config;
 
   /**
    * Memo-izes the parsed feature.

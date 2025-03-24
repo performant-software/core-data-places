@@ -2,9 +2,9 @@ import BasePanel from '@apps/search/panels/BasePanel';
 import TranslationContext from '@apps/search/TranslationContext';
 import EventsService from '@backend/api/events';
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
+import { useRuntimeConfig } from '@peripleo/peripleo';
 import React, { useCallback, useContext } from 'react';
 import _ from 'underscore';
-import {useRuntimeConfig} from '@peripleo/peripleo';
 
 interface Props {
   className?: string;
@@ -12,9 +12,7 @@ interface Props {
 
 const Event = (props: Props) => {
   const { t } = useContext(TranslationContext);
-  const config: any = useRuntimeConfig();
-
-  const exclusions = config.search.result_filtering && config.search.result_filtering.events ? config.search.result_filtering.events.exclude : [];
+  const config = useRuntimeConfig();
 
   /**
    * Returns the start date label for the passed event.
@@ -52,7 +50,7 @@ const Event = (props: Props) => {
       className={props.className}
       icon='date'
       name='event'
-      exclusions={exclusions}
+      exclusions={config.result_filtering?.events?.exclude}
       renderItem={(event) => (
         <div
           className='text-sm'

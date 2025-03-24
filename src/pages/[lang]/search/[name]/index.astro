@@ -1,0 +1,25 @@
+---
+import Search from '@apps/search/Search';
+import config from '@config';
+import { getTranslations } from '@i18n/server';
+import Layout from "@layouts/Layout.astro";
+import _ from 'underscore';
+
+const { t } = await getTranslations(Astro.currentLocale);
+const { name } = Astro.params;
+
+export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
+
+---
+
+<Layout
+  fullscreen
+  t={t}
+  title={t('explore')}
+  tab="search"
+>
+  <Search
+    name={name}
+    client:only="react"
+  />
+</Layout>

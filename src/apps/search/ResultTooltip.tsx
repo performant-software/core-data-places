@@ -1,7 +1,7 @@
+import { useSearchConfig } from '@apps/search/SearchContext';
 import SearchHighlight from '@apps/search/SearchHighlight';
 import TranslationContext from '@apps/search/TranslationContext';
 import Badge from '@components/Badge';
-import config from '@config';
 import { useCachedHits } from '@performant-software/core-data';
 import type { Feature, FeatureCluster } from '@peripleo/peripleo';
 import { parseFeature } from '@utils/search';
@@ -14,6 +14,7 @@ interface Props {
 }
 
 const ResultTooltip = (props: Props) => {
+  const config = useSearchConfig();
   const { t } = useContext(TranslationContext);
   const hits = useCachedHits();
 
@@ -54,17 +55,17 @@ const ResultTooltip = (props: Props) => {
     <div
       className='rounded px-2 py-1.5 text-sm shadow bg-black text-white border'
     >
-      { config.search.result_card.title && (
+      { config.result_card.title && (
         <SearchHighlight
-          attribute={config.search.result_card.title}
+          attribute={config.result_card.title}
           className='truncate'
           badge={!isCluster}
           hit={hit}
         />
       )}
-      { !isCluster && config.search.result_card.attributes && config.search.result_card.attributes.length > 0 && (
+      { !isCluster && config.result_card.attributes && config.result_card.attributes.length > 0 && (
         <SearchHighlight
-          attribute={config.search.result_card.attributes[0].name}
+          attribute={config.result_card.attributes[0].name}
           className='truncate'
           badge={!isCluster}
           hit={hit}
