@@ -1,6 +1,11 @@
 import TranslationContext from '@contexts/TranslationContext';
-import { LayerMenu, OverlayLayers, Peripleo as PeripleoUtils } from '@performant-software/core-data';
-import { Map as PeripleoMap, Zoom } from '@peripleo/maplibre';
+import {
+  Icon,
+  LayerMenu,
+  OverlayLayers,
+  Peripleo as PeripleoUtils
+} from '@performant-software/core-data';
+import { Map as PeripleoMap, ZoomControl } from '@peripleo/maplibre';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
 import { type ReactNode, useContext, useState } from 'react';
@@ -30,13 +35,14 @@ const Map = (props: Props) => {
       style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
     >
       <div
-        className={clsx(
-          'p6o-controls-container',
-          'topright',
-          props.classNames?.controls
-        )}
+        className={clsx('absolute top-0 right-0 flex flex-col py-3 px-3 gap-y-2', props.classNames?.controls)}
       >
-        <Zoom />
+        <ZoomControl
+          zoomIn={<Icon name='zoom_in' />}
+          zoomInProps={{ className: 'p6o-control p6o-control-btn' }}
+          zoomOut={<Icon name='zoom_out' />}
+          zoomOutProps={{ className: 'p6o-control p6o-control-btn' }}
+        />
         { [...baseLayers, ...dataLayers].length > 1 && (
           <LayerMenu
             baseLayer={baseLayer?.name}

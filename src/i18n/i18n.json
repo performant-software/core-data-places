@@ -270,5 +270,9 @@
   "json": {
     "tinaLabel": "JSON",
     "defaultValue": "JSON"
+  },
+  "multipleLocations": {
+    "tinaLabel": "Multiple locations",
+    "defaultValue": "Multiple locations"
   }
 }

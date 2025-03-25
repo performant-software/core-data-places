@@ -1,10 +1,17 @@
 import TranslationContext from '@contexts/TranslationContext';
 import { SelectRecordPanel } from '@performant-software/core-data';
-import { useNavigate, useRuntimeConfig, useSelectionState } from '@peripleo/peripleo';
+import { useSelection } from '@peripleo/maplibre';
+import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
 import { getIcon, getItemLabel } from '@utils/router';
 import { parseFeature } from '@utils/map';
 import clsx from 'clsx';
-import { useCallback, useContext, useEffect, useMemo } from 'react';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo
+} from 'react';
+import _ from 'underscore';
 
 interface Props {
   className?: string;
@@ -13,15 +20,39 @@ interface Props {
 const Selection = (props: Props) => {
   const config = useRuntimeConfig<any>();
   const navigate = useNavigate();
-  const { selected, setSelected } = useSelectionState<any>();
   const { t } = useContext(TranslationContext);
+
+  const { selection: { selected } = {}, setSelected } = useSelection() || {};
 
   const { route } = config.search;
 
   /**
-   * Memo-izes the parsed feature.
+   * Memo-izes an array of selected records.
    */
-  const feature = useMemo(() => parseFeature(selected), [selected]);
+  const records = useMemo(() => {
+    let value;
+
+    if (selected) {
+      if (_.isArray(selected)) {
+        value = [...selected];
+      } else {
+        value = [selected];
+      }
+    }
+
+    return value;
+  }, [selected]);
+
+  /**
+   * Memo-izes the parsed selected.
+   */
+  const items = useMemo(() => (
+    _.chain(records)
+      .map((record) => parseFeature(record))
+      .map((record) => record.properties.items)
+      .flatten()
+      .value()
+  ), [records]);
 
   /**
    * Memo-izes the icon name for the route.
@@ -50,15 +81,32 @@ const Selection = (props: Props) => {
   }, []);
 
   /**
-   * If the selection has been cleared, navigate back to the root URL.
+   * Memo-izes the title for the selection panel. If a single point was selected, we'll display the name of the place
+   * record. If a cluster was selected, we'll display a more generic title.
+   */
+  const title = useMemo(() => {
+    let value;
+
+    if (records?.length === 1) {
+      const [record,] = records;
+      value = record.properties?.name;
+    } else {
+      value = t('multipleLocations');
+    }
+
+    return value;
+  }, [records]);
+
+  /**
+   * Navigate to the root path if the selection is cleared.
    */
   useEffect(() => {
-    if (!selected) {
+    if (_.isEmpty(records)) {
       navigate('/');
     }
-  }, [selected]);
+  }, [records]);
 
-  if (!feature) {
+  if (_.isEmpty(items)) {
     return null;
   }
 
@@ -77,12 +125,12 @@ const Selection = (props: Props) => {
       <SelectRecordPanel
         headerIcon='location'
         itemIcon={itemIcon}
-        items={feature?.properties?.items}
+        items={items}
         label={label}
         onClick={onClick}
         onClose={onClose}
         renderItemName={(item) => item.name}
-        title={feature?.properties?.name}
+        title={title}
       />
     </aside>
   );

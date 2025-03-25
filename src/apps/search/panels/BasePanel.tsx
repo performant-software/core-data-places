@@ -11,7 +11,8 @@ import {
   useLoader
 } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
-import { useCurrentRoute, useNavigate, useRuntimeConfig, useSelectionState } from '@peripleo/peripleo';
+import { useSelection } from '@peripleo/maplibre';
+import { useCurrentRoute, useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
 import { getNameView } from '@utils/people';
 import { getCurrentId } from '@utils/router';
 import clsx from 'clsx';
@@ -42,7 +43,7 @@ const BasePanel = (props: Props) => {
   const navigate = useNavigate();
   const config = useRuntimeConfig();
   const { t } = useContext(TranslationContext);
-  const { setSelected } = useSelectionState();
+  const { setSelected } = useSelection();
 
   const route = useCurrentRoute();
   const id = getCurrentId(route);
@@ -354,8 +355,8 @@ const BasePanel = (props: Props) => {
         <LocationMarkers
           animate
           boundingBoxOptions={boundingBoxOptions}
-          fitBoundingBox={_.get(config.map, 'zoom_to_place', true)}
           data={geometry}
+          fitBoundingBox={_.get(config.map, 'zoom_to_place', true)}
           layerId='current'
         />
       )}

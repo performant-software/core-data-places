@@ -60,8 +60,9 @@ const TableView = (props: Props) => {
           render: (hit) => (
             <SearchHighlight
               attribute={title}
-              badge
-              className='text-sm line-clamp-3 leading-6'
+              classNames={{
+                highlight: 'text-sm line-clamp-3 leading-6'
+              }}
               hit={hit}
             />
           )

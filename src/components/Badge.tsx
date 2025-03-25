@@ -9,7 +9,7 @@ const Badge = (props: Props) => {
   return (
     <span
       className={clsx(
-        'inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-semibold rounded-full',
+        'inline-flex items-center justify-center px-1.5 py-1 text-xs font-semibold rounded-full',
         props.className
       )}
     >
