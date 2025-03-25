@@ -1,5 +1,5 @@
 import SearchHighlight from '@apps/search/SearchHighlight';
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import Badge from '@components/Badge';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import { parseFeature } from '@utils/search';

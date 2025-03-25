@@ -1,5 +1,5 @@
-import Tooltip from '@apps/search/Tooltip';
 import SearchContext from '@apps/search/SearchContext';
+import Tooltip from '@apps/search/Tooltip';
 import Map from '@components/Map';
 import {
   SearchResultsLayer,

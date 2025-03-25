@@ -126,4 +126,4 @@ export const parseFeature = (feature) => {
     ...feature,
     properties
   };
-}
+};

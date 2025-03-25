@@ -1,5 +1,10 @@
 import TranslationContext from '@contexts/TranslationContext';
-import { LayerMenu, OverlayLayers, Peripleo as PeripleoUtils } from '@performant-software/core-data';
+import {
+  Icon,
+  LayerMenu,
+  OverlayLayers,
+  Peripleo as PeripleoUtils
+} from '@performant-software/core-data';
 import { Map as PeripleoMap, ZoomControl } from '@peripleo/maplibre';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
