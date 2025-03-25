@@ -7,7 +7,7 @@ interface Props {
 
 const NavItem = (props: Props) => (
   <div
-    class={clsx(
+    className={clsx(
       'flex',
       'font-light',
       { 'border-b': props.active }

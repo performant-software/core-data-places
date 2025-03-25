@@ -1,10 +1,9 @@
 import NavLink from '@layouts/NavLink';
 import { Icon } from '@performant-software/core-data';
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react';
-import config from '@config';
 import NavItem from '@layouts/NavItem';
 import clsx from 'clsx';
-import { Fragment, useMemo } from 'react';
+import { Fragment } from 'react';
 import _ from 'underscore';
 
 const NavSearch = (props) => {
@@ -16,7 +15,7 @@ const NavSearch = (props) => {
     return (
       <NavLink
         active={props.active}
-        content={item.label}
+        content={props.content}
         href={item.href}
       />
     );
@@ -73,7 +72,7 @@ const NavSearch = (props) => {
               href={item.href}
             >
               <span
-                className='relative cursor-pointer select-none py-3 px-4'
+                className='relative cursor-pointer select-none py-3 px-6'
               >
                 { item.label || `Index ${index}` }
               </span>

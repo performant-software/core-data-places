@@ -7,7 +7,7 @@ import type { DataVisualizationProps } from '@types';
 import React, { useMemo } from 'react';
 
 const Map = (props: DataVisualizationProps) => {
-  const config = useRuntimeConfig<any>();
+  const config = useRuntimeConfig<any>(); // TODO: Fix me; Embed collection name in uploaded data
 
   /**
    * Memo-izes the "data" prop as JSON.

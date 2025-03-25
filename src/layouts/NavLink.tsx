@@ -8,7 +8,7 @@ interface Props {
 
 const NavLink = ({ active, content, href }: Props) => (
   <a
-    class='flex flex-col p-y-4 justify-center'
+    className='flex flex-col p-y-4 justify-center'
     href={href}
   >
     <NavItem
