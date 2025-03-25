@@ -1,5 +1,5 @@
 import ManifestThumbnail, { type Collection } from '@apps/search/ManifestThumbnail';
-import SearchContext from '@apps/search/SearchContext';
+import SearchContext, { useSearchConfig } from '@apps/search/SearchContext';
 import Base from '@backend/api/base';
 import UserDefinedFieldView from '@components/UserDefinedFieldView';
 import TranslationContext from '@contexts/TranslationContext';
@@ -12,7 +12,7 @@ import {
 } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
 import { useSelection } from '@peripleo/maplibre';
-import { useCurrentRoute, useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
+import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
 import { getNameView } from '@utils/people';
 import { getCurrentId } from '@utils/router';
 import clsx from 'clsx';
@@ -41,7 +41,7 @@ const BasePanel = (props: Props) => {
   const [manifestUrl, setManifestUrl] = useState<string | undefined>();
 
   const navigate = useNavigate();
-  const config = useRuntimeConfig();
+  const config = useSearchConfig();
   const { t } = useContext(TranslationContext);
   const { setSelected } = useSelection();
 

@@ -1,5 +1,6 @@
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import { createContext, useContext, useMemo, useState } from 'react';
+import _ from 'underscore';
 
 interface SearchContextType {
   boundingBoxOptions: {

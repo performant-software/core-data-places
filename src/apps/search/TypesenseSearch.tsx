@@ -4,7 +4,6 @@ import {
   PersistentSearchStateContextProvider,
   Typesense as TypesenseUtils
 } from '@performant-software/core-data';
-import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useMemo, type ReactNode } from 'react';
 import {
   InstantSearch,

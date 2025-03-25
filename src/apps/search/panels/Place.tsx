@@ -19,7 +19,7 @@ const Place = (props: Props) => {
   const { t } = useTranslations();
 
   const config = useRuntimeConfig();
-  const exclusions = config.result_filtering?.places?.exclude;
+  const exclusions = config.result_filtering?.places?.exclude || [];
 
   return (
     <BasePanel

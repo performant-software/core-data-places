@@ -34,7 +34,7 @@ const SearchLayout = () => {
   const [filters, setFilters] = useState<boolean>(false);
   const [view, setView] = useState<string>(Views.list);
 
-  const { searchConfig: config, setBoundingBox, setControlsClass } = useContext(SearchContext);
+  const { searchConfig: config, setBoundingBoxOptions, setControlsClass } = useContext(SearchContext);
 
   const route = useCurrentRoute();
   const id = getCurrentId(route);
@@ -67,7 +67,7 @@ const SearchLayout = () => {
   /**
    * Updates the bounding box padding based on the layout configuration.
    */
-  useEffect(() => setBoundingBox({
+  useEffect(() => setBoundingBoxOptions({
     padding: {
       top: DEFAULT_PADDING_TOP,
       bottom: view === Views.table ? PADDING_BOTTOM_TABLE : DEFAULT_PADDING_BOTTOM,
