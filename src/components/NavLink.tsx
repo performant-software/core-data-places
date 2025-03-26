@@ -1,4 +1,4 @@
-import NavItem from '@layouts/NavItem';
+import NavItem from '@components/NavItem';
 
 interface Props {
   active?: boolean;

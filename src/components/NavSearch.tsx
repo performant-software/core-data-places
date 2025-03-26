@@ -1,8 +1,8 @@
-import NavLink from '@layouts/NavLink';
+import NavItem from '@components/NavItem';
+import NavLink from '@components/NavLink';
 import { Icon } from '@performant-software/core-data';
-import { DropdownMenu } from 'radix-ui';
-import NavItem from '@layouts/NavItem';
 import clsx from 'clsx';
+import { DropdownMenu } from 'radix-ui';
 import _ from 'underscore';
 
 const NavSearch = (props) => {

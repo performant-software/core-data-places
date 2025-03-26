@@ -2,12 +2,12 @@
 import { fetchAbout } from '@backend/tina-server';
 import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
+import NavLink from '@components/NavLink';
+import NavSearch from '@components/NavSearch';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
 import _ from 'underscore';
 import config from '@config';
-import NavLink from './NavLink';
-import NavSearch from './NavSearch';
 
 const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
