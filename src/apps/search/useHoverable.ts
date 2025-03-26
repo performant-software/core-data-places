@@ -1,6 +1,6 @@
 import { useSearchConfig } from '@apps/search/SearchContext';
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
-import { useHoverState, useMapUtils } from '@peripleo/maplibre';
+import { useHoverState } from '@peripleo/maplibre';
 import { parseFeature } from '@utils/map';
 import { useCallback, useMemo } from 'react';
 import _ from 'underscore';
@@ -8,7 +8,6 @@ import _ from 'underscore';
 const useHoverable = () => {
   const config = useSearchConfig();
   const { hover, setHover } = useHoverState();
-  const mapUtils = useMapUtils();
 
   const { hovered } = hover || {};
   const feature = useMemo(() => parseFeature(hovered), [hovered]);
@@ -21,17 +20,13 @@ const useHoverable = () => {
   /**
    * Sets the hover element on the state.
    */
-  const onHoverChange = useCallback((nextHover: any) => {
-    if (!nextHover) {
+  const onHoverChange = useCallback((nextHovers: any) => {
+    if (nextHovers) {
+      setHover({ hovered: nextHovers });
+    } else {
       setHover(undefined);
-    } else if (nextHover && nextHover.id !== hovered?.id) {
-      mapUtils
-        .findMapFeature(nextHover.id)
-        .then((mapFeature) => {
-          setHover({ hovered: nextHover, mapFeature });
-        });
     }
-  }, [hovered, mapUtils]);
+  }, [setHover]);
 
   /**
    * Callback fired when the pointer enters the container.
@@ -39,7 +34,7 @@ const useHoverable = () => {
   const onPointEnter = useCallback((hit) => {
     if (onHoverChange && hovered?.id !== hit.id) {
       const { features } = TypesenseUtils.toFeatureCollection([hit], config.map.geometry);
-      onHoverChange(_.first(features));
+      onHoverChange(features);
     }
   }, [config, hovered, onHoverChange]);
 
