@@ -1,14 +1,11 @@
 import NavLink from '@layouts/NavLink';
 import { Icon } from '@performant-software/core-data';
-import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react';
+import { DropdownMenu } from 'radix-ui';
 import NavItem from '@layouts/NavItem';
 import clsx from 'clsx';
-import { Fragment } from 'react';
 import _ from 'underscore';
 
 const NavSearch = (props) => {
-  console.log(props.items);
-
   if (props.items?.length === 1) {
     const [item,] = props.items;
 
@@ -22,12 +19,9 @@ const NavSearch = (props) => {
   }
 
   return (
-    <Popover
-      className='flex flex-col justify-center'
-    >
-      <PopoverButton
-        as='div'
-        className='flex items-center gap-x-2 cursor-pointer'
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger
+        className='flex items-center gap-x-2 cursor-pointer outline-none hover:bg-transparent'
       >
         <NavItem
           active={props.active}
@@ -36,15 +30,9 @@ const NavSearch = (props) => {
         <Icon
           name='down'
         />
-      </PopoverButton>
-      <Transition
-        as={Fragment}
-        leave='transition ease-in duration-100'
-        leaveFrom='opacity-100'
-        leaveTo='opacity-0'
-      >
-        <PopoverPanel
-          anchor='bottom'
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content
           className={`
             flex 
             flex-col 
@@ -61,26 +49,30 @@ const NavSearch = (props) => {
             z-10
             py-3
           `}
+          sideOffset={5}
         >
           { _.map(props.items, (item, index) => (
-            <a
+            <DropdownMenu.Item
               className={clsx(
-                'py-2 hover:bg-neutral-100',
+                'py-2 hover:bg-neutral-100 outline-none',
                 { 'bg-neutral-100': item.active }
               )}
-              key={item.name}
-              href={item.href}
             >
-              <span
-                className='relative cursor-pointer select-none py-3 px-6'
+              <a
+                key={item.name}
+                href={item.href}
               >
-                { item.label || `Index ${index}` }
-              </span>
-            </a>
+                <span
+                  className='relative cursor-pointer select-none py-3 px-6'
+                >
+                  { item.label || `Index ${index}` }
+                </span>
+              </a>
+            </DropdownMenu.Item>
           ))}
-        </PopoverPanel>
-      </Transition>
-    </Popover>
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
   );
 };
 

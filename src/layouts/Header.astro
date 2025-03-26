@@ -23,10 +23,6 @@ const TabKeys = {
   posts: 'posts'
 };
 
-console.dir(typeof Astro.url.pathname);
-
-console.dir(Astro.params);
-
 ---
 
 <div
@@ -75,22 +71,6 @@ console.dir(Astro.params);
           href={getRelativeLocaleUrl(currentLocale, key)}
         />
       ))}
-      <!--{ _.map(_.keys(tabs), (key) => (-->
-      <!--  <a-->
-      <!--    class='flex flex-col p-y-4 justify-center'-->
-      <!--    href={tabs[key].url}-->
-      <!--  >-->
-      <!--    <div-->
-      <!--      class={clsx(-->
-      <!--        'flex',-->
-      <!--        'font-light',-->
-      <!--        { 'border-b': key === currentTab }-->
-      <!--      )}-->
-      <!--    >-->
-      <!--      { t(key) }-->
-      <!--    </div>-->
-      <!--  </a>-->
-      <!--))}-->
       <LanguagePicker
         locales={locales}
         currentLocale={currentLocale}
