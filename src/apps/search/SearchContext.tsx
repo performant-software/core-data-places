@@ -1,28 +1,42 @@
 import { useRuntimeConfig } from '@peripleo/peripleo';
-import { createContext, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+  type ReactNode
+} from 'react';
 import _ from 'underscore';
+import type { SearchConfig } from '@types';
+
+interface BoundingBoxOptions {
+  padding: {
+    top: number,
+    bottom: number,
+    left: number,
+    right: number
+  };
+  maxZoom: number;
+}
 
 interface SearchContextType {
-  boundingBoxOptions: {
-    padding: {
-      top: number,
-      bottom: number,
-      left: number,
-      right: number
-    },
-    maxZoom: number
-  };
-  searchConfig: any; // TODO: Fix me
-  setBoundingBoxOptions(any): void; // TODO: Fix me
+  boundingBoxOptions: BoundingBoxOptions;
+  searchConfig: SearchConfig;
+  setBoundingBoxOptions(boundingBoxOptions: BoundingBoxOptions): void;
   controlsClass?: string;
-  setControlsClass(any): void; // TODO: Fix me
+  setControlsClass(controlsClass: string): void;
 }
 
 const SearchContext = createContext<SearchContextType>(null);
 
-export const SearchContextProvider = (props) => {
-  const [boundingBoxOptions, setBoundingBoxOptions] = useState();
-  const [controlsClass, setControlsClass] = useState();
+interface Props {
+  children: ReactNode;
+  name: string;
+}
+
+export const SearchContextProvider = (props: Props) => {
+  const [boundingBoxOptions, setBoundingBoxOptions] = useState<BoundingBoxOptions>();
+  const [controlsClass, setControlsClass] = useState<string>();
 
   const config = useRuntimeConfig();
   const searchConfig = useMemo(() => _.findWhere(config.search, { name: props.name }), [config, props.name]);

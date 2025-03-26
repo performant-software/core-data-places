@@ -1,4 +1,3 @@
-import { useSearchConfig } from '@apps/search/SearchContext';
 import TranslationContext from '@contexts/TranslationContext';
 import {
   Icon,
@@ -7,6 +6,7 @@ import {
   Peripleo as PeripleoUtils
 } from '@performant-software/core-data';
 import { Map as PeripleoMap, ZoomControl } from '@peripleo/maplibre';
+import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
 import { type ReactNode, useContext, useState } from 'react';
 import _ from 'underscore';
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const Map = (props: Props) => {
-  const config = useSearchConfig();
+  const config = useRuntimeConfig();
   const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(config);
 
   const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));

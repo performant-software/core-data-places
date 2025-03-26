@@ -5,19 +5,25 @@ import { LocationMarkers } from '@performant-software/geospatial';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import type { DataVisualizationProps } from '@types';
 import React, { useMemo } from 'react';
+import _ from 'underscore';
 
 const Map = (props: DataVisualizationProps) => {
-  const config = useRuntimeConfig<any>(); // TODO: Fix me; Embed collection name in uploaded data
+  const runtimeConfig = useRuntimeConfig();
 
   /**
    * Memo-izes the "data" prop as JSON.
    */
-  const records = useMemo(() => JSON.parse(props.data), [props.data]);
+  const parsed = useMemo(() => JSON.parse(props.data), [props.data]);
+
+  /**
+   * Memo-izes the search config based on the data set.
+   */
+  const config = useMemo(() => _.findWhere(runtimeConfig.search, { name: parsed.name }), [parsed, runtimeConfig]);
 
   /**
    * Memo-izes the data as a feature collection.
    */
-  const data = useMemo(() => TypesenseUtils.toFeatureCollection(records, config.map.geometry), [config, records]);
+  const data = useMemo(() => TypesenseUtils.toFeatureCollection(parsed.data, config.map.geometry), [config, parsed]);
 
   return (
     <VisualizationContainer

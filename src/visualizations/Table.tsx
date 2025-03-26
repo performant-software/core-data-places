@@ -11,7 +11,7 @@ const Table = (props: DataVisualizationProps) => {
   /**
    * Memo-izes the data as JSON.
    */
-  const data = useMemo(() => JSON.parse(props.data), [props.data]);
+  const { data } = useMemo(() => JSON.parse(props.data), [props.data]);
 
   /**
    * Memo-izes the table columns and labels.
