@@ -1,7 +1,6 @@
 import { useSearchConfig } from '@apps/search/SearchContext';
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
-import { useMapUtils } from '@peripleo/maplibre';
-import { useHoverState } from '@peripleo/peripleo';
+import { useHoverState, useMapUtils } from '@peripleo/maplibre';
 import { parseFeature } from '@utils/map';
 import { useCallback, useMemo } from 'react';
 import _ from 'underscore';
@@ -28,9 +27,11 @@ const useHoverable = () => {
     } else if (nextHover && nextHover.id !== hovered?.id) {
       mapUtils
         .findMapFeature(nextHover.id)
-        .then((mapFeature) => setHover({ hovered: nextHover, mapFeature }));
+        .then((mapFeature) => {
+          setHover({ hovered: nextHover, mapFeature });
+        });
     }
-  }, [hovered]);
+  }, [hovered, mapUtils]);
 
   /**
    * Callback fired when the pointer enters the container.
@@ -40,7 +41,7 @@ const useHoverable = () => {
       const { features } = TypesenseUtils.toFeatureCollection([hit], config.map.geometry);
       onHoverChange(_.first(features));
     }
-  }, [hovered, onHoverChange]);
+  }, [config, hovered, onHoverChange]);
 
   /**
    * Callback fired when the pointer leaves the container.
@@ -49,7 +50,7 @@ const useHoverable = () => {
     if (onHoverChange) {
       onHoverChange(undefined);
     }
-  }, [hovered, onHoverChange]);
+  }, [onHoverChange]);
 
   return {
     isHover,
