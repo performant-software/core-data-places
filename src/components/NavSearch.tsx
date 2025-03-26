@@ -21,15 +21,19 @@ const NavSearch = (props) => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
-        className='flex items-center gap-x-2 cursor-pointer outline-none hover:bg-transparent'
+        asChild
       >
-        <NavItem
-          active={props.active}
-          content={props.content}
-        />
-        <Icon
-          name='down'
-        />
+        <div
+          className='flex items-center gap-x-2 cursor-pointer outline-none hover:bg-transparent'
+        >
+          <NavItem
+            active={props.active}
+            content={props.content}
+          />
+          <Icon
+            name='down'
+          />
+        </div>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
