@@ -81,7 +81,7 @@ const Header = (props: Props) => {
           <h2
             className='text-xl font-bold text-nowrap px-3'
           >
-            { t(`index_${config.name}`) }
+            { t(`index_${config.name}`) || t('root') }
           </h2>
         </div>
         <div
