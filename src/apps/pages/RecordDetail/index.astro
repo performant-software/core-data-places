@@ -19,7 +19,7 @@ const relations = {
   events: {},
   instances: {},
   items: {},
-  media_contents: {},
+  manifests: record.relatedRecords?.manifests,
   organizations: {},
   people: {},
   places: {},
@@ -29,20 +29,22 @@ const relations = {
 
 // group relations by the UUID of the relationship
 for (const modelType of Object.keys(record.relatedRecords)) {
-  if (record.relatedRecords[modelType] && modelType !== 'media_contents') {
-    record.relatedRecords[modelType].forEach(rel => {
-      if (excludes.includes(rel.project_model_relationship_uuid)) {
-        return
-      }
-
-      const relationArray = relations[modelType][rel.project_model_relationship_uuid]
-      if (relationArray) {
-        relationArray.push(rel)
-      } else {
-        relations[modelType][rel.project_model_relationship_uuid] = [rel]
-      }
-    })
+  if (modelType === 'manifests') {
+    continue
   }
+
+  record.relatedRecords[modelType].forEach(rel => {
+    if (excludes.includes(rel.project_model_relationship_uuid)) {
+      return
+    }
+
+    const relationArray = relations[modelType][rel.project_model_relationship_uuid]
+    if (relationArray) {
+      relationArray.push(rel)
+    } else {
+      relations[modelType][rel.project_model_relationship_uuid] = [rel]
+    }
+  })
 }
 ---
 <Container className="py-6 w-full">
@@ -62,14 +64,13 @@ for (const modelType of Object.keys(record.relatedRecords)) {
     <UserDefined
       record={record}
     />
-    {Object.keys(relations.media_contents).map((uuid) => (
+    {relations.manifests && (
       <MediaContents
         client:only="react"
-        data={relations.media_contents[uuid]}
+        data={relations.manifests}
         lang={lang}
-        uuid={uuid}
       />
-    ))}
+    )}
     {Object.keys(relations.events).map((uuid) => (
       <Relations
         data={relations.events[uuid]}
