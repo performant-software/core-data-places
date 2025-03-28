@@ -142,8 +142,10 @@ class Base {
       url.push(searchParams.toString());
     }
 
-    const response = await fetch(url.join('')).then((response) => response.json());
-    return response;
+    const response = await fetch(url.join(''))
+    const json = await response.json()
+
+    return json
   }
 }
 

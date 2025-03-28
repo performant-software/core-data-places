@@ -9,7 +9,6 @@ export const singularForms = {
   instances: 'instance',
   items: 'item',
   manifests: 'manifest',
-  media_contents: 'media_content',
   organizations: 'organization',
   people: 'person',
   places: 'place',
@@ -40,8 +39,11 @@ export async function getRelation(
     `${path}${model}/${uuid}/${relatedModel}?${createProjectIdString(config.core_data.project_ids)}&per_page=-1`,
     config.core_data.url
   );
-  const response = await fetch(url).then((res) => res.json());
-  return response;
+
+  const response = await fetch(url);
+  const json = await response.json();
+
+  return json;
 }
 
 export async function getRelations(
@@ -50,13 +52,16 @@ export async function getRelations(
   relatedModels: string[] = relatedModelTypes,
   logger?: AstroIntegrationLogger
 ) {
-  let relatedRecords: { [key: string]: any } = {};
-  logger && logger.info(`fetching related records for ${uuid}`);
+  const relatedRecords: { [key: string]: any } = {};
+
+  logger && logger.info(`fetching related records for ${singularForms[model]} ${uuid}`);
+
   for (let i = 0; i < relatedModels.length; i++) {
     const relatedModel = relatedModels[i];
     const relations = await getRelation(model, uuid, relatedModel);
-    relatedRecords[relatedModel] = relations[relatedModel]
+    relatedRecords[relatedModel] = relations[relatedModel] || relations
   }
+
   return relatedRecords;
 }
 

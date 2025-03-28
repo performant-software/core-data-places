@@ -2,7 +2,7 @@ import BasePanel from '@apps/search/panels/BasePanel';
 import EventsService from '@backend/api/events';
 import TranslationContext from '@contexts/TranslationContext';
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
-import React, { useCallback, useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import _ from 'underscore';
 import {useRuntimeConfig} from '@peripleo/peripleo';
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Event = (props: Props) => {
-  const { t } = useContext(TranslationContext);
+  const { t, lang } = useContext(TranslationContext);
   const config: any = useRuntimeConfig();
 
   const exclusions = config.search.result_filtering && config.search.result_filtering.events ? config.search.result_filtering.events.exclude : [];
@@ -47,12 +47,22 @@ const Event = (props: Props) => {
     );
   }, []);
 
+  /**
+   * Resolves the URL for the detail page.
+   */
+  const resolveDetailPageUrl = useCallback((event) => {
+    if (event && config.detail_pages && config.detail_pages.includes('events')) {
+      return `/${lang}/events/${event.uuid}`
+    }
+  }, [config, lang])
+
   return (
     <BasePanel
       className={props.className}
       icon='date'
       name='event'
       exclusions={exclusions}
+      resolveDetailPageUrl={resolveDetailPageUrl}
       renderItem={(event) => (
         <div
           className='text-sm'

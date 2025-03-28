@@ -1,0 +1,41 @@
+---
+import Layout from "@layouts/Layout.astro";
+import config from "@config";
+import RecordDetail from "@apps/pages/RecordDetail/index.astro";
+import { getTranslations } from '@i18n/server';
+import { getFullRecord } from "@root/src/services";
+import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
+import { getDetailPagePaths } from "@utils/detailPages";
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+const { lang, uuid } = Astro.params;
+
+const record = await getFullRecord('events', uuid)
+const excludes = config.search?.result_filtering?.events?.exclude || []
+
+export const getStaticPaths = async () => await getDetailPagePaths(config, 'events');
+---
+
+<Layout footer t={t} title={record.name}>
+  <RecordDetail
+    excludes={excludes}
+    lang={lang}
+    name={record.name}
+    record={record}
+  >
+    {record.description ? <p class="text-neutral-800 py-6 break-words">{record.description}</p> : null}
+    {['start_date', 'end_date'].map(field => {
+      if (record[field] && !excludes.includes(field)) {
+        return (
+          <div class="py-6">
+            <h2 class="capitalize text-lg font-semibold">{t('start_date')}</h2>
+            <div class="text-neutral-800">
+              <p>{FuzzyDateUtils.getDateView(record[field])}</p>         
+            </div>
+          </div>
+        )
+      }
+    })}
+  </RecordDetail>
+</Layout>

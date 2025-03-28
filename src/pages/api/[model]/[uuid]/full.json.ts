@@ -1,21 +1,13 @@
-import config from '@config';
-import { loaderDict } from '@loaders/api';
 import { modelTypes } from '@loaders/coreDataLoader';
-import { hasContentCollection } from '@root/src/content.config';
+import { getFullRecord } from '@root/src/services';
+import { Models } from '@root/src/utils/types';
 import type { APIRoute, GetStaticPaths } from 'astro';
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 export const GET: APIRoute = async ({ params }) => {
-  let data: any;
-  const { model, slug } = params;
+  const { model, uuid } = params;
 
-  if (hasContentCollection(model)) {
-    // @ts-ignore
-    const entry: any = await getEntry(model, slug);
-    data = entry?.data;
-  } else {
-    data = await loaderDict[model].fetchOne(slug, false);
-  }
+  const data = await getFullRecord(model as Models, uuid);
 
   return new Response(JSON.stringify(data), {
     status: 200,
@@ -35,7 +27,7 @@ export const getStaticPaths = (async () => {
       const locPages = pages.map((page) => ({
         params: {
           // @ts-ignore
-          slug: page.id,
+          uuid: page.id,
           model: model.model,
         },
       }));
