@@ -11,11 +11,11 @@ interface Props {
 }
 
 const PlaceMap = (props: Props) => {
+  const { t } = useTranslations();
+
   if (!props.record.place_geometry?.geometry_json) {
     return null;
   }
-
-  const { t } = useTranslations();
 
   return (
     <TranslationContext.Provider
