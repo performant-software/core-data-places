@@ -16,7 +16,7 @@ export const placeLoader = async (uuid: string, withRelations: boolean = true) =
     return response;
   }
   const relations = await getRelations('places', uuid);
-  return ( { ...response, relatedRecords: relations } );
+  return ( { ...response.place, relatedRecords: relations } );
 }
 
 export default placesLoader;

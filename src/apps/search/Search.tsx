@@ -7,10 +7,11 @@ import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, Router, RuntimeConfig } from '@peripleo/peripleo';
 
 interface Props {
+  lang: string;
   name: string;
 }
 
-const Search = (props: Props) => {
+const Search = ({ lang, name }: Props) => {
   const { t } = useTranslations();
 
   return (
@@ -21,11 +22,11 @@ const Search = (props: Props) => {
       <Router>
         <Peripleo>
           <SearchContextProvider
-            name={props.name}
+            name={name}
           >
             <TypesenseSearch>
               <TranslationContext.Provider
-                value={{ t }}
+                value={{ lang, t }}
               >
                 <SearchLayout />
               </TranslationContext.Provider>

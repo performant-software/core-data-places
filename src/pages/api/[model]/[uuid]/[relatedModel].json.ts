@@ -1,20 +1,17 @@
-import { getRelation } from '@loaders/api/helpers';
 import { modelTypes, relatedModelTypes } from '@loaders/coreDataLoader';
-import { hasContentCollection } from '@root/src/content.config';
+import { getRelatedRecords } from '@root/src/services';
+import { Models } from '@root/src/utils/types';
 import type { APIRoute, GetStaticPaths } from 'astro';
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 export const GET: APIRoute = async ({ params }) => {
-  let data: any = {};
-  const { model, slug, relatedModel } = params;
+  const { model, uuid, relatedModel } = params;
 
-  if (hasContentCollection(model)) {
-    // @ts-ignore
-    const entry: any = await getEntry(model, slug);
-    data[relatedModel] = entry?.data.relatedRecords[relatedModel];
-  } else {
-    data = await getRelation(model, slug, relatedModel);
-  }
+  const data = await getRelatedRecords(
+    model as Models,
+    uuid,
+    relatedModel as Models
+  )
 
   return new Response(JSON.stringify(data), {
     status: 200,
@@ -35,7 +32,7 @@ export const getStaticPaths = (async () => {
         const locPages = pages.map((page) => ({
           params: {
             // @ts-ignore
-            slug: page.id,
+            uuid: page.id,
             model: model.model,
             relatedModel: type,
           },

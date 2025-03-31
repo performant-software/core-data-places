@@ -18,11 +18,6 @@ export const modelTypes = [
     fetchOne: true
   },
   {
-    model: 'media_contents',
-    getRelations: false,
-    fetchOne: false
-  },
-  {
     model: 'organizations',
     getRelations: true,
     fetchOne: true
@@ -49,7 +44,6 @@ export const relatedModelTypes = [
   'instances',
   'items',
   'manifests',
-  'media_contents',
   'organizations',
   'people',
   'places',

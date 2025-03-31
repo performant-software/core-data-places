@@ -16,7 +16,7 @@ import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
 import { getNameView } from '@utils/people';
 import { getCurrentId } from '@utils/router';
 import clsx from 'clsx';
-import React, {
+import {
   useCallback,
   useContext,
   useMemo,
@@ -31,6 +31,7 @@ interface Props {
   exclusions?: string[];
   renderItem?: (item: any) => JSX.Element;
   renderName?: (item: any) => string;
+  resolveDetailPageUrl?: (item: any) => string;
   resolveGeometry?: (item: any) => any;
   service: Base;
 }
@@ -345,6 +346,7 @@ const BasePanel = (props: Props) => {
         onClose={onClose}
         relations={relations()}
         title={name}
+        detailPageUrl={props.resolveDetailPageUrl(item)}
       >
         { item && props.renderItem && props.renderItem(item) }
         { !_.isEmpty(userDefined) && (

@@ -1,13 +1,13 @@
 import { fetchModelData } from '@loaders/api/helpers';
 import { AstroIntegrationLogger } from 'astro';
 
-const mediaContentsLoader = async (
+const manifestsLoader = async (
   options: {
     getRelations?: boolean;
   },
   logger?: AstroIntegrationLogger
 ) => {
-  return fetchModelData({ ...options, model: 'media_contents' }, logger);
+  return fetchModelData({ ...options, model: 'manifests' }, logger);
 };
 
-export default mediaContentsLoader;
+export default manifestsLoader;

@@ -1,0 +1,26 @@
+---
+import Layout from "@layouts/Layout.astro";
+import config from "@config";
+import RecordDetail from "@apps/pages/RecordDetail/index.astro";
+import { getTranslations } from '@i18n/server';
+import { getFullRecord } from "@root/src/services";
+import { getDetailPagePaths } from "@utils/detailPages";
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+const { lang, uuid } = Astro.params;
+
+const record = await getFullRecord('works', uuid)
+const excludes = config.search?.result_filtering?.works?.exclude || []
+
+export const getStaticPaths = async () => await getDetailPagePaths(config, 'works');
+---
+
+<Layout footer t={t} title={record.name}>
+  <RecordDetail
+    excludes={excludes}
+    lang={lang}
+    name={record.name}
+    record={record}
+  />
+</Layout>

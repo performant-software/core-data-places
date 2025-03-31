@@ -16,7 +16,7 @@ export const organizationLoader = async (uuid: string, withRelations: boolean = 
     return response;
   }
   const relations = await getRelations('organizations', uuid);
-  return ( { ...response, relatedRecords: relations } );
+  return ( { ...response.organization, relatedRecords: relations } );
 }
 
 export default organizationsLoader;

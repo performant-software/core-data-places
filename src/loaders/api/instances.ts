@@ -16,7 +16,7 @@ export const instanceLoader = async (uuid: string, withRelations: boolean = true
     return response;
   }
   const relations = await getRelations('instances', uuid);
-  return ( { ...response, relatedRecords: relations } );
+  return ( { ...response.instance, relatedRecords: relations } );
 }
 
 export default instancesLoader;

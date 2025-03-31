@@ -16,7 +16,7 @@ export const workLoader = async (uuid: string, withRelations: boolean = true) =>
     return response;
   }
   const relations = await getRelations('works', uuid);
-  return ( { ...response, relatedRecords: relations } );
+  return ( { ...response.work, relatedRecords: relations } );
 }
 
 export default worksLoader;

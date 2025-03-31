@@ -1,0 +1,37 @@
+---
+import Layout from "@layouts/Layout.astro";
+import config from "@config";
+import RecordDetail from "@apps/pages/RecordDetail/index.astro";
+import { getTranslations } from '@i18n/server';
+import { getFullRecord } from "@root/src/services";
+import PlaceMap from "@apps/pages/RecordDetail/PlaceMap";
+import { getDetailPagePaths } from '@utils/detailPages';
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+const { lang, uuid } = Astro.params;
+
+const record = await getFullRecord('places', uuid)
+const excludes = config.search?.result_filtering?.places?.exclude || []
+
+export const getStaticPaths = async () => await getDetailPagePaths(config, 'places');
+---
+
+<Layout footer t={t} title={record.name}>
+  <RecordDetail
+    excludes={excludes}
+    lang={lang}
+    name={record.name}
+    record={record}
+  >
+    { !excludes.includes('place_geometry') && (
+      <div class="h-[360px] py-6 mx-auto">
+        <PlaceMap
+          client:only="react"
+          lang={lang}
+          record={record}
+        />
+      </div>
+    )}
+  </RecordDetail>
+</Layout>

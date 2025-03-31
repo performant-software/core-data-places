@@ -3,7 +3,7 @@ import EventsService from '@backend/api/events';
 import TranslationContext from '@contexts/TranslationContext';
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
 import { useRuntimeConfig } from '@peripleo/peripleo';
-import React, { useCallback, useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import _ from 'underscore';
 
 interface Props {
@@ -11,8 +11,8 @@ interface Props {
 }
 
 const Event = (props: Props) => {
-  const { t } = useContext(TranslationContext);
   const config = useRuntimeConfig();
+  const { t, lang } = useContext(TranslationContext);
 
   /**
    * Returns the start date label for the passed event.
@@ -45,6 +45,15 @@ const Event = (props: Props) => {
     );
   }, []);
 
+  /**
+   * Resolves the URL for the detail page.
+   */
+  const resolveDetailPageUrl = useCallback((event) => {
+    if (event && config.detail_pages && config.detail_pages.includes('events')) {
+      return `/${lang}/events/${event.uuid}`;
+    }
+  }, [config, lang]);
+
   return (
     <BasePanel
       className={props.className}
@@ -66,6 +75,7 @@ const Event = (props: Props) => {
           )}
         </div>
       )}
+      resolveDetailPageUrl={resolveDetailPageUrl}
       service={EventsService}
     />
   );

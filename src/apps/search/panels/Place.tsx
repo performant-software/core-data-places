@@ -1,10 +1,11 @@
 import BasePanel from '@apps/search/panels/BasePanel';
 import PlacesService from '@backend/api/places';
+import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/client';
 import { CoreData as CoreDataUtils, PlaceLayersSelector } from '@performant-software/core-data';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
-import React from 'react';
+import { useCallback, useContext } from 'react';
 import _ from 'underscore';
 
 type Place = {
@@ -16,10 +17,19 @@ interface Props {
 }
 
 const Place = (props: Props) => {
-  const { t } = useTranslations();
-
   const config = useRuntimeConfig();
+  const { lang, t } = useTranslations();
+
   const exclusions = config.result_filtering?.places?.exclude || [];
+
+  /**
+   * Resolves the URL for the detail page.
+   */
+  const resolveDetailPageUrl = useCallback((place) => {
+    if (place && config.detail_pages && config.detail_pages.includes('places')) {
+      return `/${lang}/places/${place.uuid}`;
+    }
+  }, [config, lang]);
 
   return (
     <BasePanel
@@ -38,6 +48,7 @@ const Place = (props: Props) => {
           )}
         </>
       )}
+      resolveDetailPageUrl={resolveDetailPageUrl}
       resolveGeometry={(place) => CoreDataUtils.toFeatureCollection([place])}
       service={PlacesService}
     />

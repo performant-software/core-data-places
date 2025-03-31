@@ -16,7 +16,7 @@ export const eventLoader = async (uuid: string, withRelations: boolean = true) =
     return response;
   }
   const relations = await getRelations('events', uuid);
-  return ( { ...response, relatedRecords: relations } );
+  return ( { ...response.event, relatedRecords: relations } );
 }
 
 export default eventsLoader;

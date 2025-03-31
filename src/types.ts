@@ -43,6 +43,8 @@ export interface Configuration {
     project_ids: number[]
   };
 
+  detail_pages: Array<string>;
+
   i18n: {
     default_locale: string,
     locales: string[]

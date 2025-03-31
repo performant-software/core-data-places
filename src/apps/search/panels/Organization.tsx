@@ -1,7 +1,8 @@
 import BasePanel from '@apps/search/panels/BasePanel';
 import OrganizationsService from '@backend/api/organizations';
+import TranslationContext from '@contexts/TranslationContext';
 import { useRuntimeConfig } from '@peripleo/peripleo';
-import React from 'react';
+import { useCallback, useContext } from 'react';
 
 interface Props {
   className?: string;
@@ -9,6 +10,16 @@ interface Props {
 
 const Organization = (props: Props) => {
   const config = useRuntimeConfig();
+  const { lang } = useContext(TranslationContext);
+
+  /**
+   * Resolves the URL for the detail page.
+   */
+  const resolveDetailPageUrl = useCallback((organization) => {
+    if (organization && config.detail_pages && config.detail_pages.includes('organizations')) {
+      return `/${lang}/organizations/${organization.uuid}`;
+    }
+  }, [config, lang]);
 
   return (
     <BasePanel
@@ -23,6 +34,7 @@ const Organization = (props: Props) => {
           { organization.description }
         </p>
       )}
+      resolveDetailPageUrl={resolveDetailPageUrl}
       service={OrganizationsService}
     />
   );
