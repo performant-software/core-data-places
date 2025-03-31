@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useTranslations } from '@i18n/client';
+import { useTranslations } from '@i18n/useTranslations';
 import { MediaGallery } from '@performant-software/core-data';
 import _ from 'underscore';
 import ManifestThumbnail from '@apps/search/ManifestThumbnail';

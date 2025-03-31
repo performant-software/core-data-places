@@ -2,8 +2,8 @@
 import Layout from "@layouts/Layout.astro";
 import config from "@config";
 import RecordDetail from "@apps/pages/RecordDetail/index.astro";
-import { getTranslations } from '@i18n/server';
-import { getFullRecord } from "@root/src/services";
+import { getTranslations } from '@backend/i18n';
+import { getFullRecord } from "@services/coreData";
 import PlaceMap from "@apps/pages/RecordDetail/PlaceMap";
 import { getDetailPagePaths } from '@utils/detailPages';
 

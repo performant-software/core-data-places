@@ -1,5 +1,5 @@
 import BasePanel from '@apps/search/panels/BasePanel';
-import PeopleService from '@backend/api/people';
+import PeopleService from '@backend/api/coreData/people';
 import { getNameView } from '@utils/people';
 import { useCallback, useContext } from 'react';
 import { useRuntimeConfig } from '@peripleo/peripleo';

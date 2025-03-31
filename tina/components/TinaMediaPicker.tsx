@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { wrapFieldsWithMeta } from 'tinacms';
-import MediaContentsService from '@backend/api/mediaContents';
+import MediaContentsService from '@backend/api/coreData/mediaContents';
 import TinaModelPicker from './TinaModelPicker';
 
 interface CustomTinaFieldProps {

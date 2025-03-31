@@ -1,4 +1,4 @@
-import EventsService from '@backend/api/events';
+import EventsService from '@backend/api/coreData/events';
 import config from '@config';
 import { FuzzyDate as FuzzyDateUtils, ObjectJs as ObjectUtils } from '@performant-software/shared-components';
 import { useCallback } from 'react';

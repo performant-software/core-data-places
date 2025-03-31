@@ -1,4 +1,4 @@
-import { fetchModelData } from '@loaders/api/helpers';
+import { fetchModelData } from '@loaders/coreData/helpers';
 import { AstroIntegrationLogger } from 'astro';
 
 const manifestsLoader = async (

@@ -4,6 +4,11 @@ import _ from 'underscore';
 
 export const TRANSLATION_PREFIX = 't_';
 
+export const getLanguageFromUrl = (url: string) => {
+  const [, lang] = url.split('/');
+  return lang;
+};
+
 export const getTranslation = (key, translations, values = {}) => {
   let translation = translations[getTranslationKey(key)];
 

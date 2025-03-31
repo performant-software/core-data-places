@@ -1,4 +1,5 @@
-import { coreDataLoader, modelTypes } from '@loaders/coreDataLoader';
+import { coreDataLoader, modelTypes } from '@loaders/coreData/coreDataLoader';
+import { loader } from '@loaders/i18n';
 import { defineCollection } from 'astro:content';
 import _ from 'underscore';
 
@@ -15,6 +16,10 @@ if (isStaticBuild) {
       }),
     });
   }
+
+  cols['i18n'] = defineCollection({
+    loader: loader()
+  });
 }
 
 export const collections = cols;

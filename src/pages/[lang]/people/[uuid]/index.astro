@@ -2,9 +2,9 @@
 import Layout from "@layouts/Layout.astro";
 import config from "@config";
 import RecordDetail from "@apps/pages/RecordDetail/index.astro";
-import { getTranslations } from '@i18n/server';
-import { getFullRecord } from "@root/src/services";
-import { getNameView } from "@root/src/utils/people";
+import { getTranslations } from '@backend/i18n';
+import { getFullRecord } from "@services/coreData";
+import { getNameView } from "@utils/people";
 import { getDetailPagePaths } from "@utils/detailPages";
 
 const { t } = await getTranslations(Astro.currentLocale);

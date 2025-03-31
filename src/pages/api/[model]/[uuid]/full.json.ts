@@ -1,6 +1,6 @@
-import { modelTypes } from '@loaders/coreDataLoader';
-import { getFullRecord } from '@root/src/services';
-import { Models } from '@root/src/utils/types';
+import { modelTypes } from '@loaders/coreData/coreDataLoader';
+import { getFullRecord } from '@services/coreData';
+import { Models } from '@utils/types';
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 

@@ -1,4 +1,4 @@
-import PlacesService from '@backend/api/places';
+import PlacesService from '@backend/api/coreData/places';
 import { Combobox, Switch } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { useEffect, useState } from 'react'

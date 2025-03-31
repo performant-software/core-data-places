@@ -1,9 +1,9 @@
 ---
-import { fetchPaths } from '@backend/tina-server';
+import { getTranslations } from '@backend/i18n';
+import { fetchPaths } from '@backend/tina';
 import Card from '@components/Card.astro';
 import Container from '@components/Container.astro';
-import config from '../../../../public/config.json';
-import { getTranslations } from '@i18n/server';
+import config from '@config';
 import Layout from '@layouts/Layout.astro';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';

@@ -2,8 +2,8 @@
 import Layout from "@layouts/Layout.astro";
 import config from "@config";
 import RecordDetail from "@apps/pages/RecordDetail/index.astro";
-import { getTranslations } from '@i18n/server';
-import { getFullRecord } from "@root/src/services";
+import { getTranslations } from '@backend/i18n';
+import { getFullRecord } from "@services/coreData";
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
 import { getDetailPagePaths } from "@utils/detailPages";
 

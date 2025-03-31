@@ -1,8 +1,8 @@
-import { getRecord } from '@root/src/services';
-import { modelTypes } from '@loaders/coreDataLoader';
+import { modelTypes } from '@loaders/coreData/coreDataLoader';
+import { getRecord } from '@services/coreData';
+import { Models } from '@utils/types';
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
-import { Models } from '@root/src/utils/types';
 
 export const GET: APIRoute = async ({ params }) => {
   const { model, uuid } = params;

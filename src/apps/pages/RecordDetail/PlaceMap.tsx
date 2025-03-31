@@ -3,7 +3,7 @@ import { LocationMarkers } from '@performant-software/geospatial';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import Map from "@components/Map";
 import TranslationContext from '@contexts/TranslationContext';
-import { useTranslations } from '@i18n/client';
+import { useTranslations } from '@i18n/useTranslations';
 
 interface Props {
   record: any;

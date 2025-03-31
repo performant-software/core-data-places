@@ -2,7 +2,7 @@ import IframeEmbed from '@components/IframeEmbed';
 import MediaInsert from '@components/MediaInsert';
 import PlacesMap from '@components/PlacesMap';
 import TranslationContext from '@contexts/TranslationContext';
-import { useTranslations } from '@i18n/client';
+import { useTranslations } from '@i18n/useTranslations';
 import {
   ArrowLeftCircleIcon,
   ArrowRightCircleIcon,

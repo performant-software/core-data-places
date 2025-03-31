@@ -1,12 +1,11 @@
 import BasePanel from '@apps/search/panels/BasePanel';
-import PlacesService from '@backend/api/places';
-import { useTranslations } from '@i18n/client';
+import PlacesService from '@backend/api/coreData/places';
+import TranslationContext from '@contexts/TranslationContext';
 import { CoreData as CoreDataUtils, PlaceLayersSelector } from '@performant-software/core-data';
+import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
 import { useCallback, useContext } from 'react';
 import _ from 'underscore';
-import { useRuntimeConfig } from '@peripleo/peripleo';
-import TranslationContext from '@contexts/TranslationContext';
 
 type Place = {
   place_layers: Array<any>;
@@ -17,9 +16,8 @@ interface Props {
 }
 
 const Place = (props: Props) => {
-  const { t } = useTranslations();
   const config: any = useRuntimeConfig();
-  const { lang } = useContext(TranslationContext);
+  const { lang, t } = useContext(TranslationContext);
 
   const exclusions = config.search.result_filtering && config.search.result_filtering.places ? config.search.result_filtering.places.exclude : [];
 

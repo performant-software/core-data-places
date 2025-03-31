@@ -1,5 +1,5 @@
 import BasePanel from '@apps/search/panels/BasePanel';
-import WorksService from '@backend/api/works';
+import WorksService from '@backend/api/coreData/works';
 import { useCallback, useContext } from 'react';
 import {useRuntimeConfig} from '@peripleo/peripleo';
 import TranslationContext from '@contexts/TranslationContext';

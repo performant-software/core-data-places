@@ -1,5 +1,5 @@
 import config from '@config';
-import { relatedModelTypes } from '@loaders/coreDataLoader';
+import { relatedModelTypes } from '@loaders/coreData/coreDataLoader';
 import { AstroIntegrationLogger } from 'astro';
 
 const path = '/core_data/public/v1/';

@@ -1,7 +1,7 @@
 import SearchLayout from '@apps/search/SearchLayout';
 import TypesenseSearch from '@apps/search/TypesenseSearch';
 import TranslationContext from '@contexts/TranslationContext';
-import { useTranslations } from '@i18n/client';
+import { useTranslations } from '@i18n/useTranslations';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, Router, RuntimeConfig } from '@peripleo/peripleo';
 

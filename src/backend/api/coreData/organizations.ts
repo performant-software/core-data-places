@@ -1,4 +1,4 @@
-import Base from '@backend/api/base';
+import Base from '@backend/api/coreData/base';
 
 /**
  * Class responsible for calling the Astro organizations API.

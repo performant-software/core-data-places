@@ -1,5 +1,5 @@
-import { loaderDict } from '@loaders/api';
-import { getRelation, singularForms } from '@loaders/api/helpers';
+import { loaderDict } from '@loaders/coreData';
+import { getRelation, singularForms } from '@loaders/coreData/helpers';
 import { hasContentCollection } from '@root/src/content.config';
 import { getEntry } from 'astro:content';
 import { Models } from '../utils/types';

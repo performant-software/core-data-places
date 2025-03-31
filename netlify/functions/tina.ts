@@ -1,4 +1,3 @@
-import { fetchI18n } from '@backend/tina-server';
 import { databaseClient } from '@tina/databaseClient';
 import { TinaNodeBackend, LocalBackendAuthProvider } from '@tinacms/datalayer';
 import cookieParser from 'cookie-parser';
@@ -95,14 +94,6 @@ const mediaHandler = createMediaHandler({
     const { isAuthorized } = await authProvider.isAuthorized(req, _res);
     return isAuthorized;
   }
-});
-
-app.get('/api/tina/i18n/:language', async (req, res) => {
-  const { language } = req.params;
-
-  const i18n = await fetchI18n(language);
-
-  res.send(i18n);
 });
 
 app.post('/api/tina/*', async (req, res) => {

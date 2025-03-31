@@ -1,4 +1,4 @@
-import { fetchItemData, fetchModelData, getRelations } from '@loaders/api/helpers';
+import { fetchItemData, fetchModelData, getRelations } from '@loaders/coreData/helpers';
 import { AstroIntegrationLogger } from 'astro';
 
 const organizationsLoader = async (
