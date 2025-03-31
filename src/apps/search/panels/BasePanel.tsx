@@ -152,12 +152,14 @@ const BasePanel = (props: Props) => {
    */
   const item = useMemo(() => {
     let item;
-    if(data) {
+
+    if (data) {
       item = {
         ..._.omit(data[props.name], ...exclude),
         user_defined: _.omit(data[props.name].user_defined, ...exclude)
       }
     }
+
     return item;
   },
   [data, props.name]);
