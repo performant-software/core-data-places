@@ -1,5 +1,7 @@
-import { APIRoute } from 'astro';
+import config from '@config';
 import { getI18n } from '@services/i18n';
+import { APIRoute } from 'astro';
+import _ from 'underscore';
 
 export const GET: APIRoute = async ({ params }) => {
   const { locale } = params;
@@ -13,3 +15,5 @@ export const GET: APIRoute = async ({ params }) => {
     }
   });
 };
+
+export const getStaticPaths = () => _.map(config.i18n.locales, (locale) => ({ params: { locale }}));
