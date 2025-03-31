@@ -1,7 +1,8 @@
+import { useSearchConfig } from '@apps/search/SearchContext';
 import TranslationContext from '@contexts/TranslationContext';
 import { SelectRecordPanel } from '@performant-software/core-data';
 import { useSelection } from '@peripleo/maplibre';
-import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
+import { useNavigate } from '@peripleo/peripleo';
 import { getIcon, getItemLabel } from '@utils/router';
 import { parseFeature } from '@utils/map';
 import clsx from 'clsx';
@@ -18,13 +19,13 @@ interface Props {
 }
 
 const Selection = (props: Props) => {
-  const config = useRuntimeConfig<any>();
+  const config = useSearchConfig();
   const navigate = useNavigate();
   const { t } = useContext(TranslationContext);
 
   const { selection: { selected } = {}, setSelected } = useSelection() || {};
 
-  const { route } = config.search;
+  const { route } = config;
 
   /**
    * Memo-izes an array of selected records.

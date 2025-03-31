@@ -1,19 +1,23 @@
 import EventsService from '@backend/api/events';
 import config from '@config';
 import { FuzzyDate as FuzzyDateUtils, ObjectJs as ObjectUtils } from '@performant-software/shared-components';
-import { useCallback } from 'react';
+import { Visualizations } from '@root/tina/content/visualizations';
+import { useCallback, useState } from 'react';
 import { wrapFieldsWithMeta } from 'tinacms';
 import _ from 'underscore';
 import JsonUpload from './JsonUpload';
 
 const EventsByYearInput = wrapFieldsWithMeta((props) => {
-  const options = config.visualizations?.events_by_year || {};
+  const [error, setError] = useState<string | undefined>();
 
   /**
    * Returns the event IDs for the passed record. If no path is present in the configuration, we'll assume the
    * base record is an event.
+   *
+   * @param record
+   * @param options
    */
-  const getEventIds = useCallback((record) => {
+  const getEventIds = useCallback((record, options) => {
     let ids;
 
     if (options.path) {
@@ -38,8 +42,8 @@ const EventsByYearInput = wrapFieldsWithMeta((props) => {
     let max;
 
     _.each(events, (event) => {
-      const startRange = FuzzyDateUtils.getYearRange(event.start_date);
-      const endRange = FuzzyDateUtils.getYearRange(event.end_date);
+      const startRange = (event.start_date && FuzzyDateUtils.getYearRange(event.start_date)) || [];
+      const endRange = (event.end_date && FuzzyDateUtils.getYearRange(event.end_date)) || [];
 
       const start = Math.min(...[...startRange, ...endRange]);
       const end = Math.max(...[...startRange, ...endRange]);
@@ -76,24 +80,41 @@ const EventsByYearInput = wrapFieldsWithMeta((props) => {
    * Fetches all of the events with the passed IDs.
    */
   const onChange = useCallback((data) => {
-    const records = JSON.parse(data);
+    const { name, data: records } = JSON.parse(data);
 
-    const eventIds = _.chain(records)
-      .map(getEventIds)
-      .flatten()
-      .compact()
-      .value();
+    const searchConfig = _.findWhere(config.search, { name });
+    const options = _.findWhere(searchConfig.visualizations, { name: Visualizations.eventsByYear });
 
-    EventsService
-      .fetchAll({ id: eventIds })
-      .then(onLoad);
+    if (options) {
+      const eventIds = _.chain(records)
+        .map((records) => getEventIds(records, options))
+        .flatten()
+        .compact()
+        .value();
+
+      EventsService
+        .fetchAll({ id: eventIds })
+        .then(onLoad);
+    } else {
+      setError('The uploaded dataset does not support the "Events By Year" visualizations.');
+    }
   }, [getEventIds, onLoad]);
 
   return (
-    <JsonUpload
-      onChange={onChange}
-      value={props.input.value}
-    />
+    <>
+      { error && (
+        <div
+          className='text-lg'
+        >
+          { error }
+        </div>
+      )}
+      <JsonUpload
+        onChange={onChange}
+        value={props.input.value}
+      />
+    </>
+
   );
 });
 

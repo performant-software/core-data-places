@@ -1,7 +1,7 @@
+import { useSearchConfig } from '@apps/search/SearchContext';
 import SearchHighlight from '@apps/search/SearchHighlight';
 import TranslationContext from '@contexts/TranslationContext';
 import Badge from '@components/Badge';
-import { useRuntimeConfig } from '@peripleo/peripleo';
 import { parseFeature } from '@utils/search';
 import { useContext, useMemo } from 'react';
 import _ from 'underscore';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Tooltip = (props: Props) => {
-  const { search: { result_card: config } } = useRuntimeConfig();
+  const { result_card: config } = useSearchConfig();
   const { t } = useContext(TranslationContext);
 
   /**

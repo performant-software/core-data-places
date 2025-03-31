@@ -2,11 +2,13 @@ import { Collection } from '@tinacms/schema-tools';
 import { TinaField } from 'tinacms';
 import i18n from '../../src/i18n/i18n.json';
 import userDefinedFields from '../../src/i18n/userDefinedFields.json';
+import search from '../../src/i18n/search.json';
 import { getTranslationKey } from '../../src/i18n/utils';
 
 const allFields = {
   ...i18n,
-  ...userDefinedFields
+  ...userDefinedFields,
+  ...search
 };
 
 const fields: TinaField<false>[] = Object.keys(allFields).map((key: string) => ({

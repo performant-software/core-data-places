@@ -2,6 +2,8 @@
 import { fetchAbout } from '@backend/tina-server';
 import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
+import NavLink from '@components/NavLink';
+import NavSearch from '@components/NavSearch';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
 import _ from 'underscore';
@@ -14,11 +16,23 @@ const currentUrl = Astro.url;
 const { currentTab, t, tabs, fullscreen } = Astro.props;
 
 const { title } = await fetchAbout();
+
+const TabKeys = {
+  search: 'search',
+  paths: 'paths',
+  posts: 'posts'
+};
+
 ---
 
-<div class='bg-primary flex flex-row justify-center w-full'>
+<div
+  class='bg-primary flex flex-row justify-center w-full'
+>
   <div
-    class={clsx('hidden md:flex flex-row justify-between px-6 py-5 align-middle bg-primary h-[80px] w-full', {'3xl:max-w-screen-3xl': !fullscreen})}
+    class={clsx(
+      'hidden md:flex flex-row justify-between px-6 py-5 align-middle bg-primary h-[80px] w-full',
+      { '3xl:max-w-screen-3xl': !fullscreen }
+    )}
   >
     <a
       class='flex flex-row align-middle gap-6'
@@ -27,7 +41,7 @@ const { title } = await fetchAbout();
       <!-- @ts-ignore -->
       { config.branding?.header_logo && ( 
         // @ts-ignore
-        <img src={config.branding.header_logo} alt={title} class="h-10" />
+        <img src={config.branding.header_logo} alt={title} class='h-10' />
       )}
       <!-- @ts-ignore -->
       { !config.branding?.header_hide_title && ( 
@@ -39,21 +53,23 @@ const { title } = await fetchAbout();
     <div
       class='flex flex-row gap-x-12 pe-10 align-baseline justify-around'
     >
-      { _.map(_.keys(tabs), (key) => (
-        <a
-          class='flex flex-col p-y-4 justify-center'
-          href={tabs[key].url}
-        >
-          <div
-            class={clsx(
-              'flex',
-              'font-light',
-              { 'border-b': key === currentTab }
-            )}
-          >
-            { t(key) }
-          </div>
-        </a>
+      <NavSearch
+        active={TabKeys.search === currentTab}
+        content={t('explore')}
+        items={_.map(config.search, (search) => ({
+          active: Astro.url.pathname.includes(`/search/${search.name}`),
+          name: search.name,
+          label: t(`index_${search.name}`),
+          href: getRelativeLocaleUrl(currentLocale, `/search/${search.name}`)
+        }))}
+        client:only='react'
+      />
+      { _.map(config.content, (key) => (
+        <NavLink
+          active={key === currentTab}
+          content={t(key)}
+          href={getRelativeLocaleUrl(currentLocale, key)}
+        />
       ))}
       <LanguagePicker
         locales={locales}

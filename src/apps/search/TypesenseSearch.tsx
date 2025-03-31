@@ -1,9 +1,9 @@
+import { useSearchConfig } from '@apps/search/SearchContext';
 import {
   FacetStateContextProvider,
   PersistentSearchStateContextProvider,
   Typesense as TypesenseUtils
 } from '@performant-software/core-data';
-import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useMemo, type ReactNode } from 'react';
 import {
   InstantSearch,
@@ -15,12 +15,12 @@ import {
 } from 'react-instantsearch';
 
 const SearchProvider = (props: { children: ReactNode }) => {
-  const config = useRuntimeConfig();
+  const config = useSearchConfig();
   const geoSearch = useGeoSearch();
   const infiniteHits = useInfiniteHits();
   const searchBox = useSearchBox();
 
-  const { typesense }: any = config;
+  const { typesense } = config;
 
   return (
     <PersistentSearchStateContextProvider
@@ -45,15 +45,16 @@ const SearchProvider = (props: { children: ReactNode }) => {
 };
 
 const TypesenseSearch = (props: { children: ReactNode }) => {
-  const config = useRuntimeConfig<any>();
+  const config = useSearchConfig();
+  const { typesense } = config;
 
-  const options = config.typesense.overrides || {};
-  const adapter = useMemo(() => TypesenseUtils.createTypesenseAdapter(config.typesense, options), []);
-  const routing = useMemo(() => TypesenseUtils.createRouting(config.typesense), []);
+  const options = typesense.overrides || {};
+  const adapter = useMemo(() => TypesenseUtils.createTypesenseAdapter(typesense, options), []);
+  const routing = useMemo(() => TypesenseUtils.createRouting(typesense), []);
 
   return (
     <InstantSearch
-      indexName={config.typesense.index_name}
+      indexName={typesense.index_name}
       routing={routing}
       searchClient={adapter.searchClient}
       future={{

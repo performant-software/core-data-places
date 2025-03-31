@@ -1,7 +1,7 @@
 {
-  "map": {
-    "tinaLabel": "Map",
-    "defaultValue": "Map"
+  "explore": {
+    "tinaLabel": "Explore",
+    "defaultValue": "Explore"
   },
   "home": {
     "tinaLabel": "Home",

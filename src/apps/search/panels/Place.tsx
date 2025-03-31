@@ -1,12 +1,12 @@
 import BasePanel from '@apps/search/panels/BasePanel';
 import PlacesService from '@backend/api/places';
+import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/client';
 import { CoreData as CoreDataUtils, PlaceLayersSelector } from '@performant-software/core-data';
+import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
 import { useCallback, useContext } from 'react';
 import _ from 'underscore';
-import { useRuntimeConfig } from '@peripleo/peripleo';
-import TranslationContext from '@contexts/TranslationContext';
 
 type Place = {
   place_layers: Array<any>;
@@ -17,20 +17,19 @@ interface Props {
 }
 
 const Place = (props: Props) => {
-  const { t } = useTranslations();
-  const config: any = useRuntimeConfig();
-  const { lang } = useContext(TranslationContext);
+  const config = useRuntimeConfig();
+  const { lang, t } = useTranslations();
 
-  const exclusions = config.search.result_filtering && config.search.result_filtering.places ? config.search.result_filtering.places.exclude : [];
+  const exclusions = config.result_filtering?.places?.exclude || [];
 
   /**
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((place) => {
     if (place && config.detail_pages && config.detail_pages.includes('places')) {
-      return `/${lang}/places/${place.uuid}`
+      return `/${lang}/places/${place.uuid}`;
     }
-  }, [config, lang])
+  }, [config, lang]);
 
   return (
     <BasePanel
@@ -40,8 +39,7 @@ const Place = (props: Props) => {
       exclusions={exclusions}
       renderItem={(place) => (
         <>
-          { !exclusions.includes('place_layers')
-            && !_.isEmpty(place?.place_layers) && (
+          { !exclusions.includes('place_layers') && !_.isEmpty(place?.place_layers) && (
             <PlaceLayersSelector
               className='place-layers-selector px-0'
               label={t('mapLayers')}

@@ -20,7 +20,7 @@ interface Props {
 }
 
 const Map = (props: Props) => {
-  const config = useRuntimeConfig<any>();
+  const config = useRuntimeConfig();
   const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(config);
 
   const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));

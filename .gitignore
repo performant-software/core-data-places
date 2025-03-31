@@ -28,8 +28,9 @@ node_modules
 # Local Netlify folder
 .netlify
 
-# Ignore user-defined fields
+# Ignore user-defined fields and search JSON
 /src/i18n/userDefinedFields.json
+/src/i18n/search.json
 
 # Temporary directory
 tmp/
