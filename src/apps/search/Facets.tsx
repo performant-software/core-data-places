@@ -3,10 +3,10 @@ import CurrentRefinementsList from '@apps/search/CurrentRefinementsList';
 import GeosearchFilter from '@apps/search/GeosearchFilter';
 import ListFacet from '@apps/search/ListFacet';
 import RangeFacet from '@apps/search/RangeFacet';
+import { useSearchConfig } from '@apps/search/SearchContext';
 import SelectFacet from '@apps/search/SelectFacet';
 import TranslationContext from '@contexts/TranslationContext';
 import { FacetStateContext } from '@performant-software/core-data';
-import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
 import { useCallback, useContext } from 'react';
 import _ from 'underscore';
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const Facets = (props: Props) => {
-  const config = useRuntimeConfig();
+  const config = useSearchConfig();
   const { attributes, rangeAttributes } = useContext(FacetStateContext);
   const { t } = useContext(TranslationContext);
 
@@ -28,7 +28,7 @@ const Facets = (props: Props) => {
    * Returns the `search.facets` value for the passed attribute key populated with the passed default values.
    */
   const getFacetConfiguration = useCallback((name, defaults = {}) => {
-    const { facets = {} } = config.search;
+    const { facets = {} } = config;
     const facet = _.defaults(_.findWhere(facets, { name }) || {}, defaults);
 
     return facet;

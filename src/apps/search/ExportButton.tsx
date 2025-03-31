@@ -1,3 +1,4 @@
+import { useSearchConfig } from '@apps/search/SearchContext';
 import TranslationContext from '@contexts/TranslationContext';
 import { Listbox, Transition } from '@headlessui/react';
 import { Button, Icon, useCachedHits } from '@performant-software/core-data';
@@ -9,6 +10,7 @@ const Options = {
 };
 
 const ExportButton = () => {
+  const { name } = useSearchConfig();
   const hits = useCachedHits();
   const { t } = useContext(TranslationContext);
 
@@ -17,9 +19,9 @@ const ExportButton = () => {
    */
   const onSelection = useCallback((option) => {
     if (option === Options.json) {
-      exportAsJSON(hits);
+      exportAsJSON({ name, data: hits });
     }
-  }, [hits]);
+  }, [hits, name]);
 
   return (
     <Listbox

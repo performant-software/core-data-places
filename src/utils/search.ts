@@ -39,7 +39,7 @@ export const exportAsJSON = (hits, filename = DEFAULT_JSON_FILENAME) => {
  *
  * @param config
  */
-export const getAttributes = (config) => config.search.result_card.attributes?.slice(0, MAX_ATTRIBUTES);
+export const getAttributes = (config) => config.result_card.attributes?.slice(0, MAX_ATTRIBUTES);
 
 /**
  * Returns the facet label for the passed attribute.

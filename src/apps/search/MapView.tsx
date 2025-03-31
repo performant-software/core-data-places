@@ -1,4 +1,4 @@
-import SearchContext from '@apps/search/SearchContext';
+import SearchContext, { useSearchConfig } from '@apps/search/SearchContext';
 import Tooltip from '@apps/search/Tooltip';
 import Map from '@components/Map';
 import {
@@ -9,13 +9,13 @@ import {
   useSearching
 } from '@performant-software/core-data';
 import { HoverTooltip, useSelectionValue } from '@peripleo/maplibre';
-import { useCurrentRoute, useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
-import { parseFeature } from '@utils/map';
-import { useContext, useEffect, useMemo, } from 'react';
+import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
+import { parseFeature } from '@utils/search';
+import { useContext, useEffect, useMemo } from 'react';
 import _ from 'underscore';
 
 const MapView = () => {
-  const config = useRuntimeConfig<any>();
+  const config = useSearchConfig();
   const { isRefinedWithMap } = useGeoSearch();
   const navigate = useNavigate();
   const { selected } = useSelectionValue() || {};
@@ -35,9 +35,11 @@ const MapView = () => {
 
   /**
    * If we're on the place detail page or refining results by the map view port, we'll suppress the auto-bounding box
-   * on the SearchResultsLayer component.
+   * on the SearchResultsLayer component. Also suppress the auto-bounding box if "zoom_to_place" is "false".
   */
- const fitBoundingBox = useMemo(() => !isRefinedWithMap() && route === '/', [route, isRefinedWithMap()]);
+ const fitBoundingBox = useMemo(() => (
+   !isRefinedWithMap() && route === '/' && config.map.zoom_to_place
+  ), [route, isRefinedWithMap()]);
 
   /**
    * Navigates to the selected marker.
@@ -61,7 +63,7 @@ const MapView = () => {
       }
 
       if (id) {
-        navigate(`${config.search.route}/${id}`);
+        navigate(`${config.route}/${id}`);
       } else {
         navigate('/select');
       }

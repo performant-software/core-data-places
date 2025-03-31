@@ -2,19 +2,17 @@ import BasePanel from '@apps/search/panels/BasePanel';
 import EventsService from '@backend/api/coreData/events';
 import TranslationContext from '@contexts/TranslationContext';
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
+import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useCallback, useContext } from 'react';
 import _ from 'underscore';
-import {useRuntimeConfig} from '@peripleo/peripleo';
 
 interface Props {
   className?: string;
 }
 
 const Event = (props: Props) => {
+  const config = useRuntimeConfig();
   const { t, lang } = useContext(TranslationContext);
-  const config: any = useRuntimeConfig();
-
-  const exclusions = config.search.result_filtering && config.search.result_filtering.events ? config.search.result_filtering.events.exclude : [];
 
   /**
    * Returns the start date label for the passed event.
@@ -52,17 +50,16 @@ const Event = (props: Props) => {
    */
   const resolveDetailPageUrl = useCallback((event) => {
     if (event && config.detail_pages && config.detail_pages.includes('events')) {
-      return `/${lang}/events/${event.uuid}`
+      return `/${lang}/events/${event.uuid}`;
     }
-  }, [config, lang])
+  }, [config, lang]);
 
   return (
     <BasePanel
       className={props.className}
       icon='date'
       name='event'
-      exclusions={exclusions}
-      resolveDetailPageUrl={resolveDetailPageUrl}
+      exclusions={config.result_filtering?.events?.exclude}
       renderItem={(event) => (
         <div
           className='text-sm'
@@ -78,6 +75,7 @@ const Event = (props: Props) => {
           )}
         </div>
       )}
+      resolveDetailPageUrl={resolveDetailPageUrl}
       service={EventsService}
     />
   );

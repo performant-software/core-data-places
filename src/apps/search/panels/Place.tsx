@@ -16,19 +16,19 @@ interface Props {
 }
 
 const Place = (props: Props) => {
-  const config: any = useRuntimeConfig();
+  const config = useRuntimeConfig();
   const { lang, t } = useContext(TranslationContext);
 
-  const exclusions = config.search.result_filtering && config.search.result_filtering.places ? config.search.result_filtering.places.exclude : [];
+  const exclusions = config.result_filtering?.places?.exclude || [];
 
   /**
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((place) => {
     if (place && config.detail_pages && config.detail_pages.includes('places')) {
-      return `/${lang}/places/${place.uuid}`
+      return `/${lang}/places/${place.uuid}`;
     }
-  }, [config, lang])
+  }, [config, lang]);
 
   return (
     <BasePanel
@@ -38,8 +38,7 @@ const Place = (props: Props) => {
       exclusions={exclusions}
       renderItem={(place) => (
         <>
-          { !exclusions.includes('place_layers')
-            && !_.isEmpty(place?.place_layers) && (
+          { !exclusions.includes('place_layers') && !_.isEmpty(place?.place_layers) && (
             <PlaceLayersSelector
               className='place-layers-selector px-0'
               label={t('mapLayers')}

@@ -3,8 +3,11 @@ import EventsByYearInput from '@root/tina/components/EventsByYearInput';
 import MapInput from '@root/tina/components/MapInput';
 import TableInput from '@root/tina/components/TableInput';
 import { createDataVisualization } from '@root/tina/utils/content';
+import _ from 'underscore';
 
-const { visualizations = {} } = config;
+export const Visualizations = {
+  eventsByYear: 'events_by_year'
+};
 
 // All projects can embed table and map visualizations by default, as they require no configuration.
 const schema = [
@@ -21,7 +24,11 @@ const schema = [
 ];
 
 // Add "events_by_year" visualization if configured
-if (visualizations.events_by_year) {
+const includeEventsByYear = _.some(config.search, (search) => (
+  !!_.findWhere(search.visualizations, { name: Visualizations.eventsByYear })
+));
+
+if (includeEventsByYear) {
   schema.push(createDataVisualization({
     name: 'events_by_year',
     label: 'Events By Year',

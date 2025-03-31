@@ -1,11 +1,11 @@
 import ExportButton from '@apps/search/ExportButton';
+import { useSearchConfig } from '@apps/search/SearchContext';
 import { useTranslations } from '@i18n/useTranslations';
 import {
   Button,
   ButtonGroup,
   Icon,
   Input,
-  useCachedHits,
   useSearchBox
 } from '@performant-software/core-data';
 import clsx from 'clsx';
@@ -27,10 +27,10 @@ const Views = {
 };
 
 const Header = (props: Props) => {
+  const config = useSearchConfig();
   const { items } = useCurrentRefinements();
   const { query, refine } = useSearchBox();
   const { t } = useTranslations();
-  const hits = useCachedHits();
 
   /**
    * Memo-izes the number of value values applied.
@@ -81,7 +81,7 @@ const Header = (props: Props) => {
           <h2
             className='text-xl font-bold text-nowrap px-3'
           >
-            { t('root') }
+            { t(`index_${config.name}`) || t('root') }
           </h2>
         </div>
         <div

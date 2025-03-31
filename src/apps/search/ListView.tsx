@@ -1,9 +1,9 @@
+import { useSearchConfig } from '@apps/search/SearchContext';
 import SearchHighlight from '@apps/search/SearchHighlight';
 import useHoverable from '@apps/search/useHoverable';
 import useSelectable from '@apps/search/useSelectable';
 import { SearchList, useCachedHits } from '@performant-software/core-data';
-import { ObjectJs as ObjectUtils } from '@performant-software/shared-components';
-import { useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
+import { useNavigate } from '@peripleo/peripleo';
 import { getAttributes, getHitValue } from '@utils/search';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const ListView = (props: Props) => {
-  const config = useRuntimeConfig();
+  const config = useSearchConfig();
   const hits = useCachedHits();
   const navigate = useNavigate();
 
@@ -33,7 +33,7 @@ const ListView = (props: Props) => {
    * Navigates to the selected hit.
    */
   const onRowClick = useCallback((hit) => {
-    navigate(`${config.search.route}/${hit.id}`);
+    navigate(`${config.route}/${hit.id}`);
   }, []);
 
   /**
@@ -41,7 +41,7 @@ const ListView = (props: Props) => {
    */
   const renderItemTitle = useCallback((item) => (
     <SearchHighlight
-      attribute={config.search.result_card.title}
+      attribute={config.result_card.title}
       classNames={{
         highlight: 'text-sm line-clamp-3 leading-6'
       }}
