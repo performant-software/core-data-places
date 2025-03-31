@@ -1,7 +1,7 @@
 import BasePanel from '@apps/search/panels/BasePanel';
 import ItemsService from '@backend/api/coreData/items';
 import { useCallback, useContext } from 'react';
-import {useRuntimeConfig} from '@peripleo/peripleo';
+import { useRuntimeConfig } from '@peripleo/peripleo';
 import TranslationContext from '@contexts/TranslationContext';
 
 interface Props {
