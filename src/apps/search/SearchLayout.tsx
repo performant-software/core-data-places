@@ -48,8 +48,6 @@ const SearchLayout = () => {
   const id = getCurrentId(route);
   const path = getCurrentPath(route);
 
-  console.log(config);
-
   /**
    * Memo-izes the left padding.
    */
@@ -121,7 +119,7 @@ const SearchLayout = () => {
         onViewChange={setView}
         timeline={timeline}
         view={view}
-        tableView={config.search?.table}
+        tableView={!(config.search?.table === false)}
       />
       <div
         className='flex flex-grow h-[calc(100vh-160px)]'
