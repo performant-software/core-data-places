@@ -13,9 +13,9 @@ const { name } = Astro.params;
 export const getStaticPaths = () => {
   const paths = [];
 
-  _.each(config.i18n.locales, (locale) => {
+  _.each(config.i18n.locales, (lang) => {
     _.each(config.search, ({ name }) => {
-      paths.push({ params: { locale, name }});
+      paths.push({ params: { lang, name }});
     });
   });
 
