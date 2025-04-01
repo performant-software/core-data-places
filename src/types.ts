@@ -29,7 +29,6 @@ export interface Configuration {
   branding?: {
     header_hide_title?: boolean,
     footer_hide_logo?: boolean,
-    footer_hide_title?: boolean,
     footer_login?: boolean,
     footer_logo?: string,
     footer_orgs?: Array<{ alt: string, logo: string, url: string }>,
