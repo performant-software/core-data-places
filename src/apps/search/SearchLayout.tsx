@@ -5,6 +5,7 @@ import ListView from '@apps/search/ListView';
 import SearchContext from '@apps/search/SearchContext';
 import SearchRoutes from '@apps/search/SearchRoutes';
 import TableView from '@apps/search/TableView';
+import TimelineView from '@apps/search/TimelineView';
 import { useCurrentRoute } from '@peripleo/peripleo';
 import { getCurrentId, getCurrentPath } from '@utils/router';
 import clsx from 'clsx';
@@ -28,10 +29,17 @@ const PADDING_RIGHT_DETAIL = 380;
 const PADDING_LEFT_FILTERS_TABLE = 620;
 const PADDING_LEFT_TABLE = 380;
 
+/**
+ * timeline padding uses exact widths of other panels, which is
+ * 30px less than the above bounding box padding numbers
+ */
+const TIMELINE_PAD_OFFSET = -30;
+
 const PATH_SELECT = 'select';
 
 const SearchLayout = () => {
   const [filters, setFilters] = useState<boolean>(false);
+  const [timeline, setTimeline] = useState<boolean>(false);
   const [view, setView] = useState<string>(Views.list);
 
   const { searchConfig: config, setBoundingBoxOptions, setControlsClass } = useContext(SearchContext);
@@ -65,12 +73,17 @@ const SearchLayout = () => {
   const rightOpen = useMemo(() => id || path === PATH_SELECT, [id, path]);
 
   /**
+   * Sets the variable to `true` if the timeline or table is open.
+   */
+  const bottomOpen = useMemo(() => view === Views.table || timeline, [view, timeline]);
+
+  /**
    * Updates the bounding box padding based on the layout configuration.
    */
   useEffect(() => setBoundingBoxOptions({
     padding: {
       top: DEFAULT_PADDING_TOP,
-      bottom: view === Views.table ? PADDING_BOTTOM_TABLE : DEFAULT_PADDING_BOTTOM,
+      bottom: bottomOpen ? PADDING_BOTTOM_TABLE : DEFAULT_PADDING_BOTTOM,
       left,
       right: rightOpen ? PADDING_RIGHT_DETAIL: DEFAULT_PADDING_RIGHT
     },
@@ -81,6 +94,15 @@ const SearchLayout = () => {
    * Updates the class to apply to the map controls container.
    */
   useEffect(() => setControlsClass(rightOpen ? 'me-[350px]' : null), [rightOpen]);
+
+  /**
+   * Memo-izes the horizontal padding around the timeline based on the layout configuration.
+   */
+  const timelinePadding = useMemo(() => {
+    const timelineLeft = left + TIMELINE_PAD_OFFSET;
+    const timelineRight = PADDING_RIGHT_DETAIL + TIMELINE_PAD_OFFSET;
+    return rightOpen ? timelineLeft + timelineRight : timelineLeft;
+  }, [left, rightOpen]);
 
   return (
     <>
@@ -93,14 +115,16 @@ const SearchLayout = () => {
         className='h-[64px]'
         filters={filters}
         onFiltersChange={setFilters}
+        onTimelineChange={setTimeline}
         onViewChange={setView}
+        timeline={timeline}
         view={view}
       />
       <div
         className='flex flex-grow h-[calc(100vh-160px)]'
       >
         <div
-          className={clsx('flex', { 'flex-grow': view === Views.list })}
+          className={clsx('flex', { 'flex-grow': view === Views.list && !timeline })}
         >
           <div
             className='flex flex-col'
@@ -128,6 +152,21 @@ const SearchLayout = () => {
           >
             <TableView
               className='h-[350px]'
+            />
+          </div>
+        )}
+        { timeline && (
+          <div
+            className='flex flex-grow flex-shrink max-w-full items-end'
+          >
+            <TimelineView
+              className={clsx(
+                'h-[360px]',
+                'flex',
+                'flex-grow',
+                'flex-shrink',
+              )}
+              padding={timelinePadding}
             />
           </div>
         )}
