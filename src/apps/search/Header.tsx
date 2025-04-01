@@ -1,6 +1,6 @@
 import ExportButton from '@apps/search/ExportButton';
 import { useSearchConfig } from '@apps/search/SearchContext';
-import { useTranslations } from '@i18n/client';
+import { useTranslations } from '@i18n/useTranslations';
 import {
   Button,
   ButtonGroup,

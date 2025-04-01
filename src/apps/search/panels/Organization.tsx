@@ -1,5 +1,5 @@
 import BasePanel from '@apps/search/panels/BasePanel';
-import OrganizationsService from '@backend/api/organizations';
+import OrganizationsService from '@backend/api/coreData/organizations';
 import TranslationContext from '@contexts/TranslationContext';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useCallback, useContext } from 'react';

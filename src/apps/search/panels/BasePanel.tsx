@@ -1,6 +1,6 @@
 import ManifestThumbnail, { type Collection } from '@apps/search/ManifestThumbnail';
 import SearchContext, { useSearchConfig } from '@apps/search/SearchContext';
-import Base from '@backend/api/base';
+import Base from '@backend/api/coreData/base';
 import UserDefinedFieldView from '@components/UserDefinedFieldView';
 import TranslationContext from '@contexts/TranslationContext';
 import {

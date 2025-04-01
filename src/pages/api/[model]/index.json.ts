@@ -1,5 +1,5 @@
-import { loaderDict } from '@loaders/api';
-import { modelTypes } from '@loaders/coreDataLoader';
+import { loaderDict } from '@loaders/coreData';
+import { modelTypes } from '@loaders/coreData/coreDataLoader';
 import { hasContentCollection } from '@root/src/content.config';
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';

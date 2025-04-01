@@ -1,4 +1,4 @@
-import PlacesService from '@backend/api/places';
+import PlacesService from '@backend/api/coreData/places';
 import Map from '@components/Map';
 import { CoreData as CoreDataUtils } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';

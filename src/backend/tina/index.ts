@@ -10,6 +10,11 @@ export const fetchI18n = async (language: string) => {
   return response.data?.i18n;
 };
 
+export const fetchI18ns = async () => {
+  const response = await client.queries.i18nConnection();
+  return response.data?.i18nConnection?.edges?.map((item) => item?.node);
+};
+
 export const fetchPath = async (slug: string) => {
   const response = await client.queries.path({ relativePath: `${slug}.mdx`});
   return response.data?.path;

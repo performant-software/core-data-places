@@ -1,14 +1,14 @@
 ---
 import config from "@config";
-import { getTranslations } from "@i18n/server";
+import { getTranslations } from "@backend/i18n";
 import { Icon } from '@performant-software/core-data/ssr';
 
 interface Props {
-    data: any[];
-    icon?: string;
-    model: string;
-    resolveName: (record: any) => string;
-    uuid: string;
+  data: any[];
+  icon?: string;
+  model: string;
+  resolveName: (record: any) => string;
+  uuid: string;
 }
 
 const { data, icon, model, resolveName, uuid } = Astro.props;

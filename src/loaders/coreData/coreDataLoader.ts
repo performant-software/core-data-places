@@ -1,4 +1,4 @@
-import { loaderDict } from '@loaders/api';
+import { loaderDict } from '@loaders/coreData/index';
 import type { Loader, LoaderContext } from 'astro/loaders';
 
 export const modelTypes = [

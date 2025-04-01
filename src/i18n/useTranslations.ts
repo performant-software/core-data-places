@@ -1,11 +1,6 @@
-import { fetchI18n } from '@backend/tina-client';
-import { buildTranslations, getTranslation } from '@i18n/utils';
+import { fetchI18n } from '@backend/api/i18n';
+import { buildTranslations, getLanguageFromUrl, getTranslation } from '@i18n/utils';
 import { useCallback, useEffect, useState } from 'react';
-
-export const getLanguageFromUrl = (url: string) => {
-  const [, lang] = url.split('/');
-  return lang;
-};
 
 export const useTranslations = () => {
   const [translations, setTranslations] = useState({});
@@ -33,8 +28,5 @@ export const useTranslations = () => {
       .then(onLoad);
   }, []);
 
-  return {
-    t,
-    translations
-  }
+  return { t, translations };
 };

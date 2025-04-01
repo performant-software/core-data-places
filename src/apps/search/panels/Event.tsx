@@ -1,5 +1,5 @@
 import BasePanel from '@apps/search/panels/BasePanel';
-import EventsService from '@backend/api/events';
+import EventsService from '@backend/api/coreData/events';
 import TranslationContext from '@contexts/TranslationContext';
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
 import { useRuntimeConfig } from '@peripleo/peripleo';
