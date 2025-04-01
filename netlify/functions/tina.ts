@@ -107,6 +107,8 @@ app.get('/api/tina/*', async (req, res) => {
 
 app.get('/api/s3/media', mediaHandler);
 
+app.get('/api/s3/media/*', mediaHandler);
+
 app.post('/api/s3/media', mediaHandler);
 
 app.delete('/api/s3/media/:media', (req, res) => {
