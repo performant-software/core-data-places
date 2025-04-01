@@ -119,7 +119,7 @@ const SearchLayout = () => {
         onViewChange={setView}
         timeline={timeline}
         view={view}
-        tableView={!(config.search?.table === false)}
+        tableView={config.search?.table}
       />
       <div
         className='flex flex-grow h-[calc(100vh-160px)]'

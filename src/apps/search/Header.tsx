@@ -30,6 +30,7 @@ const Views = {
 };
 
 const Header = (props: Props) => {
+  const { tableView = true } = props;
   const config = useSearchConfig();
   const { items } = useCurrentRefinements();
   const { query, refine } = useSearchBox();
@@ -99,7 +100,7 @@ const Header = (props: Props) => {
             value={query}
           />
         </div>
-        { props.tableView && <ButtonGroup
+        { tableView && <ButtonGroup
           rounded
         >
           <Button
