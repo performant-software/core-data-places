@@ -10,7 +10,17 @@ const { lang } = Astro.params
 const { t } = await getTranslations(Astro.currentLocale);
 const { name } = Astro.params;
 
-export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
+export const getStaticPaths = () => {
+  const paths = [];
+
+  _.each(config.i18n.locales, (locale) => {
+    _.each(config.search, ({ name }) => {
+      paths.push({ params: { locale, name }});
+    });
+  });
+
+  return paths;
+};
 
 ---
 
