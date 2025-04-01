@@ -17,7 +17,7 @@ const TableInput = wrapFieldsWithMeta((props) => {
 
     const columns = [
       searchConfig.result_card.title,
-      ..._.pluck(config.result_card.attributes?.slice(0, MAX_ATTRIBUTES), 'name')
+      ..._.pluck(searchConfig.result_card.attributes?.slice(0, MAX_ATTRIBUTES), 'name')
     ];
 
     const rows = _.map(records, (record) => {
