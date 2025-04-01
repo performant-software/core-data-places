@@ -107,7 +107,12 @@ app.get('/api/tina/*', async (req, res) => {
 
 app.get('/api/s3/media', mediaHandler);
 
-app.get('/api/s3/media/*', mediaHandler);
+app.get('/api/s3/media/*', (req, res, next) => {
+  if (req.query.key) {
+    req.query.key = process.env.S3_FOLDER + '/' + req.query.key;
+  }
+  next();
+}, mediaHandler);
 
 app.post('/api/s3/media', mediaHandler);
 
