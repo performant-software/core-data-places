@@ -275,6 +275,27 @@ const Settings: Collection = {
         }]
       }]
     }, {
+      name: 'map',
+      label: 'Map',
+      type: 'object',
+      fields: [{
+        name: 'cluster_radius',
+        label: 'Cluster Radius',
+        type: 'number'
+      }, {
+        name: 'geometry',
+        label: 'Geometry',
+        type: 'string'
+      }, {
+        name: 'max_zoom',
+        label: 'Max zoom',
+        type: 'number'
+      }, {
+        name: 'zoom_to_place',
+        label: 'Zoom to place',
+        type: 'boolean'
+      }]
+    }, {
       name: 'result_card',
       label: 'Result card',
       type: 'object',
