@@ -300,6 +300,19 @@ const Settings: Collection = {
         }]
       }]
     }, {
+      name: 'timeline',
+      label: 'Timeline',
+      type: 'object',
+      fields: [{
+        name: 'date_range_facet',
+        label: 'Date range facet',
+        type: 'string'
+      }, {
+        name: 'event_path',
+        label: 'Event path',
+        type: 'string'
+      }]
+    }, {
       name: 'typesense',
       label: 'Typesense',
       type: 'object',
