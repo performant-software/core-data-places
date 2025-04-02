@@ -319,7 +319,11 @@ const Settings: Collection = {
           label: 'Icon',
           type: 'string'
         }]
-      }]
+      }, {
+    name: 'table',
+    label: 'Table results view?',
+    type: 'boolean'
+  }]
     }, {
       name: 'timeline',
       label: 'Timeline',
