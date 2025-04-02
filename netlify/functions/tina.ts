@@ -107,6 +107,9 @@ app.get('/api/tina/*', async (req, res) => {
 
 app.get('/api/s3/media', mediaHandler);
 
+
+// This route is necessary currently as a workaround for a bug in next-tinacms-s3 
+// where the folder is not prepended to the file name when uploading
 app.get('/api/s3/media/*', (req, res, next) => {
   if (req.query.key) {
     req.query.key = process.env.S3_FOLDER + '/' + req.query.key;
