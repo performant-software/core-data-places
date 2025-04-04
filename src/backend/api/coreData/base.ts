@@ -20,7 +20,7 @@ class Base {
    *
    * @param params
    */
-  fetchAll(params: { [key: string]: any }) {
+  fetchAll(params?: { [key: string]: any }) {
     return this.sendRequest(`/api/${this.name}/index.json`, params);
   }
 

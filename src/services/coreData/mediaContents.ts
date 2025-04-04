@@ -9,7 +9,7 @@ import Base from '@services/coreData/base';
  */
 class MediaContents extends Base {
   constructor() {
-    super('mediaContents', 'mediaContent', MediaContentsService);
+    super('media_contents', 'media_content', MediaContentsService);
   }
 
   async getOne(id: string) {

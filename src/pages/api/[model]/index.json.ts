@@ -6,7 +6,7 @@ export const GET: APIRoute = async ({ params }) => {
   const { model } = params;
 
   const service = ServiceFactory.getService(model);
-  const data = service.getAll();
+  const data = await service.getAll();
 
   return buildResponse(data);
 };

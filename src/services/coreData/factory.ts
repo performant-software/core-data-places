@@ -12,7 +12,7 @@ export const ModelNames = {
   events: 'events',
   instances: 'instances',
   items: 'items',
-  mediaContents: 'mediaContents',
+  mediaContents: 'media_contents',
   organizations: 'organizations',
   people: 'people',
   places: 'places',
