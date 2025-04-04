@@ -2,6 +2,10 @@ export interface SearchConfig {
   name: string,
   route: string,
   geosearch?: boolean,
+  timeline?: {
+    date_range_facet: string,
+    event_path?: string,
+  },
 
   facets?: Array<{
     name: string,

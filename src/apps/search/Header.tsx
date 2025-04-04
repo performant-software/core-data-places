@@ -17,8 +17,11 @@ interface Props {
   className?: string;
   filters?: boolean;
   onFiltersChange: (filters: boolean) => void;
+  onTimelineChange: (timeline: boolean) => void;
   onViewChange: (view: string) => void;
+  timeline?: boolean;
   view?: string;
+  tableView?: boolean;
 }
 
 const Views = {
@@ -27,6 +30,7 @@ const Views = {
 };
 
 const Header = (props: Props) => {
+  const { tableView = true } = props;
   const config = useSearchConfig();
   const { items } = useCurrentRefinements();
   const { query, refine } = useSearchBox();
@@ -96,7 +100,7 @@ const Header = (props: Props) => {
             value={query}
           />
         </div>
-        <ButtonGroup
+        { tableView && <ButtonGroup
           rounded
         >
           <Button
@@ -111,6 +115,7 @@ const Header = (props: Props) => {
           </Button>
           <Button
             className='text-smd'
+            disabled={props.timeline}
             primary={props.view === Views.table}
             onClick={() => props.onViewChange(Views.table)}
           >
@@ -119,26 +124,23 @@ const Header = (props: Props) => {
             />
             { t('table') }
           </Button>
-        </ButtonGroup>
-      {/* Commenting out this functionality for now, as we do not have a timeline component. */}
-      {/*  <div*/}
-      {/*    className='flex items-center gap-x-2'*/}
-      {/*  >*/}
-      {/*    <Button*/}
-      {/*      icon*/}
-      {/*    >*/}
-      {/*      <Icon*/}
-      {/*        name='location'*/}
-      {/*      />*/}
-      {/*    </Button>*/}
-      {/*    <Button*/}
-      {/*      icon*/}
-      {/*    >*/}
-      {/*      <Icon*/}
-      {/*        name='timeline'*/}
-      {/*      />*/}
-      {/*    </Button>*/}
-      {/*  </div>*/}
+        </ButtonGroup> }
+        {config.timeline?.date_range_facet && (
+          <div
+            className='flex items-center gap-x-2'
+          >
+            <Button
+              icon
+              disabled={props.view === Views.table}
+              primary={props.timeline}
+              onClick={() => props.onTimelineChange(!props.timeline)}
+            >
+              <Icon
+                name='timeline'
+              />
+            </Button>
+          </div>
+        )}
       </div>
       <ExportButton />
     </div>

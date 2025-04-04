@@ -21,7 +21,8 @@ const MapInput = wrapFieldsWithMeta((props) => {
     const { name, data: records } = JSON.parse(data);
     const searchConfig = _.findWhere(config.search, { name });
 
-    const attributes = _.compact([...ATTRIBUTES, searchConfig.map.geometry || undefined]);
+    const geometryAttribute = _.first(searchConfig.map.geometry.split('.'));
+    const attributes = _.compact([...ATTRIBUTES, geometryAttribute]);
     const value = _.map(records, (record) => _.pick(record, ...attributes));
 
     props.input.onChange(JSON.stringify({ name, data: value }));
