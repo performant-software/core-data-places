@@ -4,10 +4,11 @@ import { defineCollection } from 'astro:content';
 import _ from 'underscore';
 
 const isStaticBuild = !!import.meta.env.STATIC_BUILD;
+const useContentCache = !!import.meta.env.USE_CONTENT_CACHE;
 
 let cols = {};
 
-if (isStaticBuild) {
+if (isStaticBuild && !useContentCache) {
   for (const model of modelTypes) {
     cols[model.model] = defineCollection({
       loader: coreDataLoader({
