@@ -23,7 +23,7 @@ const SearchRoutes = (props: Props) => (
       element={<Instance className={props.className} />}
     />
     <Route
-      match='/item/'
+      match='/items/'
       element={<Item className={props.className} />}
     />
     <Route
