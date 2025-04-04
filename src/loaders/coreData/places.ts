@@ -1,22 +1,9 @@
-import { fetchItemData, fetchModelData, getRelations } from '@loaders/coreData/helpers';
-import { AstroIntegrationLogger } from 'astro';
+import { createLoader } from '@loaders/coreData/helpers';
+import { PlacesService } from '@performant-software/core-data/ssr';
+import { defineCollection } from 'astro:content';
 
-const placesLoader = async (
-  options: {
-    getRelations?: boolean;
-  },
-  logger?: AstroIntegrationLogger
-) => {
-  return fetchModelData({ ...options, model: 'places' }, logger);
+const loader = createLoader('core-data-places-loader', PlacesService, ['places', 'place']);
+
+export default {
+  places: defineCollection({ loader })
 };
-
-export const placeLoader = async (uuid: string, withRelations: boolean = true) => {
-  const response = await fetchItemData('places', uuid);
-  if (!withRelations) {
-    return response;
-  }
-  const relations = await getRelations('places', uuid);
-  return ( { ...response.place, relatedRecords: relations } );
-}
-
-export default placesLoader;

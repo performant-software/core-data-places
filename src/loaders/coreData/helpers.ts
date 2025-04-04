@@ -1,112 +1,57 @@
 import config from '@config';
-import { relatedModelTypes } from '@loaders/coreData/coreDataLoader';
-import { AstroIntegrationLogger } from 'astro';
+import { LoaderContext } from 'astro/dist/content/loaders';
 
-const path = '/core_data/public/v1/';
+export const createLoader = (name, Service, [indexName, showName]) => ({
+  name,
+  load: async (context: LoaderContext): Promise<void> => {
+    const { generateDigest, logger, parseData, store } = context;
 
-export const singularForms = {
-  events: 'event',
-  instances: 'instance',
-  items: 'item',
-  manifests: 'manifest',
-  organizations: 'organization',
-  people: 'person',
-  places: 'place',
-  taxonomies: 'taxonomy',
-  works: 'work'
-};
+    const service = new Service(config.core_data.url, config.core_data.project_ids);
+    const params = { per_page: 0 };
 
-export const createProjectIdString = (ids: string[] | number[]) => {
-  let str = '';
-  if (!ids.length) {
-    return str;
-  }
-  for (let i = 0; i < ids.length; i++) {
-    if (i > 0) {
-      str += '&';
+    const startTime = Date.now();
+    logger.info('Loading item data');
+
+    const listResponse = await service.fetchAll(params);
+    const records = (listResponse && listResponse[indexName]) || [];
+
+    for (const { uuid } of records) {
+      const response = await service.fetchOne(uuid);
+      const record = response[showName];
+
+      const { events } = await service.fetchRelatedEvents(uuid, params);
+      const { instances } = await service.fetchRelatedInstances(uuid, params);
+      const { items } = await service.fetchRelatedItems(uuid, params);
+      const { organizations } = await service.fetchRelatedOrganizations(uuid, params);
+      const { people } = await service.fetchRelatedPeople(uuid, params);
+      const { places } = await service.fetchRelatedPlaces(uuid, params);
+      const { taxonomies } = await service.fetchRelatedTaxonomies(uuid, params);
+      const { works } = await service.fetchRelatedWorks(uuid, params);
+
+      const manifests = await service.fetchRelatedManifests(uuid, params);
+
+      const item = {
+        ...record,
+        relatedRecords: {
+          events,
+          instances,
+          items,
+          manifests,
+          organizations,
+          people,
+          places,
+          taxonomies,
+          works
+        }
+      };
+
+      // Store the item in the Astro content layer
+      const data = await parseData({ id: item.uuid, data: item });
+      const digest = generateDigest(data);
+      store.set({ id: item.uuid, data, digest });
     }
-    str += `project_ids[]=${ids[i]}`;
+
+    const endTime = Date.now();
+    logger.info(`Datastore updated in ${endTime - startTime}ms`);
   }
-  return str;
-};
-
-export async function getRelation(
-  model: string,
-  uuid: string,
-  relatedModel: string
-) {
-  const url = new URL(
-    `${path}${model}/${uuid}/${relatedModel}?${createProjectIdString(config.core_data.project_ids)}&per_page=-1`,
-    config.core_data.url
-  );
-
-  const response = await fetch(url);
-  const json = await response.json();
-
-  return json;
-}
-
-export async function getRelations(
-  model: string,
-  uuid: string,
-  relatedModels: string[] = relatedModelTypes,
-  logger?: AstroIntegrationLogger
-) {
-  const relatedRecords: { [key: string]: any } = {};
-
-  logger && logger.info(`fetching related records for ${singularForms[model]} ${uuid}`);
-
-  for (let i = 0; i < relatedModels.length; i++) {
-    const relatedModel = relatedModels[i];
-    const relations = await getRelation(model, uuid, relatedModel);
-    relatedRecords[relatedModel] = relations[relatedModel] || relations
-  }
-
-  return relatedRecords;
-}
-
-export async function fetchItemData(model: string, uuid: string) {
-  const url = new URL(
-    `${path}${model}/${uuid}?${createProjectIdString(config.core_data.project_ids)}`,
-    config.core_data.url
-  );
-  const response = await fetch(url).then((res) => res.json());
-  return response;
-}
-
-export async function fetchModelData(
-  options: {
-    model: string;
-    getRelations?: boolean;
-  },
-  logger?: AstroIntegrationLogger
-) {
-  const url = new URL(
-    `${path}${options.model}?${createProjectIdString(config.core_data.project_ids)}`,
-    config.core_data.url
-  );
-  let response = await fetch(url).then((res) => res.json());
-  if (response?.list?.pages != 1) {
-    response = await fetch(
-      new URL(
-        `${path}${options.model}?${createProjectIdString(config.core_data.project_ids)}&per_page=${response?.list?.count}`,
-        config.core_data.url
-      )
-    ).then((res) => res.json());
-  }
-  if (!options.getRelations) {
-    return response[options.model];
-  }
-  let fullResponse: any[] = [];
-  for (let j = 0; j < response[options.model].length; j++) {
-    const item = response[options.model][j];
-    const relatedRecords = await getRelations(
-      options.model,
-      item.uuid,
-      relatedModelTypes,
-      logger
-    );
-    fullResponse.push({ ...item, relatedRecords: relatedRecords });
-  }
-  return fullResponse;
-}
+});

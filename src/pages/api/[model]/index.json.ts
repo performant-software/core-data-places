@@ -1,34 +1,23 @@
-import { loaderDict } from '@loaders/coreData';
-import { modelTypes } from '@loaders/coreData/coreDataLoader';
-import { hasContentCollection } from '@root/src/content.config';
+import ServiceFactory from '@services/coreData/factory';
+import { buildResponse } from '@utils/api';
 import type { APIRoute, GetStaticPaths } from 'astro';
-import { getCollection } from 'astro:content';
 
 export const GET: APIRoute = async ({ params }) => {
-  let data;
   const { model } = params;
 
-  if (hasContentCollection(model)) {
-    // @ts-ignore
-    const entries = await getCollection(model);
-    data = entries?.map((entry: any) => entry.data);
-  } else {
-    data = await loaderDict[model].fetchAll();
-  }
+  const service = ServiceFactory.getService(model);
+  const data = service.getAll();
 
-  return new Response(JSON.stringify(data), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  return buildResponse(data);
 };
 
 export const getStaticPaths = (async () => {
   const routes = [];
 
-  for (const model of modelTypes) {
-    routes.push({ params: { model: model.model } });
+  const models = ServiceFactory.getModels();
+
+  for (const model of models) {
+    routes.push({ params: { model } });
   }
 
   return routes;

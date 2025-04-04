@@ -1,22 +1,9 @@
-import { fetchItemData, fetchModelData, getRelations } from '@loaders/coreData/helpers';
-import { AstroIntegrationLogger } from 'astro';
+import { createLoader } from '@loaders/coreData/helpers';
+import { WorksService } from '@performant-software/core-data/ssr';
+import { defineCollection } from 'astro:content';
 
-const worksLoader = async (
-  options: {
-    getRelations?: boolean;
-  },
-  logger?: AstroIntegrationLogger
-) => {
-  return fetchModelData({ ...options, model: 'works' }, logger);
+const loader = createLoader('core-data-works-loader', WorksService, ['works', 'work']);
+
+export default {
+  works: defineCollection({ loader })
 };
-
-export const workLoader = async (uuid: string, withRelations: boolean = true) => {
-  const response = await fetchItemData('works', uuid);
-  if (!withRelations) {
-    return response;
-  }
-  const relations = await getRelations('works', uuid);
-  return ( { ...response.work, relatedRecords: relations } );
-}
-
-export default worksLoader;

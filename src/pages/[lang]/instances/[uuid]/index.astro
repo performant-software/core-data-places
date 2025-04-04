@@ -3,24 +3,25 @@ import Layout from "@layouts/Layout.astro";
 import config from "@config";
 import RecordDetail from "@apps/pages/RecordDetail/index.astro";
 import { getTranslations } from '@backend/i18n';
-import { getFullRecord } from "@services/coreData";
+import { ModelNames } from '@services/coreData/factory';
+import InstancesService from '@services/coreData/instances';
 import { getDetailPagePaths } from "@utils/detailPages";
 
 const { t } = await getTranslations(Astro.currentLocale);
 
 const { lang, uuid } = Astro.params;
 
-const record = await getFullRecord('instances', uuid)
-const excludes = config.search?.result_filtering?.instances?.exclude || []
+const { instance } = await InstancesService.getFull(uuid);
+const excludes = config.search?.result_filtering?.instances?.exclude || [];
 
-export const getStaticPaths = async () => await getDetailPagePaths(config, 'instances');
+export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.instances);
 ---
 
-<Layout footer t={t} title={record.name}>
+<Layout footer t={t} title={instance.name}>
   <RecordDetail
     excludes={excludes}
     lang={lang}
-    name={record.name}
-    record={record}
+    name={instance.name}
+    record={instance}
   />
 </Layout>
