@@ -39,7 +39,7 @@ const SearchRoutes = (props: Props) => (
       element={<Place className={props.className} />}
     />
     <Route
-      match='/work/'
+      match='/works/'
       element={<Work className={props.className} />}
     />
     <Route
