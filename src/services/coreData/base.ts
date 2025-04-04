@@ -61,6 +61,31 @@ class Base {
     } else {
       const response = await this.service.fetchOne(id);
       record = response[this.param];
+
+      const { events } = await this.getRelatedEvents(id);
+      const { instances } = await this.getRelatedInstances(id);
+      const { items } = await this.getRelatedItems(id);
+      const { organizations } = await this.getRelatedOrganizations(id);
+      const { people } = await this.getRelatedPeople(id);
+      const { places } = await this.getRelatedPlaces(id);
+      const { taxonomies } = await this.getRelatedTaxonomies(id);
+      const { works } = await this.getRelatedWorks(id);
+
+      const manifests = await this.getRelatedManifests(id);
+
+      _.extend(record, {
+        relatedRecords: {
+          events,
+          instances,
+          items,
+          manifests,
+          organizations,
+          people,
+          places,
+          taxonomies,
+          works
+        }
+      });
     }
 
     return {
