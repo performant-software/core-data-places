@@ -23,7 +23,7 @@ const TimelineVisualization = (props: DataVisualizationProps) => {
       title={props.title}
     >
       <Timeline
-        events={_.map(events, (e) => ({ ...e, date: new Date(e.date) }))}
+        events={events}
         range={{ min: data.min, max: data.max }}
       />
     </VisualizationContainer>
