@@ -53,7 +53,11 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   return (
     <TinaModelPicker
       {...props}
-      service={PlacesService}
+      onLoad={() => (
+        PlacesService
+          .fetchAll()
+          .then(({ places }) => places)
+      )}
       onSelectItem={(_item) => setSelectedPlace(_item)}
       getValue={(place) => ({
         title: place.name,

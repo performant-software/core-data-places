@@ -3,28 +3,29 @@ import Layout from "@layouts/Layout.astro";
 import config from "@config";
 import RecordDetail from "@apps/pages/RecordDetail/index.astro";
 import { getTranslations } from '@backend/i18n';
-import { getFullRecord } from "@services/coreData";
+import { ModelNames } from '@services/coreData/factory';
+import OrganizationsService from '@services/coreData/organizations';
 import { getDetailPagePaths } from "@utils/detailPages";
 
 const { t } = await getTranslations(Astro.currentLocale);
 
 const { lang, uuid } = Astro.params;
 
-const record = await getFullRecord('organizations', uuid)
-const excludes = config.search?.result_filtering?.organizations?.exclude || []
+const { organization } = await OrganizationsService.getFull(uuid);
+const excludes = config.search?.result_filtering?.organizations?.exclude || [];
 
-export const getStaticPaths = async () => await getDetailPagePaths(config, 'organizations');
+export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.organizations);
 ---
 
-<Layout footer t={t} title={record.name}>
+<Layout footer t={t} title={organization.name}>
   <RecordDetail
     excludes={excludes}
     lang={lang}
-    name={record.name}
-    record={record}
+    name={organization.name}
+    record={organization}
   >
-    {record.description && !excludes.includes('description')
-      ? <p class="text-neutral-800 py-6 break-words">{record.description}</p>
+    {organization.description && !excludes.includes('description')
+      ? <p class="text-neutral-800 py-6 break-words">{organization.description}</p>
       : null}
   </RecordDetail>
 </Layout>

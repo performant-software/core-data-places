@@ -1,28 +1,18 @@
-import { coreDataLoader, modelTypes } from '@loaders/coreData/coreDataLoader';
-import { loader } from '@loaders/i18n';
-import { defineCollection } from 'astro:content';
+import coreDataLoader from '@loaders/coreData';
+import i18nLoader from '@loaders/i18n';
 import _ from 'underscore';
 
 const isStaticBuild = !!import.meta.env.STATIC_BUILD;
 const useContentCache = !!import.meta.env.USE_CONTENT_CACHE;
 
-let cols = {};
+const collections = {};
 
 if (isStaticBuild && !useContentCache) {
-  for (const model of modelTypes) {
-    cols[model.model] = defineCollection({
-      loader: coreDataLoader({
-        model: model.model,
-        getRelations: model.getRelations
-      }),
-    });
-  }
-
-  cols['i18n'] = defineCollection({
-    loader: loader()
-  });
+  _.extend(collections, { ...coreDataLoader, ...i18nLoader });
 }
 
-export const collections = cols;
+export {
+  collections
+};
 
-export const hasContentCollection = (name) => isStaticBuild && _.has(cols, name);
+export const hasContentCollection = (name) => isStaticBuild && _.has(collections, name);

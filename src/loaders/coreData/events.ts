@@ -1,22 +1,9 @@
-import { fetchItemData, fetchModelData, getRelations } from '@loaders/coreData/helpers';
-import { AstroIntegrationLogger } from 'astro';
+import { createLoader } from '@loaders/coreData/helpers';
+import { EventsService } from '@performant-software/core-data/ssr';
+import { defineCollection } from 'astro:content';
 
-const eventsLoader = async (
-  options: {
-    getRelations?: boolean;
-  },
-  logger?: AstroIntegrationLogger
-) => {
-  return fetchModelData({ ...options, model: 'events' }, logger);
+const loader = createLoader('core-data-events-loader', EventsService, ['events', 'event']);
+
+export default {
+  events: defineCollection({ loader })
 };
-
-export const eventLoader = async (uuid: string, withRelations: boolean = true) => {
-  const response = await fetchItemData('events', uuid);
-  if (!withRelations) {
-    return response;
-  }
-  const relations = await getRelations('events', uuid);
-  return ( { ...response.event, relatedRecords: relations } );
-}
-
-export default eventsLoader;

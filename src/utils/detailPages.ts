@@ -1,5 +1,6 @@
-import { getCollection } from "astro:content";
-import { Models } from "./types";
+import ServiceFactory from '@services/coreData/factory';
+
+type Models = 'events' | 'instances' | 'items' | 'mediaContents' | 'organizations' | 'people' | 'places' | 'works';
 
 export const getDetailPagePaths = (async (config: any, model: Models) => {
   let routes = [];
@@ -8,16 +9,12 @@ export const getDetailPagePaths = (async (config: any, model: Models) => {
     return routes;
   }
 
-  const pages = await getCollection(model);
-  if (pages && pages.length) {
-    for (const lang of config.i18n.locales) {
-      const locPages = pages.map((page) => ({
-        params: {
-          lang: lang,
-          uuid: page.id
-        },
-      }));
-      routes = [...routes, ...locPages];
+  const service = ServiceFactory.getService(model);
+  const records = await service.getAll();
+
+  for (const lang of config.i18n.locales) {
+    for (const { uuid } of records[model]) {
+      routes.push({ params: { lang, uuid } });
     }
   }
 

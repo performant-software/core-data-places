@@ -15,7 +15,11 @@ const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   return (
     <TinaModelPicker
       {...props}
-      service={MediaContentsService}
+      onLoad={() => (
+        MediaContentsService
+          .fetchAll()
+          .then((response) => response.media_contents)
+      )}
       onSelectItem={(_item) => setSelectedMedia(_item)}
       getValue={(media) => ({
         title: media.name,
