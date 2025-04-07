@@ -10,7 +10,7 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
     const params = { per_page: 0 };
 
     const startTime = Date.now();
-    logger.info('Loading item data');
+    logger.info('Loading data');
 
     const listResponse = await service.fetchAll(params);
     const records = (listResponse && listResponse[indexName]) || [];
