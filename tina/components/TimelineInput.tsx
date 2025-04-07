@@ -34,7 +34,7 @@ const TimelineInput = wrapFieldsWithMeta((props) => {
     let max;
 
     _.each(records, (record) => {
-      const eventData = ObjectUtils.getNestedValue(record, searchConfig.timeline.event_path);
+      const eventData = ObjectUtils.getNestedValue(record, searchConfig.timeline.event_path || '');
 
       _.each(eventData, (event) => {
         events.push(event);
