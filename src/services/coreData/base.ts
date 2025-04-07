@@ -36,7 +36,8 @@ class Base {
     let records;
 
     if (this.useCache()) {
-      records = await getCollection(this.name);
+      const entries = await getCollection(this.name);
+      records = _.map(entries, (entry) => entry.data);
     } else {
       const response = await this.service.fetchAll(REQUEST_PARAMS);
       records = response[this.name];

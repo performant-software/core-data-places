@@ -34,8 +34,9 @@ export const buildStaticPaths = async (params: Params = {}) => {
     const service = ServiceFactory.getService(model);
     const records = await service.getAll();
 
-    _.each(records[model], ({ id }) => {
-      routes.push({ params: { model, uuid: id, ...params } });
+    _.each(records[model], ({ uuid }) => {
+      console.log(model, uuid);
+      routes.push({ params: { model, uuid, ...params } });
     });
   }
 

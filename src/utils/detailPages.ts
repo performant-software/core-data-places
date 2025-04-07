@@ -13,8 +13,8 @@ export const getDetailPagePaths = (async (config: any, model: Models) => {
   const records = await service.getAll();
 
   for (const lang of config.i18n.locales) {
-    for (const record of records[model]) {
-      routes.push({ params: { lang, uuid: record.id } });
+    for (const { uuid } of records[model]) {
+      routes.push({ params: { lang, uuid } });
     }
   }
 
