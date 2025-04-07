@@ -4,6 +4,7 @@ import TranslationContext from '@contexts/TranslationContext';
 import Badge from '@components/Badge';
 import { parseFeature } from '@utils/search';
 import { useContext, useMemo } from 'react';
+import { useCachedHits } from '@performant-software/core-data';
 import _ from 'underscore';
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 const Tooltip = (props: Props) => {
   const { result_card: config } = useSearchConfig();
   const { t } = useContext(TranslationContext);
+  const cachedHits = useCachedHits();
 
   /**
    * Memo-izes the passed hovered items by parsing "properties" attribute of each.
@@ -40,7 +42,10 @@ const Tooltip = (props: Props) => {
   /**
    * Memo-izes the first hit value. This record will be used as the display.
    */
-  const hit = useMemo(() => _.first(hits), [hits]);
+  const hit = useMemo(() => {
+    const first = _.first(hits);
+    return _.find(cachedHits, item => item.id === first.id)
+  }, [hits]);
 
   /**
    * Memo-izes the count of records.

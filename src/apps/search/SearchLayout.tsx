@@ -88,7 +88,7 @@ const SearchLayout = () => {
       right: rightOpen ? PADDING_RIGHT_DETAIL: DEFAULT_PADDING_RIGHT
     },
     maxZoom: config.map.max_zoom || DEFAULT_MAX_ZOOM
-  }), [config, left, rightOpen, view]);
+  }), [config, left, rightOpen, bottomOpen]);
 
   /**
    * Updates the class to apply to the map controls container.
