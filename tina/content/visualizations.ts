@@ -2,6 +2,7 @@ import config from '@config';
 import EventsByYearInput from '@root/tina/components/EventsByYearInput';
 import MapInput from '@root/tina/components/MapInput';
 import TableInput from '@root/tina/components/TableInput';
+import TimelineInput from '@root/tina/components/TimelineInput';
 import { createDataVisualization } from '@root/tina/utils/content';
 import _ from 'underscore';
 
@@ -22,6 +23,16 @@ const schema = [
     component: MapInput
   })
 ];
+
+// Add "timeline" visualization if the site includes a timeline
+const includeTimeline = _.some(config.search, (search) => !!search.timeline);
+if (includeTimeline) {
+  schema.push(createDataVisualization({
+    name: 'timeline',
+    label: 'Timeline',
+    component: TimelineInput
+  }));
+}
 
 // Add "events_by_year" visualization if configured
 const includeEventsByYear = _.some(config.search, (search) => (
