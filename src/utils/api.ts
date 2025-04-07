@@ -35,7 +35,6 @@ export const buildStaticPaths = async (params: Params = {}) => {
     const records = await service.getAll();
 
     _.each(records[model], ({ uuid }) => {
-      console.log(model, uuid);
       routes.push({ params: { model, uuid, ...params } });
     });
   }
