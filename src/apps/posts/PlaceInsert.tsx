@@ -14,10 +14,10 @@ const PlaceInsert = (props: any) => {
 
   return (
     <div
-      className='flex flex-col gap-y-2 place-content-center mx-auto my-8 w-full'
+      className='flex flex-col gap-y-2 my-8 w-full'
     >
       <div
-        className='h-[400px] w-3/4 flex mx-auto'
+        className='h-[400px] w-3/4 flex w-full'
       >
         <PlacesMap
           layer={props.place?.layer}
