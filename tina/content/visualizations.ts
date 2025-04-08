@@ -25,7 +25,7 @@ const schema = [
 ];
 
 // Add "timeline" visualization if the site includes a timeline
-const includeTimeline = _.some(config.search, (search) => _.has(search.timeline, 'event_path'));
+const includeTimeline = _.some(config.search, (search) => !_.isEmpty(search.timeline));
 if (includeTimeline) {
   schema.push(createDataVisualization({
     name: 'timeline',
