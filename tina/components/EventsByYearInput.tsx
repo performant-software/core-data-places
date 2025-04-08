@@ -1,6 +1,5 @@
-import EventsService from '@backend/api/coreData/events';
 import config from '@config';
-import { FuzzyDate as FuzzyDateUtils, ObjectJs as ObjectUtils } from '@performant-software/shared-components';
+import { ObjectJs as ObjectUtils } from '@performant-software/shared-components';
 import { Visualizations } from '@root/tina/content/visualizations';
 import { useCallback, useState } from 'react';
 import { wrapFieldsWithMeta } from 'tinacms';
@@ -11,69 +10,22 @@ const EventsByYearInput = wrapFieldsWithMeta((props) => {
   const [error, setError] = useState<string | undefined>();
 
   /**
-   * Returns the event IDs for the passed record. If no path is present in the configuration, we'll assume the
+   * Returns the events for the passed record. If no path is present in the configuration, we'll assume the
    * base record is an event.
    *
    * @param record
    * @param options
    */
-  const getEventIds = useCallback((record, options) => {
-    let ids;
+  const getEvents = useCallback((record, options) => {
+    let events;
 
     if (options.path) {
-      const events = ObjectUtils.getNestedValue(record, options.path);
-      ids = _.pluck(events, 'uuid');
+      events = ObjectUtils.getNestedValue(record, options.path);
     } else {
-      ids = [record.uuid];
+      events = [record];
     }
 
-    return ids;
-  }, []);
-
-  /**
-   * Formats the data for the passed set of events. The array will contain a list of objects
-   * with "year" and "count" properties.
-   */
-  const onLoad = useCallback((events) => {
-    const data = {};
-
-    // Create a map of years to counts of events. Also track the min and max year values.
-    let min;
-    let max;
-
-    _.each(events, (event) => {
-      const startRange = (event.start_date && FuzzyDateUtils.getYearRange(event.start_date)) || [];
-      const endRange = (event.end_date && FuzzyDateUtils.getYearRange(event.end_date)) || [];
-
-      const start = Math.min(...[...startRange, ...endRange]);
-      const end = Math.max(...[...startRange, ...endRange]);
-
-      for (let i = start; i <= end; i += 1) {
-        const count = data[`${i}`] || 0;
-        data[`${i}`] = count + 1;
-      }
-
-      if (!min || start < min) {
-        min = start;
-      }
-
-      if (!max || end > max) {
-        max = end;
-      }
-    });
-
-    // Format the data as an array of objects with "year" and "count" properties.
-    const formattedData = [];
-
-    for (let i = min; i <= max; i += 1) {
-      formattedData.push({
-        year: i,
-        count: data[`${i}`] || 0
-      });
-    }
-
-    // Set the formatted data on the input
-    props.input.onChange(JSON.stringify(formattedData));
+    return events;
   }, []);
 
   /**
@@ -86,19 +38,53 @@ const EventsByYearInput = wrapFieldsWithMeta((props) => {
     const options = _.findWhere(searchConfig.visualizations, { name: Visualizations.eventsByYear });
 
     if (options) {
-      const eventIds = _.chain(records)
-        .map((records) => getEventIds(records, options))
+      const events = _.chain(records)
+        .map((records) => getEvents(records, options))
         .flatten()
         .compact()
         .value();
 
-      EventsService
-        .fetchAll({ id: eventIds })
-        .then(onLoad);
+      // Create a map of years to counts of events. Also track the min and max year values.
+      let min;
+      let max;
+
+      const result = {};
+
+      _.each(events, (event) => {
+        const start = Math.min(...(event.start_year || event.end_year));
+        const end = Math.max(...(event.start_year || event.end_year));
+
+        for (let i = start; i <= end; i += 1) {
+          const count = result[`${i}`] || 0;
+          result[`${i}`] = count + 1;
+        }
+
+        if (!min || start < min) {
+          min = start;
+        }
+
+        if (!max || end > max) {
+          max = end;
+        }
+      });
+
+      // Format the data as an array of objects with "year" and "count" properties.
+      const formattedData = [];
+
+      for (let i = min; i <= max; i += 1) {
+        formattedData.push({
+          year: i,
+          count: result[`${i}`] || 0
+        });
+      }
+
+      // Set the formatted data on the input
+      props.input.onChange(JSON.stringify(formattedData));
+
     } else {
       setError('The uploaded dataset does not support the "Events By Year" visualizations.');
     }
-  }, [getEventIds, onLoad]);
+  }, [getEvents]);
 
   return (
     <>
@@ -114,7 +100,6 @@ const EventsByYearInput = wrapFieldsWithMeta((props) => {
         value={props.input.value}
       />
     </>
-
   );
 });
 
