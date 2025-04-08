@@ -26,7 +26,9 @@ export interface SearchConfig {
       icon?: string
     }>,
     title: string
-  }
+  },
+
+  table?: boolean
 }
 
 export interface Configuration {

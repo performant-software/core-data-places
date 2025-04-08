@@ -8,6 +8,7 @@ import { Peripleo, RuntimeConfig } from '@peripleo/peripleo';
 import EventsByYear from '@visualizations/EventsByYear';
 import Map from '@visualizations/Map';
 import Table from '@visualizations/Table';
+import Timeline from '@visualizations/Timeline';
 import { TinaMarkdown, TinaMarkdownContent } from 'tinacms/dist/rich-text';
 
 interface PostContentProps {
@@ -45,7 +46,8 @@ const PostContent = (props: PostContentProps) => {
                   iframe: IframeEmbed,
                   map: Map,
                   media: MediaInsert,
-                  place: PlaceInsert
+                  place: PlaceInsert,
+                  timeline: Timeline
                 }}
                 content={props.content}
               />
