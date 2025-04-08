@@ -26,7 +26,7 @@ const Table = (props: DataVisualizationProps) => {
       title={props.title}
     >
       <div
-        className='bg-white not-prose p-3'
+        className='bg-white not-prose py-3'
       >
         <SearchResultsTable
           columns={columns}
