@@ -1,5 +1,6 @@
 import config from '@config';
 import { FuzzyDate as FuzzyDateUtils, ObjectJs as ObjectUtils } from '@performant-software/shared-components';
+import { includeTimeline } from '@root/tina/utils/visualizations';
 import { useCallback, useState } from 'react';
 import { wrapFieldsWithMeta } from 'tinacms';
 import _ from 'underscore';
@@ -72,7 +73,7 @@ const TimelineInput = wrapFieldsWithMeta((props) => {
     const { name, data: records } = JSON.parse(data);
     const searchConfig = _.findWhere(config.search, { name });
 
-    if (_.has(searchConfig.timeline, 'event_path')) {
+    if (includeTimeline(searchConfig)) {
       setInputValue(records, searchConfig);
     } else {
       setError('The uploaded dataset does not support the "Timeline" visualization.');

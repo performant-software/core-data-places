@@ -4,6 +4,7 @@ import MapInput from '@root/tina/components/MapInput';
 import TableInput from '@root/tina/components/TableInput';
 import TimelineInput from '@root/tina/components/TimelineInput';
 import { createDataVisualization } from '@root/tina/utils/content';
+import { includeTimeline } from '@root/tina/utils/visualizations';
 import _ from 'underscore';
 
 export const Visualizations = {
@@ -25,8 +26,8 @@ const schema = [
 ];
 
 // Add "timeline" visualization if the site includes a timeline
-const includeTimeline = _.some(config.search, (search) => !_.isEmpty(search.timeline));
-if (includeTimeline) {
+const includeTimelineVisualization = _.some(config.search, (search) => includeTimeline(search));
+if (includeTimelineVisualization) {
   schema.push(createDataVisualization({
     name: 'timeline',
     label: 'Timeline',
