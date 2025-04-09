@@ -1,6 +1,7 @@
 import TinaMediaPicker from '../components/TinaMediaPicker';
 import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection } from '@tinacms/schema-tools';
+import Visualizations from '@root/tina/content/visualizations';
 
 const Posts: Collection = {
   name: 'post',
@@ -123,7 +124,7 @@ const Posts: Collection = {
         },
         {
           name: "media",
-          label: "Core Data Media",
+          label: "Media",
           fields: [
             {
               name: "media",
@@ -161,7 +162,8 @@ const Posts: Collection = {
               }
             }
           ]
-        }
+        },
+        ...Visualizations
       ]
     },
   ],

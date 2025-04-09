@@ -1,4 +1,3 @@
-import { fetchI18n } from '@backend/tina-server';
 import { databaseClient } from '@tina/databaseClient';
 import { TinaNodeBackend, LocalBackendAuthProvider } from '@tinacms/datalayer';
 import cookieParser from 'cookie-parser';
@@ -16,7 +15,8 @@ dotenv.config();
 
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
@@ -96,14 +96,6 @@ const mediaHandler = createMediaHandler({
   }
 });
 
-app.get('/api/tina/i18n/:language', async (req, res) => {
-  const { language } = req.params;
-
-  const i18n = await fetchI18n(language);
-
-  res.send(i18n);
-});
-
 app.post('/api/tina/*', async (req, res) => {
   tinaBackend(req, res);
 });
@@ -114,6 +106,16 @@ app.get('/api/tina/*', async (req, res) => {
 
 
 app.get('/api/s3/media', mediaHandler);
+
+
+// This route is necessary currently as a workaround for a bug in next-tinacms-s3 
+// where the folder is not prepended to the file name when uploading
+app.get('/api/s3/media/*', (req, res, next) => {
+  if (req.query.key) {
+    req.query.key = process.env.S3_FOLDER + '/' + req.query.key;
+  }
+  next();
+}, mediaHandler);
 
 app.post('/api/s3/media', mediaHandler);
 

@@ -1,7 +1,7 @@
 {
-  "map": {
-    "tinaLabel": "Map",
-    "defaultValue": "Map"
+  "explore": {
+    "tinaLabel": "Explore",
+    "defaultValue": "Explore"
   },
   "home": {
     "tinaLabel": "Home",
@@ -262,5 +262,17 @@
   "work": {
     "tinaLabel": "Work",
     "defaultValue": "Work"
+  },
+  "export": {
+    "tinaLabel": "Export",
+    "defaultValue": "Export"
+  },
+  "json": {
+    "tinaLabel": "JSON",
+    "defaultValue": "JSON"
+  },
+  "multipleLocations": {
+    "tinaLabel": "Multiple locations",
+    "defaultValue": "Multiple locations"
   }
 }

@@ -14,11 +14,12 @@ const init = async () => {
     console.info('Using remote config.json');
   } else if (fs.existsSync('./public/config.dev.json')) {
     fs.copyFileSync('./public/config.dev.json', './public/config.json');
-
     console.info('Copying config.dev.json');
   } else {
     console.info('Using local config.json');
   }
+
+  console.info('');
 };
 
 dotenv.config();

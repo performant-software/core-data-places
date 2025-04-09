@@ -1,0 +1,40 @@
+---
+import config from "@config";
+import { getTranslations } from "@backend/i18n";
+import { Icon } from '@performant-software/core-data/ssr';
+
+interface Props {
+  data: any[];
+  icon?: string;
+  model: string;
+  resolveName: (record: any) => string;
+  uuid: string;
+}
+
+const { data, icon, model, resolveName, uuid } = Astro.props;
+
+const lang = Astro.currentLocale;
+const { t } = await getTranslations(lang);
+---
+{(Object.keys(data)).length > 0 && (
+  <div class="py-6">
+    <h2 class="capitalize text-lg font-semibold mb-2">{t(uuid)} ({data.length})</h2>
+    <ul class="grid grid-cols-3 items-start justify-start">
+      {data.map((record) =>
+        config.detail_pages.includes(model) ? (
+          <a href={`/${lang}/${model}/${record.uuid}`}>
+            <li class="flex gap-2 my-2 text-wrap items-center font-semibold">
+              <Icon name={icon} size={16} />
+              {resolveName(record)}
+            </li>
+          </a>
+        ) : (
+          <li class="flex gap-2 my-2 text-wrap items-center font-semibold">
+            <Icon name={icon} size={16} />
+            {resolveName(record)}
+          </li>
+        )
+      )}
+    </ul>
+  </div>
+)}

@@ -1,11 +1,17 @@
+import { SearchContextProvider } from '@apps/search/SearchContext';
 import SearchLayout from '@apps/search/SearchLayout';
-import TranslationContext from '@apps/search/TranslationContext';
 import TypesenseSearch from '@apps/search/TypesenseSearch';
-import { useTranslations } from '@i18n/client';
+import TranslationContext from '@contexts/TranslationContext';
+import { useTranslations } from '@i18n/useTranslations';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, Router, RuntimeConfig } from '@peripleo/peripleo';
 
-const Search = () => {
+interface Props {
+  lang: string;
+  name: string;
+}
+
+const Search = ({ lang, name }: Props) => {
   const { t } = useTranslations();
 
   return (
@@ -15,13 +21,17 @@ const Search = () => {
     >
       <Router>
         <Peripleo>
-          <TypesenseSearch>
-            <TranslationContext.Provider
-              value={{ t }}
-            >
-              <SearchLayout />
-            </TranslationContext.Provider>
-          </TypesenseSearch>
+          <SearchContextProvider
+            name={name}
+          >
+            <TypesenseSearch>
+              <TranslationContext.Provider
+                value={{ lang, t }}
+              >
+                <SearchLayout />
+              </TranslationContext.Provider>
+            </TypesenseSearch>
+          </SearchContextProvider>
         </Peripleo>
       </Router>
     </RuntimeConfig>

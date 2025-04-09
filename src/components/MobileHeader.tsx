@@ -1,6 +1,6 @@
 import { Disclosure, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useTranslations } from '@i18n/client';
+import { useTranslations } from '@i18n/useTranslations';
 import _ from 'underscore';
 import LanguagePicker from './LanguagePicker';
 

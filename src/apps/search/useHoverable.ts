@@ -1,14 +1,16 @@
+import { useSearchConfig } from '@apps/search/SearchContext';
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
-import { useHoverState, useRuntimeConfig } from '@peripleo/peripleo';
-import { parseFeature } from '@utils/search';
+import { useHoverState } from '@peripleo/maplibre';
+import { parseFeature } from '@utils/map';
 import { useCallback, useMemo } from 'react';
 import _ from 'underscore';
 
 const useHoverable = () => {
-  const config = useRuntimeConfig();
+  const config = useSearchConfig();
   const { hover, setHover } = useHoverState();
 
-  const feature = useMemo(() => parseFeature(hover), [hover]);
+  const { hovered } = hover || {};
+  const feature = useMemo(() => parseFeature(hovered), [hovered]);
 
   /**
    * Returns true if the passed hit is currently hovered.
@@ -18,19 +20,23 @@ const useHoverable = () => {
   /**
    * Sets the hover element on the state.
    */
-  const onHoverChange = useCallback((nextHover: any) => (
-    setHover((prevHover) => (prevHover?.id === nextHover?.id ? prevHover : nextHover))
-  ), []);
+  const onHoverChange = useCallback((nextHovers: any) => {
+    if (nextHovers) {
+      setHover({ hovered: nextHovers });
+    } else {
+      setHover(undefined);
+    }
+  }, [setHover]);
 
   /**
    * Callback fired when the pointer enters the container.
    */
   const onPointEnter = useCallback((hit) => {
-    if (onHoverChange && hover?.id !== hit.id) {
+    if (onHoverChange && hovered?.id !== hit.id) {
       const { features } = TypesenseUtils.toFeatureCollection([hit], config.map.geometry);
-      onHoverChange(_.first(features));
+      onHoverChange(features);
     }
-  }, [hover, onHoverChange]);
+  }, [config, hovered, onHoverChange]);
 
   /**
    * Callback fired when the pointer leaves the container.
@@ -39,7 +45,7 @@ const useHoverable = () => {
     if (onHoverChange) {
       onHoverChange(undefined);
     }
-  }, [hover, onHoverChange]);
+  }, [onHoverChange]);
 
   return {
     isHover,

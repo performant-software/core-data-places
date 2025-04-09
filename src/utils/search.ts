@@ -1,4 +1,45 @@
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
+import _ from 'underscore';
+
+const DEFAULT_JSON_FILENAME = 'search-results.json';
+const MAX_ATTRIBUTES = 4;
+
+/**
+ * Adds a link to the document and downloads the passed file.
+ *
+ * @param file
+ */
+export const download = (file) => {
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(file);
+
+  link.href = url;
+  link.download = file.name;
+  document.body.appendChild(link);
+  link.click();
+
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+};
+
+/**
+ * Exports the passed set of hits as a JSON file.
+ *
+ * @param hits
+ * @param filename
+ */
+export const exportAsJSON = (hits, filename = DEFAULT_JSON_FILENAME) => {
+  const file = new File([JSON.stringify(hits)], filename, { type: 'application/json' });
+
+  download(file);
+};
+
+/**
+ * Returns the attributes from the "result_card" prop.
+ *
+ * @param config
+ */
+export const getAttributes = (config) => config.result_card.attributes?.slice(0, MAX_ATTRIBUTES);
 
 /**
  * Returns the facet label for the passed attribute.
@@ -35,6 +76,14 @@ export const getColumnLabel = (flattenedAtt, t) => {
 };
 
 /**
+ * Returns the value at the passed path for the passed hit.
+ *
+ * @param hit
+ * @param path
+ */
+export const getHitValue = (hit, path) => _.get(hit, path.split('.'));
+
+/**
  * Tests whether a string contains only integers.
  *
  * @param str
@@ -60,41 +109,21 @@ export const parseFeature = (feature) => {
    * @see https://github.com/maplibre/maplibre-gl-js/issues/1325
    */
   for (const key in feature.properties) {
+    let value = properties[key] = feature.properties[key];
+
     if (typeof feature.properties[key] === 'string') {
       try {
-        properties[key] = JSON.parse(feature.properties[key] as string);
+        value = JSON.parse(feature.properties[key] as string);
       } catch (e) {
-        properties[key] = feature.properties[key];
+        value = feature.properties[key];
       }
     }
+
+    properties[key] = value;
   }
 
   return {
     ...feature,
     properties
   };
-}
-
-/**
- * Given a flattened attribute name, e.g. myobj.hits.0.name,
- * extracts the value from the passed hit.
- */
-export const renderFlattenedAttribute = (hit, flattenedAtt) => {
-  const path = flattenedAtt.split('.');
-
-  let val = hit;
-
-  for (const pathItem of path) {
-    if (!val) {
-      return val;
-    }
-
-    if (isNumber(pathItem)) {
-      val = val[parseInt(pathItem)];
-    } else {
-      val = val[pathItem];
-    }
-  }
-
-  return val;
 };

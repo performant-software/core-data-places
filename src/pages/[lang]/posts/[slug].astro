@@ -1,9 +1,9 @@
 ---
 import PostContent from '@apps/posts/PostContent';
-import { fetchPost, fetchPosts } from '@backend/tina-server';
+import { getTranslations } from '@backend/i18n';
+import { fetchPost, fetchPosts } from '@backend/tina';
 import Container from '@components/Container.astro';
-import config from '../../../../public/config.json';
-import { getTranslations } from '@i18n/server';
+import config from '@config';
 import Layout from '@layouts/Layout.astro';
 import _ from 'underscore';
 
@@ -39,12 +39,12 @@ export const getStaticPaths = async () => {
   title={slug}
 >
   <Container
-    className='pb-16'
+    className='pb-16 w-full'
   >
     <PostContent
       content={post?.body}
       title={post?.title}
-      client:only
+      client:only='react'
     />
   </Container>
 </Layout>

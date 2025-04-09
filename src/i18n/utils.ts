@@ -1,8 +1,14 @@
 import i18n from './i18n.json';
+import search from './search.json';
 import userDefinedFields from './userDefinedFields.json';
 import _ from 'underscore';
 
 export const TRANSLATION_PREFIX = 't_';
+
+export const getLanguageFromUrl = (url: string) => {
+  const [, lang] = url.split('/');
+  return lang;
+};
 
 export const getTranslation = (key, translations, values = {}) => {
   let translation = translations[getTranslationKey(key)];
@@ -43,7 +49,8 @@ export const buildTranslations = (data: TranslationData) => {
 
   const defaults = {
     ...i18n,
-    ...userDefinedFields
+    ...userDefinedFields,
+    ...search
   };
 
   Object.keys(defaults).forEach((key) => {

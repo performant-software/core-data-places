@@ -1,23 +1,32 @@
 import BasePanel from '@apps/search/panels/BasePanel';
-import OrganizationsService from '@backend/api/organizations';
-import React from 'react';
-import {useRuntimeConfig} from '@peripleo/peripleo';
+import OrganizationsService from '@backend/api/coreData/organizations';
+import TranslationContext from '@contexts/TranslationContext';
+import { useRuntimeConfig } from '@peripleo/peripleo';
+import { useCallback, useContext } from 'react';
 
 interface Props {
   className?: string;
 }
 
 const Organization = (props: Props) => {
-  const config: any = useRuntimeConfig();
+  const config = useRuntimeConfig();
+  const { lang } = useContext(TranslationContext);
 
-  const exclusions = config.search.result_filtering && config.search.result_filtering.organizations ? config.search.result_filtering.organizations.exclude : [];
+  /**
+   * Resolves the URL for the detail page.
+   */
+  const resolveDetailPageUrl = useCallback((organization) => {
+    if (organization && config.detail_pages && config.detail_pages.includes('organizations')) {
+      return `/${lang}/organizations/${organization.uuid}`;
+    }
+  }, [config, lang]);
 
   return (
     <BasePanel
       className={props.className}
       icon='participants'
       name='organization'
-      exclusions={exclusions}
+      exclusions={config.result_filtering?.organizations?.exclude}
       renderItem={(organization) => (
         <p
           className='text-sm'
@@ -25,6 +34,7 @@ const Organization = (props: Props) => {
           { organization.description }
         </p>
       )}
+      resolveDetailPageUrl={resolveDetailPageUrl}
       service={OrganizationsService}
     />
   );

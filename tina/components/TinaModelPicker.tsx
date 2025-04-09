@@ -3,14 +3,14 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { ReactNode, useEffect, useState } from 'react'
 
 interface TinaModelPickerProps {
-    field: any,
-    input: any,
-    meta: any,
-    getValue: (_item: any) => any,
-    service: any,
-    children: ReactNode,
-    onSelectItem?: (_item: any) => void,
-    message?: string
+  field: any,
+  input: any,
+  meta: any,
+  getValue: (_item: any) => any,
+  children: ReactNode,
+  onLoad: () => Promise<any>,
+  onSelectItem?: (_item: any) => void,
+  message?: string
 }
 const TinaModelPicker = (props: TinaModelPickerProps) => {
   const [items, setItems] = useState<any>();
@@ -33,12 +33,13 @@ const TinaModelPicker = (props: TinaModelPickerProps) => {
 
   useEffect(() => {
     setLoading(true);
-    props.service
-      .fetchAll({ per_page: 0 })
+
+    props
+      .onLoad()
       .then((data) => {
         setItems(data);
         setLoading(false);
-      })
+      });
   }, []);
 
   useEffect(() => {

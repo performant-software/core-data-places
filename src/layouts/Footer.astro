@@ -1,5 +1,5 @@
 ---
-import { fetchAbout } from '@backend/tina-server';
+import { fetchAbout } from '@backend/tina';
 import Container from '@components/Container.astro';
 import config from '@config';
 import { Button } from '@performant-software/core-data';
@@ -34,20 +34,24 @@ const { title } = await fetchAbout();
         </div>
       )
     }
-    <div class='flex flex-col items-center w-full'>
+    <div
+      class='flex flex-col items-center w-full'
+    >
       <div
         class='flex flex-col md:flex-row gap-6 align-middle justify-center items-center pt-8'
       >
         {
           !config.branding?.footer_hide_title ? (
             <>
-              { 
-                config.branding?.footer_logo && <img           
+              { config.branding?.footer_logo && (
+                <img
                   class='h-14'
                   src={config.branding?.footer_logo}
                 />
-              }
-              <h1 class='font-serif font-semibold text-[32px] text-center'>
+              )}
+              <h1
+                class='font-serif font-semibold text-[32px] text-center'
+              >
                 { title }
               </h1>
             </>
@@ -71,34 +75,36 @@ const { title } = await fetchAbout();
         ))}
       </div>
     </div>
-    {
-      config.branding?.footer_login && (
-        <div
-          class='flex flex-row justify-center gap-8 py-8 w-full'
+    { config.branding?.footer_login && !import.meta.env.STATIC_BUILD && (
+      <div
+        class='flex flex-row justify-center gap-8 py-8 w-full'
+      >
+        <a
+          href={config.core_data.url}
+          target='_blank'
         >
-          <a
-            href={config.core_data.url}
-            target='_blank'
+          <Button
+            className='bg-white text-black hover:text-inherit'
+            rounded
+            client:only
           >
-            <Button client:only rounded className='bg-white text-black hover:text-inherit'>
-              <p>
-                { t('coreDataLogin') }
-              </p>
-            </Button>
-          </a>
-          <a
-            href='/admin/index.html'
-            target='_blank'
+            { t('coreDataLogin') }
+          </Button>
+        </a>
+        <a
+          href='/admin/index.html'
+          target='_blank'
+        >
+          <Button
+            className='bg-white text-black hover:text-inherit'
+            rounded
+            client:only
           >
-            <Button client:only rounded className='bg-white text-black hover:text-inherit'>
-              <p>
-                { t('tinaLogin') }
-              </p>
-            </Button>
-          </a>
-        </div>
-      )
-    }
+            { t('tinaLogin') }
+          </Button>
+        </a>
+      </div>
+    )}
     <p
       class='text-center text-sm py-8 w-full'
     >

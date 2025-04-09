@@ -5,10 +5,16 @@ import ListView from '@apps/search/ListView';
 import SearchContext from '@apps/search/SearchContext';
 import SearchRoutes from '@apps/search/SearchRoutes';
 import TableView from '@apps/search/TableView';
-import { useCurrentRoute, useRuntimeConfig } from '@peripleo/peripleo';
-import { getCurrentId } from '@utils/router';
+import TimelineView from '@apps/search/TimelineView';
+import { useCurrentRoute } from '@peripleo/peripleo';
+import { getCurrentId, getCurrentPath } from '@utils/router';
 import clsx from 'clsx';
-import { useMemo, useState } from 'react';
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 
 const DEFAULT_MAX_ZOOM = 14;
 
@@ -23,13 +29,24 @@ const PADDING_RIGHT_DETAIL = 380;
 const PADDING_LEFT_FILTERS_TABLE = 620;
 const PADDING_LEFT_TABLE = 380;
 
+/**
+ * timeline padding uses exact widths of other panels, which is
+ * 30px less than the above bounding box padding numbers
+ */
+const TIMELINE_PAD_OFFSET = -30;
+
+const PATH_SELECT = 'select';
+
 const SearchLayout = () => {
   const [filters, setFilters] = useState<boolean>(false);
+  const [timeline, setTimeline] = useState<boolean>(false);
   const [view, setView] = useState<string>(Views.list);
 
-  const config = useRuntimeConfig();
+  const { searchConfig: config, setBoundingBoxOptions, setControlsClass } = useContext(SearchContext);
+
   const route = useCurrentRoute();
   const id = getCurrentId(route);
+  const path = getCurrentPath(route);
 
   /**
    * Memo-izes the left padding.
@@ -51,30 +68,44 @@ const SearchLayout = () => {
   }, [filters, view]);
 
   /**
-   * Updates the bounding box padding based on the layout configuration.
+   * Sets the variable to `true` if the record detail panel or selection panel is open.
    */
-  const boundingBoxOptions = useMemo(() => ({
-    padding: {
-      top: DEFAULT_PADDING_TOP,
-      bottom: view === Views.table ? PADDING_BOTTOM_TABLE : DEFAULT_PADDING_BOTTOM,
-      left,
-      right: id ? PADDING_RIGHT_DETAIL: DEFAULT_PADDING_RIGHT
-    },
-    maxZoom: config.map.max_zoom || DEFAULT_MAX_ZOOM
-  }), [config, left, id, view]);
+  const rightOpen = useMemo(() => id || path === PATH_SELECT, [id, path]);
 
   /**
-   * Memo-izes the class to apply to the map controls container.
+   * Sets the variable to `true` if the timeline or table is open.
    */
-  const controlsClass = useMemo(() => id ? 'me-[350px]' : null, [id]);
+  const bottomOpen = useMemo(() => view === Views.table || timeline, [view, timeline]);
+
+  /**
+   * Updates the bounding box padding based on the layout configuration.
+   */
+  useEffect(() => setBoundingBoxOptions({
+    padding: {
+      top: DEFAULT_PADDING_TOP,
+      bottom: bottomOpen ? PADDING_BOTTOM_TABLE : DEFAULT_PADDING_BOTTOM,
+      left,
+      right: rightOpen ? PADDING_RIGHT_DETAIL: DEFAULT_PADDING_RIGHT
+    },
+    maxZoom: config.map.max_zoom || DEFAULT_MAX_ZOOM
+  }), [config, left, rightOpen, bottomOpen]);
+
+  /**
+   * Updates the class to apply to the map controls container.
+   */
+  useEffect(() => setControlsClass(rightOpen ? 'me-[350px]' : null), [rightOpen]);
+
+  /**
+   * Memo-izes the horizontal padding around the timeline based on the layout configuration.
+   */
+  const timelinePadding = useMemo(() => {
+    const timelineLeft = left + TIMELINE_PAD_OFFSET;
+    const timelineRight = PADDING_RIGHT_DETAIL + TIMELINE_PAD_OFFSET;
+    return rightOpen ? timelineLeft + timelineRight : timelineLeft;
+  }, [left, rightOpen]);
 
   return (
-    <SearchContext.Provider
-      value={{
-        boundingBoxOptions,
-        controlsClass
-      }}
-    >
+    <>
       <div
         className='absolute left-0 right-0 bottom-0 top-[64px]'
       >
@@ -84,14 +115,17 @@ const SearchLayout = () => {
         className='h-[64px]'
         filters={filters}
         onFiltersChange={setFilters}
+        onTimelineChange={setTimeline}
         onViewChange={setView}
+        timeline={timeline}
         view={view}
+        tableView={config.table}
       />
       <div
         className='flex flex-grow h-[calc(100vh-160px)]'
       >
         <div
-          className={clsx('flex', { 'flex-grow': view === Views.list })}
+          className={clsx('flex', { 'flex-grow': view === Views.list && !timeline })}
         >
           <div
             className='flex flex-col'
@@ -122,6 +156,21 @@ const SearchLayout = () => {
             />
           </div>
         )}
+        { timeline && (
+          <div
+            className='flex flex-grow flex-shrink max-w-full items-end'
+          >
+            <TimelineView
+              className={clsx(
+                'h-[360px]',
+                'flex',
+                'flex-grow',
+                'flex-shrink',
+              )}
+              padding={timelinePadding}
+            />
+          </div>
+        )}
         <div
           className='flex justify-end'
         >
@@ -130,7 +179,7 @@ const SearchLayout = () => {
           />
         </div>
       </div>
-    </SearchContext.Provider>
+    </>
   );
 };
 

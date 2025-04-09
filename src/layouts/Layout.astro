@@ -1,6 +1,6 @@
 ---
 import config from '@config';
-import { getLanguageFromUrl } from '@i18n/client';
+import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
 import '@peripleo/peripleo/default-theme';
@@ -17,17 +17,18 @@ const blackText = config.branding?.primary && useBlackText(config.branding.prima
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
+const { footer, fullscreen, name, title, t, tab } = Astro.props;
 
 const TabKeys = {
-  map: 'map',
+  search: 'search',
   paths: 'paths',
   posts: 'posts'
 };
 
 const Tabs = {
-  map: {
-    key: TabKeys.map,
-    url: getRelativeLocaleUrl(currentLocale, TabKeys.map)
+  search: {
+    key: TabKeys.search,
+    url: getRelativeLocaleUrl(currentLocale, `${TabKeys.search}/${name}`)
   },
   paths: {
     key: TabKeys.paths,
@@ -39,10 +40,8 @@ const Tabs = {
   }
 };
 
-const { footer, fullscreen, title, t, tab } = Astro.props;
-
 const tabs = {
-  map: Tabs.map,
+  search: Tabs.search,
   ..._.pick(Tabs, config.content)
 };
 ---
@@ -72,7 +71,7 @@ const tabs = {
       tabs={tabs}
     />
     <main
-      class='w-full relative bg-neutral-light flex flex-col flex-grow'
+      class='w-full relative bg-white flex flex-col flex-grow'
     >
       <slot />
     </main>

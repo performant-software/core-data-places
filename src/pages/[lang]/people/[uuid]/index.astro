@@ -1,0 +1,32 @@
+---
+import Layout from "@layouts/Layout.astro";
+import config from "@config";
+import RecordDetail from "@apps/pages/RecordDetail/index.astro";
+import { getTranslations } from '@backend/i18n';
+import { ModelNames } from '@services/coreData/factory';
+import PeopleService from '@services/coreData/people';
+import { getNameView } from "@utils/people";
+import { getDetailPagePaths } from "@utils/detailPages";
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+const { lang, uuid } = Astro.params;
+
+const { person } = await PeopleService.getFull(uuid);
+const excludes = config.search?.result_filtering?.people?.exclude || [];
+
+export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.people);
+---
+
+<Layout footer t={t} title={person.name}>
+  <RecordDetail
+    excludes={excludes}
+    lang={lang}
+    name={getNameView(person)}
+    record={person}
+  >
+    {person.biography && !excludes.includes('biography')
+      ? <p class="text-neutral-800 py-6 break-words">{person.biography}</p>
+      : null}
+  </RecordDetail>
+</Layout>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { wrapFieldsWithMeta } from 'tinacms';
-import MediaContentsService from '@backend/api/mediaContents';
+import MediaContentsService from '@backend/api/coreData/mediaContents';
 import TinaModelPicker from './TinaModelPicker';
 
 interface CustomTinaFieldProps {
@@ -15,7 +15,11 @@ const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   return (
     <TinaModelPicker
       {...props}
-      service={MediaContentsService}
+      onLoad={() => (
+        MediaContentsService
+          .fetchAll()
+          .then((response) => response.media_contents)
+      )}
       onSelectItem={(_item) => setSelectedMedia(_item)}
       getValue={(media) => ({
         title: media.name,

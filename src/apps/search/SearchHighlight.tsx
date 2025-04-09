@@ -1,48 +1,33 @@
-import TranslationContext from '@apps/search/TranslationContext';
-import Badge from '@components/Badge';
-import { useContext, useMemo } from 'react';
+import { Icon } from '@performant-software/core-data';
+import clsx from 'clsx';
 import { Highlight } from 'react-instantsearch';
 
 interface Props {
   attribute: string;
   badge?: boolean;
-  className?: string;
+  classNames?: {
+    root?: string,
+    highlight?: string
+  };
   hit: any;
+  icon?: string;
 }
 
-const SearchHighlight = (props: Props) => {
-  const { t } = useContext(TranslationContext);
-
-  /**
-   * Memo-izes the count if the passed attribute is a nested array.
-   */
-  const count = useMemo(() => {
-    let value = 0;
-
-    const path = props.attribute.split('.');
-    if (path && path.length > 1 && props.hit) {
-      const [relationshipId, ] = path;
-      value = props.hit[relationshipId]?.length - 1;
-    }
-
-    return value;
-  }, [props.attribute, props.hit]);
-
-  return (
-    <div>
-      <Highlight
-        attribute={props.attribute}
-        className={props.className}
-        hit={props.hit}
+const SearchHighlight = (props: Props) => (
+  <div
+    className={clsx('flex gap-x-0.5 items-center', props.classNames?.root)}
+  >
+    { props.icon && (
+      <Icon
+        name={props.icon}
       />
-      { props.badge && count > 1 && (
-        <Badge
-          className='ms-2 text-white bg-primary'
-          content={t('plusCount', { count })}
-        />
-      )}
-    </div>
-  );
-};
+    )}
+    <Highlight
+      attribute={props.attribute}
+      className={props.classNames?.highlight}
+      hit={props.hit}
+    />
+  </div>
+);
 
 export default SearchHighlight;

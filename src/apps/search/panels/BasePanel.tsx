@@ -1,8 +1,8 @@
 import ManifestThumbnail, { type Collection } from '@apps/search/ManifestThumbnail';
-import SearchContext from '@apps/search/SearchContext';
-import Base from '@backend/api/base';
-import TranslationContext from '@apps/search/TranslationContext';
+import SearchContext, { useSearchConfig } from '@apps/search/SearchContext';
+import Base from '@backend/api/coreData/base';
 import UserDefinedFieldView from '@components/UserDefinedFieldView';
+import TranslationContext from '@contexts/TranslationContext';
 import {
   CoreData as CoreDataUtils,
   KeyValueList,
@@ -11,11 +11,12 @@ import {
   useLoader
 } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
-import { useCurrentRoute, useNavigate, useRuntimeConfig } from '@peripleo/peripleo';
+import { useSelection } from '@peripleo/maplibre';
+import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
 import { getNameView } from '@utils/people';
 import { getCurrentId } from '@utils/router';
 import clsx from 'clsx';
-import React, {
+import {
   useCallback,
   useContext,
   useMemo,
@@ -30,6 +31,7 @@ interface Props {
   exclusions?: string[];
   renderItem?: (item: any) => JSX.Element;
   renderName?: (item: any) => string;
+  resolveDetailPageUrl?: (item: any) => string;
   resolveGeometry?: (item: any) => any;
   service: Base;
 }
@@ -40,8 +42,9 @@ const BasePanel = (props: Props) => {
   const [manifestUrl, setManifestUrl] = useState<string | undefined>();
 
   const navigate = useNavigate();
-  const config = useRuntimeConfig();
+  const config = useSearchConfig();
   const { t } = useContext(TranslationContext);
+  const { setSelected } = useSelection();
 
   const route = useCurrentRoute();
   const id = getCurrentId(route);
@@ -79,6 +82,11 @@ const BasePanel = (props: Props) => {
 
     return transformedRecords;
   }, [t]);
+
+  const onClose = useCallback(() => {
+    navigate('/');
+    setSelected(null);
+  }, []);
 
   /**
    * Loads the base record from the Core Data API.
@@ -145,12 +153,14 @@ const BasePanel = (props: Props) => {
    */
   const item = useMemo(() => {
     let item;
-    if(data) {
+
+    if (data) {
       item = {
         ..._.omit(data[props.name], ...exclude),
         user_defined: _.omit(data[props.name].user_defined, ...exclude)
       }
     }
+
     return item;
   },
   [data, props.name]);
@@ -333,9 +343,10 @@ const BasePanel = (props: Props) => {
           taxonomiesLoading ||
           worksLoading
         }
-        onClose={() => navigate('/')}
+        onClose={onClose}
         relations={relations()}
         title={name}
+        detailPageUrl={props.resolveDetailPageUrl(item)}
       >
         { item && props.renderItem && props.renderItem(item) }
         { !_.isEmpty(userDefined) && (
@@ -348,8 +359,8 @@ const BasePanel = (props: Props) => {
         <LocationMarkers
           animate
           boundingBoxOptions={boundingBoxOptions}
-          fitBoundingBox={_.get(config.map, 'zoom_to_place', true)}
           data={geometry}
+          fitBoundingBox={_.get(config.map, 'zoom_to_place', true)}
           layerId='current'
         />
       )}

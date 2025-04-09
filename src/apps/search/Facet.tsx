@@ -1,4 +1,4 @@
-import TranslationContext from '@apps/search/TranslationContext';
+import TranslationContext from '@contexts/TranslationContext';
 import { Icon } from '@performant-software/core-data';
 import { getFacetLabel } from '@utils/search';
 import clsx from 'clsx';
