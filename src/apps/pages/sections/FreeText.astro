@@ -1,0 +1,14 @@
+---
+import Container from '../../../components/Container.astro';
+import { TinaMarkdown } from 'tinacms/dist/rich-text';
+
+const { content } = Astro.props;
+---
+
+<Container
+  className='w-full'
+>
+  <TinaMarkdown
+    content={content}
+  />
+</Container>

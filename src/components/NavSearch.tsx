@@ -61,6 +61,7 @@ const NavSearch = (props) => {
                 'py-2 hover:bg-neutral-100 outline-none',
                 { 'bg-neutral-100': item.active }
               )}
+              key={index}
             >
               <a
                 key={item.name}

@@ -1,13 +1,13 @@
 ---
-import { fetchAbout } from '@backend/tina';
+import { fetchAbout, fetchPages } from '@backend/tina';
 import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
 import NavLink from '@components/NavLink';
 import NavSearch from '@components/NavSearch';
+import config from '@config';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
 import _ from 'underscore';
-import config from '@config';
 
 const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
@@ -22,6 +22,8 @@ const TabKeys = {
   paths: 'paths',
   posts: 'posts'
 };
+
+const pages = await fetchPages();
 
 ---
 
@@ -69,6 +71,13 @@ const TabKeys = {
           active={key === currentTab}
           content={t(key)}
           href={getRelativeLocaleUrl(currentLocale, key)}
+        />
+      ))}
+      { _.map(pages, (page) => (
+        <NavLink
+          active={page._sys.filename === currentTab}
+          content={page.title}
+          href={getRelativeLocaleUrl(currentLocale, `/pages/${page._sys.filename}`)}
         />
       ))}
       <LanguagePicker

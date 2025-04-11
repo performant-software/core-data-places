@@ -15,10 +15,20 @@ export const fetchI18ns = async () => {
   return response.data?.i18nConnection?.edges?.map((item) => item?.node);
 };
 
+export const fetchPage = async (slug: string) => {
+  const response = await client.queries.pages({ relativePath: `${slug}.mdx` });
+  return response.data?.pages;
+};
+
+export const fetchPages = async () => {
+  const response = await client.queries.pagesConnection();
+  return response.data?.pagesConnection?.edges?.map((item) => item?.node);
+};
+
 export const fetchPath = async (slug: string) => {
   const response = await client.queries.path({ relativePath: `${slug}.mdx`});
   return response.data?.path;
-}
+};
 
 export const fetchPaths = async () => {
   const response = await client.queries.pathConnection();
