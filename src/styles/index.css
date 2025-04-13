@@ -75,3 +75,7 @@ html, body {
   color: black;
   border-color: black;
 }
+
+.swiper-pagination > .swiper-pagination-bullet-active {
+  background-color: black;
+}

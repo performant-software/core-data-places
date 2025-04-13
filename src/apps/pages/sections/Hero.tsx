@@ -48,11 +48,11 @@ const Hero = (props: Props) => {
       />
       { (props.title || props.subtitle) && (
         <div
-          className='relative z-10 text-white px-20 py-12 max-w-[55%]'
+          className='relative z-10 text-white px-8 md:px-20 py-12 max-w-full md:max-w-[55%]'
         >
           { props.title && (
             <h1
-              class='text-7xl font-bold m-0'
+              class='text-7xl font-bold m-0 uppercase'
             >
               { props.title }
             </h1>

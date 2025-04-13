@@ -59,6 +59,7 @@
     "react-instantsearch": "^7.6.0",
     "recharts": "^2.15.1",
     "serverless-http": "^3.2.0",
+    "swiper": "^11.2.6",
     "tailwindcss": "^3.4.4",
     "tinacms": "^2.7.2",
     "tinacms-authjs": "^10.0.2",

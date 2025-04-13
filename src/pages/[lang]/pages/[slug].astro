@@ -1,0 +1,55 @@
+---
+import Carousel from '@apps/pages/sections/Carousel';
+import FreeText from '@apps/pages/sections/FreeText.astro';
+import Hero, { HeroHeight } from '@apps/pages/sections/Hero';
+import { getTranslations } from '@backend/i18n';
+import { fetchPage } from '@backend/tina';
+import Layout from '@layouts/Layout.astro';
+import _ from 'underscore';
+
+const { slug } = Astro.params;
+const page = await fetchPage(slug);
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+const SectionTypes = {
+  carousel: 'PagesSectionsCarousel',
+  freeText: 'PagesSectionsFree_text',
+  hero: 'PagesSectionsHero'
+};
+
+---
+
+<Layout
+  fullscreen
+  t={t}
+  tab={page?._sys?.filename}
+  title={page?.title}
+>
+  { _.map(page.sections, (section, index) => (
+    <section
+      key={index}
+    >
+      { section.__typename === SectionTypes.hero && (
+        <Hero
+          height={page.home_page ? HeroHeight.large : undefined}
+          imageAlt={section.background_image_alt}
+          imageUrl={section.background_image}
+          subtitle={section.subtitle}
+          title={section.title}
+        />
+      )}
+      { section.__typename === SectionTypes.carousel && (
+        <Carousel
+          items={section.items}
+          client:only='react'
+        />
+      )}
+      { section.__typename === SectionTypes.freeText && (
+        <FreeText
+          content={section.body}
+        />
+      )}
+    </section>
+  ))}
+</Layout>

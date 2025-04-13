@@ -21,16 +21,55 @@ const Pages: Collection = {
     type: 'object',
     list: true,
     templates: [{
+      name: 'carousel',
+      label: 'Carousel',
+      fields: [{
+        name: 'items',
+        label: 'Items',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'title',
+          label: 'Title',
+          type: 'string',
+          required: true,
+          isTitle: true
+        }, {
+          name: 'description',
+          label: 'Description',
+          type: 'string',
+          ui: {
+            component: 'textarea'
+          }
+        }, {
+          name: 'url',
+          label: 'URL',
+          type: 'string'
+        }, {
+          name: 'image',
+          label: 'Image',
+          type: 'image'
+        }, {
+          name: 'image_alt',
+          label: 'Image Alt Text',
+          type: 'string'
+        }]
+      }]
+    }, {
       name: 'hero',
       label: 'Hero',
       fields: [{
         name: 'title',
         label: 'Title',
-        type: 'string'
+        type: 'string',
+        required: true
       }, {
         name: 'subtitle',
         label: 'Subtitle',
-        type: 'string'
+        type: 'string',
+        ui: {
+          component: 'textarea'
+        }
       }, {
         name: 'background_image',
         label: 'Background Image',
