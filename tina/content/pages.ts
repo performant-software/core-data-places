@@ -56,6 +56,83 @@ const Pages: Collection = {
         }]
       }]
     }, {
+      name: 'content_block',
+      label: 'Content Block',
+      fields: [{
+        name: 'title',
+        label: 'Title',
+        type: 'string',
+        required: true,
+        isTitle: true
+      }, {
+        name: 'description',
+        label: 'Description',
+        type: 'string',
+        ui: {
+          component: 'textarea'
+        }
+      }, {
+        name: 'image',
+        label: 'Image',
+        type: 'image'
+      }, {
+        name: 'image_alt',
+        label: 'Image Alt',
+        type: 'string'
+      },{
+        name: 'url',
+        label: 'URL',
+        type: 'string'
+      }, {
+        name: 'background_height',
+        label: 'Background Height',
+        type: 'string',
+        options: [{
+          label: 'Half',
+          value: 'half'
+        }, {
+          label: 'Full',
+          value: 'full'
+        }]
+      }, {
+        name: 'text_position',
+        label: 'Text Position',
+        type: 'string',
+        options: [{
+          label: 'Left',
+          value: 'left'
+        }, {
+          label: 'Right',
+          value: 'right'
+        }]
+      }, {
+        name: 'vertical_alignment',
+        label: 'Vertical Alignment',
+        type: 'string',
+        options: [{
+          label: 'Top',
+          value: 'top'
+        }, {
+          label: 'Middle',
+          value: 'middle'
+        }]
+      }, {
+        name: 'button_color',
+        label: 'Button Color',
+        type: 'string',
+        ui: {
+          component: 'color'
+        }
+      }, {
+        name: 'button_text',
+        label: 'Button Text',
+        type: 'string'
+      }, {
+        name: 'secondary',
+        label: 'Secondary',
+        type: 'boolean'
+      }]
+    }, {
       name: 'hero',
       label: 'Hero',
       fields: [{

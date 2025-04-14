@@ -1,5 +1,6 @@
 ---
 import Carousel from '@apps/pages/sections/Carousel';
+import ContentBlock from '@apps/pages/sections/ContentBlock.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Hero, { HeroHeight } from '@apps/pages/sections/Hero';
 import { getTranslations } from '@backend/i18n';
@@ -14,6 +15,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 
 const SectionTypes = {
   carousel: 'PagesSectionsCarousel',
+  contentBlock: 'PagesSectionsContent_block',
   freeText: 'PagesSectionsFree_text',
   hero: 'PagesSectionsHero'
 };
@@ -43,6 +45,21 @@ const SectionTypes = {
         <Carousel
           items={section.items}
           client:only='react'
+        />
+      )}
+      { section.__typename === SectionTypes.contentBlock && (
+        <ContentBlock
+          backgroundHeight={section.background_height}
+          buttonColor={section.button_color}
+          buttonText={section.button_text}
+          description={section.description}
+          image={section.image},
+          imageAlt={section.image_alt}
+          secondary={section.secondary}
+          textPosition={section.text_position}
+          title={section.title}
+          url={section.url}
+          verticalAlignment={section.vertical_alignment}
         />
       )}
       { section.__typename === SectionTypes.freeText && (
