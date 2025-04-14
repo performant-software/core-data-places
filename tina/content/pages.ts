@@ -223,6 +223,27 @@ const Pages: Collection = {
         }]
       }]
     }, {
+      name: 'information_items',
+      label: 'Information Items',
+      fields: [{
+        name: 'items',
+        label: 'Items',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'title',
+          label: 'Title',
+          type: 'string'
+        }, {
+          name: 'description',
+          label: 'Description',
+          type: 'string',
+          ui: {
+            component: 'textarea'
+          }
+        }]
+      }]
+    }, {
       name: 'free_text',
       label: 'Free Text',
       fields: [{

@@ -18,8 +18,10 @@ const {
 
 <div
   class={clsx(
-    'relative flex flex-col md:flex-row px-10 py-8 md:p-24 gap-y-8',
-    { 'flex-col-reverse md:flex-row-reverse': textPosition === 'right' }
+    'relative flex flex-col md:flex-row px-10 py-8 gap-y-8',
+    { 'flex-col-reverse md:flex-row-reverse': textPosition === 'right' },
+    { 'md:p-24': !secondary },
+    { 'md:px-24 md:py-8': secondary }
   )}
 >
   { backgroundHeight && (
@@ -37,33 +39,49 @@ const {
       { 'md:flex md:flex-col md:justify-center': verticalAlignment === 'middle' }
     )}
   >
-    <h2
-      class='text-4xl font-bold uppercase'
-    >
-      { title }
-    </h2>
-    <p
-      class='mt-5'
-    >
-      { description }
-    </p>
-    <div>
-      <a
-        class='inline-block mt-4 rounded-md px-6 py-3 bg-secondary'
-        href={url}
-        style={{
-          backgroundColor: buttonColor
-        }}
+    { title && (
+      <h2
+        class={clsx(
+          { 'text-4xl font-bold uppercase': !secondary },
+          { 'text-2xl font-bold italic': secondary }
+        )}
+        class='text-4xl font-bold uppercase'
       >
-        { buttonText }
-      </a>
-    </div>
+        { title }
+      </h2>
+    )}
+    { description && (
+      <p
+        class={clsx(
+          { 'mt-5': !!title }
+        )}
+      >
+        { description }
+      </p>
+    )}
+    { url && (
+      <div>
+        <a
+          class='inline-block mt-4 rounded-md px-6 py-3 bg-secondary'
+          href={url}
+          style={{
+            backgroundColor: buttonColor
+          }}
+        >
+          { buttonText }
+        </a>
+      </div>
+    )}
   </div>
   <div
     class='md:w-[50%] z-10 flex justify-center'
   >
     <div
-      class='w-[440px] h-[512px]'
+      class={clsx(
+        'w-[440px]',
+        { 'h-[512px]': !secondary },
+        { 'h-full': secondary }
+      )}
     >
       <img
         alt={imageAlt}

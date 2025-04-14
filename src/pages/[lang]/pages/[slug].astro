@@ -5,6 +5,7 @@ import ContentSquares from '@apps/pages/sections/ContentSquares.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Hero from '@apps/pages/sections/Hero.astro';
 import ImageLinks from '@apps/pages/sections/ImageLinks.astro';
+import InformationItems from '@apps/pages/sections/InformationItems.astro';
 import { getTranslations } from '@backend/i18n';
 import { fetchPage } from '@backend/tina';
 import Layout from '@layouts/Layout.astro';
@@ -21,12 +22,14 @@ const SectionTypes = {
   contentSquares: 'PagesSectionsContent_squares',
   freeText: 'PagesSectionsFree_text',
   hero: 'PagesSectionsHero',
-  imageLinks: 'PagesSectionsImage_links'
+  imageLinks: 'PagesSectionsImage_links',
+  informationItems: 'PagesSectionsInformation_items'
 };
 
 ---
 
 <Layout
+  footer
   fullscreen
   t={t}
   tab={page?._sys?.filename}
@@ -85,6 +88,11 @@ const SectionTypes = {
         <ImageLinks
           items={section.items}
           title={section.title}
+        />
+      )}
+      { section.__typename === SectionTypes.informationItems && (
+        <InformationItems
+          items={section.items}
         />
       )}
     </section>
