@@ -197,6 +197,32 @@ const Pages: Collection = {
         }]
       }]
     }, {
+      name: 'image_links',
+      label: 'Image Links',
+      fields: [{
+        name: 'title',
+        label: 'Title',
+        type: 'string'
+      }, {
+        name: 'items',
+        label: 'Items',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'image',
+          label: 'Image',
+          type: 'image'
+        }, {
+          name: 'image_alt',
+          label: 'Image Alt',
+          type: 'string'
+        }, {
+          name: 'url',
+          label: 'URL',
+          type: 'string'
+        }]
+      }]
+    }, {
       name: 'free_text',
       label: 'Free Text',
       fields: [{

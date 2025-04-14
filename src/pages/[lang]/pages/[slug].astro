@@ -4,6 +4,7 @@ import ContentBlock from '@apps/pages/sections/ContentBlock.astro';
 import ContentSquares from '@apps/pages/sections/ContentSquares.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Hero from '@apps/pages/sections/Hero.astro';
+import ImageLinks from '@apps/pages/sections/ImageLinks.astro';
 import { getTranslations } from '@backend/i18n';
 import { fetchPage } from '@backend/tina';
 import Layout from '@layouts/Layout.astro';
@@ -19,7 +20,8 @@ const SectionTypes = {
   contentBlock: 'PagesSectionsContent_block',
   contentSquares: 'PagesSectionsContent_squares',
   freeText: 'PagesSectionsFree_text',
-  hero: 'PagesSectionsHero'
+  hero: 'PagesSectionsHero',
+  imageLinks: 'PagesSectionsImage_links'
 };
 
 ---
@@ -34,15 +36,7 @@ const SectionTypes = {
     <section
       key={index}
     >
-      { section.__typename === SectionTypes.hero && (
-        <Hero
-          height={section.height}
-          imageAlt={section.background_image_alt}
-          imageUrl={section.background_image}
-          subtitle={section.subtitle}
-          title={section.title}
-        />
-      )}
+
       { section.__typename === SectionTypes.carousel && (
         <Carousel
           items={section.items}
@@ -76,6 +70,21 @@ const SectionTypes = {
       { section.__typename === SectionTypes.freeText && (
         <FreeText
           content={section.body}
+        />
+      )}
+      { section.__typename === SectionTypes.hero && (
+        <Hero
+          height={section.height}
+          imageAlt={section.background_image_alt}
+          imageUrl={section.background_image}
+          subtitle={section.subtitle}
+          title={section.title}
+        />
+      )}
+      { section.__typename === SectionTypes.imageLinks && (
+        <ImageLinks
+          items={section.items}
+          title={section.title}
         />
       )}
     </section>
