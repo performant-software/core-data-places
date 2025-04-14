@@ -129,6 +129,37 @@ const Pages: Collection = {
         type: 'boolean'
       }]
     }, {
+      name: 'content_squares',
+      label: 'Content Squares',
+      fields: [{
+        name: 'title',
+        label: 'Title',
+        type: 'string'
+      }, {
+        name: 'text',
+        label: 'Text',
+        type: 'rich-text'
+      }, {
+        name: 'image',
+        label: 'Image',
+        type: 'image'
+      }, {
+        name: 'image_alt',
+        label: 'Image Alt',
+        type: 'string'
+      }, {
+        name: 'text_position',
+        label: 'Text Position',
+        type: 'string',
+        options: [{
+          label: 'Left',
+          value: 'left'
+        }, {
+          label: 'Right',
+          value: 'right'
+        }]
+      }]
+    }, {
       name: 'hero',
       label: 'Hero',
       fields: [{

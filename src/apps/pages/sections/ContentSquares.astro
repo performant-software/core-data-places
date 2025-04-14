@@ -1,0 +1,55 @@
+---
+import clsx from 'clsx';
+import { TinaMarkdown } from 'tinacms/dist/rich-text';
+
+const {
+  image,
+  imageAlt,
+  text,
+  textPosition,
+  title
+} = Astro.props;
+---
+
+<div
+  class={clsx(
+    'flex flex-col lg:flex-row py-8 lg:py-12 gap-y-8',
+    { 'lg:flex-row-reverse': textPosition === 'right' }
+  )}
+>
+  <div
+    class='bg-primary px-10 py-12 lg:p-48 lg:w-[58%]'
+  >
+    <h2
+      class='text-4xl font-bold uppercase mb-5'
+    >
+      { title }
+    </h2>
+    <div
+      class='prose'
+    >
+      <TinaMarkdown
+        content={text}
+      />
+    </div>
+  </div>
+  <div
+    class={ clsx(
+      'relative lg:flex lg:items-center px-8 py-4 lg:w-[42%]'
+    )}
+  >
+    <div
+      class={clsx(
+        'lg:absolute lg:w-[552px] lg:h-[75%]',
+        { 'lg:-left-20': textPosition === 'left'},
+        { 'lg:-right-20': textPosition === 'right' }
+      )}
+    >
+      <img
+        alt={imageAlt}
+        class='w-full h-full object-cover'
+        src={image}
+      />
+    </div>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 ---
 import Carousel from '@apps/pages/sections/Carousel';
 import ContentBlock from '@apps/pages/sections/ContentBlock.astro';
+import ContentSquares from '@apps/pages/sections/ContentSquares.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Hero from '@apps/pages/sections/Hero.astro';
 import { getTranslations } from '@backend/i18n';
@@ -16,6 +17,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 const SectionTypes = {
   carousel: 'PagesSectionsCarousel',
   contentBlock: 'PagesSectionsContent_block',
+  contentSquares: 'PagesSectionsContent_squares',
   freeText: 'PagesSectionsFree_text',
   hero: 'PagesSectionsHero'
 };
@@ -60,6 +62,15 @@ const SectionTypes = {
           title={section.title}
           url={section.url}
           verticalAlignment={section.vertical_alignment}
+        />
+      )}
+      { section.__typename === SectionTypes.contentSquares && (
+        <ContentSquares
+          image={section.image}
+          imageAlt={section.image_alt}
+          text={section.text}
+          textPosition={section.text_position}
+          title={section.title}
         />
       )}
       { section.__typename === SectionTypes.freeText && (
