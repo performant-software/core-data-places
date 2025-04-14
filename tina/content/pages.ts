@@ -31,9 +31,7 @@ const Pages: Collection = {
         fields: [{
           name: 'title',
           label: 'Title',
-          type: 'string',
-          required: true,
-          isTitle: true
+          type: 'string'
         }, {
           name: 'description',
           label: 'Description',
@@ -61,9 +59,7 @@ const Pages: Collection = {
       fields: [{
         name: 'title',
         label: 'Title',
-        type: 'string',
-        required: true,
-        isTitle: true
+        type: 'string'
       }, {
         name: 'description',
         label: 'Description',
@@ -138,8 +134,7 @@ const Pages: Collection = {
       fields: [{
         name: 'title',
         label: 'Title',
-        type: 'string',
-        required: true
+        type: 'string'
       }, {
         name: 'subtitle',
         label: 'Subtitle',
@@ -155,6 +150,20 @@ const Pages: Collection = {
         name: 'background_image_alt',
         label: 'Background Image Alt Text',
         type: 'string'
+      }, {
+        name: 'height',
+        label: 'Height',
+        type: 'string',
+        options: [{
+          label: 'Small',
+          value: 'small'
+        }, {
+          label: 'Medium',
+          value: 'medium'
+        }, {
+          label: 'Large',
+          value: 'large'
+        }]
       }]
     }, {
       name: 'free_text',

@@ -2,7 +2,7 @@
 import Carousel from '@apps/pages/sections/Carousel';
 import ContentBlock from '@apps/pages/sections/ContentBlock.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
-import Hero, { HeroHeight } from '@apps/pages/sections/Hero';
+import Hero from '@apps/pages/sections/Hero.astro';
 import { getTranslations } from '@backend/i18n';
 import { fetchPage } from '@backend/tina';
 import Layout from '@layouts/Layout.astro';
@@ -34,7 +34,7 @@ const SectionTypes = {
     >
       { section.__typename === SectionTypes.hero && (
         <Hero
-          height={page.home_page ? HeroHeight.large : undefined}
+          height={section.height}
           imageAlt={section.background_image_alt}
           imageUrl={section.background_image}
           subtitle={section.subtitle}
