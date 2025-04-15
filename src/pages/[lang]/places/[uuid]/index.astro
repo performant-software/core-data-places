@@ -1,12 +1,12 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import config from "@config";
-import RecordDetail from "@apps/pages/RecordDetail/index.astro";
-import { getTranslations } from "@backend/i18n";
-import { ModelNames } from "@services/coreData/factory";
-import PlacesService from "@services/coreData/places";
-import PlaceMap from "@apps/pages/RecordDetail/PlaceMap";
-import { getDetailPagePaths } from "@utils/detailPages";
+import Layout from '@layouts/Layout.astro';
+import config from '@config';
+import RecordDetail from '@apps/pages/RecordDetail/index.astro';
+import { getTranslations } from '@backend/i18n';
+import { ModelNames } from '@services/coreData/factory';
+import PlacesService from '@services/coreData/places';
+import PlaceMap from '@apps/pages/RecordDetail/PlaceMap';
+import { getDetailPagePaths } from '@utils/detailPages';
 
 const { t } = await getTranslations(Astro.currentLocale);
 
@@ -54,16 +54,16 @@ export const getStaticPaths = async () =>
     record={place}
   >
     {
-      !excludes.includes("place_geometry") && (
-        <div class="h-[360px] py-6 mx-auto flex gap-6 w-full">
+      !excludes.includes('place_geometry') && (
+        <div class='h-[360px] py-6 mx-auto flex gap-6 w-full'>
           {coverUrl && (
             <img
-              class="w-[30%] max-w-[30%] h-full object-cover"
+              class='w-[30%] max-w-[30%] h-full object-cover'
               src={coverUrl}
             />
           )}
-          <div class={coverUrl ? "w-[70%]" : "w-full"}>
-            <PlaceMap client:only="react" lang={lang} record={place} />
+          <div class={coverUrl ? 'w-[70%]' : 'w-full'}>
+            <PlaceMap client:only='react' lang={lang} record={place} />
           </div>
         </div>
       )
