@@ -2,11 +2,11 @@
 import Layout from "@layouts/Layout.astro";
 import config from "@config";
 import RecordDetail from "@apps/pages/RecordDetail/index.astro";
-import { getTranslations } from '@backend/i18n';
-import { ModelNames } from '@services/coreData/factory';
-import PlacesService from '@services/coreData/places';
+import { getTranslations } from "@backend/i18n";
+import { ModelNames } from "@services/coreData/factory";
+import PlacesService from "@services/coreData/places";
 import PlaceMap from "@apps/pages/RecordDetail/PlaceMap";
-import { getDetailPagePaths } from '@utils/detailPages';
+import { getDetailPagePaths } from "@utils/detailPages";
 
 const { t } = await getTranslations(Astro.currentLocale);
 
@@ -15,7 +15,35 @@ const { lang, uuid } = Astro.params;
 const { place } = await PlacesService.getFull(uuid);
 const excludes = config.search?.result_filtering?.places?.exclude || [];
 
-export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.places);
+let coverUrl = null;
+
+const firstManifest = place.relatedRecords.manifests?.items;
+
+if (firstManifest && firstManifest.length > 0) {
+  const firstRelation = firstManifest[0];
+
+  if (firstRelation.id) {
+    const relationManifest = await fetch(firstRelation.id);
+    if (relationManifest.ok) {
+      const json = await relationManifest.json();
+      if (json.items && json.items.length > 0) {
+        const firstItem = json.items[0];
+        if (firstItem.items && firstItem.items.length > 0) {
+          const annotation = firstItem.items[0];
+          if (annotation.items && annotation.items.length > 0) {
+            const annotationItem = annotation.items[0];
+            if (annotationItem?.body?.id) {
+              coverUrl = annotationItem.body.id;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+export const getStaticPaths = async () =>
+  await getDetailPagePaths(config, ModelNames.places);
 ---
 
 <Layout footer t={t} title={place.name}>
@@ -25,14 +53,20 @@ export const getStaticPaths = async () => await getDetailPagePaths(config, Model
     name={place.name}
     record={place}
   >
-    { !excludes.includes('place_geometry') && (
-      <div class="h-[360px] py-6 mx-auto">
-        <PlaceMap
-          client:only="react"
-          lang={lang}
-          record={place}
-        />
-      </div>
-    )}
+    {
+      !excludes.includes("place_geometry") && (
+        <div class="h-[360px] py-6 mx-auto flex gap-6 w-full">
+          {coverUrl && (
+            <img
+              class="w-[30%] max-w-[30%] h-full object-cover"
+              src={coverUrl}
+            />
+          )}
+          <div class="w-[70%]">
+            <PlaceMap client:only="react" lang={lang} record={place} />
+          </div>
+        </div>
+      )
+    }
   </RecordDetail>
 </Layout>
