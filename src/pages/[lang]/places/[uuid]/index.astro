@@ -62,7 +62,7 @@ export const getStaticPaths = async () =>
               src={coverUrl}
             />
           )}
-          <div class="w-[70%]">
+          <div class={coverUrl ? "w-[70%]" : "w-full"}>
             <PlaceMap client:only="react" lang={lang} record={place} />
           </div>
         </div>
