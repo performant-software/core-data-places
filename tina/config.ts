@@ -3,7 +3,7 @@ import _ from 'underscore';
 import config from '../public/config.json';
 import About from './content/about';
 import I18n from './content/i18n';
-import Pages from './content/pages';
+import PagesCollection from './content/pages';
 import PathsCollection from './content/paths';
 import PostsCollection from './content/posts';
 import Settings from './content/settings';
@@ -40,7 +40,9 @@ export default defineConfig({
         : undefined,
       About,
       Settings,
-      Pages,
+      config.content?.includes('pages')
+        ? PagesCollection
+        : undefined,
       config.content?.includes('paths')
         ? PathsCollection
         : undefined,
