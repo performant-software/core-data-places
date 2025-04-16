@@ -12,7 +12,6 @@ export const ModelNames = {
   events: 'events',
   instances: 'instances',
   items: 'items',
-  mediaContents: 'media_contents',
   organizations: 'organizations',
   people: 'people',
   places: 'places',
@@ -43,10 +42,6 @@ const getService = (name: string) => {
 
     case ModelNames.items:
       service = ItemsService;
-      break;
-
-    case ModelNames.mediaContents:
-      service = MediaContentsService;
       break;
 
     case ModelNames.organizations:

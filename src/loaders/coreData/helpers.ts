@@ -22,7 +22,6 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
       const { events } = await service.fetchRelatedEvents(uuid, params);
       const { instances } = await service.fetchRelatedInstances(uuid, params);
       const { items } = await service.fetchRelatedItems(uuid, params);
-      const { mediaContents } = await service.fetchRelatedMediaContents(uuid, params);
       const { organizations } = await service.fetchRelatedOrganizations(uuid, params);
       const { people } = await service.fetchRelatedPeople(uuid, params);
       const { places } = await service.fetchRelatedPlaces(uuid, params);
@@ -38,7 +37,6 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
           instances,
           items,
           manifests,
-          mediaContents,
           organizations,
           people,
           places,

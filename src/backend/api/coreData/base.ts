@@ -74,16 +74,6 @@ class Base {
   }
 
   /**
-   * Calls the `/api/:name/:id/media_contents.json` endpoint.
-   *
-   * @param id
-   * @param params
-   */
-    async fetchRelatedMediaContents(id: string, params: { [key: string]: any }) {
-      return this.sendRequest(`/api/${this.name}/${id}/media_contents.json`, params);
-    }
-
-  /**
    * Calls the `/api/:name/:id/manifests.json` endpoint.
    *
    * @param id

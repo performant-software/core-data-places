@@ -189,7 +189,7 @@ class Base {
     return manifests;
   }
 
-    /**
+  /**
    * Returns the related media contents for the record with the passed ID.
    *
    * @param id
