@@ -1,0 +1,14 @@
+---
+import clsx from 'clsx';
+const { className, content, url } = Astro.props;
+---
+
+<a
+  class={clsx(
+    'inline-block mt-4 rounded-md px-6 py-3 hover:bg-opacity-95',
+    className
+  )}
+  href={url}
+>
+  { content }
+</a>

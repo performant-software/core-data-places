@@ -54,110 +54,13 @@ const Pages: Collection = {
         }]
       }]
     }, {
-      name: 'content_block',
-      label: 'Content Block',
+      name: 'free_text',
+      label: 'Free Text',
       fields: [{
-        name: 'title',
-        label: 'Title',
-        type: 'string'
-      }, {
-        name: 'description',
-        label: 'Description',
-        type: 'string',
-        ui: {
-          component: 'textarea'
-        }
-      }, {
-        name: 'image',
-        label: 'Image',
-        type: 'image'
-      }, {
-        name: 'image_alt',
-        label: 'Image Alt',
-        type: 'string'
-      },{
-        name: 'url',
-        label: 'URL',
-        type: 'string'
-      }, {
-        name: 'background_height',
-        label: 'Background Height',
-        type: 'string',
-        options: [{
-          label: 'Half',
-          value: 'half'
-        }, {
-          label: 'Full',
-          value: 'full'
-        }]
-      }, {
-        name: 'text_position',
-        label: 'Text Position',
-        type: 'string',
-        options: [{
-          label: 'Left',
-          value: 'left'
-        }, {
-          label: 'Right',
-          value: 'right'
-        }]
-      }, {
-        name: 'vertical_alignment',
-        label: 'Vertical Alignment',
-        type: 'string',
-        options: [{
-          label: 'Top',
-          value: 'top'
-        }, {
-          label: 'Middle',
-          value: 'middle'
-        }]
-      }, {
-        name: 'button_color',
-        label: 'Button Color',
-        type: 'string',
-        ui: {
-          component: 'color'
-        }
-      }, {
-        name: 'button_text',
-        label: 'Button Text',
-        type: 'string'
-      }, {
-        name: 'secondary',
-        label: 'Secondary',
-        type: 'boolean'
-      }]
-    }, {
-      name: 'content_squares',
-      label: 'Content Squares',
-      fields: [{
-        name: 'title',
-        label: 'Title',
-        type: 'string'
-      }, {
-        name: 'text',
-        label: 'Text',
-        type: 'rich-text'
-      }, {
-        name: 'image',
-        label: 'Image',
-        type: 'image'
-      }, {
-        name: 'image_alt',
-        label: 'Image Alt',
-        type: 'string'
-      }, {
-        name: 'text_position',
-        label: 'Text Position',
-        type: 'string',
-        options: [{
-          label: 'Left',
-          value: 'left'
-        }, {
-          label: 'Right',
-          value: 'right'
-        }]
+        name: 'body',
+        label: 'Body',
+        type: 'rich-text',
+        isBody: true
       }]
     }, {
       name: 'hero',
@@ -182,6 +85,25 @@ const Pages: Collection = {
         label: 'Background Image Alt Text',
         type: 'string'
       }, {
+        name: 'url',
+        label: 'URL',
+        type: 'string'
+      }, {
+        name: 'button_text',
+        label: 'Button Text',
+        type: 'string'
+      }, {
+        name: 'text_alignment',
+        label: 'Text Alignment',
+        type: 'string',
+        options: [{
+          label: 'Left',
+          value: 'left'
+        }, {
+          label: 'Center',
+          value: 'center'
+        }]
+      }, {
         name: 'height',
         label: 'Height',
         type: 'string',
@@ -197,8 +119,8 @@ const Pages: Collection = {
         }]
       }]
     }, {
-      name: 'image_links',
-      label: 'Image Links',
+      name: 'images',
+      label: 'Images',
       fields: [{
         name: 'title',
         label: 'Title',
@@ -223,9 +145,32 @@ const Pages: Collection = {
         }]
       }]
     }, {
-      name: 'information_items',
-      label: 'Information Items',
+      name: 'text_block',
+      label: 'Text Block',
       fields: [{
+        name: 'title',
+        label: 'Title',
+        type: 'string'
+      }, {
+        name: 'url',
+        label: 'URL',
+        type: 'string'
+      }, {
+        name: 'button_text',
+        label: 'Button Text',
+        type: 'string'
+      }, {
+        name: 'text_alignment',
+        label: 'Text Alignment',
+        type: 'string',
+        options: [{
+          label: 'Left',
+          value: 'left'
+        }, {
+          label: 'Center',
+          value: 'center'
+        }]
+      }, {
         name: 'items',
         label: 'Items',
         type: 'object',
@@ -244,13 +189,63 @@ const Pages: Collection = {
         }]
       }]
     }, {
-      name: 'free_text',
-      label: 'Free Text',
+      name: 'text_image',
+      label: 'Text Image Block',
       fields: [{
-        name: 'body',
-        label: 'Body',
-        type: 'rich-text',
-        isBody: true
+        name: 'title',
+        label: 'Title',
+        type: 'string'
+      }, {
+        name: 'description',
+        label: 'Description',
+        type: 'string',
+        ui: {
+          component: 'textarea'
+        }
+      }, {
+        name: 'image',
+        label: 'Image',
+        type: 'image'
+      }, {
+        name: 'image_alt',
+        label: 'Image Alt',
+        type: 'string'
+      },{
+        name: 'url',
+        label: 'URL',
+        type: 'string'
+      }, {
+        name: 'background_position',
+        label: 'Background Position',
+        type: 'string',
+        options: [{
+          label: 'Top',
+          value: 'top'
+        }, {
+          label: 'Bottom',
+          value: 'bottom'
+        }, {
+          label: 'Left',
+          value: 'left'
+        }, {
+          label: 'Right',
+          value: 'right'
+        }]
+      }, {
+        name: 'text_position',
+        label: 'Text Position',
+        type: 'string',
+        options: [{
+          label: 'Left',
+          value: 'left'
+        }, {
+          label: 'Right',
+          value: 'right'
+        }]
+      }, {
+        name: 'button_text',
+        label: 'Button Text',
+        type: 'string'
       }]
     }]
   }]

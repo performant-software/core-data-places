@@ -20,8 +20,8 @@ export const fetchPage = async (slug: string) => {
   return response.data?.pages;
 };
 
-export const fetchPages = async () => {
-  const response = await client.queries.pagesConnection();
+export const fetchPages = async (params?: any) => {
+  const response = await client.queries.pagesConnection(params);
   return response.data?.pagesConnection?.edges?.map((item) => item?.node);
 };
 

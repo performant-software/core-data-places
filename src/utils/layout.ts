@@ -18,4 +18,4 @@ export const useBlackText = (primary: string) => {
     const b = b_ratio <= 0.04045 ? b_ratio/12.92 : ((b_ratio + 0.055)/1.055)**2.4;
     const l = 0.2126 * r + 0.7152 * g + 0.0722 * b;
     return l > 0.179;
-}
+};

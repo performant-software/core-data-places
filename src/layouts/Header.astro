@@ -1,10 +1,11 @@
 ---
-import { fetchAbout, fetchPages } from '@backend/tina';
+import { fetchAbout } from '@backend/tina';
 import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
 import NavLink from '@components/NavLink';
-import NavSearch from '@components/NavSearch';
+import NavDropdown from '@components/NavDropdown';
 import config from '@config';
+import { getPages } from '@utils/nav';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
 import _ from 'underscore';
@@ -23,7 +24,7 @@ const TabKeys = {
   posts: 'posts'
 };
 
-const pages = await fetchPages();
+const pages = await getPages();
 
 ---
 
@@ -55,7 +56,7 @@ const pages = await fetchPages();
     <div
       class='flex flex-row gap-x-12 pe-10 align-baseline justify-around'
     >
-      <NavSearch
+      <NavDropdown
         active={TabKeys.search === currentTab}
         content={t('explore')}
         items={_.map(config.search, (search) => ({
@@ -73,13 +74,16 @@ const pages = await fetchPages();
           href={getRelativeLocaleUrl(currentLocale, key)}
         />
       ))}
-      { _.map(pages, (page) => (
-        <NavLink
-          active={page._sys.filename === currentTab}
-          content={page.title}
-          href={getRelativeLocaleUrl(currentLocale, `/pages/${page._sys.filename}`)}
-        />
-      ))}
+      <NavDropdown
+        content={'Pages'}
+        items={_.map(pages, (page) => ({
+          active: Astro.url.pathname.includes(`/pages/${page._sys.filename}`),
+          name: page.id,
+          label: page.title,
+          href: getRelativeLocaleUrl(currentLocale, `/pages/${page._sys.filename}`)
+        }))}
+        client:only='react'
+      />
       <LanguagePicker
         locales={locales}
         currentLocale={currentLocale}

@@ -5,7 +5,23 @@ import clsx from 'clsx';
 import { DropdownMenu } from 'radix-ui';
 import _ from 'underscore';
 
-const NavSearch = (props) => {
+interface Item {
+  active?: boolean;
+  href: string;
+  label: string;
+  name: string;
+}
+
+interface Props {
+  active?: boolean;
+  content: string;
+  items: Array<Item>;
+}
+
+const NavDropdown = (props: Props) => {
+  /**
+   * If the items array only contains a single option, render a NavLink.
+   */
   if (props.items?.length === 1) {
     const [item,] = props.items;
 
@@ -70,7 +86,7 @@ const NavSearch = (props) => {
                 <span
                   className='relative cursor-pointer select-none py-3 px-6'
                 >
-                  { item.label || `Index ${index}` }
+                  { item.label }
                 </span>
               </a>
             </DropdownMenu.Item>
@@ -81,4 +97,4 @@ const NavSearch = (props) => {
   );
 };
 
-export default NavSearch;
+export default NavDropdown;

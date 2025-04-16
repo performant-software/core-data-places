@@ -1,0 +1,78 @@
+---
+import clsx from 'clsx';
+
+const {
+  backgroundPosition,
+  buttonText,
+  description,
+  image,
+  imageAlt,
+  textPosition,
+  title,
+  url
+} = Astro.props;
+---
+
+<div
+  class={clsx(
+    'relative flex flex-col lg:flex-row px-10 py-8 gap-y-8 lg:gap-x-20 my-8 lg:my-12 lg:p-24',
+    { 'flex-col-reverse lg:flex-row-reverse': textPosition === 'right' }
+  )}
+>
+  { backgroundPosition && (
+    <div
+      class={clsx(
+        'absolute bg-primary',
+        { 'top-0 left-0 right-0 h-full': backgroundPosition === 'top' },
+        { 'bottom-0 left-0 right-0 h-full': backgroundPosition === 'bottom' },
+        { 'top-0 bottom-0 left-0 w-full': backgroundPosition === 'left' },
+        { 'top-0 bottom-0 right-0 w-full': backgroundPosition === 'right' }
+      )}
+    />
+  )}
+  <div
+    class={clsx(
+      'lg:w-[50%] z-10'
+    )}
+  >
+    { title && (
+      <h2
+        class='text-4xl font-bold'
+      >
+        { title }
+      </h2>
+    )}
+    { description && (
+      <p
+        class={clsx(
+          { 'mt-5': !!title }
+        )}
+      >
+        { description }
+      </p>
+    )}
+    { url && (
+      <div>
+        <a
+          class='inline-block mt-4 rounded-md px-6 py-3 bg-secondary'
+          href={url}
+        >
+          { buttonText }
+        </a>
+      </div>
+    )}
+  </div>
+  <div
+    class='z-10 lg:w-[50%]'
+  >
+    <div
+      class='h-full'
+    >
+      <img
+        alt={imageAlt}
+        class='w-full h-full object-cover'
+        src={image}
+      />
+    </div>
+  </div>
+</div>
