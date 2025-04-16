@@ -5,21 +5,25 @@ import { Icon } from '@performant-software/core-data/ssr'
 import MediaContents from "./MediaContents";
 import Container from "@components/Container.astro";
 import { getNameView } from "@utils/people";
+import PlaceMap from "./PlaceMap";
 
 interface Props {
+  coverUrl?: string;
   excludes: string[];
+  geometry?: any;
   lang: string;
   name: string;
   record: any;
 }
 
-const { excludes, lang, name, record } = Astro.props;
+const { coverUrl, excludes, geometry, lang, name, record } = Astro.props;
 
 const relations = {
   events: {},
   instances: {},
   items: {},
   manifests: record.relatedRecords?.manifests,
+  mediaContents: {},
   organizations: {},
   people: {},
   places: {},
@@ -60,6 +64,21 @@ for (const modelType of Object.keys(record.relatedRecords)) {
   </button>
   <div class="ml-12 divide-y divide-solid divide-[#e5e5e5]">
     <h1 class="font-bold text-3xl text-neutral-800 mt-0 mb-6">{name}</h1>
+    {(geometry || coverUrl) && (
+      <div class='h-[360px] py-6 mx-auto flex gap-6 w-full'>
+        {coverUrl && (
+          <img
+            class={`${geometry ? 'w-[30%]' : 'w-full'} h-full object-cover`}
+            src={coverUrl}
+          />
+        )}
+        {geometry && (
+          <div class={coverUrl ? 'w-[70%]' : 'w-full'}>
+            <PlaceMap client:only='react' lang={lang} geometry={geometry} />
+          </div>
+        )}
+      </div>
+    )}
     <slot />
     <UserDefined
       record={record}
