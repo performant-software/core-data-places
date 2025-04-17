@@ -1,4 +1,8 @@
+
+
 ---
+import { fetchBranding } from '@backend/tina';
+import Theme from '@components/Theme.astro';
 import config from '@config';
 import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
@@ -8,14 +12,17 @@ import '@peripleo/maplibre/peripleo-maplibre.css';
 import '@performant-software/core-data/style.css';
 import '@performant-software/geospatial/style.css';
 import '@styles/index.css';
+import { useBlackText } from '@utils/layout';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import clsx from 'clsx';
 import _ from 'underscore';
-import { useBlackText } from '@utils/layout';
 
-const blackText = config.branding?.primary && useBlackText(config.branding.primary);
+const branding = await fetchBranding();
+
+const colorPrimary = branding.primary_color;
+const isBlackText = useBlackText(colorPrimary);
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
@@ -61,11 +68,24 @@ const tabs = {
   <body
     class={clsx(
       'flex h-full sm:min-h-screen flex-col bg-white text-neutral-dark mx-auto',
-      { 'primary-text-white': !blackText },
-      { 'primary-text-black': blackText },
+      { 'primary-text-black': isBlackText },
+      { 'primary-text-white': !isBlackText }
     )}
     transition:animate='initial'
   >
+    { colorPrimary && (
+      <style
+        is:global
+        define:vars={{ colorPrimary }}
+      >
+        :root {
+          --color-primary: var(--color-primary)
+        }
+      </style>
+    )}
+    <Theme
+      primaryColor={branding.primary_color}
+    />
     <Header
       currentTab={tab}
       fullscreen={fullscreen}

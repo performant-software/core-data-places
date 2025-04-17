@@ -1,3 +1,11 @@
+@import 'tailwindcss';
+
+:root {
+  --color-gray-1000: #505A6A;
+  --color-neutral-dark: #111928;
+  --color-neutral-light: #F5F5F5;
+}
+
 html, body {
   font-family: Inter;
 }
@@ -67,15 +75,15 @@ html, body {
 }
 
 .primary-text-white .bg-primary, .primary-text-white .fill-primary, .primary-text-white .bg-primary div {
-  color: white;
-  border-color: white;
+  color: var(--color-white);
+  border-color: var(--color-white);
 }
 
 .primary-text-black .bg-primary, .primary-text-black .fill-primary, .primary-text-black .bg-primary div {
-  color: black;
-  border-color: black;
+  color: var(--color-black);
+  border-color: var(--color-black);
 }
 
 .swiper-pagination > .swiper-pagination-bullet-active {
-  background-color: black;
+  background-color: var(--color-black);
 }

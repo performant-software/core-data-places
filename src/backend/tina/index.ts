@@ -5,6 +5,11 @@ export const fetchAbout = async () => {
   return response.data?.about;
 };
 
+export const fetchBranding = async () => {
+  const response = await client.queries.branding({ relativePath: 'branding.json' });
+  return response.data?.branding;
+}
+
 export const fetchI18n = async (language: string) => {
   const response = await client.queries.i18n({ relativePath: `${language}.json` });
   return response.data?.i18n;
