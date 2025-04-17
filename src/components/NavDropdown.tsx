@@ -40,7 +40,7 @@ const NavDropdown = (props: Props) => {
         asChild
       >
         <div
-          className='flex items-center gap-x-2 cursor-pointer outline-none hover:bg-transparent'
+          className='flex items-center gap-x-2 cursor-pointer outline-hidden hover:bg-transparent'
         >
           <NavItem
             active={props.active}
@@ -64,7 +64,7 @@ const NavDropdown = (props: Props) => {
             shadow-lg 
             ring-1 
             ring-black/5 
-            focus:outline-none 
+            focus:outline-hidden 
             sm:text-sm 
             z-10
             py-3
@@ -74,7 +74,7 @@ const NavDropdown = (props: Props) => {
           { _.map(props.items, (item, index) => (
             <DropdownMenu.Item
               className={clsx(
-                'py-2 hover:bg-neutral-100 outline-none',
+                'py-2 hover:bg-neutral-100 outline-hidden',
                 { 'bg-neutral-100': item.active }
               )}
               key={index}

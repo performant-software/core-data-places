@@ -42,7 +42,7 @@ const ManifestThumbnail = (props: Props) => {
       { props.thumbnail && (
         <Thumbnail
           aria-label={label}
-          className='rounded shadow cursor-pointer'
+          className='rounded-sm shadow-sm cursor-pointer'
           onClick={props.onClick}
           thumbnail={_.map(props.thumbnail, (t) => ({
             ...t,

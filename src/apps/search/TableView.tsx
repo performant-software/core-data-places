@@ -47,8 +47,8 @@ const TableView = (props: Props) => {
         'w-full',
         'p-2',
         'bg-white/80',
-        'backdrop-blur',
-        'shadow',
+        'backdrop-blur-sm',
+        'shadow-sm',
         'overflow-hidden',
         props.className
       )}

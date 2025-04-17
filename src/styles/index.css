@@ -1,70 +1,36 @@
 @import 'tailwindcss';
 
-:root {
-  --color-gray-1000: #505A6A;
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@theme {
   --color-neutral-dark: #111928;
   --color-neutral-light: #F5F5F5;
+
+  --font-sans: Inter;
 }
 
-html, body {
-  font-family: Inter;
-}
-
-.ais-RefinementList-item .ais-RefinementList-label {
-  display: flex;
-  font-size: 0.875rem;
-  gap: 0.5em;
-}
-
-.ais-RefinementList-item .ais-RefinementList-count {
-  color: #0005119e;
-  flex-grow: 1;
-  text-align: right;
-}
-
-.switch-root {
-  width: 32px;
-  height: 20px;
-  background-color: #cbd5e1;
-  border-radius: 9999px;
-  position: relative;
-  padding: 0;
-}
-
-.switch-root:focus {
-  outline-color: #0f766e; /** Teal 700 */
-  outline-offset: 2px;
-  outline-width: 2px;
-}
-
-.switch-root[data-state='checked'] {
-  background-color: #0f766e;
-}
-
-.switch-thumb {
-  display: block;
-  width: 16px;
-  height: 16px;
-  background-color: white;
-  border-radius: 9999px;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-  transition: transform 100ms;
-  transform: translateX(2px);
-  will-change: transform;
-}
-
-.switch-thumb[data-state='checked'] {
-  transform: translateX(14px);
-}
-
+/*
+ * Peripleo styles
+ */
 .p6o-map-container {
   height: 100%;
   width: 100%;
-}
-
-/* This can be removed after upgrading Peripleo, which accepts a "attributionControl" prop on the Map component */
-.maplibregl-ctrl.maplibregl-ctrl-attrib {
-  display: none;
 }
 
 .p6o-zoom-control {
@@ -74,6 +40,9 @@ html, body {
   row-gap: 0.5rem;
 }
 
+/*
+ * Branding styles
+ */
 .primary-text-white .bg-primary, .primary-text-white .fill-primary, .primary-text-white .bg-primary div {
   color: var(--color-white);
   border-color: var(--color-white);

@@ -2,8 +2,8 @@ import mdx from '@astrojs/mdx';
 import netlify from '@astrojs/netlify';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
-import tailwind from '@astrojs/tailwind';
 import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite';
 import { loadEnv } from 'vite';
 import config from './public/config.json';
 
@@ -23,7 +23,7 @@ export default defineConfig({
   },
   output: STATIC_BUILD === 'true' ? 'static' : 'server',
   adapter: netlify(),
-  integrations: [mdx(), tailwind(), sitemap(), react(), auth()],
+  integrations: [mdx(), sitemap(), react(), auth()],
   vite: {
     optimizeDeps: {
       esbuildOptions: {
@@ -36,6 +36,7 @@ export default defineConfig({
         noExternal: ['clsx', '@phosphor-icons/*', '@radix-ui/*']
       }
     },
+    plugins: [tailwindcss()],
     resolve: {
       preserveSymlinks: true,
       mainFields: [

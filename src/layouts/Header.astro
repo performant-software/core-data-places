@@ -34,8 +34,8 @@ const pages = await getPages();
 >
   <div
     class={clsx(
-      'hidden md:flex flex-row justify-between px-6 py-5 align-middle h-[80px] w-full',
-      { '3xl:max-w-screen-3xl': !fullscreen }
+      'hidden md:flex flex-row justify-between items-center px-6 py-5 h-[80px] w-full',
+      { '3xl:max-w-(--breakpoint-3xl)': !fullscreen }
     )}
   >
     <a
@@ -49,7 +49,9 @@ const pages = await getPages();
       )}
       <!-- @ts-ignore -->
       { !config.branding?.header_hide_title && ( 
-        <h1>
+        <h1
+          class='text-lg font-medium'
+        >
           { title }
         </h1>
       )}

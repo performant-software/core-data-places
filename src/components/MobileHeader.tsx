@@ -27,7 +27,7 @@ const MobileHeader = (props: Props) => {
       {({ open }) => (
         <>
           <div
-            className='flex flex-row justify-between items-center px-6 mx-0 sm:px-0 sm:mx-12 md:mx-16 lg:mx-32 2xl:mx-auto max-w-screen-xl py-4 z-10 top-0'
+            className='flex flex-row justify-between items-center px-6 mx-0 sm:px-0 sm:mx-12 md:mx-16 lg:mx-32 2xl:mx-auto max-w-(--breakpoint-xl) py-4 z-10 top-0'
           >
             <a
               href='/'
@@ -40,7 +40,7 @@ const MobileHeader = (props: Props) => {
               currentUrl={props.currentUrl}
             />
             <Disclosure.Button
-              className=' md:hidden relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-primary'
+              className=' md:hidden relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-orange-primary'
             >
               <span
                 className='absolute -inset-0.5'

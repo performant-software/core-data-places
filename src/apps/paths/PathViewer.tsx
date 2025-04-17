@@ -65,7 +65,7 @@ const PathViewer = (props: PathViewerProps) => {
           value={{ t }}
         >
           <div
-            className='w-full flex flex-row flex-grow relative h-[calc(100vh-96px)]'
+            className='w-full flex flex-row grow relative h-[calc(100vh-96px)]'
           >
             { path && (
               <div
@@ -79,7 +79,7 @@ const PathViewer = (props: PathViewerProps) => {
                   h-16 
                   rounded-full 
                   bg-white 
-                  z-[999] 
+                  z-999 
                   drop-shadow-xl 
                   flex 
                   justify-around 

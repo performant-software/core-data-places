@@ -43,7 +43,7 @@ const Header = (props: Props) => {
 
   return (
     <div
-      className={clsx('bg-neutral-100 flex items-center justify-between px-6 py-5 shadow', props.className)}
+      className={clsx('bg-neutral-100 flex items-center justify-between px-6 py-5 shadow-sm', props.className)}
     >
       <div
         className='flex items-center gap-x-12 w-3/4'
@@ -89,7 +89,7 @@ const Header = (props: Props) => {
           </h2>
         </div>
         <div
-          className='flex-grow'
+          className='grow'
         >
           <Input
             className='bg-white'
