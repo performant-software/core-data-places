@@ -119,6 +119,12 @@ const BasePanel = (props: Props) => {
   const { data: { organizations = [] } = {}, loading: organizationsLoading } = useLoader(onLoadOrganizations, null, [id, props.service]);
 
   /**
+   * Loads the media contents from the Core Data API.
+   */
+  const onLoadMediaContents = () => props.service.fetchRelatedMedia(id, { per_page: 0 });
+  const { data: { mediaContents = [] } = {}, loading: mediaContentsLoading } = useLoader(onLoadMediaContents, null, [id, props.service]);
+
+  /**
    * Loads the IIIF collection manifest from the Core Data API.
    */
   const onLoadManifests = () => props.service.fetchRelatedManifests(id, { per_page: 0 });
@@ -164,6 +170,17 @@ const BasePanel = (props: Props) => {
     return item;
   },
   [data, props.name]);
+
+  /**
+   * Memo-izes the cover URL.
+   */
+  const coverUrl = useMemo(() => {
+    if (!mediaContentsLoading && mediaContents.length > 0) {
+      return mediaContents[0].content_url
+    }
+
+    return null
+  }, [item, mediaContentsLoading])
 
   /**
    * Memo-izes the geometry.
@@ -331,12 +348,14 @@ const BasePanel = (props: Props) => {
     >
       <RecordDetailPanel
         count
+        coverUrl={coverUrl}
         icon={props.icon}
         loading={
           eventsLoading ||
           instancesLoading ||
           itemsLoading ||
           organizationsLoading ||
+          mediaContentsLoading ||
           collectionLoading ||
           peopleLoading ||
           placesLoading ||
