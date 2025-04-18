@@ -5,7 +5,7 @@ import RecordDetail from "@apps/pages/RecordDetail/index.astro";
 import { getTranslations } from '@backend/i18n';
 import { ModelNames } from '@services/coreData/factory';
 import WorksService from '@services/coreData/works';
-import { getDetailPagePaths } from "@utils/detailPages";
+import { getCoverImage, getDetailPagePaths, getRelatedGeometry } from "@utils/detailPages";
 
 const { t } = await getTranslations(Astro.currentLocale);
 
@@ -14,12 +14,17 @@ const { lang, uuid } = Astro.params;
 const { work } = await WorksService.getFull(uuid)
 const excludes = config.search?.result_filtering?.works?.exclude || []
 
+const coverUrl = getCoverImage(work);
+const geometry = getRelatedGeometry(work);
+
 export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.works);
 ---
 
 <Layout footer t={t} title={work.name}>
   <RecordDetail
+    coverUrl={coverUrl}
     excludes={excludes}
+    geometry={geometry}
     lang={lang}
     name={work.name}
     record={work}

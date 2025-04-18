@@ -1,4 +1,5 @@
 import ServiceFactory from '@services/coreData/factory';
+import { CoreData as CoreDataUtils } from '@performant-software/core-data/ssr';
 
 type Models = 'events' | 'instances' | 'items' | 'mediaContents' | 'organizations' | 'people' | 'places' | 'works';
 
@@ -20,3 +21,19 @@ export const getDetailPagePaths = (async (config: any, model: Models) => {
 
   return routes;
 });
+
+export const getCoverImage = (record: any) => {
+  if (record?.relatedRecords?.mediaContents && record.relatedRecords.mediaContents.length > 0) {
+    return record.relatedRecords.mediaContents[0].content_iiif_url
+  }
+
+  return null
+}
+
+export const getRelatedGeometry = (record: any) => {
+  if (record?.relatedRecords?.places && record.relatedRecords.places.length > 0) {
+    return CoreDataUtils.toFeatureCollection(record.relatedRecords.places)
+  }
+
+  return null
+}

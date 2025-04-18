@@ -6,7 +6,7 @@ import { getTranslations } from '@backend/i18n';
 import EventsService from '@services/coreData/events';
 import { ModelNames } from '@services/coreData/factory';
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
-import { getDetailPagePaths } from '@utils/detailPages';
+import { getCoverImage, getDetailPagePaths, getRelatedGeometry } from '@utils/detailPages';
 
 const { t } = await getTranslations(Astro.currentLocale);
 
@@ -15,12 +15,17 @@ const { lang, uuid } = Astro.params;
 const { event } = await EventsService.getFull(uuid);
 const excludes = config.search?.result_filtering?.events?.exclude || [];
 
+const coverUrl = getCoverImage(event);
+const geometry = getRelatedGeometry(event);
+
 export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.events);
 ---
 
 <Layout footer t={t} title={event.name}>
   <RecordDetail
+    coverUrl={coverUrl}
     excludes={excludes}
+    geometry={geometry}
     lang={lang}
     name={event.name}
     record={event}
