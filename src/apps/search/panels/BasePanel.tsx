@@ -19,6 +19,7 @@ import clsx from 'clsx';
 import {
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState
 } from 'react';
@@ -40,6 +41,7 @@ const INVERSE_SUFFIX = '_inverse';
 
 const BasePanel = (props: Props) => {
   const [manifestUrl, setManifestUrl] = useState<string | undefined>();
+  const [coverUrl, setCoverUrl] = useState(null);
 
   const navigate = useNavigate();
   const config = useSearchConfig();
@@ -172,14 +174,22 @@ const BasePanel = (props: Props) => {
   [data, props.name]);
 
   /**
-   * Memo-izes the cover URL.
+   * Updates the cover URL when the record or loading states change.
    */
-  const coverUrl = useMemo(() => {
-    if (!mediaContentsLoading && mediaContents.length > 0) {
-      return mediaContents[0].content_url
-    }
+  useEffect(() => {
+    setCoverUrl((prev) => {
+      // include a placeholder if the previous record had a cover image
+      // to avoid sudden content shifting.
+      if (mediaContentsLoading && prev) {
+        return '/placeholder.png'
+      }
 
-    return null
+      if (mediaContents.length === 0) {
+        return null
+      }
+
+      return mediaContents[0].content_preview_url
+    })
   }, [item, mediaContentsLoading])
 
   /**
