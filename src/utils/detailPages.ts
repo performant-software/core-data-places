@@ -24,7 +24,7 @@ export const getDetailPagePaths = (async (config: any, model: Models) => {
 
 export const getCoverImage = (record: any) => {
   if (record?.relatedRecords?.mediaContents && record.relatedRecords.mediaContents.length > 0) {
-    return record.relatedRecords.mediaContents[0].content_url
+    return record.relatedRecords.mediaContents[0].content_iiif_url
   }
 
   return null
