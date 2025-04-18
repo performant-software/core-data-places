@@ -14,9 +14,15 @@ const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
 const currentUrl = Astro.url;
 
-const { currentTab, t, tabs, fullscreen } = Astro.props;
-
-const { title } = await fetchAbout();
+const {
+  currentTab,
+  fullscreen,
+  image,
+  imageAlt,
+  t,
+  tabs,
+  title
+} = Astro.props;
 
 const TabKeys = {
   search: 'search',
@@ -42,13 +48,14 @@ const pages = await getPages();
       class='flex flex-row align-middle gap-6'
       href={getRelativeLocaleUrl(currentLocale)}
     >
-      <!-- @ts-ignore -->
-      { config.branding?.header_logo && ( 
-        // @ts-ignore
-        <img src={config.branding.header_logo} alt={title} class='h-10' />
+      { image && (
+        <img
+          alt={imageAlt}
+          class='h-10'
+          src={image}
+        />
       )}
-      <!-- @ts-ignore -->
-      { !config.branding?.header_hide_title && ( 
+      { title && (
         <h1
           class='text-lg font-medium'
         >

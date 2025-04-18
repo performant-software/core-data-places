@@ -53,7 +53,7 @@ const Carousel = (props: Props) => (
             src={item.image}
           />
           <div
-            className='bg-primary text-white p-6 rounded-b-md h-[168px]'
+            className='bg-primary p-6 rounded-b-md h-[168px]'
           >
             <h2
               className='text-2xl font-bold uppercase'

@@ -6,24 +6,26 @@ import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
 import { useBlackText } from '@utils/layout';
 import { getRelativeLocaleUrl } from 'astro:i18n';
-import clsx from 'clsx';
 import _ from 'underscore';
 
 import '@performant-software/core-data/style.css';
-import '@performant-software/core-data/tailwind.css';
 import '@performant-software/geospatial/style.css';
+import '@styles/index.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import '@styles/index.css';
 
 const branding = await fetchBranding();
+const { header, footer } = branding;
 
 const colorPrimary = branding.primary_color;
-const isBlackText = useBlackText(colorPrimary);
+const textPrimary = useBlackText(colorPrimary) ? 'var(--color-black)' : 'var(--color-white)';
+
+const colorSecondary = branding.secondary_color;
+const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? 'var(--color-black)' : 'var(--color-white)';
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
-const { footer, fullscreen, name, title, t, tab } = Astro.props;
+const { footer: includeFooter, fullscreen, name, title, t, tab } = Astro.props;
 
 const TabKeys = {
   search: 'search',
@@ -61,28 +63,36 @@ const tabs = {
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
     <title>{title}</title>
-    <style is:global define:vars={{ 'color-primary': colorPrimary }} />
+    <style
+      is:global
+      define:vars={{
+        customColorPrimary: colorPrimary,
+        customColorSecondary: colorSecondary,
+        customTextPrimary: textPrimary,
+        customTextSecondary: textSecondary
+      }}
+    >
+    </style>
   </head>
   <body
-    class={clsx(
-      'flex h-full sm:min-h-screen flex-col bg-white text-neutral-dark mx-auto font-sans',
-      { 'primary-text-black': isBlackText },
-      { 'primary-text-white': !isBlackText }
-    )}
+    class='flex h-full sm:min-h-screen flex-col bg-white text-neutral-dark mx-auto font-sans'
     transition:animate='initial'
   >
     <Header
       currentTab={tab}
       fullscreen={fullscreen}
+      image={header?.logo}
+      imageAlt={branding.title}
       t={t}
       tabs={tabs}
+      title={header?.hide_title ? undefined : branding.title}
     />
     <main
       class='w-full relative bg-white flex flex-col grow'
     >
       <slot />
     </main>
-    { footer && (
+    { includeFooter && (
       <Footer
         t={t}
         tabs={tabs}

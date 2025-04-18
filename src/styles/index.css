@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '@performant-software/core-data/tailwind.css';
 
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
@@ -21,8 +22,15 @@
 @theme {
   --color-neutral-dark: #111928;
   --color-neutral-light: #F5F5F5;
+  --color-default-primary: #073B4C;
+  --color-default-secondary: var(--color-neutral-200);
 
   --font-sans: Inter;
+
+  --color-primary: var(--customColorPrimary, var(--color-default-primary));
+  --color-secondary: var(--customColorSecondary, var(--color-default-secondary));
+  --color-text-primary: var(--customTextPrimary, var(--color-white));
+  --color-text-secondary: var(--customTextSecondary, var(--color-black));
 }
 
 /*
@@ -43,14 +51,16 @@
 /*
  * Branding styles
  */
-.primary-text-white .bg-primary, .primary-text-white .fill-primary, .primary-text-white .bg-primary div {
-  color: var(--color-white);
-  border-color: var(--color-white);
+.bg-primary, .fill-primary, .bg-primary div {
+  color: var(--color-text-primary);
 }
 
-.primary-text-black .bg-primary, .primary-text-black .fill-primary, .primary-text-black .bg-primary div {
-  color: var(--color-black);
-  border-color: var(--color-black);
+.bg-text-primary, .fill-text-primary, .bg-text-primary div {
+  color: var(--color-text-secondary);
+}
+
+.bg-text-secondary, .fill-text-secondary, .bg-text-secondary div {
+  color: var(--color-text-primary);
 }
 
 .swiper-pagination > .swiper-pagination-bullet-active {

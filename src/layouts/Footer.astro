@@ -1,8 +1,8 @@
 ---
 import { fetchAbout } from '@backend/tina';
 import Container from '@components/Container.astro';
+import LinkButton from '@components/LinkButton.astro';
 import config from '@config';
-import { Button } from '@performant-software/core-data';
 import _ from 'underscore';
 
 const { t, tabs } = Astro.props;
@@ -79,30 +79,18 @@ const { title } = await fetchAbout();
       <div
         class='flex flex-row justify-center gap-8 py-8 w-full'
       >
-        <a
+        <LinkButton
+          className='bg-text-primary'
+          content={t('coreDataLogin')}
           href={config.core_data.url}
           target='_blank'
-        >
-          <Button
-            className='bg-white text-black hover:text-inherit'
-            rounded
-            client:only
-          >
-            { t('coreDataLogin') }
-          </Button>
-        </a>
-        <a
+        />
+        <LinkButton
+          className='bg-text-primary'
+          content={t('tinaLogin')}
           href='/admin/index.html'
           target='_blank'
-        >
-          <Button
-            className='bg-white text-black hover:text-inherit'
-            rounded
-            client:only
-          >
-            { t('tinaLogin') }
-          </Button>
-        </a>
+        />
       </div>
     )}
     <p

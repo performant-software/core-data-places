@@ -6,8 +6,19 @@ const Branding: Collection = {
   path: 'content/branding',
   format: 'json',
   fields: [{
+    name: 'title',
+    label: 'Title',
+    type: 'string'
+  }, {
     name: 'primary_color',
     label: 'Primary Color',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'secondary_color',
+    label: 'Secondary Color',
     type: 'string',
     ui: {
       component: 'color'

@@ -7,9 +7,10 @@
  */
 
 export const useBlackText = (primary: string) => {
-    if (primary.length !== 7) {
+    if (primary?.length !== 7) {
         return false;
     }
+
     const r_ratio = parseInt(primary.slice(1,3), 16)/255.0;
     const g_ratio = parseInt(primary.slice(3,5), 16)/255.0;
     const b_ratio = parseInt(primary.slice(5,7), 16)/255.0;

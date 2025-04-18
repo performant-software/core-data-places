@@ -10,7 +10,7 @@ const NavItem = (props: Props) => (
     className={clsx(
       'flex',
       'font-light',
-      { 'border-b': props.active }
+      { 'border-b border-text-primary': props.active }
     )}
   >
     { props.content }
