@@ -184,11 +184,11 @@ const BasePanel = (props: Props) => {
         return '/placeholder.png'
       }
 
-      if (mediaContents.length === 0) {
-        return null
+      if (mediaContents.length > 0) {
+        return mediaContents[0].content_preview_url
       }
 
-      return mediaContents[0].content_preview_url
+      return null
     })
   }, [item, mediaContentsLoading])
 
