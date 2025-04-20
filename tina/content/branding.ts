@@ -36,6 +36,41 @@ const Branding: Collection = {
       label: 'Hide Title',
       type: 'boolean'
     }]
+  }, {
+    name: 'footer',
+    label: 'Footer',
+    type: 'object',
+    fields: [{
+      name: 'logos',
+      label: 'Logos',
+      type: 'object',
+      list: true,
+      fields: [{
+        name: 'image',
+        label: 'Image',
+        type: 'image'
+      }, {
+        name: 'image_alt',
+        label: 'Image Alt',
+        type: 'string'
+      }, {
+        name: 'url',
+        label: 'URL',
+        type: 'string'
+      }]
+    }, {
+      name: 'terms_url',
+      label: 'Terms and Conditions URL',
+      type: 'string'
+    }, {
+      name: 'privacy_url',
+      label: 'Privacy Policy URL',
+      type: 'string'
+    }, {
+      name: 'accessibility_url',
+      label: 'Accessibility URL',
+      type: 'string'
+    }]
   }],
   ui: {
     allowedActions: {

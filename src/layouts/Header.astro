@@ -1,14 +1,8 @@
 ---
-import { fetchAbout } from '@backend/tina';
-import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
-import NavLink from '@components/NavLink';
-import NavDropdown from '@components/NavDropdown';
-import config from '@config';
-import { getPages } from '@utils/nav';
+import NavBar from '@layouts/NavBar.astro';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
-import _ from 'underscore';
 
 const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
@@ -23,15 +17,6 @@ const {
   tabs,
   title
 } = Astro.props;
-
-const TabKeys = {
-  search: 'search',
-  pages: 'pages',
-  paths: 'paths',
-  posts: 'posts'
-};
-
-const pages = await getPages();
 
 ---
 
@@ -63,47 +48,12 @@ const pages = await getPages();
         </h1>
       )}
     </a>
-    <div
-      class='flex flex-row gap-x-12 pe-10 align-baseline justify-around'
-    >
-      <NavDropdown
-        active={TabKeys.search === currentTab}
-        content={t('explore')}
-        items={_.map(config.search, (search) => ({
-          active: Astro.url.pathname.includes(`/search/${search.name}`),
-          name: search.name,
-          label: t(`index_${search.name}`),
-          href: getRelativeLocaleUrl(currentLocale, `/search/${search.name}`)
-        }))}
-        client:only='react'
-      />
-      { _.map(config.content, (key) => key === TabKeys.pages
-        ? (
-          <NavDropdown
-            content={'Pages'}
-            items={_.map(pages, (page) => ({
-              active: Astro.url.pathname.includes(`/pages/${page._sys.filename}`),
-              name: page.id,
-              label: page.title,
-              href: getRelativeLocaleUrl(currentLocale, `/pages/${page._sys.filename}`)
-            }))}
-            client:only='react'
-          />
-        ) : (
-          <NavLink
-            active={key === currentTab}
-            content={t(key)}
-            href={getRelativeLocaleUrl(currentLocale, key)}
-          />
-        )
-      )}
-      <LanguagePicker
-        locales={locales}
-        currentLocale={currentLocale}
-        currentUrl={currentUrl.pathname}
-        client:only='react'
-      />
-    </div>
+    <NavBar
+      className='flex flex-row gap-x-12 pe-10 align-baseline justify-around'
+      currentTab={currentTab}
+      languagePicker
+      t={t}
+    />
   </div>
   
   <MobileHeader

@@ -16,6 +16,10 @@ const Pages: Collection = {
     label: 'Home Page',
     type: 'boolean'
   }, {
+    name: 'nav_bar',
+    label: 'Navigation Menu',
+    type: 'boolean'
+  }, {
     name: 'sections',
     label: 'Sections',
     type: 'object',

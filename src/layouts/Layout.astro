@@ -25,6 +25,7 @@ const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? 'var(--c
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
+
 const { footer: includeFooter, fullscreen, name, title, t, tab } = Astro.props;
 
 const TabKeys = {
@@ -94,8 +95,13 @@ const tabs = {
     </main>
     { includeFooter && (
       <Footer
+        accessibilityUrl={footer?.accessibility_url}
+        logos={footer?.logos}
+        privacyUrl={footer?.privacy_url}
         t={t}
         tabs={tabs}
+        termsUrl={footer?.terms_url}
+        title={branding?.title}
       />
     )}
   </body>

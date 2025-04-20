@@ -1,10 +1,5 @@
 import client from '@tina/databaseClient';
 
-export const fetchAbout = async () => {
-  const response = await client.queries.about({ relativePath: 'about.mdx' });
-  return response.data?.about;
-};
-
 export const fetchBranding = async () => {
   const response = await client.queries.branding({ relativePath: 'branding.json' });
   return response.data?.branding;

@@ -1,102 +1,114 @@
 ---
-import { fetchAbout } from '@backend/tina';
 import Container from '@components/Container.astro';
 import LinkButton from '@components/LinkButton.astro';
 import config from '@config';
+import NavBar from '@layouts/NavBar.astro';
 import _ from 'underscore';
 
-const { t, tabs } = Astro.props;
-const { title } = await fetchAbout();
+const { accessibilityUrl, logos, privacyUrl, t, tabs, termsUrl, title } = Astro.props;
+const year = new Date().getFullYear();
+
 ---
 
 <div
   class='bg-primary w-full'
 >
   <Container
-    className='flex flex-col py-12 items-center divide-y-2 divide-secondary'
+    className='flex flex-col py-8 items-center'
   >
-    {
-      config.branding?.footer_orgs && ( 
-        <div class='flex flex-row gap-12 justify-center flex-wrap py-8 w-full'>
-          { _.map(config.branding.footer_orgs, (org) => {
-            if (org.url) {
-              return (
-                <a href={org.url}>
-                  <img src={org.logo} alt={org.alt} class='h-24 object-contain' />
-                </a>
-              )
-            } else {
-              return (
-                <img src={org.logo} alt={org.alt} class='h-24 object-contain' />
-              )
-            }
-          })}
-        </div>
-      )
-    }
-    <div
-      class='flex flex-col items-center w-full'
-    >
+    { logos && (
       <div
-        class='flex flex-col md:flex-row gap-6 align-middle justify-center items-center pt-8'
+        class={`
+          flex 
+          flex-col 
+          lg:flex-row 
+          gap-12
+          items-center 
+          justify-center 
+          w-full 
+          border-b 
+          border-neutral-500 
+          py-8
+        `}
       >
-        {
-          !config.branding?.footer_hide_title ? (
-            <>
-              { config.branding?.footer_logo && (
-                <img
-                  class='h-14'
-                  src={config.branding?.footer_logo}
-                />
-              )}
-              <h1
-                class='font-serif font-semibold text-[32px] text-center'
-              >
-                { title }
-              </h1>
-            </>
-          ) : ( 
-            <img src={config.branding?.footer_logo} class='h-32' />
-          )
-        }
-      </div>
-      <div
-        class='flex flex-col md:flex-row gap-x-12 gap-y-4 items-center align-baseline justify-around pt-4 pb-8'
-      >
-        { _.map(_.keys(tabs), (key) => (
+        { _.map(logos, (logo) => (
           <a
-            class='flex flex-col p-y-4 justify-center'
-            href={tabs[key].url}
+            href={logo.url || '#'}
           >
-            <div>
-              { t(key) }
-            </div>
+            <img
+              alt={logo.alt}
+              class='w-full h-[200px] lg:w-[200px] lg:h-[100px] object-contain'
+              src={logo.image}
+            />
           </a>
         ))}
       </div>
+    )}
+    <div
+      class='flex flex-col items-center justify-center w-full'
+    >
+      <h1
+        class='w-full text-3xl text-center font-medium py-8'
+      >
+        { title }
+      </h1>
+      <NavBar
+        className='flex w-full items-center justify-center gap-y-4 gap-x-12'
+        t={t}
+      />
     </div>
     { config.branding?.footer_login && !import.meta.env.STATIC_BUILD && (
       <div
-        class='flex flex-row justify-center gap-8 py-8 w-full'
+        class='flex flex-col lg:flex-row lg:w-full lg:justify-center gap-x-12 gap-y-4 py-8'
       >
         <LinkButton
-          className='bg-text-primary'
+          className='bg-secondary w-[200px] text-center'
           content={t('coreDataLogin')}
           href={config.core_data.url}
           target='_blank'
         />
         <LinkButton
-          className='bg-text-primary'
+          className='bg-secondary w-[200px] text-center'
           content={t('tinaLogin')}
           href='/admin/index.html'
           target='_blank'
         />
       </div>
     )}
-    <p
-      class='text-center text-sm py-8 w-full'
+    <div
+      class='flex border-t border-neutral-500 py-4 w-full font-light'
     >
-      { t('footerCopyright') }
-    </p>
+      <div
+        class='flex flex-col lg:flex-row items-center lg:justify-between gap-y-4 w-full text-sm px-8 lg:px-0'
+      >
+        <div
+          class='flex flex-col lg:flex-row items-center gap-y-4 lg:divide-x-1'
+        >
+          <a
+            class='lg:pe-6'
+            href={termsUrl || '#'}
+          >
+            { t('termsConditions') }
+          </a>
+          <a
+            class='lg:px-6'
+            href={privacyUrl || '#'}
+          >
+            { t('privacyPolicy') }
+          </a>
+          <a
+            class='lg:px-6'
+            href={accessibilityUrl || '#'}
+          >
+            { t('accessibility') }
+          </a>
+        </div>
+        <div
+          class='text-center'
+        >
+          { t('copyright', { year, name: title })}
+        </div>
+      </div>
+    </div>
   </Container>
 </div>

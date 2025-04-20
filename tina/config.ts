@@ -1,7 +1,6 @@
 import { defineConfig, LocalAuthProvider } from 'tinacms';
 import _ from 'underscore';
 import config from '../public/config.json';
-import About from './content/about';
 import Branding from './content/branding';
 import I18n from './content/i18n';
 import PagesCollection from './content/pages';
@@ -39,7 +38,6 @@ export default defineConfig({
       !useSSO
         ? TinaUserCollection
         : undefined,
-      About,
       Branding,
       Settings,
       config.content?.includes('pages')

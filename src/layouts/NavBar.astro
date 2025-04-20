@@ -1,0 +1,73 @@
+---
+import LanguagePicker from '@components/LanguagePicker';
+import config from '@config';
+import NavLink from '@components/NavLink';
+import NavDropdown from '@components/NavDropdown';
+import { getPages } from '@utils/nav';
+import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
+import _ from 'underscore';
+
+const {
+  className,
+  currentTab,
+  languagePicker,
+  t
+} = Astro.props;
+
+const currentLocale = Astro.currentLocale;
+const currentUrl = Astro.url;
+const locales = getRelativeLocaleUrlList();
+
+const pages = await getPages();
+
+const TabKeys = {
+  search: 'search',
+  pages: 'pages',
+  paths: 'paths',
+  posts: 'posts'
+};
+---
+
+<div
+  class={className}
+>
+  <NavDropdown
+    active={TabKeys.search === currentTab}
+    content={t('explore')}
+    items={_.map(config.search, (search) => ({
+      active: Astro.url.pathname.includes(`/search/${search.name}`),
+      name: search.name,
+      label: t(`index_${search.name}`),
+      href: getRelativeLocaleUrl(currentLocale, `/search/${search.name}`)
+    }))}
+    client:only='react'
+  />
+  { _.map(config.content, (key) => key === TabKeys.pages
+    ? (
+      <NavDropdown
+        content={'Pages'}
+        items={_.map(pages, (page) => ({
+          active: Astro.url.pathname.includes(`/pages/${page._sys.filename}`),
+          name: page.id,
+          label: page.title,
+          href: getRelativeLocaleUrl(currentLocale, `/pages/${page._sys.filename}`)
+        }))}
+        client:only='react'
+      />
+    ) : (
+      <NavLink
+        active={key === currentTab}
+        content={t(key)}
+        href={getRelativeLocaleUrl(currentLocale, key)}
+      />
+    )
+  )}
+  { languagePicker && (
+    <LanguagePicker
+      locales={locales}
+      currentLocale={currentLocale}
+      currentUrl={currentUrl.pathname}
+      client:only='react'
+    />
+  )}
+</div>
