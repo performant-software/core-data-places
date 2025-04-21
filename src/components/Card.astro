@@ -3,7 +3,7 @@ const { alt, date, category, title, author, slug, imageUrl, blurb, t } = Astro.p
 ---
 
 <article
-  class='flex max-w-xl flex-col items-start justify-between bg-white'
+  class='flex max-w-xl flex-col items-start justify-between bg-neutral-light'
 >
   <div
     class='relative w-full'
@@ -12,14 +12,14 @@ const { alt, date, category, title, author, slug, imageUrl, blurb, t } = Astro.p
       <img
         alt={alt || ''}
         src={imageUrl}
-        class='aspect-16/9 w-full bg-gray-100 object-cover sm:aspect-2/1 lg:aspect-3/2'
+        class='aspect-[16/9] w-full bg-neutral-light object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
         height={256}
         width={384}
       />
     )}
     { !imageUrl && (
       <div
-        class='aspect-16/9 w-full bg-gray-100 object-cover sm:aspect-2/1 lg:aspect-3/2'
+        class='aspect-[16/9] w-full bg-neutral-light object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
       />
     )}
     <div
@@ -38,7 +38,7 @@ const { alt, date, category, title, author, slug, imageUrl, blurb, t } = Astro.p
     { category && (
       <a
         href='#'
-        class='relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100'
+        class='relative z-10 rounded-full bg-gray-200 px-3 py-1.5 font-medium text-gray-600 hover:bg-white'
       >
         { category }
       </a>
