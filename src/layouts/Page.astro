@@ -4,7 +4,7 @@ import FreeText from '@apps/pages/sections/FreeText.astro';
 import Hero from '@apps/pages/sections/Hero.astro';
 import Images from '@apps/pages/sections/Images.astro';
 import Text from '@apps/pages/sections/Text.astro';
-import TextImage from '@apps/pages/sections/TextImage.astro';
+import TextImage from '@apps/pages/sections/TextImage';
 import { getTranslations } from '@backend/i18n';
 import { fetchPage } from '@backend/tina';
 import Layout from '@layouts/Layout.astro';
@@ -85,6 +85,7 @@ const SectionTypes = {
           textPosition={section.text_position}
           title={section.title}
           url={section.url}
+          client:load
         />
       )}
     </section>
