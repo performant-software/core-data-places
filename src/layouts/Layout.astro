@@ -5,6 +5,7 @@ import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
 import { useBlackText } from '@utils/layout';
+import { getPages } from '@utils/nav';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';
 
@@ -26,33 +27,52 @@ const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? 'var(--c
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
 
+const pages = await getPages();
+
 const { footer: includeFooter, fullscreen, name, title, t, tab } = Astro.props;
 
-const TabKeys = {
+const NavKeys = {
   search: 'search',
+  pages: 'pages',
   paths: 'paths',
   posts: 'posts'
 };
 
-const Tabs = {
-  search: {
-    key: TabKeys.search,
-    url: getRelativeLocaleUrl(currentLocale, `${TabKeys.search}/${name}`)
+const NavConfig = {
+  [NavKeys.search]: {
+    label: t('explore'),
+    options: _.map(config.search, (search) => ({
+      active: Astro.url.pathname.includes(`/${NavKeys.search}/${search.name}`),
+      name: search.name,
+      label: t(`index_${search.name}`),
+      href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.search}/${search.name}`)
+    }))
   },
-  paths: {
-    key: TabKeys.paths,
-    url: getRelativeLocaleUrl(currentLocale, TabKeys.paths)
+  [NavKeys.pages]: {
+    label: t('pages'),
+    options: _.map(pages, (page) => ({
+      active: Astro.url.pathname.includes(`/${NavKeys.pages}/${page._sys.filename}`),
+      name: page.id,
+      label: page.title,
+      href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.pages}/${page._sys.filename}`)
+    }))
   },
-  posts: {
-    key: TabKeys.posts,
-    url: getRelativeLocaleUrl(currentLocale, TabKeys.posts)
+  [NavKeys.paths]: {
+    active: tab === NavKeys.paths,
+    label: t('paths'),
+    href: getRelativeLocaleUrl(currentLocale, NavKeys.paths)
+  },
+  [NavKeys.posts]: {
+    active: tab === NavKeys.posts,
+    label: t('posts'),
+    href: getRelativeLocaleUrl(currentLocale, NavKeys.posts)
   }
 };
 
-const tabs = {
-  search: Tabs.search,
-  ..._.pick(Tabs, config.content)
-};
+const NavItems = [
+  NavConfig.search,
+  ..._.map(config.content, (key) => NavConfig[key])
+];
 ---
 
 <!DOCTYPE html>
@@ -84,8 +104,8 @@ const tabs = {
       fullscreen={fullscreen}
       image={header?.logo}
       imageAlt={branding.title}
-      t={t}
-      tabs={tabs}
+      items={NavItems}
+      pages={pages}
       title={header?.hide_title ? undefined : branding.title}
     />
     <main
@@ -96,10 +116,11 @@ const tabs = {
     { includeFooter && (
       <Footer
         accessibilityUrl={footer?.accessibility_url}
+        items={NavItems}
+        login={footer?.allow_login && !import.meta.env.STATIC_BUILD}
         logos={footer?.logos}
         privacyUrl={footer?.privacy_url}
         t={t}
-        tabs={tabs}
         termsUrl={footer?.terms_url}
         title={branding?.title}
       />

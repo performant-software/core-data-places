@@ -41,6 +41,10 @@ const Branding: Collection = {
     label: 'Footer',
     type: 'object',
     fields: [{
+      name: 'allow_login',
+      label: 'Allow Login',
+      type: 'boolean'
+    }, {
       name: 'logos',
       label: 'Logos',
       type: 'object',

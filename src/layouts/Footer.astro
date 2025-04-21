@@ -5,7 +5,17 @@ import config from '@config';
 import NavBar from '@layouts/NavBar.astro';
 import _ from 'underscore';
 
-const { accessibilityUrl, logos, privacyUrl, t, tabs, termsUrl, title } = Astro.props;
+const {
+  accessibilityUrl,
+  items,
+  login,
+  logos,
+  privacyUrl,
+  t,
+  termsUrl,
+  title
+} = Astro.props;
+
 const year = new Date().getFullYear();
 
 ---
@@ -48,18 +58,18 @@ const year = new Date().getFullYear();
       class='flex flex-col items-center justify-center w-full'
     >
       <h1
-        class='w-full text-3xl text-center font-medium py-8'
+        class='w-full text-3xl text-center font-medium pt-4'
       >
         { title }
       </h1>
       <NavBar
-        className='flex w-full items-center justify-center gap-y-4 gap-x-12'
-        t={t}
+        className='flex w-full items-center justify-center gap-y-4 gap-x-12 py-8'
+        items={items}
       />
     </div>
-    { config.branding?.footer_login && !import.meta.env.STATIC_BUILD && (
+    { login && (
       <div
-        class='flex flex-col lg:flex-row lg:w-full lg:justify-center gap-x-12 gap-y-4 py-8'
+        class='flex flex-col lg:flex-row lg:w-full lg:justify-center gap-x-12 gap-y-4 pb-12'
       >
         <LinkButton
           className='bg-secondary w-[200px] text-center'

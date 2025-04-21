@@ -11,6 +11,10 @@
     "tinaLabel": "About",
     "defaultValue": "About"
   },
+  "pages": {
+    "tinaLabel": "Pages",
+    "defaultValue": "Pages"
+  },
   "paths": {
     "tinaLabel": "Paths",
     "defaultValue": "Paths"
