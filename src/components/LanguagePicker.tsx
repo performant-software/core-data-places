@@ -26,7 +26,7 @@ const LanguagePicker = (props: Props) => {
         className='relative -mb-2'
       >
         <Listbox.Button
-          className='relative w-full cursor-default rounded-lg pr-7 text-left sm:text-sm'
+          className='relative w-full cursor-default rounded-lg pr-7 text-left sm:text-sm cursor-pointer'
         >
           <span
             className='block truncate border border-gray-400 py-2 px-3 mr-2'

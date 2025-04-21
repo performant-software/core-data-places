@@ -58,12 +58,8 @@
   color: var(--color-text-primary);
 }
 
-.bg-text-primary, .fill-text-primary, .bg-text-primary div {
+.bg-secondary, .fill-secondary, .bg-secondary div {
   color: var(--color-text-secondary);
-}
-
-.bg-text-secondary, .fill-text-secondary, .bg-text-secondary div {
-  color: var(--color-text-primary);
 }
 
 .swiper-pagination > .swiper-pagination-bullet-active {

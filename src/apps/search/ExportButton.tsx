@@ -28,12 +28,12 @@ const ExportButton = () => {
       onChange={onSelection}
     >
       <div
-        className='relative -mb-2'
+        className='relative'
       >
         <Listbox.Button
           as={Button}
           className='relative w-full rounded-lg text-left text-smd'
-          primary
+          secondary
         >
           <Icon
             name='export'

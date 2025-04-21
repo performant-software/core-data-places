@@ -35,7 +35,7 @@ const ListFacet = ({ attribute, className, icon }: Props) => {
       <ul>
         { _.map(items, (item, index) => (
           <li
-            className='flex justify-between items-center hover:bg-secondary'
+            className='flex justify-between items-center hover:bg-neutral-200'
             key={index}
             title={item.label}
           >
