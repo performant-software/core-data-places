@@ -6,9 +6,13 @@ const { content } = Astro.props;
 ---
 
 <Container
-  className='w-full'
+  className='w-full py-8'
 >
-  <TinaMarkdown
-    content={content}
-  />
+  <article
+    class='prose prose-lg max-w-none w-full'
+  >
+    <TinaMarkdown
+      content={content}
+    />
+  </article>
 </Container>
