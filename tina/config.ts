@@ -39,7 +39,6 @@ export default defineConfig({
         ? TinaUserCollection
         : undefined,
       Branding,
-      Settings,
       config.content?.includes('pages')
         ? PagesCollection
         : undefined,
@@ -49,7 +48,8 @@ export default defineConfig({
       config.content?.includes('posts')
         ? PostsCollection
         : undefined,
-      I18n
+      I18n,
+      Settings
     ])
   }
 });
