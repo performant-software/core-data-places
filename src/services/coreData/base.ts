@@ -178,7 +178,7 @@ class Base {
       let mediaContents;
   
       if (this.useCache()) {
-        mediaContents = await this.getRelatedRecords(id, 'media_contents');
+        mediaContents = await this.getRelatedRecords(id, 'mediaContents');
       } else {
         const response = await this.service.fetchRelatedMedia(id, REQUEST_PARAMS);
         mediaContents = response.media_contents;
