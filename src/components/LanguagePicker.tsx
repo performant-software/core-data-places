@@ -65,6 +65,7 @@ const LanguagePicker = (props: Props) => {
                 value={locale}
               >
                 <a
+                  className='text-black'
                   href={locale}
                 >
                   <span className='block truncate'>
