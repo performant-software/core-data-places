@@ -24,6 +24,8 @@ const textPrimary = useBlackText(colorPrimary) ? 'var(--color-black)' : 'var(--c
 const colorSecondary = branding.secondary_color;
 const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? 'var(--color-black)' : 'var(--color-white)';
 
+const font = branding.font_name;
+
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
 
@@ -90,7 +92,8 @@ const NavItems = [
         customColorPrimary: colorPrimary,
         customColorSecondary: colorSecondary,
         customTextPrimary: textPrimary,
-        customTextSecondary: textSecondary
+        customTextSecondary: textSecondary,
+        customFont: font
       }}
     >
     </style>

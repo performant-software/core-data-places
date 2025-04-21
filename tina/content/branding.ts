@@ -10,6 +10,17 @@ const Branding: Collection = {
     label: 'Title',
     type: 'string'
   }, {
+    name: 'font_name',
+    label: 'Font Name',
+    type: 'string',
+    options: [{
+      label: 'Inter',
+      value: 'Inter'
+    }, {
+      label: 'Afacad',
+      value: 'Afacad'
+    }]
+  }, {
     name: 'primary_color',
     label: 'Primary Color',
     type: 'string',
