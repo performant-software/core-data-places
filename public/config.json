@@ -1,7 +1,6 @@
 {
   "content": {
     "collections": [
-      "pages",
       "paths",
       "posts"
     ]

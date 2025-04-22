@@ -8,7 +8,7 @@ import _ from 'underscore';
  * @param items
  */
 export const filterAll = async (locale: string, items: Array<any>) => {
-  if (!config.content.localize) {
+  if (!config.content.localize_pages) {
     return items;
   }
 
@@ -53,7 +53,7 @@ export const filterAll = async (locale: string, items: Array<any>) => {
 export const fetchOne = async (locale: string, slug: string, query: any) => {
   let response;
 
-  if (!config.content.localize) {
+  if (!config.content.localize_pages) {
     response = await query({ relativePath: `${slug}.mdx` });
   } else {
     response = await query({ relativePath: `${locale}/${slug}.mdx` });

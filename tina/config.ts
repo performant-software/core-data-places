@@ -39,9 +39,7 @@ export default defineConfig({
         ? TinaUserCollection
         : undefined,
       Branding,
-      config.content?.collections?.includes('pages')
-        ? PagesCollection
-        : undefined,
+      PagesCollection,
       config.content?.collections?.includes('paths')
         ? PathsCollection
         : undefined,
