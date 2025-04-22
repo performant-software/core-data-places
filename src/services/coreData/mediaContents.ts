@@ -2,8 +2,9 @@ import { MediaContentsService } from '@performant-software/core-data/ssr';
 import Base from '@services/coreData/base';
 
 /**
- * Class responsible for fetching media_contents data. Currently, there is no media contents data used
- * directly within the site, only within TinaCMS to select a media record.
+ * Class responsible for fetching media_contents data. Currently, media contents are not directly
+ * displayed on the site, only within TinaCMS to select a media record and in the search panels to
+ * display the cover image.
  *
  * As a result, only the `getAll` method will be available.
  */

@@ -170,6 +170,24 @@ class Base {
   }
 
   /**
+   * Returns the related media contents for the record with the passed ID.
+   *
+   * @param id
+   */
+    async getRelatedMedia(id: string) {
+      let mediaContents;
+  
+      if (this.useCache()) {
+        mediaContents = await this.getRelatedRecords(id, 'mediaContents');
+      } else {
+        const response = await this.service.fetchRelatedMedia(id, REQUEST_PARAMS);
+        mediaContents = response.media_contents;
+      }
+  
+      return { mediaContents };
+    }
+
+  /**
    * Returns the related manifests for the record with the passed ID.
    *
    * @param id
