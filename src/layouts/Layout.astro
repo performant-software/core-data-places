@@ -29,7 +29,7 @@ const font = branding.font_name;
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
 
-const pages = await getPages();
+const pages = await getPages(currentLocale);
 
 const { footer: includeFooter, fullscreen, name, title, t, tab } = Astro.props;
 
@@ -73,7 +73,7 @@ const NavConfig = {
 
 const NavItems = [
   NavConfig.search,
-  ..._.map(config.content, (key) => NavConfig[key])
+  ..._.map(config.content?.collections, (key) => NavConfig[key])
 ];
 ---
 

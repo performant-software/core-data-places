@@ -11,7 +11,9 @@ import Layout from '@layouts/Layout.astro';
 import _ from 'underscore';
 
 const { slug } = Astro.props;
-const page = await fetchPage(slug);
+const locale = Astro.currentLocale;
+
+const page = await fetchPage(locale, slug);
 
 const { t } = await getTranslations(Astro.currentLocale);
 

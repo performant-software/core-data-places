@@ -39,13 +39,13 @@ export default defineConfig({
         ? TinaUserCollection
         : undefined,
       Branding,
-      config.content?.includes('pages')
+      config.content?.collections?.includes('pages')
         ? PagesCollection
         : undefined,
-      config.content?.includes('paths')
+      config.content?.collections?.includes('paths')
         ? PathsCollection
         : undefined,
-      config.content?.includes('posts')
+      config.content?.collections?.includes('posts')
         ? PostsCollection
         : undefined,
       I18n,

@@ -1,4 +1,5 @@
 import client from '@tina/databaseClient';
+import { fetchOne, filterAll } from './i18n';
 
 export const fetchBranding = async () => {
   const response = await client.queries.branding({ relativePath: 'branding.json' });
@@ -15,14 +16,16 @@ export const fetchI18ns = async () => {
   return response.data?.i18nConnection?.edges?.map((item) => item?.node);
 };
 
-export const fetchPage = async (slug: string) => {
-  const response = await client.queries.pages({ relativePath: `${slug}.mdx` });
+export const fetchPage = async (locale: string, slug: string) => {
+  const response = await fetchOne(locale, slug, client.queries.pages);
   return response.data?.pages;
 };
 
-export const fetchPages = async (params?: any) => {
+export const fetchPages = async (locale: string, params?: any) => {
   const response = await client.queries.pagesConnection(params);
-  return response.data?.pagesConnection?.edges?.map((item) => item?.node);
+  const pages = response.data?.pagesConnection?.edges?.map((item) => item?.node);
+
+  return filterAll(locale, pages);
 };
 
 export const fetchPath = async (slug: string) => {
