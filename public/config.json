@@ -1,40 +1,10 @@
 {
-  "content": ["paths", "posts"],
-  "i18n": {
-    "default_locale": "en",
-    "locales": ["en"]
-  },
-  "layers": [
-    {
-      "name": "Maptiler DataViz Style",
-      "layer_type": "vector",
-      "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
-    }
-  ],
-  "map": {
-    "clusterRadius": 6,
-    "geometry": "geometry",
-    "max_zoom": 14,
-    "zoom_to_place": true
-  },
-  "search": {
-    "geosearch": true,
-    "result_card": {
-      "title": "name"
-    },
-    "route": "/places"
-  },
-  "typesense": {
-    "host": "example.typesense.com",
-    "port": 443,
-    "protocol": "https",
-    "api_key": "abcdefg",
-    "index_name": "core_data_places",
-    "query_by": "name",
-    "default_sort": "name",
-    "overrides": {
-      "geoLocationField": "coordinates"
-    }
+  "content": {
+    "collections": [
+      "pages",
+      "paths",
+      "posts"
+    ]
   },
   "core_data": {
     "url": "https://staging.coredata.cloud",
@@ -43,5 +13,37 @@
       2,
       3
     ]
-  }
+  },
+  "i18n": {
+    "default_locale": "en",
+    "locales": ["en"]
+  },
+  "layers": [{
+    "name": "Maptiler DataViz Style",
+    "layer_type": "vector",
+    "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
+  }],
+  "search": [{
+    "name": "places",
+    "route": "/places",
+    "geosearch": true,
+    "map": {
+      "clusterRadius": 6,
+      "geometry": "geometry",
+      "max_zoom": 14,
+      "zoom_to_place": true
+    },
+    "typesense": {
+      "host": "example.typesense.com",
+      "port": 443,
+      "protocol": "https",
+      "api_key": "abcdefg",
+      "index_name": "core_data_places",
+      "query_by": "name",
+      "default_sort": "name",
+      "overrides": {
+        "geoLocationField": "coordinates"
+      }
+    }
+  }]
 }
