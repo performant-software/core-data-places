@@ -12,7 +12,7 @@ const {
 ---
 
 <div
-  class='flex flex-col w-full p-8 lg:px-36 lg:py-16'
+  class='flex flex-col w-full px-10 py-16 lg:px-36'
 >
   { title && (
     <h2
@@ -25,11 +25,11 @@ const {
     </h2>
   )}
   <div
-    class='flex flex-wrap lg:flex-nowrap'
+    class='flex flex-wrap lg:flex-nowrap gap-y-4'
   >
     { _.map(items, (item) => (
       <div
-        class='flex flex-col p-4 w-full'
+        class='flex flex-col w-full'
       >
         <h4
           class='text-3xl font-bold py-4'
