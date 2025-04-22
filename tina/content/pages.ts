@@ -1,4 +1,16 @@
 import { Collection } from '@tinacms/schema-tools';
+import _ from 'underscore';
+
+const LABEL_SEPARATOR = ': ';
+
+/**
+ * Returns the label for the passed array of arguments.
+ *
+ * @param args
+ */
+const getLabel = (...args) => {
+  return _.compact(args).join(LABEL_SEPARATOR);
+};
 
 const Pages: Collection = {
   name: 'pages',
@@ -32,6 +44,11 @@ const Pages: Collection = {
         label: 'Items',
         type: 'object',
         list: true,
+        ui: {
+          itemProps: (item) => {
+            return { label: getLabel(item?.title) };
+          }
+        },
         fields: [{
           name: 'title',
           label: 'Title',
@@ -69,6 +86,11 @@ const Pages: Collection = {
     }, {
       name: 'hero',
       label: 'Hero',
+      ui: {
+        itemProps: (item) => {
+          return { label: getLabel('Hero', item?.title) };
+        }
+      },
       fields: [{
         name: 'title',
         label: 'Title',
@@ -125,6 +147,11 @@ const Pages: Collection = {
     }, {
       name: 'images',
       label: 'Images',
+      ui: {
+        itemProps: (item) => {
+          return { label: getLabel('Images', item?.title) };
+        }
+      },
       fields: [{
         name: 'title',
         label: 'Title',
@@ -134,6 +161,11 @@ const Pages: Collection = {
         label: 'Items',
         type: 'object',
         list: true,
+        ui: {
+          itemProps: (item) => {
+            return { label: getLabel(item?.url) };
+          }
+        },
         fields: [{
           name: 'image',
           label: 'Image',
@@ -151,6 +183,11 @@ const Pages: Collection = {
     }, {
       name: 'text_block',
       label: 'Text Block',
+      ui: {
+        itemProps: (item) => {
+          return { label: getLabel('Text Block', item?.title) };
+        }
+      },
       fields: [{
         name: 'title',
         label: 'Title',
@@ -195,6 +232,11 @@ const Pages: Collection = {
     }, {
       name: 'text_image',
       label: 'Text Image Block',
+      ui: {
+        itemProps: (item) => {
+          return { label: getLabel('Text Image Block', item?.title) };
+        }
+      },
       fields: [{
         name: 'title',
         label: 'Title',
