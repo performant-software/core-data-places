@@ -1,13 +1,11 @@
 ---
 import config from '@config';
+import Page from '@layouts/Page.astro';
+import { getHomepage } from '@utils/nav';
 import _ from 'underscore';
-import { fetchPages } from '@backend/tina';
-import Page from '../../layouts/Page.astro';
 
 const locale = Astro.currentLocale;
-
-const pages = await fetchPages(locale, { filter: { home_page: { eq: true } } });
-const [page,] = pages;
+const page = await getHomepage(locale);
 
 export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
 
