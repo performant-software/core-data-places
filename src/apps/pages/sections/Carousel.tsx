@@ -16,7 +16,7 @@ interface Props {
 
 const Carousel = (props: Props) => (
   <div
-    className='px-10 py-16 lg:p-24'
+    className='px-10 py-16 lg: lg:px-36 lg:py-24'
   >
     <Swiper
       autoHeight
