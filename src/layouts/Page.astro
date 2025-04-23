@@ -7,6 +7,7 @@ import Text from '@apps/pages/sections/Text.astro';
 import TextImage from '@apps/pages/sections/TextImage';
 import { getTranslations } from '@backend/i18n';
 import { fetchPage } from '@backend/tina';
+import Container from '@components/Container.astro';
 import Layout from '@layouts/Layout.astro';
 import _ from 'underscore';
 
@@ -37,18 +38,23 @@ const SectionTypes = {
 >
   { _.map(page?.sections, (section, index) => (
     <section
+      class='relative'
       key={index}
     >
       { section.__typename === SectionTypes.carousel && (
-        <Carousel
-          items={section.items}
-          client:only='react'
-        />
+        <Container>
+          <Carousel
+            items={section.items}
+            client:only='react'
+          />
+        </Container>
       )}
       { section.__typename === SectionTypes.freeText && (
-        <FreeText
-          content={section.body}
-        />
+        <Container>
+          <FreeText
+            content={section.body}
+          />
+        </Container>
       )}
       { section.__typename === SectionTypes.hero && (
         <Hero
@@ -63,32 +69,38 @@ const SectionTypes = {
         />
       )}
       { section.__typename === SectionTypes.images && (
-        <Images
-          items={section.items}
-          title={section.title}
-        />
+        <Container>
+          <Images
+            items={section.items}
+            title={section.title}
+          />
+        </Container>
       )}
       { section.__typename === SectionTypes.textBlock && (
-        <Text
-          buttonText={section.button_text}
-          items={section.items}
-          textAlignment={section.text_alignment}
-          title={section.title}
-          url={section.url}
-        />
+        <Container>
+          <Text
+            buttonText={section.button_text}
+            items={section.items}
+            textAlignment={section.text_alignment}
+            title={section.title}
+            url={section.url}
+          />
+        </Container>
       )}
       { section.__typename === SectionTypes.textImage && (
-        <TextImage
-          backgroundPosition={section.background_position}
-          buttonText={section.button_text}
-          description={section.description}
-          image={section.image}
-          imageAlt={section.image_alt}
-          textPosition={section.text_position}
-          title={section.title}
-          url={section.url}
-          client:load
-        />
+        <Container>
+          <TextImage
+            backgroundPosition={section.background_position}
+            buttonText={section.button_text}
+            description={section.description}
+            image={section.image}
+            imageAlt={section.image_alt}
+            textPosition={section.text_position}
+            title={section.title}
+            url={section.url}
+            client:load
+          />
+        </Container>
       )}
     </section>
   ))}
