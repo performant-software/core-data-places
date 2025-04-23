@@ -6,16 +6,12 @@ import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
 
 interface Props {
-  record: any;
+  geometry: any;
   lang: string;
 }
 
 const PlaceMap = (props: Props) => {
   const { t } = useTranslations();
-
-  if (!props.record.place_geometry?.geometry_json) {
-    return null;
-  }
 
   return (
     <TranslationContext.Provider
@@ -31,7 +27,7 @@ const PlaceMap = (props: Props) => {
               boundingBoxOptions={{
                 animate: false
               }}
-              data={props.record.place_geometry.geometry_json}
+              data={props.geometry}
             />
           </Map>
         </Peripleo>

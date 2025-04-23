@@ -19,6 +19,7 @@ import clsx from 'clsx';
 import {
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState
 } from 'react';
@@ -40,6 +41,7 @@ const INVERSE_SUFFIX = '_inverse';
 
 const BasePanel = (props: Props) => {
   const [manifestUrl, setManifestUrl] = useState<string | undefined>();
+  const [coverUrl, setCoverUrl] = useState(null);
 
   const navigate = useNavigate();
   const config = useSearchConfig();
@@ -119,6 +121,12 @@ const BasePanel = (props: Props) => {
   const { data: { organizations = [] } = {}, loading: organizationsLoading } = useLoader(onLoadOrganizations, null, [id, props.service]);
 
   /**
+   * Loads the media contents from the Core Data API.
+   */
+  const onLoadMediaContents = () => props.service.fetchRelatedMedia(id, { per_page: 0 });
+  const { data: { mediaContents = [] } = {}, loading: mediaContentsLoading } = useLoader(onLoadMediaContents, null, [id, props.service]);
+
+  /**
    * Loads the IIIF collection manifest from the Core Data API.
    */
   const onLoadManifests = () => props.service.fetchRelatedManifests(id, { per_page: 0 });
@@ -164,6 +172,25 @@ const BasePanel = (props: Props) => {
     return item;
   },
   [data, props.name]);
+
+  /**
+   * Updates the cover URL when the record or loading states change.
+   */
+  useEffect(() => {
+    setCoverUrl((prev) => {
+      // include a placeholder if the previous record had a cover image
+      // to avoid sudden content shifting.
+      if (mediaContentsLoading && prev) {
+        return '/placeholder.png'
+      }
+
+      if (mediaContents.length > 0) {
+        return mediaContents[0].content_preview_url
+      }
+
+      return null
+    })
+  }, [item, mediaContentsLoading])
 
   /**
    * Memo-izes the geometry.
@@ -331,12 +358,14 @@ const BasePanel = (props: Props) => {
     >
       <RecordDetailPanel
         count
+        coverUrl={coverUrl}
         icon={props.icon}
         loading={
           eventsLoading ||
           instancesLoading ||
           itemsLoading ||
           organizationsLoading ||
+          mediaContentsLoading ||
           collectionLoading ||
           peopleLoading ||
           placesLoading ||
