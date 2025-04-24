@@ -11,6 +11,10 @@
     "tinaLabel": "About",
     "defaultValue": "About"
   },
+  "pages": {
+    "tinaLabel": "Pages",
+    "defaultValue": "Pages"
+  },
   "paths": {
     "tinaLabel": "Paths",
     "defaultValue": "Paths"
@@ -95,9 +99,9 @@
     "tinaLabel": "(footer text)",
     "defaultValue": ""
   },
-  "footerCopyright": {
-    "tinaLabel": "(footer copyright)",
-    "defaultValue": ""
+  "copyright": {
+    "tinaLabel": "Copyright",
+    "defaultValue": "©{{year}} {{name}}. All rights reserved."
   },
   "coreDataLogin": {
     "tinaLabel": "Log in to Core Data",
@@ -274,5 +278,17 @@
   "multipleLocations": {
     "tinaLabel": "Multiple locations",
     "defaultValue": "Multiple locations"
+  },
+  "termsConditions": {
+    "tinaLabel": "Terms and Conditions",
+    "defaultValue": "Terms & Conditions"
+  },
+  "privacyPolicy": {
+    "tinaLabel": "Privacy Policy",
+    "defaultValue": "Privacy Policy"
+  },
+  "accessibility": {
+    "tinaLabel": "Accessibility",
+    "defaultValue": "Accessibility"
   }
 }

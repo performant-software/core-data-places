@@ -1,9 +1,10 @@
 import client from '@tina/databaseClient';
+import { fetchOne, filterAll } from './i18n';
 
-export const fetchAbout = async () => {
-  const response = await client.queries.about({ relativePath: 'about.mdx' });
-  return response.data?.about;
-};
+export const fetchBranding = async () => {
+  const response = await client.queries.branding({ relativePath: 'branding.json' });
+  return response.data?.branding;
+}
 
 export const fetchI18n = async (language: string) => {
   const response = await client.queries.i18n({ relativePath: `${language}.json` });
@@ -15,10 +16,22 @@ export const fetchI18ns = async () => {
   return response.data?.i18nConnection?.edges?.map((item) => item?.node);
 };
 
+export const fetchPage = async (locale: string, slug: string) => {
+  const response = await fetchOne(locale, slug, client.queries.pages);
+  return response.data?.pages;
+};
+
+export const fetchPages = async (locale: string, params?: any) => {
+  const response = await client.queries.pagesConnection(params);
+  const pages = response.data?.pagesConnection?.edges?.map((item) => item?.node);
+
+  return filterAll(locale, pages);
+};
+
 export const fetchPath = async (slug: string) => {
   const response = await client.queries.path({ relativePath: `${slug}.mdx`});
   return response.data?.path;
-}
+};
 
 export const fetchPaths = async () => {
   const response = await client.queries.pathConnection();

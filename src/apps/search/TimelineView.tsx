@@ -66,8 +66,8 @@ const TimelineView = (props: Props) => {
       className={clsx(
         'p-2',
         'bg-white/80',
-        'backdrop-blur',
-        'shadow',
+        'backdrop-blur-sm',
+        'shadow-sm',
         props.className
       )}
       // style prop required as dynamic class names are unsupported in Tailwind

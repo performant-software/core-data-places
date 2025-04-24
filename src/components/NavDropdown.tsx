@@ -5,7 +5,23 @@ import clsx from 'clsx';
 import { DropdownMenu } from 'radix-ui';
 import _ from 'underscore';
 
-const NavSearch = (props) => {
+interface Item {
+  active?: boolean;
+  href: string;
+  label: string;
+  name: string;
+}
+
+interface Props {
+  active?: boolean;
+  content: string;
+  items: Array<Item>;
+}
+
+const NavDropdown = (props: Props) => {
+  /**
+   * If the items array only contains a single option, render a NavLink.
+   */
   if (props.items?.length === 1) {
     const [item,] = props.items;
 
@@ -24,7 +40,7 @@ const NavSearch = (props) => {
         asChild
       >
         <div
-          className='flex items-center gap-x-2 cursor-pointer outline-none hover:bg-transparent'
+          className='flex items-center gap-x-2 cursor-pointer outline-hidden hover:bg-transparent'
         >
           <NavItem
             active={props.active}
@@ -48,7 +64,7 @@ const NavSearch = (props) => {
             shadow-lg 
             ring-1 
             ring-black/5 
-            focus:outline-none 
+            focus:outline-hidden 
             sm:text-sm 
             z-10
             py-3
@@ -58,9 +74,10 @@ const NavSearch = (props) => {
           { _.map(props.items, (item, index) => (
             <DropdownMenu.Item
               className={clsx(
-                'py-2 hover:bg-neutral-100 outline-none',
+                'py-2 hover:bg-neutral-100 outline-hidden',
                 { 'bg-neutral-100': item.active }
               )}
+              key={index}
             >
               <a
                 key={item.name}
@@ -69,7 +86,7 @@ const NavSearch = (props) => {
                 <span
                   className='relative cursor-pointer select-none py-3 px-6'
                 >
-                  { item.label || `Index ${index}` }
+                  { item.label }
                 </span>
               </a>
             </DropdownMenu.Item>
@@ -80,4 +97,4 @@ const NavSearch = (props) => {
   );
 };
 
-export default NavSearch;
+export default NavDropdown;

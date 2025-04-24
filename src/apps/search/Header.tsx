@@ -43,7 +43,7 @@ const Header = (props: Props) => {
 
   return (
     <div
-      className={clsx('bg-neutral-100 flex items-center justify-between px-6 py-5 shadow', props.className)}
+      className={clsx('bg-neutral-100 flex items-center justify-between px-6 py-5 shadow-sm', props.className)}
     >
       <div
         className='flex items-center gap-x-12 w-3/4'
@@ -55,7 +55,7 @@ const Header = (props: Props) => {
             className='relative'
             icon
             onClick={() => props.onFiltersChange(!props.filters)}
-            primary={props.filters}
+            secondary={props.filters}
           >
             <Icon
               name='filters'
@@ -89,7 +89,7 @@ const Header = (props: Props) => {
           </h2>
         </div>
         <div
-          className='flex-grow'
+          className='grow'
         >
           <Input
             className='bg-white'
@@ -100,40 +100,40 @@ const Header = (props: Props) => {
             value={query}
           />
         </div>
-        { tableView && <ButtonGroup
-          rounded
-        >
-          <Button
-            className='text-smd'
-            primary={props.view === Views.list}
-            onClick={() => props.onViewChange(Views.list)}
+        { tableView && (
+          <ButtonGroup
+            rounded
           >
-            <Icon
-              name='list'
-            />
-            { t('list') }
-          </Button>
-          <Button
-            className='text-smd'
-            disabled={props.timeline}
-            primary={props.view === Views.table}
-            onClick={() => props.onViewChange(Views.table)}
-          >
-            <Icon
-              name='table'
-            />
-            { t('table') }
-          </Button>
-        </ButtonGroup> }
-        {config.timeline?.date_range_facet && (
+            <Button
+              onClick={() => props.onViewChange(Views.list)}
+              secondary={props.view === Views.list}
+            >
+              <Icon
+                name='list'
+              />
+              { t('list') }
+            </Button>
+            <Button
+              disabled={props.timeline}
+              onClick={() => props.onViewChange(Views.table)}
+              secondary={props.view === Views.table}
+            >
+              <Icon
+                name='table'
+              />
+              { t('table') }
+            </Button>
+          </ButtonGroup>
+        )}
+        { config.timeline?.date_range_facet && (
           <div
             className='flex items-center gap-x-2'
           >
             <Button
               icon
               disabled={props.view === Views.table}
-              primary={props.timeline}
               onClick={() => props.onTimelineChange(!props.timeline)}
+              secondary={props.timeline}
             >
               <Icon
                 name='timeline'

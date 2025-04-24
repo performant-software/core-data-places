@@ -1,0 +1,60 @@
+---
+import clsx from 'clsx';
+import _ from 'underscore';
+
+const {
+  buttonText,
+  items,
+  textAlignment,
+  title,
+  url
+} = Astro.props;
+---
+
+<div
+  class='flex flex-col py-16'
+>
+  { title && (
+    <h2
+      class={clsx(
+        'text-4xl font-bold py-4',
+        { 'flex justify-center': textAlignment === 'center' }
+      )}
+    >
+      { title }
+    </h2>
+  )}
+  <div
+    class='flex flex-wrap lg:flex-nowrap gap-y-12 gap-x-12'
+  >
+    { _.map(items, (item) => (
+      <div
+        class='flex flex-col w-full'
+      >
+        <h4
+          class='text-3xl font-bold'
+        >
+          { item.title }
+        </h4>
+        <p>
+          { item.description }
+        </p>
+      </div>
+    ))}
+  </div>
+  { url && (
+    <div
+      class={clsx(
+        'py-4',
+        { 'flex justify-center': textAlignment === 'center' }
+      )}
+    >
+      <a
+        class='inline-block mt-4 rounded-md px-6 py-3 bg-primary'
+        href={url}
+      >
+        { buttonText }
+      </a>
+    </div>
+  )}
+</div>

@@ -8,7 +8,7 @@ import {
 import { Map as PeripleoMap, ZoomControl } from '@peripleo/maplibre';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
-import { type ReactNode, useContext, useState } from 'react';
+import { type ReactNode, useContext, useMemo, useState } from 'react';
 import _ from 'underscore';
 
 interface Props {
@@ -28,10 +28,25 @@ const Map = (props: Props) => {
 
   const { t } = useContext(TranslationContext);
 
+  /**
+   * Memo-izes the class to apply to the map control buttons.
+   */
+  const buttonClass = useMemo(() => [
+    'bg-gray-50',
+    'shadow',
+    'rounded-full',
+    'h-[40px]',
+    'w-[40px]',
+    'flex',
+    'justify-center',
+    'items-center',
+    'hover:opacity-90'
+  ].join(' '), []);
+
   return (
     <PeripleoMap
       attributionControl={false}
-      className={clsx('flex-grow', props.classNames?.root)}
+      className={clsx('grow', props.classNames?.root)}
       style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
     >
       <div
@@ -39,15 +54,16 @@ const Map = (props: Props) => {
       >
         <ZoomControl
           zoomIn={<Icon name='zoom_in' />}
-          zoomInProps={{ className: 'p6o-control p6o-control-btn' }}
+          zoomInProps={{ className: buttonClass }}
           zoomOut={<Icon name='zoom_out' />}
-          zoomOutProps={{ className: 'p6o-control p6o-control-btn' }}
+          zoomOutProps={{ className: buttonClass }}
         />
         { [...baseLayers, ...dataLayers].length > 1 && (
           <LayerMenu
             baseLayer={baseLayer?.name}
             baseLayers={baseLayers}
             baseLayersLabel={t('baseLayers')}
+            className={buttonClass}
             dataLayers={dataLayers}
             onChangeBaseLayer={setBaseLayer}
             onChangeOverlays={setOverlays}

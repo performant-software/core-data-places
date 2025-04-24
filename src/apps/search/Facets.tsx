@@ -17,6 +17,7 @@ const TYPE_SELECT = 'select';
 
 interface Props {
   className?: string;
+  open?: boolean;
 }
 
 const Facets = (props: Props) => {
@@ -73,15 +74,13 @@ const Facets = (props: Props) => {
   return (
     <aside
       className={clsx(
-        'flex',
-        'flex-col',
-        'flex-grow',
-        'h-full',
         'px-6',
         'bg-neutral-100',
-        'backdrop-blur',
-        'shadow',
+        'backdrop-blur-sm',
+        'shadow-sm',
         'overflow-y-auto',
+        { 'flex flex-col grow': props.open },
+        { 'hidden': !props.open },
         props.className
       )}
     >

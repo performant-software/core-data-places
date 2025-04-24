@@ -1,8 +1,9 @@
 import { defineConfig, LocalAuthProvider } from 'tinacms';
 import _ from 'underscore';
 import config from '../public/config.json';
-import About from './content/about';
+import Branding from './content/branding';
 import I18n from './content/i18n';
+import PagesCollection from './content/pages';
 import PathsCollection from './content/paths';
 import PostsCollection from './content/posts';
 import Settings from './content/settings';
@@ -37,15 +38,16 @@ export default defineConfig({
       !useSSO
         ? TinaUserCollection
         : undefined,
-      About,
-      Settings,
-      config.content?.includes('paths')
+      Branding,
+      PagesCollection,
+      config.content?.collections?.includes('paths')
         ? PathsCollection
         : undefined,
-      config.content?.includes('posts')
+      config.content?.collections?.includes('posts')
         ? PostsCollection
         : undefined,
-      I18n
+      I18n,
+      Settings
     ])
   }
 });

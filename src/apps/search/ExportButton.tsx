@@ -28,12 +28,12 @@ const ExportButton = () => {
       onChange={onSelection}
     >
       <div
-        className='relative -mb-2'
+        className='relative'
       >
         <Listbox.Button
           as={Button}
           className='relative w-full rounded-lg text-left text-smd'
-          primary
+          secondary
         >
           <Icon
             name='export'
@@ -63,14 +63,14 @@ const ExportButton = () => {
               shadow-lg 
               ring-1 
               ring-black/5 
-              focus:outline-none 
+              focus:outline-hidden 
               sm:text-sm 
               z-10 
               text-black
             `}
           >
             <Listbox.Option
-              className='relative cursor-pointer select-none py-2 px-4 data-[active]:bg-gray-100'
+              className='relative cursor-pointer select-none py-2 px-4 data-active:bg-gray-100'
               value={Options.json}
             >
               { t('json') }

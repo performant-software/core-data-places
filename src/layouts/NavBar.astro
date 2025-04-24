@@ -1,0 +1,33 @@
+---
+import NavDropdown from '@components/NavDropdown';
+import NavLink from '@components/NavLink';
+import _ from 'underscore';
+
+const { className, items } = Astro.props;
+
+---
+
+<div
+  class={className}
+>
+  { _.map(items, (item) => (
+    <>
+      { item.options && (
+        <NavDropdown
+          active={item.active}
+          content={item.label}
+          items={item.options}
+          client:only='react'
+        />
+      )}
+      { item.href && (
+        <NavLink
+          active={item.active}
+          content={item.label}
+          href={item.href}
+        />
+      )}
+    </>
+  ))}
+  <slot />
+</div>

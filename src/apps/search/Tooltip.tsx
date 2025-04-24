@@ -54,7 +54,7 @@ const Tooltip = (props: Props) => {
 
   return (
     <div
-      className='rounded px-4 py-3 text-sm bg-white shadow border max-w-[350px]'
+      className='rounded-sm px-4 py-3 text-sm bg-white shadow-sm border max-w-[350px]'
     >
       { config.title && (
         <SearchHighlight

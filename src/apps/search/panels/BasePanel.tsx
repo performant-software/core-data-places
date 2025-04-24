@@ -351,7 +351,7 @@ const BasePanel = (props: Props) => {
         'flex',
         'flex-col',
         'bg-white',
-        'backdrop-blur',
+        'backdrop-blur-sm',
         'overflow-y-auto',
         props.className
       )}

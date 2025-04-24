@@ -1,49 +1,85 @@
 ---
+import { fetchBranding } from '@backend/tina';
 import config from '@config';
 import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
-import '@peripleo/peripleo/default-theme';
-import '@peripleo/maplibre/peripleo-maplibre.css';
+import { useBlackText } from '@utils/layout';
+import { getPages } from '@utils/nav';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import _ from 'underscore';
+
 import '@performant-software/core-data/style.css';
 import '@performant-software/geospatial/style.css';
 import '@styles/index.css';
-import { getRelativeLocaleUrl } from 'astro:i18n';
-import clsx from 'clsx';
-import _ from 'underscore';
-import { useBlackText } from '@utils/layout';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
-const blackText = config.branding?.primary && useBlackText(config.branding.primary);
+const branding = await fetchBranding();
+const { header, footer } = branding;
+
+const colorPrimary = branding.primary_color;
+const textPrimary = useBlackText(colorPrimary) ? 'var(--color-black)' : 'var(--color-white)';
+
+const colorSecondary = branding.secondary_color;
+const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? 'var(--color-black)' : 'var(--color-white)';
+
+const font = branding.font_name;
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
-const { footer, fullscreen, name, title, t, tab } = Astro.props;
 
-const TabKeys = {
+const pages = await getPages(currentLocale);
+
+const { footer: includeFooter, fullscreen, name, title, t, tab } = Astro.props;
+
+const NavKeys = {
   search: 'search',
+  pages: 'pages',
   paths: 'paths',
   posts: 'posts'
 };
 
-const Tabs = {
-  search: {
-    key: TabKeys.search,
-    url: getRelativeLocaleUrl(currentLocale, `${TabKeys.search}/${name}`)
+const NavConfig = {
+  [NavKeys.search]: {
+    label: t('explore'),
+    options: _.map(config.search, (search) => ({
+      active: Astro.url.pathname.includes(`/${NavKeys.search}/${search.name}`),
+      name: search.name,
+      label: t(`index_${search.name}`),
+      href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.search}/${search.name}`)
+    }))
   },
-  paths: {
-    key: TabKeys.paths,
-    url: getRelativeLocaleUrl(currentLocale, TabKeys.paths)
+  [NavKeys.pages]: {
+    label: t('pages'),
+    options: _.map(pages, (page) => ({
+      active: Astro.url.pathname.includes(`/${NavKeys.pages}/${page._sys.filename}`),
+      name: page.id,
+      label: page.title,
+      href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.pages}/${page._sys.filename}`)
+    }))
   },
-  posts: {
-    key: TabKeys.posts,
-    url: getRelativeLocaleUrl(currentLocale, TabKeys.posts)
+  [NavKeys.paths]: {
+    active: tab === NavKeys.paths,
+    label: t('paths'),
+    href: getRelativeLocaleUrl(currentLocale, NavKeys.paths)
+  },
+  [NavKeys.posts]: {
+    active: tab === NavKeys.posts,
+    label: t('posts'),
+    href: getRelativeLocaleUrl(currentLocale, NavKeys.posts)
   }
 };
 
-const tabs = {
-  search: Tabs.search,
-  ..._.pick(Tabs, config.content)
-};
+const NavItems = [
+  NavConfig.search,
+  ..._.map(config.content?.collections, (key) => NavConfig[key]),
+];
+
+if (!_.isEmpty(NavConfig.pages.options)) {
+  NavItems.push(NavConfig.pages);
+}
+
 ---
 
 <!DOCTYPE html>
@@ -52,33 +88,49 @@ const tabs = {
 >
   <head>
     <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
     <title>{title}</title>
+    <style
+      is:global
+      define:vars={{
+        customColorPrimary: colorPrimary,
+        customColorSecondary: colorSecondary,
+        customTextPrimary: textPrimary,
+        customTextSecondary: textSecondary,
+        customFont: font
+      }}
+    >
+    </style>
   </head>
   <body
-    class={clsx(
-      'flex h-full sm:min-h-screen flex-col bg-white text-neutral-dark mx-auto',
-      { 'primary-text-white': !blackText },
-      { 'primary-text-black': blackText },
-    )}
+    class='flex h-full sm:min-h-screen flex-col bg-white text-neutral-dark mx-auto font-sans'
     transition:animate='initial'
   >
     <Header
       currentTab={tab}
       fullscreen={fullscreen}
-      t={t}
-      tabs={tabs}
+      image={header?.logo}
+      imageAlt={branding.title}
+      items={NavItems}
+      pages={pages}
+      title={header?.hide_title ? undefined : branding.title}
     />
     <main
-      class='w-full relative bg-white flex flex-col flex-grow'
+      class='w-full relative bg-white flex flex-col grow'
     >
       <slot />
     </main>
-    { footer && (
+    { includeFooter && (
       <Footer
+        accessibilityUrl={footer?.accessibility_url}
+        items={NavItems}
+        login={footer?.allow_login && !import.meta.env.STATIC_BUILD}
+        logos={footer?.logos}
+        privacyUrl={footer?.privacy_url}
         t={t}
-        tabs={tabs}
+        termsUrl={footer?.terms_url}
+        title={branding?.title}
       />
     )}
   </body>

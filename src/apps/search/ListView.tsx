@@ -56,8 +56,8 @@ const ListView = (props: Props) => {
         'flex-col',
         'h-full',
         'bg-white/80',
-        'backdrop-blur',
-        'shadow',
+        'backdrop-blur-sm',
+        'shadow-sm',
         props.className
       )}
     >
