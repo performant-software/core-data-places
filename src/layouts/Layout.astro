@@ -74,8 +74,12 @@ const NavConfig = {
 const NavItems = [
   NavConfig.search,
   ..._.map(config.content?.collections, (key) => NavConfig[key]),
-  NavConfig.pages
 ];
+
+if (NavConfig.pages.options) {
+  NavItems.push(NavConfig.pages);
+}
+
 ---
 
 <!DOCTYPE html>
