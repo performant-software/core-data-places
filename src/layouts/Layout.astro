@@ -76,7 +76,7 @@ const NavItems = [
   ..._.map(config.content?.collections, (key) => NavConfig[key]),
 ];
 
-if (NavConfig.pages.options) {
+if (!_.isEmpty(NavConfig.pages.options)) {
   NavItems.push(NavConfig.pages);
 }
 
