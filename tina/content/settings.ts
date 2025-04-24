@@ -11,8 +11,17 @@ const Settings: Collection = {
   fields: [{
     name: 'content',
     label: 'Content',
-    type: 'string',
-    list: true
+    type: 'object',
+    fields: [{
+      name: 'collections',
+      label: 'Collections',
+      type: 'string',
+      list: true
+    }, {
+      name: 'localize_pages',
+      label: 'Localize Pages',
+      type: 'boolean'
+    }]
   }, {
     name: 'core_data',
     label: 'Core Data',
