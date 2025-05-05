@@ -57,16 +57,18 @@ const SectionTypes = {
         </Container>
       )}
       { section.__typename === SectionTypes.hero && (
-        <Hero
-          buttonText={section.button_text}
-          height={section.height}
-          imageAlt={section.background_image_alt}
-          imageUrl={section.background_image}
-          subtitle={section.subtitle}
-          textAlignment={section.text_alignment}
-          title={section.title}
-          url={section.url}
-        />
+        <Container>
+          <Hero
+            buttonText={section.button_text}
+            height={section.height}
+            imageAlt={section.background_image_alt}
+            imageUrl={section.background_image}
+            subtitle={section.subtitle}
+            textAlignment={section.text_alignment}
+            title={section.title}
+            url={section.url}
+          />
+        </Container>
       )}
       { section.__typename === SectionTypes.images && (
         <Container>
