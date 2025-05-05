@@ -3,6 +3,7 @@ import Carousel from '@apps/pages/sections/Carousel';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Hero from '@apps/pages/sections/Hero.astro';
 import Images from '@apps/pages/sections/Images.astro';
+import Spacer from '@apps/pages/sections/Spacer.astro';
 import Text from '@apps/pages/sections/Text.astro';
 import TextImage from '@apps/pages/sections/TextImage';
 import { getTranslations } from '@backend/i18n';
@@ -23,6 +24,7 @@ const SectionTypes = {
   freeText: 'PagesSectionsFree_text',
   hero: 'PagesSectionsHero',
   images: 'PagesSectionsImages',
+  spacer: 'PagesSectionsSpacer',
   textBlock: 'PagesSectionsText_block',
   textImage: 'PagesSectionsText_image'
 };
@@ -75,6 +77,13 @@ const SectionTypes = {
           <Images
             items={section.items}
             title={section.title}
+          />
+        </Container>
+      )}
+      { section.__typename === SectionTypes.spacer && (
+        <Container>
+          <Spacer
+            size={section.size}
           />
         </Container>
       )}

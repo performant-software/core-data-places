@@ -105,15 +105,16 @@ const TextImage = (props: Props) => {
 
   return (
     <div
-      class={clsx(
-        'flex flex-col lg:flex-row gap-y-8 lg:gap-x-20 py-16 lg:py-24',
+      className={clsx(
+        'flex flex-col lg:flex-row gap-y-8 lg:gap-x-20',
         { 'flex-col-reverse lg:flex-row-reverse': textPosition === TextPosition.right },
-        { 'text-text-primary': !!props.backgroundPosition }
+        { 'text-text-primary': !!props.backgroundPosition },
+        { 'py-16 lg:py-24': !!props.backgroundPosition }
       )}
     >
       { props.backgroundPosition && (
         <div
-          class={clsx(
+          className={clsx(
             'absolute bg-primary',
             { 'top-0 left-0 right-0 h-full': props.backgroundPosition === BackgroundPosition.top },
             { 'bottom-0 left-0 right-0 h-full': props.backgroundPosition === BackgroundPosition.bottom },
@@ -126,7 +127,7 @@ const TextImage = (props: Props) => {
         />
       )}
       <div
-        class={clsx(
+        className={clsx(
           'lg:w-[50%] z-10',
           { 'flex flex-row items-end': props.backgroundPosition === BackgroundPosition.bottom }
         )}
@@ -136,14 +137,14 @@ const TextImage = (props: Props) => {
         >
           { props.title && (
             <h2
-              class='text-4xl font-bold'
+              className='text-4xl font-bold'
             >
               { props.title }
             </h2>
           )}
           { props.description && (
             <p
-              class={clsx(
+              className={clsx(
                 'font-light',
                 { 'mt-5': !!props.title }
               )}
@@ -163,7 +164,7 @@ const TextImage = (props: Props) => {
         </div>
       </div>
       <div
-        class='z-10 lg:w-[50%]'
+        className='z-10 lg:w-[50%]'
       >
         <div
           style={{
@@ -172,7 +173,7 @@ const TextImage = (props: Props) => {
         >
           <img
             alt={props.imageAlt}
-            class='w-full h-full object-cover'
+            className='w-full h-full object-cover'
             src={props.image}
           />
         </div>
