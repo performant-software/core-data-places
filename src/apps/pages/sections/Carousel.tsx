@@ -61,7 +61,7 @@ const Carousel = (props: Props) => (
               { item.title }
             </h2>
             <p
-              className='mt-4 line-clamp-3'
+              className='mt-4 line-clamp-3 font-light'
             >
               { item.description }
             </p>
