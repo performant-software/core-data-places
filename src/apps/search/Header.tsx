@@ -130,8 +130,9 @@ const Header = (props: Props) => {
             className='flex items-center gap-x-2'
           >
             <Button
-              icon
+              className='px-3 py-3'
               disabled={props.view === Views.table}
+              icon
               onClick={() => props.onTimelineChange(!props.timeline)}
               secondary={props.timeline}
             >

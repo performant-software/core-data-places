@@ -2,6 +2,7 @@
 import { getTranslations } from '@backend/i18n';
 import { fetchPaths } from '@backend/tina';
 import Card from '@components/Card.astro';
+import Cards from '@components/Cards.astro';
 import Container from '@components/Container.astro';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
@@ -22,16 +23,14 @@ export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ para
   title={t('paths')}
 >
   <Container
-    className='pb-16'
+    className='pb-16 w-full'
   >
     <h1
       class='text-3xl my-12'
     >
       { t('paths') }
     </h1>
-    <div
-      class='mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3'
-    >
+    <Cards>
       { _.map(paths, (path) => (
         <Card
           imageUrl={path?.image}
@@ -41,6 +40,6 @@ export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ para
           title={path?.title || t('untitled')}
         />
       ))}
-    </div>
+    </Cards>
   </Container>
 </Layout>

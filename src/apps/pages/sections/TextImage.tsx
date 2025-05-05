@@ -109,7 +109,7 @@ const TextImage = (props: Props) => {
         'flex flex-col lg:flex-row gap-y-8 lg:gap-x-20',
         { 'flex-col-reverse lg:flex-row-reverse': textPosition === TextPosition.right },
         { 'text-text-primary': !!props.backgroundPosition },
-        { 'py-16': !!props.backgroundPosition }
+        { 'py-16 lg:py-24': !!props.backgroundPosition }
       )}
     >
       { props.backgroundPosition && (
@@ -145,6 +145,7 @@ const TextImage = (props: Props) => {
           { props.description && (
             <p
               className={clsx(
+                'font-light',
                 { 'mt-5': !!props.title }
               )}
             >
@@ -154,7 +155,7 @@ const TextImage = (props: Props) => {
           { !_.isEmpty(props.url) && (
             <div>
               <LinkButton
-                className='bg-secondary'
+                className='bg-secondary mt-8'
                 content={props.buttonText}
                 href={props.url}
               />
