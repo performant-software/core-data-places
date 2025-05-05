@@ -144,6 +144,7 @@ const TextImage = (props: Props) => {
           { props.description && (
             <p
               class={clsx(
+                'font-light',
                 { 'mt-5': !!props.title }
               )}
             >
