@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 @import 'tailwindcss';
 @import '@performant-software/core-data/tailwind.css';
@@ -36,7 +36,9 @@
   --color-text-primary: var(--customTextPrimary, var(--color-white));
   --color-text-secondary: var(--customTextSecondary, var(--color-black));
 
-  --font-sans: var(--customFont, Inter);
+  --font-header: var(--customFontHeader, Inter);
+  --font-body: var(--customFontBody, Inter);
+  --font-sans: var(--font-body);
 }
 
 /*
@@ -57,6 +59,10 @@
 /*
  * Branding styles
  */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-header);
+}
+
 .bg-primary, .fill-primary, .bg-primary div {
   color: var(--color-text-primary);
 }
@@ -65,6 +71,9 @@
   color: var(--color-text-secondary);
 }
 
+/*
+ * Swiper styles
+ */
 .swiper-pagination > .swiper-pagination-bullet-active {
   background-color: var(--color-black);
 }

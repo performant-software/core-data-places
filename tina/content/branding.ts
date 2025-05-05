@@ -1,5 +1,22 @@
 import { Collection } from '@tinacms/schema-tools';
 
+const Fonts = [{
+  label: 'Afacad',
+  value: 'Afacad'
+}, {
+  label: 'DM Sans',
+  value: 'DM Sans'
+}, {
+  label: 'DM Serif Display',
+  value: 'DM Serif Display'
+},  {
+  label: 'Inter',
+  value: 'Inter'
+}, {
+  label: 'Open Sans',
+  value: 'Open Sans'
+}];
+
 const Branding: Collection = {
   name: 'branding',
   label: 'Branding',
@@ -10,16 +27,15 @@ const Branding: Collection = {
     label: 'Title',
     type: 'string'
   }, {
-    name: 'font_name',
-    label: 'Font Name',
+    name: 'font_header',
+    label: 'Header Font',
     type: 'string',
-    options: [{
-      label: 'Inter',
-      value: 'Inter'
-    }, {
-      label: 'Afacad',
-      value: 'Afacad'
-    }]
+    options: Fonts
+  }, {
+    name: 'font_body',
+    label: 'Body Font',
+    type: 'string',
+    options: Fonts
   }, {
     name: 'primary_color',
     label: 'Primary Color',

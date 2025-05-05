@@ -18,13 +18,13 @@ import 'swiper/css/pagination';
 const branding = await fetchBranding();
 const { header, footer } = branding;
 
+const { font_header: fontHeader, font_body: fontBody } = branding;
+
 const colorPrimary = branding.primary_color;
 const textPrimary = useBlackText(colorPrimary) ? 'var(--color-black)' : 'var(--color-white)';
 
 const colorSecondary = branding.secondary_color;
 const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? 'var(--color-black)' : 'var(--color-white)';
-
-const font = branding.font_name;
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
@@ -94,11 +94,12 @@ if (!_.isEmpty(NavConfig.pages.options)) {
     <style
       is:global
       define:vars={{
+        customFontHeader: fontHeader,
+        customFontBody: fontBody,
         customColorPrimary: colorPrimary,
         customColorSecondary: colorSecondary,
         customTextPrimary: textPrimary,
-        customTextSecondary: textSecondary,
-        customFont: font
+        customTextSecondary: textSecondary
       }}
     >
     </style>
