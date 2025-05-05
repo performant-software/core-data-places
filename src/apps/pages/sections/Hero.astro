@@ -23,7 +23,7 @@ const {
 
 <div
   class={clsx(
-    'relative flex flex-col bg-gray-900 justify-center',
+    'flex flex-col bg-gray-900 justify-center',
     { 'min-h-[220px]': height === Height.small },
     { 'min-h-[420px]': height === Height.medium },
     { 'min-h-[720px]': height === Height.large }
@@ -40,7 +40,7 @@ const {
   { (title || subtitle || url) && (
     <div
       class={clsx(
-        'relative flex flex-col z-10 text-white px-8 lg:px-20 py-12 max-w-full lg:max-w-[60%] gap-y-8',
+        'relative flex flex-col z-10 text-white py-12 max-w-full lg:max-w-[60%] gap-y-8',
         { 'items-center text-center lg:px-40 lg:max-w-full': textAlignment === 'center' }
       )}
     >
