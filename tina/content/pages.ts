@@ -12,6 +12,23 @@ const getLabel = (...args) => {
   return _.compact(args).join(LABEL_SEPARATOR);
 };
 
+const SpacerValues = {
+  small: 'small',
+  medium: 'medium',
+  large: 'large'
+};
+
+const SpacerSizes = [{
+  label: 'Small',
+  value: SpacerValues.small
+}, {
+  label: 'Medium',
+  value: SpacerValues.medium
+}, {
+  label: 'Large',
+  value: SpacerValues.large
+}];
+
 const Pages: Collection = {
   name: 'pages',
   label: 'Pages',
@@ -179,6 +196,25 @@ const Pages: Collection = {
           label: 'URL',
           type: 'string'
         }]
+      }]
+    }, {
+      name: 'spacer',
+      label: 'Spacer',
+      ui: {
+        itemProps: (item) => {
+          const size = _.findWhere(SpacerSizes, { value: item.size })?.label;
+          return { label: getLabel('Spacer', size) };
+        },
+        defaultItem: {
+          size: SpacerValues.small
+        }
+      },
+      fields: [{
+        name: 'size',
+        label: 'Size',
+        type: 'string',
+        required: true,
+        options: SpacerSizes
       }]
     }, {
       name: 'text_block',

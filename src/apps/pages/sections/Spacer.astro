@@ -1,0 +1,12 @@
+---
+import clsx from 'clsx';
+const { size } = Astro.props;
+---
+
+<div
+  class={clsx(
+    { 'py-4 lg:py-8': size === 'small' },
+    { 'py-8 lg:py-16': size === 'medium' },
+    { 'py-16 lg:py-32': size === 'large' }
+  )}
+/>
