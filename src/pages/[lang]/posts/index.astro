@@ -30,7 +30,7 @@ export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ para
       { t('posts') }
     </h1>
     <div
-      class='grid grid-cols-1 lg:grid-cols-3 gap-x-8 gap-y-16 border-t border-gray-200 pt-16 lg:pt-10 mt-16 lg:mt-10 mx-auto lg:mx-0 max-w-2xl lg:max-w-none'
+      class='grid grid-cols-1 lg:grid-cols-3 gap-x-8 gap-y-16 pt-16 lg:pt-10 mt-16 lg:mt-10 mx-auto lg:mx-0 max-w-2xl lg:max-w-none'
     >
       { _.map(posts, (post) => (
         <Card
