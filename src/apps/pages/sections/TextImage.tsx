@@ -106,7 +106,7 @@ const TextImage = (props: Props) => {
   return (
     <div
       class={clsx(
-        'flex flex-col lg:flex-row py-16 gap-y-8 lg:gap-x-20 lg:py-16',
+        'flex flex-col lg:flex-row gap-y-8 lg:gap-x-20 py-16 lg:py-24',
         { 'flex-col-reverse lg:flex-row-reverse': textPosition === TextPosition.right },
         { 'text-text-primary': !!props.backgroundPosition }
       )}
