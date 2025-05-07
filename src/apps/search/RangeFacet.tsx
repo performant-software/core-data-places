@@ -39,6 +39,9 @@ const RangeFacet = ({ attribute, className, icon }: Props) => {
       icon={icon}
     >
       <Slider
+        classNames={{
+          track: 'bg-neutral-200'
+        }}
         max={max}
         min={min}
         onValueChange={setValue}
