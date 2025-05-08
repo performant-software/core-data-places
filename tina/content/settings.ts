@@ -9,71 +9,19 @@ const Settings: Collection = {
   path: 'content/settings',
   format: 'json',
   fields: [{
-    name: 'branding',
-    label: 'Customization and Branding',
-    type: 'object',
-    defaultItem: () => ({
-      'primary': '#073B4C',
-      'footer_login': true
-    }),
-    fields: [{
-      type: 'string',
-      name: 'primary',
-      label: 'Primary Color',
-      ui: {
-        component: 'color',
-        //@ts-ignore
-        colorFormat: 'hex',
-        colors: ['#073B4C'],
-        widget: 'sketch',
-      }
-    }, {
-      type: 'image',
-      name: 'header_logo',
-      label: 'Header Logo'
-    }, {
-      type: 'boolean',
-      name: 'header_hide_title',
-      label: 'Hide title in header?',
-      description: 'If checked, will only display the provided logo and not the text title in the header.'
-    }, {
-      type: 'image',
-      name: 'footer_logo',
-      label: 'Footer Logo'
-    }, {
-      type: 'boolean',
-      name: 'footer_hide_title',
-      label: 'Hide title in footer?',
-      description: 'If checked, will only display the provided logo and not the text title in the footer.'
-    }, {
-      type: 'object',
-      name: 'footer_orgs',
-      label: 'Footer Organizations',
-      description: 'List of logos to display in the footer, e.g. partners or sponsors',
-      list: true,
-      fields: [{
-        type: 'image',
-        name: 'logo',
-        label: 'Logo/Image'
-      }, {
-        type: 'string',
-        name: 'url',
-        label: 'Link'
-      }, {
-        type: 'string',
-        name: 'alt',
-        label: 'Image alt text'
-      }]
-    }, {
-      type: 'boolean',
-      name: 'footer_login',
-      label: 'Display Core Data and CMS login buttons in footer?'
-    }]
-  }, {
     name: 'content',
     label: 'Content',
-    type: 'string',
-    list: true
+    type: 'object',
+    fields: [{
+      name: 'collections',
+      label: 'Collections',
+      type: 'string',
+      list: true
+    }, {
+      name: 'localize_pages',
+      label: 'Localize Pages',
+      type: 'boolean'
+    }]
   }, {
     name: 'core_data',
     label: 'Core Data',

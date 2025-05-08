@@ -1,0 +1,62 @@
+---
+import LinkButton from '@components/LinkButton';
+import clsx from 'clsx';
+import _ from 'underscore';
+
+const {
+  buttonText,
+  items,
+  textAlignment,
+  title,
+  url
+} = Astro.props;
+---
+
+<div
+  class='flex flex-col'
+>
+  { title && (
+    <h2
+      class={clsx(
+        'text-4xl font-bold py-4',
+        { 'flex justify-center': textAlignment === 'center' }
+      )}
+    >
+      { title }
+    </h2>
+  )}
+  <div
+    class='flex flex-wrap lg:flex-nowrap gap-y-12 gap-x-16'
+  >
+    { _.map(items, (item) => (
+      <div
+        class='flex flex-col w-full'
+      >
+        <h4
+          class='text-3xl font-bold'
+        >
+          { item.title }
+        </h4>
+        <p
+          class='font-light'
+        >
+          { item.description }
+        </p>
+      </div>
+    ))}
+  </div>
+  { url && (
+    <div
+      class={clsx(
+        'py-4',
+        { 'flex justify-center': textAlignment === 'center' }
+      )}
+    >
+      <LinkButton
+        className='bg-primary'
+        content={buttonText}
+        href={url}
+      />
+    </div>
+  )}
+</div>

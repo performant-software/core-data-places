@@ -1,0 +1,13 @@
+---
+import { TinaMarkdown } from 'tinacms/dist/rich-text';
+
+const { content } = Astro.props;
+---
+
+<article
+  class='prose prose-lg py-8 max-w-none font-light'
+>
+  <TinaMarkdown
+    content={content}
+  />
+</article>

@@ -1,0 +1,74 @@
+---
+import clsx from 'clsx';
+import LinkButton from '@components/LinkButton';
+
+const Height = {
+  small: 'small',
+  medium: 'medium',
+  large: 'large'
+};
+
+const {
+  buttonText,
+  height = Height.small,
+  imageAlt,
+  imageUrl,
+  subtitle,
+  textAlignment,
+  title,
+  url
+} = Astro.props;
+
+---
+
+<div
+  class={clsx(
+    'flex flex-col bg-gray-900 justify-center',
+    { 'min-h-[220px]': height === Height.small },
+    { 'min-h-[420px]': height === Height.medium },
+    { 'min-h-[720px]': height === Height.large }
+  )}
+>
+  <img
+    alt={imageAlt}
+    class='absolute top-0 left-0 h-full w-full object-cover'
+    src={imageUrl}
+  />
+  <div
+    class='absolute top-0 left-0 w-full h-full bg-gray-900/30'
+  />
+  { (title || subtitle || url) && (
+    <div
+      class={clsx(
+        'relative flex flex-col z-10 text-white py-12 max-w-full lg:max-w-[60%] gap-y-8',
+        { 'items-center text-center lg:px-40 lg:max-w-full': textAlignment === 'center' }
+      )}
+    >
+      { title && (
+        <h1
+          class='text-7xl font-bold uppercase m-0'
+        >
+          { title }
+        </h1>
+      )}
+      { subtitle && (
+        <p
+          class='font-light'
+        >
+          { subtitle }
+        </p>
+      )}
+      { url && (
+        <div
+          class='z-10'
+        >
+          <LinkButton
+            className='bg-secondary'
+            content={buttonText}
+            url={url}
+          />
+        </div>
+      )}
+    </div>
+  )}
+</div>

@@ -1,0 +1,118 @@
+---
+import Carousel from '@apps/pages/sections/Carousel';
+import FreeText from '@apps/pages/sections/FreeText.astro';
+import Hero from '@apps/pages/sections/Hero.astro';
+import Images from '@apps/pages/sections/Images.astro';
+import Spacer from '@apps/pages/sections/Spacer.astro';
+import Text from '@apps/pages/sections/Text.astro';
+import TextImage from '@apps/pages/sections/TextImage';
+import { getTranslations } from '@backend/i18n';
+import { fetchPage } from '@backend/tina';
+import Container from '@components/Container.astro';
+import Layout from '@layouts/Layout.astro';
+import _ from 'underscore';
+
+const { slug } = Astro.props;
+const locale = Astro.currentLocale;
+
+const page = await fetchPage(locale, slug);
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+const SectionTypes = {
+  carousel: 'PagesSectionsCarousel',
+  freeText: 'PagesSectionsFree_text',
+  hero: 'PagesSectionsHero',
+  images: 'PagesSectionsImages',
+  spacer: 'PagesSectionsSpacer',
+  textBlock: 'PagesSectionsText_block',
+  textImage: 'PagesSectionsText_image'
+};
+
+---
+
+<Layout
+  footer
+  fullscreen
+  t={t}
+  tab={page?._sys?.filename}
+  title={page?.title}
+>
+  { _.map(page?.sections, (section, index) => (
+    <section
+      class='relative'
+      key={index}
+    >
+      { section.__typename === SectionTypes.carousel && (
+        <Container>
+          <Carousel
+            items={section.items}
+            client:only='react'
+          />
+        </Container>
+      )}
+      { section.__typename === SectionTypes.freeText && (
+        <Container>
+          <FreeText
+            content={section.body}
+          />
+        </Container>
+      )}
+      { section.__typename === SectionTypes.hero && (
+        <Container>
+          <Hero
+            buttonText={section.button_text}
+            height={section.height}
+            imageAlt={section.background_image_alt}
+            imageUrl={section.background_image}
+            subtitle={section.subtitle}
+            textAlignment={section.text_alignment}
+            title={section.title}
+            url={section.url}
+          />
+        </Container>
+      )}
+      { section.__typename === SectionTypes.images && (
+        <Container>
+          <Images
+            items={section.items}
+            title={section.title}
+          />
+        </Container>
+      )}
+      { section.__typename === SectionTypes.spacer && (
+        <Container>
+          <Spacer
+            size={section.size}
+          />
+        </Container>
+      )}
+      { section.__typename === SectionTypes.textBlock && (
+        <Container>
+          <Text
+            buttonText={section.button_text}
+            items={section.items}
+            textAlignment={section.text_alignment}
+            title={section.title}
+            url={section.url}
+          />
+        </Container>
+      )}
+      { section.__typename === SectionTypes.textImage && (
+        <Container>
+          <TextImage
+            backgroundPosition={section.background_position}
+            buttonText={section.button_text}
+            description={section.description}
+            image={section.image}
+            imageAlt={section.image_alt}
+            textPosition={section.text_position}
+            title={section.title}
+            url={section.url}
+            client:load
+          />
+        </Container>
+      )}
+    </section>
+  ))}
+</Layout>

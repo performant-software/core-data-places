@@ -1,90 +1,74 @@
 ---
-import { fetchAbout } from '@backend/tina';
 import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
-import NavLink from '@components/NavLink';
-import NavSearch from '@components/NavSearch';
+import NavBar from '@layouts/NavBar.astro';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
-import _ from 'underscore';
-import config from '@config';
 
 const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
 const currentUrl = Astro.url;
 
-const { currentTab, t, tabs, fullscreen } = Astro.props;
-
-const { title } = await fetchAbout();
-
-const TabKeys = {
-  search: 'search',
-  paths: 'paths',
-  posts: 'posts'
-};
+const {
+  fullscreen,
+  image,
+  imageAlt,
+  items,
+  title
+} = Astro.props;
 
 ---
 
 <div
-  class='bg-primary flex flex-row justify-center w-full'
+  class='flex flex-row justify-center w-full bg-primary'
 >
   <div
     class={clsx(
-      'hidden md:flex flex-row justify-between px-6 py-5 align-middle bg-primary h-[80px] w-full',
-      { '3xl:max-w-screen-3xl': !fullscreen }
+      'hidden lg:flex flex-row justify-between items-center px-6 py-5 h-[80px] w-full',
+      { '3xl:max-w-(--breakpoint-3xl)': !fullscreen }
     )}
   >
     <a
-      class='flex flex-row align-middle gap-6'
+      class='flex flex-row items-center gap-6'
       href={getRelativeLocaleUrl(currentLocale)}
     >
-      <!-- @ts-ignore -->
-      { config.branding?.header_logo && ( 
-        // @ts-ignore
-        <img src={config.branding.header_logo} alt={title} class='h-10' />
+      { image && (
+        <img
+          alt={imageAlt}
+          class='h-10'
+          src={image}
+        />
       )}
-      <!-- @ts-ignore -->
-      { !config.branding?.header_hide_title && ( 
-        <h1>
+      { title && (
+        <h1
+          class='text-lg font-medium'
+        >
           { title }
         </h1>
       )}
     </a>
-    <div
-      class='flex flex-row gap-x-12 pe-10 align-baseline justify-around'
+    <NavBar
+      className='flex flex-row gap-x-12 pe-10 align-baseline justify-around'
+      items={items}
     >
-      <NavSearch
-        active={TabKeys.search === currentTab}
-        content={t('explore')}
-        items={_.map(config.search, (search) => ({
-          active: Astro.url.pathname.includes(`/search/${search.name}`),
-          name: search.name,
-          label: t(`index_${search.name}`),
-          href: getRelativeLocaleUrl(currentLocale, `/search/${search.name}`)
-        }))}
-        client:only='react'
-      />
-      { _.map(config.content, (key) => (
-        <NavLink
-          active={key === currentTab}
-          content={t(key)}
-          href={getRelativeLocaleUrl(currentLocale, key)}
-        />
-      ))}
       <LanguagePicker
         locales={locales}
         currentLocale={currentLocale}
         currentUrl={currentUrl.pathname}
         client:only='react'
       />
-    </div>
+    </NavBar>
   </div>
   
   <MobileHeader
-    currentLocale={Astro.currentLocale}
-    currentUrl={currentUrl.pathname}
-    locales={locales}
-    tabs={tabs}
+    items={items}
+    title={title}
     client:load
-  />
+  >
+    <LanguagePicker
+      locales={locales}
+      currentLocale={currentLocale}
+      currentUrl={currentUrl}
+    />
+  </MobileHeader>
 </div>

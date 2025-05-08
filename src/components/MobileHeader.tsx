@@ -1,19 +1,22 @@
 import { Disclosure, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from '@i18n/useTranslations';
+import { ReactNode } from 'react';
 import _ from 'underscore';
-import LanguagePicker from './LanguagePicker';
+
+interface NavItem {
+  label: string;
+  href?: string;
+  options?: Array<{
+    href: string;
+    label: string;
+  }>
+}
 
 interface Props {
-  currentLocale: string;
-  currentUrl: string;
-  locales: string[];
-  tabs: {
-    [key: string]: {
-      key: string,
-      url: string
-    }
-  };
+  children?: ReactNode;
+  items: NavItem[];
+  title: string;
 }
 
 const MobileHeader = (props: Props) => {
@@ -22,25 +25,21 @@ const MobileHeader = (props: Props) => {
   return (
     <Disclosure 
       as='div' 
-      className='md:hidden w-full bg-primary shadow-md z-10'
+      className='block lg:hidden w-full bg-primary shadow-md z-10'
     >
       {({ open }) => (
         <>
           <div
-            className='flex flex-row justify-between items-center px-6 mx-0 sm:px-0 sm:mx-12 md:mx-16 lg:mx-32 2xl:mx-auto max-w-screen-xl py-4 z-10 top-0'
+            className='flex flex-row justify-between items-center px-6 mx-0 sm:px-0 sm:mx-12 md:mx-16 lg:mx-32 2xl:mx-auto max-w-(--breakpoint-xl) py-4 z-10 top-0'
           >
             <a
               href='/'
             >
-              { t('home') }
+              { props.title }
             </a>
-            <LanguagePicker
-              locales={props.locales}
-              currentLocale={props.currentLocale}
-              currentUrl={props.currentUrl}
-            />
+            { props.children }
             <Disclosure.Button
-              className=' md:hidden relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-primary'
+              className='lg:hidden relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-orange-primary'
             >
               <span
                 className='absolute -inset-0.5'
@@ -73,20 +72,42 @@ const MobileHeader = (props: Props) => {
             leaveTo='transform scale-95 opacity-0'
           >
             <Disclosure.Panel
-              className='md:hidden bg-primary'
+              className='lg:hidden bg-primary'
             >
               <div
-                className='space-y-1 pb-3 pt-2'
+                className='flex flex-col items-center space-y-1 pb-3 pt-2'
               >
-                { _.map(_.keys(props.tabs), (key) => (
-                  <Disclosure.Button
-                    as='a'
-                    className='block bg-primary hover:bg-white hover:text-black py-4 text-base text-center font-bold'
-                    href={props.tabs[key].url}
-                    key={key}
-                  >
-                    { t(key) }
-                  </Disclosure.Button>
+                { _.map(props.items, (item) => (
+                  <>
+                    { item.options && (
+                      <Disclosure.Button
+                        className='block bg-primary hover:bg-white hover:text-black py-4 text-base text-center font-thin'
+                      >
+                        { item.label }
+                        <div
+                          className='flex flex-col gap-y-4 py-3'
+                        >
+                          { _.map(item.options, (option) => (
+                            <a
+                              className='font-bold'
+                              href={option.href}
+                            >
+                              { option.label }
+                            </a>
+                          ))}
+                        </div>
+                      </Disclosure.Button>
+                    )}
+                    { item.href && (
+                      <Disclosure.Button
+                        as='a'
+                        className='block bg-primary hover:bg-white hover:text-black py-4 text-base text-center font-bold'
+                        href={item.href}
+                      >
+                        { item.label }
+                      </Disclosure.Button>
+                    )}
+                  </>
                 ))}
               </div>
             </Disclosure.Panel>

@@ -1,6 +1,5 @@
 import VisualizationContainer from '@components/VisualizationContainer';
 import { DataVisualizationProps } from '@types';
-import { useTailwindConfig } from '@utils/tailwind';
 import { useMemo } from 'react';
 import {
   BarChart,
@@ -19,7 +18,6 @@ interface Props extends DataVisualizationProps {
 const DEFAULT_INTERVAL = 10;
 
 const EventsByYear = (props: Props) => {
-  const { theme: { colors } } = useTailwindConfig();
   const { interval = DEFAULT_INTERVAL } = props;
 
   /**
@@ -66,7 +64,7 @@ const EventsByYear = (props: Props) => {
           />
           <Bar
             dataKey='count'
-            fill={colors.primary as string}
+            fill='var(--color-primary)'
           />
           <Tooltip />
         </BarChart>

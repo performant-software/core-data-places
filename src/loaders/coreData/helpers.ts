@@ -1,5 +1,22 @@
 import config from '@config';
 import { LoaderContext } from 'astro/dist/content/loaders';
+import _ from 'underscore';
+
+const RELATIONSHIP_ATTRIBUTES = [
+  'uuid',
+  'project_model_relationship_id',
+  'project_model_relationship_inverse'
+];
+
+/**
+ * To avoid duplicating data, only store the necessary attributes for related records. The full record will be fetched
+ * from the respective content collection at build time.
+ *
+ * @param records
+ */
+const filterRelated = (records) => {
+  return _.map(records, (record) => _.pick(record, ...RELATIONSHIP_ATTRIBUTES));
+};
 
 export const createLoader = (name, Service, [indexName, showName]) => ({
   name,
@@ -7,51 +24,96 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
     const { generateDigest, logger, parseData, store } = context;
 
     const service = new Service(config.core_data.url, config.core_data.project_ids);
-    const params = { per_page: 0 };
+    const params = { per_page: 100 };
 
     const startTime = Date.now();
     logger.info('Loading data');
 
-    const listResponse = await service.fetchAll(params);
-    const records = (listResponse && listResponse[indexName]) || [];
+    let count = 1;
+    let pages = 1;
+    let total = 1;
 
-    for (const { uuid } of records) {
-      const response = await service.fetchOne(uuid);
-      const record = response[showName];
+    const records = [];
 
-      const { events } = await service.fetchRelatedEvents(uuid, params);
-      const { instances } = await service.fetchRelatedInstances(uuid, params);
-      const { items } = await service.fetchRelatedItems(uuid, params);
-      const { organizations } = await service.fetchRelatedOrganizations(uuid, params);
-      const { people } = await service.fetchRelatedPeople(uuid, params);
-      const { places } = await service.fetchRelatedPlaces(uuid, params);
-      const { taxonomies } = await service.fetchRelatedTaxonomies(uuid, params);
-      const { works } = await service.fetchRelatedWorks(uuid, params);
+    for (let page = 1; page <= pages; page += 1) {
+      logger.info(`Fetching page ${page}`);
 
-      const manifests = await service.fetchRelatedManifests(uuid, params);
+      const listResponse = await service.fetchAll(_.extend(params, { page }));
+      const listRecords = (listResponse && listResponse[indexName]) || [];
 
-      const item = {
-        ...record,
-        relatedRecords: {
-          events,
-          instances,
-          items,
-          manifests,
-          organizations,
-          people,
-          places,
-          taxonomies,
-          works
-        }
-      };
+      if (listResponse.list?.pages > pages) {
+        pages = listResponse.list?.pages;
+      }
 
-      // Store the item in the Astro content layer
-      const data = await parseData({ id: item.uuid, data: item });
+      if (listResponse.list?.count > total) {
+        total = listResponse.list?.count;
+      }
+
+      for (const { uuid } of listRecords) {
+        const recordStart = Date.now();
+        logger.info(`Loading ${uuid} ${count} of ${total}`);
+
+        const [
+          response,
+          { events },
+          { instances },
+          { items },
+          { media_contents: mediaContents },
+          { organizations },
+          { people },
+          { places },
+          { taxonomies },
+          { works },
+          manifests
+        ] = await Promise.all([
+          service.fetchOne(uuid),
+          service.fetchRelatedEvents(uuid, params),
+          service.fetchRelatedInstances(uuid, params),
+          service.fetchRelatedItems(uuid, params),
+          service.fetchRelatedMedia(uuid, params),
+          service.fetchRelatedOrganizations(uuid, params),
+          service.fetchRelatedPeople(uuid, params),
+          service.fetchRelatedPlaces(uuid, params),
+          service.fetchRelatedTaxonomies(uuid, params),
+          service.fetchRelatedWorks(uuid, params),
+          service.fetchRelatedManifests(uuid, params)
+        ]);
+
+        const record = response[showName];
+
+        records.push({
+          ...record,
+          relatedRecords: {
+            events: filterRelated(events),
+            instances: filterRelated(instances),
+            items: filterRelated(items),
+            manifests,
+            mediaContents,
+            organizations: filterRelated(organizations),
+            people: filterRelated(people),
+            places: filterRelated(places),
+            taxonomies,
+            works: filterRelated(works)
+          }
+        });
+
+        const recordEnd = Date.now();
+        logger.info(`${uuid} complete in ${recordEnd - recordStart}ms`);
+
+        count += 1;
+      }
+    }
+
+    logger.info('Completed fetching data.');
+
+    // Store the items in the Astro content layer
+    for (const record of records) {
+      const data = await parseData({ id: record.uuid, data: record });
       const digest = generateDigest(data);
-      store.set({ id: item.uuid, data, digest });
+      store.set({ id: record.uuid, data, digest });
     }
 
     const endTime = Date.now();
-    logger.info(`Datastore updated in ${endTime - startTime}ms`);
+    logger.info(`Datastore updated. ${count} record(s) in ${endTime - startTime}ms`);
   }
 });

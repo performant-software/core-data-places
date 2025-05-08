@@ -122,19 +122,17 @@ const SearchLayout = () => {
         tableView={config.table}
       />
       <div
-        className='flex flex-grow h-[calc(100vh-160px)]'
+        className='flex grow h-[calc(100vh-160px)]'
       >
         <div
-          className={clsx('flex', { 'flex-grow': view === Views.list && !timeline })}
+          className={clsx('flex', { 'grow': view === Views.list && !timeline })}
         >
           <div
             className='flex flex-col'
           >
             <Facets
-              className={clsx(
-                'w-[240px]',
-                { 'hidden': !filters }
-              )}
+              className='w-[240px]'
+              open={filters}
             />
           </div>
           { view === Views.list && (
@@ -149,7 +147,7 @@ const SearchLayout = () => {
         </div>
         { view === Views.table && (
           <div
-            className='flex flex-grow items-end'
+            className='flex grow items-end'
           >
             <TableView
               className='h-[350px]'
@@ -158,14 +156,14 @@ const SearchLayout = () => {
         )}
         { timeline && (
           <div
-            className='flex flex-grow flex-shrink max-w-full items-end'
+            className='flex grow shrink max-w-full items-end'
           >
             <TimelineView
               className={clsx(
                 'h-[360px]',
                 'flex',
-                'flex-grow',
-                'flex-shrink',
+                'grow',
+                'shrink',
               )}
               padding={timelinePadding}
             />

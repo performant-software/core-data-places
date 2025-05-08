@@ -117,8 +117,8 @@ const Selection = (props: Props) => {
         'flex',
         'flex-col',
         'bg-white/80',
-        'backdrop-blur',
-        'shadow',
+        'backdrop-blur-sm',
+        'shadow-sm',
         'overflow-y-auto',
         props.className
       )}

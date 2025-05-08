@@ -1,62 +1,52 @@
-html, body {
-  font-family: Inter;
+@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+@import 'tailwindcss';
+@import '@performant-software/core-data/tailwind.css';
+
+@plugin '@tailwindcss/typography';
+
+@source '../../node_modules/@performant-software/core-data';
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 }
 
-.ais-RefinementList-item .ais-RefinementList-label {
-  display: flex;
-  font-size: 0.875rem;
-  gap: 0.5em;
+@theme {
+  --color-neutral-dark: #111928;
+  --color-neutral-light: #F5F5F5;
+  --color-default-primary: #073B4C;
+  --color-default-secondary: var(--color-neutral-200);
+
+  --color-primary: var(--customColorPrimary, var(--color-default-primary));
+  --color-secondary: var(--customColorSecondary, var(--color-default-secondary));
+  --color-text-primary: var(--customTextPrimary, var(--color-white));
+  --color-text-secondary: var(--customTextSecondary, var(--color-black));
+
+  --font-header: var(--customFontHeader, Inter);
+  --font-body: var(--customFontBody, Inter);
+  --font-sans: var(--font-body);
 }
 
-.ais-RefinementList-item .ais-RefinementList-count {
-  color: #0005119e;
-  flex-grow: 1;
-  text-align: right;
-}
-
-.switch-root {
-  width: 32px;
-  height: 20px;
-  background-color: #cbd5e1;
-  border-radius: 9999px;
-  position: relative;
-  padding: 0;
-}
-
-.switch-root:focus {
-  outline-color: #0f766e; /** Teal 700 */
-  outline-offset: 2px;
-  outline-width: 2px;
-}
-
-.switch-root[data-state='checked'] {
-  background-color: #0f766e;
-}
-
-.switch-thumb {
-  display: block;
-  width: 16px;
-  height: 16px;
-  background-color: white;
-  border-radius: 9999px;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-  transition: transform 100ms;
-  transform: translateX(2px);
-  will-change: transform;
-}
-
-.switch-thumb[data-state='checked'] {
-  transform: translateX(14px);
-}
-
+/*
+ * Peripleo styles
+ */
 .p6o-map-container {
   height: 100%;
   width: 100%;
-}
-
-/* This can be removed after upgrading Peripleo, which accepts a "attributionControl" prop on the Map component */
-.maplibregl-ctrl.maplibregl-ctrl-attrib {
-  display: none;
 }
 
 .p6o-zoom-control {
@@ -66,12 +56,24 @@ html, body {
   row-gap: 0.5rem;
 }
 
-.primary-text-white .bg-primary, .primary-text-white .fill-primary, .primary-text-white .bg-primary div {
-  color: white;
-  border-color: white;
+/*
+ * Branding styles
+ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-header);
 }
 
-.primary-text-black .bg-primary, .primary-text-black .fill-primary, .primary-text-black .bg-primary div {
-  color: black;
-  border-color: black;
+.bg-primary, .fill-primary, .bg-primary div {
+  color: var(--color-text-primary);
+}
+
+.bg-secondary, .fill-secondary, .bg-secondary div {
+  color: var(--color-text-secondary);
+}
+
+/*
+ * Swiper styles
+ */
+.swiper-pagination > .swiper-pagination-bullet-active {
+  background-color: var(--color-black);
 }

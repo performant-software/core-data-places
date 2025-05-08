@@ -1,0 +1,26 @@
+---
+import { fetchPages } from '@backend/tina';
+import config from '@config';
+import Page from '@layouts/Page.astro';
+
+const { slug } = Astro.params;
+
+export const getStaticPaths = async () => {
+  const paths = [];
+
+  for (const lang of config.i18n.locales) {
+    const pages = await fetchPages(lang);
+
+    for (const page of pages) {
+      paths.push({ params: { lang, slug: page._sys.filename } });
+    }
+  }
+
+  return paths;
+};
+
+---
+
+<Page
+  slug={slug}
+/>

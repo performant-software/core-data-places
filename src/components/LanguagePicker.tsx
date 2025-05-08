@@ -26,7 +26,7 @@ const LanguagePicker = (props: Props) => {
         className='relative -mb-2'
       >
         <Listbox.Button
-          className='relative w-full cursor-default rounded-lg pr-7 text-left sm:text-sm'
+          className='relative w-full cursor-default rounded-lg pr-7 text-left sm:text-sm cursor-pointer'
         >
           <span
             className='block truncate border border-gray-400 py-2 px-3 mr-2'
@@ -49,7 +49,7 @@ const LanguagePicker = (props: Props) => {
           leaveTo='opacity-0'
         >
           <Listbox.Options
-            className='absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-10 text-black'
+            className='absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden sm:text-sm z-10 text-black'
           >
             { locales.map((locale, idx) => (
               <Listbox.Option
@@ -65,6 +65,7 @@ const LanguagePicker = (props: Props) => {
                 value={locale}
               >
                 <a
+                  className='text-black'
                   href={locale}
                 >
                   <span className='block truncate'>

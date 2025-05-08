@@ -1,58 +1,16 @@
 ---
-import { fetchAbout } from '@backend/tina';
-import Container from '@components/Container.astro';
-import Hero from '@components/Hero.astro';
 import config from '@config';
-import { getTranslations } from '@backend/i18n';
-import Layout from '@layouts/Layout.astro';
-import { TinaMarkdown } from 'tinacms/dist/rich-text';
+import Page from '@layouts/Page.astro';
+import { getHomepage } from '@utils/nav';
 import _ from 'underscore';
-import { getLocalizedContent } from '@i18n/utils';
 
-const aboutResponse = await fetchAbout();
-const { heroImage, featureImage, heroImageAlt, featureImageAlt } = aboutResponse;
-
-// Get localized content, defaulting to the default language if not defined
-const { title, subheader, description } = getLocalizedContent(aboutResponse, Astro.currentLocale);
-
-const { t } = await getTranslations(Astro.currentLocale);
+const locale = Astro.currentLocale;
+const page = await getHomepage(locale);
 
 export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
 
 ---
 
-<Layout
-  footer
-  t={t}
-  title={title}
->
-  <Hero 
-    title={title}
-    subheader={subheader}
-    image={heroImage}
-    alt={heroImageAlt}
-  />
-  <Container
-    className="my-12 grid lg:grid-cols-2 gap-16"
-  >
-    <div>
-      <h2
-        class="text-5xl font-serif "
-      >
-        { t('about') }
-      </h2>
-      <article
-        class="py-8 prose prose-lg max-w-none"
-      >
-        <TinaMarkdown
-          content={description}
-        />
-      </article>
-    </div>
-    <img
-      alt={featureImageAlt || ''}
-      src={featureImage}
-      class="w-full"
-    />
-  </Container>
-</Layout>
+<Page
+  slug={page?._sys?.filename}
+/>
