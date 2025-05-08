@@ -7,7 +7,10 @@ import _ from 'underscore';
 const loader = {
   name: 'i18n-loader',
   load: async (context: LoaderContext): Promise<void> => {
-    const { generateDigest, parseData, store } = context;
+    const { generateDigest, logger, parseData, store } = context;
+
+    logger.info('Fetching data.');
+
     const response = await fetchI18ns();
 
     for (const item of response) {
