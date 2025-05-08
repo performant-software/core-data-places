@@ -1,6 +1,6 @@
+import config from '@config';
 import { hasContentCollection } from '@root/src/content.config';
 import { getCollection, getEntry } from 'astro:content';
-import config from '@config';
 import _ from 'underscore';
 
 const REQUEST_PARAMS = {
@@ -324,12 +324,25 @@ class Base {
    * @param key
    */
   async getRelatedRecords(id: string, key: string) {
-    let records;
+    let records = [];
 
     const { data } = await getEntry(this.name, id);
 
     if (data && data.relatedRecords) {
-      records = data.relatedRecords[key];
+      const entries = data.relatedRecords[key];
+
+      /**
+       * If the related collection has a content collection, fetch the data from there. Otherwise, grab the entry
+       * off of the data in the base content collection.
+       */
+      if (hasContentCollection(key) && _.isArray(entries)) {
+        for (const entry of entries) {
+          const { data: record } = await getEntry(key, entry.uuid);
+          records.push({ ...entry, ...record });
+        }
+      } else {
+        records = entries;
+      }
     }
 
     return records;
