@@ -251,16 +251,32 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
   useEffect(() => {
     if (name) {
       const ind = panelHistory.findIndex((item) => item === name);
-      setPanelHistory((current) => (ind < 0 ? [...current, name] : [...current].slice(0,ind+1)));
+      if (ind >= 0) {
+        //in this case, we've gone back to something already visited, so slice the history back to it
+        setPanelHistory((current) => ([...current].slice(0,ind+1)));
+      } else {
+        //we get here if this is the first record or if something weird happened. Reset the history.
+        setPanelHistory([name]);
+      }
     }
   }, [name]);
+
+  /**
+   * When a related record is clicked, update breadcrumbs and then navigate.
+   */
+  const onNavigate = useCallback((model: string, record: any) => {
+    const name = model === 'people' ? getNameView(record) : record.name;
+    const ind = panelHistory.findIndex((item) => item === name);
+    setPanelHistory((current) => (ind < 0 ? [...current, name] : [...current].slice(0,ind+1)));
+    navigate(`/${model}/${record.uuid}`);
+  }, []);
 
   /**
    * Transforms the related events.
    */
   const relatedEvents = useMemo(() => getRelatedRecords(events, 'date', (event) => ({
     name: event.name,
-    onClick: () => navigate(`/events/${event.uuid}`)
+    onClick: () => onNavigate('events', event)
   })), [getRelatedRecords, events]);
 
   /**
@@ -268,7 +284,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedInstances = useMemo(() => getRelatedRecords(instances, null, (instance) => ({
     name: instance.name,
-    onClick: () => navigate(`/instances/${instance.uuid}`)
+    onClick: () => onNavigate('instances', instance)
   })), [getRelatedRecords, instances]);
 
   /**
@@ -276,7 +292,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedItems = useMemo(() => getRelatedRecords(items, null, (item) => ({
     name: item.name,
-    onClick: () => navigate(`/items/${item.uuid}`)
+    onClick: () => onNavigate('items', item)
   })), [getRelatedRecords, items]);
 
   /**
@@ -284,7 +300,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedOrganizations = useMemo(() => getRelatedRecords(organizations, 'occupation', (organization) => ({
     name: organization.name,
-    onClick: () => navigate(`/organizations/${organization.uuid}`)
+    onClick: () => onNavigate('organizations', organization)
   })), [getRelatedRecords, organizations]);
 
   /**
@@ -292,7 +308,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedPeople = useMemo(() => getRelatedRecords(people, 'person', (person) => ({
     name: getNameView(person),
-    onClick: () => navigate(`/people/${person.uuid}`)
+    onClick: () => onNavigate('people', person)
   })), [getRelatedRecords, people]);
 
   /**
@@ -300,7 +316,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedPlaces = useMemo(() => getRelatedRecords(places, 'location', (place) => ({
     name: place.name,
-    onClick: () => navigate(`/places/${place.uuid}`)
+    onClick: () => onNavigate('places', place)
   })), [getRelatedRecords, places]);
 
   /**
@@ -315,7 +331,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedWorks = useMemo(() => getRelatedRecords(works, null, (work) => ({
     name: work.name,
-    onClick: () => navigate(`/works/${work.uuid}`)
+    onClick: () => onNavigate('works', work)
   })), [getRelatedRecords, works]);
 
   /**
