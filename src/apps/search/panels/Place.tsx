@@ -13,6 +13,8 @@ type Place = {
 
 interface Props {
   className?: string;
+  panelHistory?: any[];
+  setPanelHistory?: any;
 }
 
 const Place = (props: Props) => {
@@ -36,6 +38,7 @@ const Place = (props: Props) => {
       icon='location'
       name='place'
       exclusions={exclusions}
+      panelHistory={props.panelHistory}
       renderItem={(place) => (
         <>
           { !exclusions.includes('place_layers') && !_.isEmpty(place?.place_layers) && (
@@ -50,6 +53,7 @@ const Place = (props: Props) => {
       resolveDetailPageUrl={resolveDetailPageUrl}
       resolveGeometry={(place) => CoreDataUtils.toFeatureCollection([place])}
       service={PlacesService}
+      setPanelHistory={props.setPanelHistory}
     />
   );
 };

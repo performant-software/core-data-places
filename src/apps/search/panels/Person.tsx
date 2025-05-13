@@ -7,6 +7,8 @@ import { useCallback, useContext } from 'react';
 
 interface Props {
   className?: string;
+  panelHistory?: any[];
+  setPanelHistory?: any;
 }
 
 const Person = (props: Props) => {
@@ -35,9 +37,11 @@ const Person = (props: Props) => {
       icon='person'
       name='person'
       exclusions={config.result_filtering?.people?.exclude}
+      panelHistory={props.panelHistory}
       renderName={renderName}
       resolveDetailPageUrl={resolveDetailPageUrl}
       service={PeopleService}
+      setPanelHistory={props.setPanelHistory}
     />
   );
 };

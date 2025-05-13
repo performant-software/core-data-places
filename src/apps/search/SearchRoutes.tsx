@@ -10,41 +10,43 @@ import { Route, Routes } from '@peripleo/peripleo';
 
 interface Props {
   className?: string;
+  panelHistory?: any[];
+  setPanelHistory?: any;
 }
 
 const SearchRoutes = (props: Props) => (
   <Routes>
     <Route
       match='/events/'
-      element={<Event className={props.className} />}
+      element={<Event {...props} />}
     />
     <Route
       match='/instances/'
-      element={<Instance className={props.className} />}
+      element={<Instance {...props} />}
     />
     <Route
       match='/items/'
-      element={<Item className={props.className} />}
+      element={<Item {...props} />}
     />
     <Route
       match='/organizations/'
-      element={<Organization className={props.className} />}
+      element={<Organization {...props} />}
     />
     <Route
       match='/people/'
-      element={<Person className={props.className} />}
+      element={<Person {...props} />}
     />
     <Route
       match='/places/'
-      element={<Place className={props.className} />}
+      element={<Place {...props} />}
     />
     <Route
       match='/works/'
-      element={<Work className={props.className} />}
+      element={<Work {...props} />}
     />
     <Route
       match='/select'
-      element={<Selection className={props.className} />}
+      element={<Selection {...props} />}
     />
   </Routes>
 );

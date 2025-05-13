@@ -41,6 +41,7 @@ const SearchLayout = () => {
   const [filters, setFilters] = useState<boolean>(false);
   const [timeline, setTimeline] = useState<boolean>(false);
   const [view, setView] = useState<string>(Views.list);
+  const [panelHistory, setPanelHistory] = useState<any[]>([]);
 
   const { searchConfig: config, setBoundingBoxOptions, setControlsClass } = useContext(SearchContext);
 
@@ -174,6 +175,8 @@ const SearchLayout = () => {
         >
           <SearchRoutes
             className='w-[350px]'
+            panelHistory={panelHistory}
+            setPanelHistory={setPanelHistory}
           />
         </div>
       </div>

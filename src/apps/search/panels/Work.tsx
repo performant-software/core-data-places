@@ -6,6 +6,8 @@ import { useCallback, useContext } from 'react';
 
 interface Props {
   className?: string;
+  panelHistory?: any[];
+  setPanelHistory?: any;
 }
 
 const Work = (props: Props) => {
@@ -26,8 +28,10 @@ const Work = (props: Props) => {
       className={props.className}
       name='work'
       exclusions={config.result_filtering?.works?.exclude}
+      panelHistory={props.panelHistory}
       resolveDetailPageUrl={resolveDetailPageUrl}
       service={WorksService}
+      setPanelHistory={props.setPanelHistory}
     />
   );
 }

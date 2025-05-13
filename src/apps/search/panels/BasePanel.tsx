@@ -30,11 +30,13 @@ interface Props {
   icon?: string;
   name: string;
   exclusions?: string[];
+  panelHistory?: any[];
   renderItem?: (item: any) => JSX.Element;
   renderName?: (item: any) => string;
   resolveDetailPageUrl?: (item: any) => string;
   resolveGeometry?: (item: any) => any;
   service: Base;
+  setPanelHistory?: any;
 }
 
 const INVERSE_SUFFIX = '_inverse';
@@ -42,6 +44,7 @@ const INVERSE_SUFFIX = '_inverse';
 const BasePanel = (props: Props) => {
   const [manifestUrl, setManifestUrl] = useState<string | undefined>();
   const [coverUrl, setCoverUrl] = useState(null);
+  const { panelHistory, setPanelHistory } = props;
 
   const navigate = useNavigate();
   const config = useSearchConfig();
@@ -55,6 +58,7 @@ const BasePanel = (props: Props) => {
 
   const { boundingBoxOptions } = useContext(SearchContext);
 
+  
   /**
    * Transforms the passed list of items and groups them by the relationship ID.
    */
@@ -84,21 +88,26 @@ const BasePanel = (props: Props) => {
 
     return transformedRecords;
   }, [t]);
-
+  
   const onClose = useCallback(() => {
     navigate('/');
     setSelected(null);
+    setPanelHistory([]);
   }, []);
 
+  const onGoBack = useCallback(() => {
+    history.back();
+  }, []);
+  
   /**
    * Loads the base record from the Core Data API.
-   */
+  */
   const onLoad = () => props.service.fetchOne(id);
   const { data } = useLoader(onLoad, null, [id, props.service]);
-
+  
   /**
    * Loads the related events from the Core Data API.
-   */
+  */
   const onLoadEvents = () => props.service.fetchRelatedEvents(id, { per_page: 0 });
   const { data: { events = [] } = {}, loading: eventsLoading } = useLoader(onLoadEvents, null, [id, props.service]);
 
@@ -128,19 +137,19 @@ const BasePanel = (props: Props) => {
 
   /**
    * Loads the IIIF collection manifest from the Core Data API.
-   */
-  const onLoadManifests = () => props.service.fetchRelatedManifests(id, { per_page: 0 });
-  const { data: collection = {}, loading: collectionLoading }: { collection: Collection, loading: boolean } = useLoader(onLoadManifests, null, [id, props.service]);
+  */
+ const onLoadManifests = () => props.service.fetchRelatedManifests(id, { per_page: 0 });
+ const { data: collection = {}, loading: collectionLoading }: { collection: Collection, loading: boolean } = useLoader(onLoadManifests, null, [id, props.service]);
+ 
+ /**
+  * Loads the related people from the Core Data API.
+ */
+const onLoadPeople = () => props.service.fetchRelatedPeople(id, { per_page: 0});
+const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadPeople, null, [id, props.service]);
 
-  /**
-   * Loads the related people from the Core Data API.
-   */
-  const onLoadPeople = () => props.service.fetchRelatedPeople(id, { per_page: 0});
-  const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadPeople, null, [id, props.service]);
-
-  /**
-   * Loads the related place records from the Astro API.
-   */
+/**
+ * Loads the related place records from the Astro API.
+*/
   const onLoadPlaces = () => props.service.fetchRelatedPlaces(id, { per_page: 0 });
   const { data: { places = [] } = {}, loading: placesLoading } = useLoader(onLoadPlaces, null, [id, props.service]);
 
@@ -149,23 +158,23 @@ const BasePanel = (props: Props) => {
    */
   const onLoadTaxonomies = () => props.service.fetchRelatedTaxonomies(id, { per_page: 0 });
   const { data: { taxonomies = [] } = {}, loading: taxonomiesLoading } = useLoader(onLoadTaxonomies, null, [id, props.service]);
-
+  
   /**
    * Loads the related works from the Core Data API.
-   */
+  */
   const onLoadWorks = () => props.service.fetchRelatedWorks(id, { per_page: 0 });
   const { data: { works = [] } = {}, loading: worksLoading } = useLoader(onLoadWorks, null, [id, props.service]);
-
+  
   /**
    * Memo-izes the base record.
-   */
-  const item = useMemo(() => {
-    let item;
-
-    if (data) {
-      item = {
-        ..._.omit(data[props.name], ...exclude),
-        user_defined: _.omit(data[props.name].user_defined, ...exclude)
+  */
+ const item = useMemo(() => {
+   let item;
+   
+   if (data) {
+     item = {
+       ..._.omit(data[props.name], ...exclude),
+       user_defined: _.omit(data[props.name].user_defined, ...exclude)
       }
     }
 
@@ -175,15 +184,15 @@ const BasePanel = (props: Props) => {
 
   /**
    * Updates the cover URL when the record or loading states change.
-   */
-  useEffect(() => {
-    setCoverUrl((prev) => {
-      // include a placeholder if the previous record had a cover image
+  */
+ useEffect(() => {
+   setCoverUrl((prev) => {
+     // include a placeholder if the previous record had a cover image
       // to avoid sudden content shifting.
       if (mediaContentsLoading && prev) {
         return '/placeholder.png'
       }
-
+      
       if (mediaContents.length > 0) {
         return mediaContents[0].content_preview_url
       }
@@ -191,7 +200,7 @@ const BasePanel = (props: Props) => {
       return null
     })
   }, [item, mediaContentsLoading])
-
+  
   /**
    * Memo-izes the geometry.
    */
@@ -202,7 +211,7 @@ const BasePanel = (props: Props) => {
 
     return !_.isEmpty(places) && CoreDataUtils.toFeatureCollection(places);
   }, [item, places, props.resolveGeometry]);
-
+  
   /**
    * Memo-izes the related media items.
    */
@@ -210,7 +219,7 @@ const BasePanel = (props: Props) => {
     if (_.isEmpty(collection.items)) {
       return [];
     }
-
+    
     const count = _.reduce(collection.items, (memo, item) => memo + item.item_count, 0);
     const title = t('relatedMedia', { count });
 
@@ -224,8 +233,8 @@ const BasePanel = (props: Props) => {
           name={_.first(item.label?.en)}
           onClick={() => setManifestUrl(item.id)}
           thumbnail={item.thumbnail}
-        />
-      ),
+          />
+        ),
       renderTitle: () => title,
       title
     }];
@@ -235,6 +244,16 @@ const BasePanel = (props: Props) => {
    * Memo-izes the name.
    */
   const name = useMemo(() => (item && props.renderName && props.renderName(item)) || item?.name, [item]);
+
+  /**
+   * Updates the panel history array when the name is set or udpated.
+   */
+  useEffect(() => {
+    if (name) {
+      const ind = panelHistory.findIndex((item) => item === name);
+      setPanelHistory((current) => (ind < 0 ? [...current, name] : [...current].slice(0,ind+1)));
+    }
+  }, [name]);
 
   /**
    * Transforms the related events.
@@ -357,6 +376,7 @@ const BasePanel = (props: Props) => {
       )}
     >
       <RecordDetailPanel
+        breadcrumbs={panelHistory.length > 1 && panelHistory.slice(-2)}
         count
         coverUrl={coverUrl}
         icon={props.icon}
@@ -373,6 +393,7 @@ const BasePanel = (props: Props) => {
           worksLoading
         }
         onClose={onClose}
+        onGoBack={panelHistory.length > 1 && onGoBack}
         relations={relations()}
         title={name}
         detailPageUrl={props.resolveDetailPageUrl(item)}
