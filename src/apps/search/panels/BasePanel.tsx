@@ -14,7 +14,7 @@ import { LocationMarkers } from '@performant-software/geospatial';
 import { useSelection } from '@peripleo/maplibre';
 import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
 import { getNameView } from '@utils/people';
-import { getCurrentId } from '@utils/router';
+import { getCurrentId, getCurrentPath } from '@utils/router';
 import clsx from 'clsx';
 import {
   useCallback,
@@ -43,6 +43,7 @@ const INVERSE_SUFFIX = '_inverse';
 const BasePanel = (props: Props) => {
   const [manifestUrl, setManifestUrl] = useState<string | undefined>();
   const [coverUrl, setCoverUrl] = useState(null);
+  const [lastClicked, setLastClicked] = useState(null);
   const { panelHistory, setPanelHistory } = useContext(PanelHistoryContext);
 
   const navigate = useNavigate();
@@ -52,11 +53,11 @@ const BasePanel = (props: Props) => {
 
   const route = useCurrentRoute();
   const id = getCurrentId(route);
+  const path = getCurrentPath(route);
 
   const exclude = props.exclusions || [];
 
   const { boundingBoxOptions } = useContext(SearchContext);
-
   
   /**
    * Transforms the passed list of items and groups them by the relationship ID.
@@ -245,29 +246,42 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
   const name = useMemo(() => (item && props.renderName && props.renderName(item)) || item?.name, [item]);
 
   /**
-   * Updates the panel history array when the name is set or udpated.
+   * Updates the panel history array when the id changes.
    */
   useEffect(() => {
-    if (name) {
-      const ind = panelHistory.findIndex((item) => item === name);
-      if (ind >= 0) {
+    if (id && path && name) {
+      const ind = panelHistory.findIndex((item) => item.uuid === id);
+      if (ind >= 0 && ind < panelHistory.length - 1) {
         //in this case, we've gone back to something already visited, so slice the history back to it
         setPanelHistory((current) => ([...current].slice(0,ind+1)));
-      } else {
+      } else if (ind < 0) {
         //we get here if this is the first record or if something weird happened. Reset the history.
-        setPanelHistory([name]);
+        setPanelHistory([{
+          name,
+          uuid: id,
+          model: path
+        }]);
       }
     }
-  }, [name]);
+  }, [id, path, name]);
+
+  /**
+   * After we click on a related record and update panelHistory, navigate to it.
+   */
+  useEffect(() => {
+    if (panelHistory.length && id !== panelHistory[panelHistory.length - 1].uuid) {
+      const current = panelHistory[panelHistory.length - 1];
+      navigate(`/${current.model}/${current.uuid}`);
+    }
+  }, [lastClicked]);
 
   /**
    * When a related record is clicked, update breadcrumbs and then navigate.
    */
-  const onNavigate = useCallback((model: string, record: any) => {
-    const name = model === 'people' ? getNameView(record) : record.name;
-    const ind = panelHistory.findIndex((item) => item === name);
-    setPanelHistory((current) => (ind < 0 ? [...current, name] : [...current].slice(0,ind+1)));
-    navigate(`/${model}/${record.uuid}`);
+  const onNavigate = useCallback((name: string, uuid: string, model: string) => {
+    const ind = panelHistory.findIndex((item) => item.uuid === uuid);
+    setPanelHistory((current) => (ind < 0 ? [...current, { name, uuid, model }] : [...current].slice(0,ind+1)));
+    setLastClicked(uuid);
   }, []);
 
   /**
@@ -275,7 +289,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedEvents = useMemo(() => getRelatedRecords(events, 'date', (event) => ({
     name: event.name,
-    onClick: () => onNavigate('events', event)
+    onClick: () => onNavigate(event.name, event.uuid, 'events')
   })), [getRelatedRecords, events]);
 
   /**
@@ -283,7 +297,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedInstances = useMemo(() => getRelatedRecords(instances, null, (instance) => ({
     name: instance.name,
-    onClick: () => onNavigate('instances', instance)
+    onClick: () => onNavigate(instance.name, instance.uuid, 'instances')
   })), [getRelatedRecords, instances]);
 
   /**
@@ -291,7 +305,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedItems = useMemo(() => getRelatedRecords(items, null, (item) => ({
     name: item.name,
-    onClick: () => onNavigate('items', item)
+    onClick: () => onNavigate(item.name, item.uuid, 'items')
   })), [getRelatedRecords, items]);
 
   /**
@@ -299,7 +313,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedOrganizations = useMemo(() => getRelatedRecords(organizations, 'occupation', (organization) => ({
     name: organization.name,
-    onClick: () => onNavigate('organizations', organization)
+    onClick: () => onNavigate(organization.name, organization.uuid, 'organizations')
   })), [getRelatedRecords, organizations]);
 
   /**
@@ -307,7 +321,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedPeople = useMemo(() => getRelatedRecords(people, 'person', (person) => ({
     name: getNameView(person),
-    onClick: () => onNavigate('people', person)
+    onClick: () => onNavigate(getNameView(person), person.uuid, 'people')
   })), [getRelatedRecords, people]);
 
   /**
@@ -315,7 +329,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedPlaces = useMemo(() => getRelatedRecords(places, 'location', (place) => ({
     name: place.name,
-    onClick: () => onNavigate('places', place)
+    onClick: () => onNavigate(place.name, place.uuid, 'places')
   })), [getRelatedRecords, places]);
 
   /**
@@ -330,7 +344,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedWorks = useMemo(() => getRelatedRecords(works, null, (work) => ({
     name: work.name,
-    onClick: () => onNavigate('works', work)
+    onClick: () => onNavigate(work.name, work.uuid, 'works')
   })), [getRelatedRecords, works]);
 
   /**
@@ -391,7 +405,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
       )}
     >
       <RecordDetailPanel
-        breadcrumbs={panelHistory.length > 1 && panelHistory.slice(-2)}
+        breadcrumbs={panelHistory.length > 1 && _.map(panelHistory.slice(-2), (item) => (item.name))}
         count
         coverUrl={coverUrl}
         icon={props.icon}
