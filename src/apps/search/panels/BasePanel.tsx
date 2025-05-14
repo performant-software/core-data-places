@@ -24,19 +24,18 @@ import {
   useState
 } from 'react';
 import _ from 'underscore';
+import PanelHistoryContext from '../PanelHistoryContext';
 
 interface Props {
   className?: string;
   icon?: string;
   name: string;
   exclusions?: string[];
-  panelHistory?: any[];
   renderItem?: (item: any) => JSX.Element;
   renderName?: (item: any) => string;
   resolveDetailPageUrl?: (item: any) => string;
   resolveGeometry?: (item: any) => any;
   service: Base;
-  setPanelHistory?: any;
 }
 
 const INVERSE_SUFFIX = '_inverse';
@@ -44,7 +43,7 @@ const INVERSE_SUFFIX = '_inverse';
 const BasePanel = (props: Props) => {
   const [manifestUrl, setManifestUrl] = useState<string | undefined>();
   const [coverUrl, setCoverUrl] = useState(null);
-  const { panelHistory, setPanelHistory } = props;
+  const { panelHistory, setPanelHistory } = useContext(PanelHistoryContext);
 
   const navigate = useNavigate();
   const config = useSearchConfig();

@@ -6,8 +6,6 @@ import { useCallback, useContext } from 'react';
 
 interface Props {
   className?: string;
-  panelHistory?: any[];
-  setPanelHistory?: any;
 }
 
 const Organization = (props: Props) => {
@@ -29,7 +27,6 @@ const Organization = (props: Props) => {
       icon='participants'
       name='organization'
       exclusions={config.result_filtering?.organizations?.exclude}
-      panelHistory={props.panelHistory}
       renderItem={(organization) => (
         <p
           className='text-sm'
@@ -39,7 +36,6 @@ const Organization = (props: Props) => {
       )}
       resolveDetailPageUrl={resolveDetailPageUrl}
       service={OrganizationsService}
-      setPanelHistory={props.setPanelHistory}
     />
   );
 }

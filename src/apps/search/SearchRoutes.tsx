@@ -10,8 +10,6 @@ import { Route, Routes } from '@peripleo/peripleo';
 
 interface Props {
   className?: string;
-  panelHistory?: any[];
-  setPanelHistory?: any;
 }
 
 const SearchRoutes = (props: Props) => (

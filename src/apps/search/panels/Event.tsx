@@ -8,8 +8,6 @@ import _ from 'underscore';
 
 interface Props {
   className?: string;
-  panelHistory?: any[];
-  setPanelHistory?: any;
 }
 
 const Event = (props: Props) => {
@@ -62,7 +60,6 @@ const Event = (props: Props) => {
       icon='date'
       name='event'
       exclusions={config.result_filtering?.events?.exclude}
-      panelHistory={props.panelHistory}
       renderItem={(event) => (
         <div
           className='text-sm'
@@ -80,7 +77,6 @@ const Event = (props: Props) => {
       )}
       resolveDetailPageUrl={resolveDetailPageUrl}
       service={EventsService}
-      setPanelHistory={props.setPanelHistory}
     />
   );
 };
