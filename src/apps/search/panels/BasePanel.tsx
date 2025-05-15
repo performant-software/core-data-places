@@ -95,8 +95,14 @@ const BasePanel = (props: Props) => {
     setPanelHistory([]);
   }, []);
 
+  /**
+   * When back arrow is clicked, navigate to previous record in panelHistory
+   */
   const onGoBack = useCallback(() => {
-    history.back();
+    if (panelHistory.length > 1) {
+      const prev = panelHistory[panelHistory.length - 2];
+      onNavigate(prev.name, prev.uuid, prev.model);
+    }
   }, []);
   
   /**
@@ -246,7 +252,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
   const name = useMemo(() => (item && props.renderName && props.renderName(item)) || item?.name, [item]);
 
   /**
-   * Updates the panel history array when the id changes.
+   * Updates the panel history array when the name changes.
    */
   useEffect(() => {
     if (id && path && name) {
@@ -263,13 +269,13 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
         }]);
       }
     }
-  }, [id, path, name]);
+  }, [name]);
 
   /**
    * After we click on a related record and update panelHistory, navigate to it.
    */
   useEffect(() => {
-    if (panelHistory.length && id !== panelHistory[panelHistory.length - 1].uuid) {
+    if (lastClicked && panelHistory.length && id !== panelHistory[panelHistory.length - 1].uuid) {
       const current = panelHistory[panelHistory.length - 1];
       navigate(`/${current.model}/${current.uuid}`);
     }
@@ -372,7 +378,6 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
       }))
       .value()
   ), [item, renderUserDefined]);
-
 
   /**
    * Memo-izes included relations
