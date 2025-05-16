@@ -252,20 +252,28 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
   const name = useMemo(() => (item && props.renderName && props.renderName(item)) || item?.name, [item]);
 
   /**
+   * Helper function for truncating the history to a certain point
+   */
+  const getHistoryByIndex = useCallback((history, index) => ([...history].slice(0, index + 1)), []);
+
+  /**
    * Updates the panel history array when the name changes.
    */
   useEffect(() => {
-    if (id && path && name) {
+    if (id && route && name) {
       const ind = panelHistory.findIndex((item) => item.uuid === id);
+      //note that this hook will trigger redundantly after we navigate from within the panel;
+      //in this case we should have ind = panelHistory.length - 1. We want to avoid resetting
+      //panelHistory in this case so we don't get into loops.
       if (ind >= 0 && ind < panelHistory.length - 1) {
         //in this case, we've gone back to something already visited, so slice the history back to it
-        setPanelHistory((current) => ([...current].slice(0,ind+1)));
+        setPanelHistory((current) => (getHistoryByIndex(current, ind)));
       } else if (ind < 0) {
         //we get here if this is the first record or if something weird happened. Reset the history.
         setPanelHistory([{
           name,
           uuid: id,
-          model: path
+          route
         }]);
       }
     }
@@ -277,16 +285,16 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
   useEffect(() => {
     if (lastClicked && panelHistory.length && id !== panelHistory[panelHistory.length - 1].uuid) {
       const current = panelHistory[panelHistory.length - 1];
-      navigate(`/${current.model}/${current.uuid}`);
+      navigate(current.route);
     }
   }, [lastClicked]);
 
   /**
-   * When a related record is clicked, update breadcrumbs and then navigate.
+   * When a related record is clicked, update panelHistory and then navigate.
    */
-  const onNavigate = useCallback((name: string, uuid: string, model: string) => {
+  const onNavigate = useCallback((name: string, uuid: string, route: string) => {
     const ind = panelHistory.findIndex((item) => item.uuid === uuid);
-    setPanelHistory((current) => (ind < 0 ? [...current, { name, uuid, model }] : [...current].slice(0,ind+1)));
+    setPanelHistory((current) => (ind < 0 ? [...current, { name, uuid, route }] : getHistoryByIndex(current, ind)));
     setLastClicked(uuid);
   }, []);
 
@@ -295,7 +303,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedEvents = useMemo(() => getRelatedRecords(events, 'date', (event) => ({
     name: event.name,
-    onClick: () => onNavigate(event.name, event.uuid, 'events')
+    onClick: () => onNavigate(event.name, event.uuid, `/events/${event.uuid}`)
   })), [getRelatedRecords, events]);
 
   /**
@@ -303,7 +311,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedInstances = useMemo(() => getRelatedRecords(instances, null, (instance) => ({
     name: instance.name,
-    onClick: () => onNavigate(instance.name, instance.uuid, 'instances')
+    onClick: () => onNavigate(instance.name, instance.uuid, `/instances/${instance.uuid}`)
   })), [getRelatedRecords, instances]);
 
   /**
@@ -311,7 +319,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedItems = useMemo(() => getRelatedRecords(items, null, (item) => ({
     name: item.name,
-    onClick: () => onNavigate(item.name, item.uuid, 'items')
+    onClick: () => onNavigate(item.name, item.uuid, `/items/${item.uuid}`)
   })), [getRelatedRecords, items]);
 
   /**
@@ -319,7 +327,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedOrganizations = useMemo(() => getRelatedRecords(organizations, 'occupation', (organization) => ({
     name: organization.name,
-    onClick: () => onNavigate(organization.name, organization.uuid, 'organizations')
+    onClick: () => onNavigate(organization.name, organization.uuid, `/organizations/${organization.uuid}`)
   })), [getRelatedRecords, organizations]);
 
   /**
@@ -327,7 +335,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedPeople = useMemo(() => getRelatedRecords(people, 'person', (person) => ({
     name: getNameView(person),
-    onClick: () => onNavigate(getNameView(person), person.uuid, 'people')
+    onClick: () => onNavigate(getNameView(person), person.uuid, `/people/${person.uuid}`)
   })), [getRelatedRecords, people]);
 
   /**
@@ -335,7 +343,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedPlaces = useMemo(() => getRelatedRecords(places, 'location', (place) => ({
     name: place.name,
-    onClick: () => onNavigate(place.name, place.uuid, 'places')
+    onClick: () => onNavigate(place.name, place.uuid, `/places/${place.uuid}`)
   })), [getRelatedRecords, places]);
 
   /**
@@ -350,7 +358,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
    */
   const relatedWorks = useMemo(() => getRelatedRecords(works, null, (work) => ({
     name: work.name,
-    onClick: () => onNavigate(work.name, work.uuid, 'works')
+    onClick: () => onNavigate(work.name, work.uuid, `/works/${work.uuid}`)
   })), [getRelatedRecords, works]);
 
   /**

@@ -5,7 +5,7 @@ import {
 export interface PanelHistoryEntryType {
   name: string;
   uuid: string;
-  model: string;
+  route: string;
 }
 
 const PanelHistoryContext = createContext<{ 
