@@ -296,7 +296,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
     const ind = panelHistory.findIndex((item) => item.uuid === uuid);
     setPanelHistory((current) => (ind < 0 ? [...current, { name, uuid, route }] : getHistoryByIndex(current, ind)));
     setLastClicked(uuid);
-  }, []);
+  }, [panelHistory]);
 
   /**
    * Transforms the related events.
