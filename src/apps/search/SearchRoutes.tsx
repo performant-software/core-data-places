@@ -16,35 +16,35 @@ const SearchRoutes = (props: Props) => (
   <Routes>
     <Route
       match='/events/'
-      element={<Event {...props} />}
+      element={<Event className={props.className} />}
     />
     <Route
       match='/instances/'
-      element={<Instance {...props} />}
+      element={<Instance className={props.className} />}
     />
     <Route
       match='/items/'
-      element={<Item {...props} />}
+      element={<Item className={props.className} />}
     />
     <Route
       match='/organizations/'
-      element={<Organization {...props} />}
+      element={<Organization className={props.className} />}
     />
     <Route
       match='/people/'
-      element={<Person {...props} />}
+      element={<Person className={props.className} />}
     />
     <Route
       match='/places/'
-      element={<Place {...props} />}
+      element={<Place className={props.className} />}
     />
     <Route
       match='/works/'
-      element={<Work {...props} />}
+      element={<Work className={props.className} />}
     />
     <Route
       match='/select'
-      element={<Selection {...props} />}
+      element={<Selection className={props.className} />}
     />
   </Routes>
 );
