@@ -24,6 +24,7 @@ import {
   useState
 } from 'react';
 import _ from 'underscore';
+import PanelHistoryContext from '@apps/search/PanelHistoryContext';
 
 interface Props {
   className?: string;
@@ -42,6 +43,8 @@ const INVERSE_SUFFIX = '_inverse';
 const BasePanel = (props: Props) => {
   const [manifestUrl, setManifestUrl] = useState<string | undefined>();
   const [coverUrl, setCoverUrl] = useState(null);
+  const [lastClicked, setLastClicked] = useState(null);
+  const { panelHistory, setPanelHistory } = useContext(PanelHistoryContext);
 
   const navigate = useNavigate();
   const config = useSearchConfig();
@@ -54,7 +57,7 @@ const BasePanel = (props: Props) => {
   const exclude = props.exclusions || [];
 
   const { boundingBoxOptions } = useContext(SearchContext);
-
+  
   /**
    * Transforms the passed list of items and groups them by the relationship ID.
    */
@@ -84,21 +87,32 @@ const BasePanel = (props: Props) => {
 
     return transformedRecords;
   }, [t]);
-
+  
   const onClose = useCallback(() => {
     navigate('/');
     setSelected(null);
+    setPanelHistory([]);
   }, []);
 
   /**
-   * Loads the base record from the Core Data API.
+   * When back arrow is clicked, navigate to previous record in panelHistory
    */
+  const onGoBack = useCallback(() => {
+    if (panelHistory.length > 1) {
+      const prev = panelHistory[panelHistory.length - 2];
+      onNavigate(prev.name, prev.uuid, prev.model);
+    }
+  }, [panelHistory]);
+  
+  /**
+   * Loads the base record from the Core Data API.
+  */
   const onLoad = () => props.service.fetchOne(id);
   const { data } = useLoader(onLoad, null, [id, props.service]);
-
+  
   /**
    * Loads the related events from the Core Data API.
-   */
+  */
   const onLoadEvents = () => props.service.fetchRelatedEvents(id, { per_page: 0 });
   const { data: { events = [] } = {}, loading: eventsLoading } = useLoader(onLoadEvents, null, [id, props.service]);
 
@@ -128,19 +142,19 @@ const BasePanel = (props: Props) => {
 
   /**
    * Loads the IIIF collection manifest from the Core Data API.
-   */
-  const onLoadManifests = () => props.service.fetchRelatedManifests(id, { per_page: 0 });
-  const { data: collection = {}, loading: collectionLoading }: { collection: Collection, loading: boolean } = useLoader(onLoadManifests, null, [id, props.service]);
+  */
+ const onLoadManifests = () => props.service.fetchRelatedManifests(id, { per_page: 0 });
+ const { data: collection = {}, loading: collectionLoading }: { collection: Collection, loading: boolean } = useLoader(onLoadManifests, null, [id, props.service]);
+ 
+ /**
+  * Loads the related people from the Core Data API.
+ */
+const onLoadPeople = () => props.service.fetchRelatedPeople(id, { per_page: 0});
+const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadPeople, null, [id, props.service]);
 
-  /**
-   * Loads the related people from the Core Data API.
-   */
-  const onLoadPeople = () => props.service.fetchRelatedPeople(id, { per_page: 0});
-  const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadPeople, null, [id, props.service]);
-
-  /**
-   * Loads the related place records from the Astro API.
-   */
+/**
+ * Loads the related place records from the Astro API.
+*/
   const onLoadPlaces = () => props.service.fetchRelatedPlaces(id, { per_page: 0 });
   const { data: { places = [] } = {}, loading: placesLoading } = useLoader(onLoadPlaces, null, [id, props.service]);
 
@@ -149,23 +163,23 @@ const BasePanel = (props: Props) => {
    */
   const onLoadTaxonomies = () => props.service.fetchRelatedTaxonomies(id, { per_page: 0 });
   const { data: { taxonomies = [] } = {}, loading: taxonomiesLoading } = useLoader(onLoadTaxonomies, null, [id, props.service]);
-
+  
   /**
    * Loads the related works from the Core Data API.
-   */
+  */
   const onLoadWorks = () => props.service.fetchRelatedWorks(id, { per_page: 0 });
   const { data: { works = [] } = {}, loading: worksLoading } = useLoader(onLoadWorks, null, [id, props.service]);
-
+  
   /**
    * Memo-izes the base record.
-   */
-  const item = useMemo(() => {
-    let item;
-
-    if (data) {
-      item = {
-        ..._.omit(data[props.name], ...exclude),
-        user_defined: _.omit(data[props.name].user_defined, ...exclude)
+  */
+ const item = useMemo(() => {
+   let item;
+   
+   if (data) {
+     item = {
+       ..._.omit(data[props.name], ...exclude),
+       user_defined: _.omit(data[props.name].user_defined, ...exclude)
       }
     }
 
@@ -175,15 +189,15 @@ const BasePanel = (props: Props) => {
 
   /**
    * Updates the cover URL when the record or loading states change.
-   */
-  useEffect(() => {
-    setCoverUrl((prev) => {
-      // include a placeholder if the previous record had a cover image
+  */
+ useEffect(() => {
+   setCoverUrl((prev) => {
+     // include a placeholder if the previous record had a cover image
       // to avoid sudden content shifting.
       if (mediaContentsLoading && prev) {
         return '/placeholder.png'
       }
-
+      
       if (mediaContents.length > 0) {
         return mediaContents[0].content_preview_url
       }
@@ -191,7 +205,7 @@ const BasePanel = (props: Props) => {
       return null
     })
   }, [item, mediaContentsLoading])
-
+  
   /**
    * Memo-izes the geometry.
    */
@@ -202,7 +216,7 @@ const BasePanel = (props: Props) => {
 
     return !_.isEmpty(places) && CoreDataUtils.toFeatureCollection(places);
   }, [item, places, props.resolveGeometry]);
-
+  
   /**
    * Memo-izes the related media items.
    */
@@ -210,7 +224,7 @@ const BasePanel = (props: Props) => {
     if (_.isEmpty(collection.items)) {
       return [];
     }
-
+    
     const count = _.reduce(collection.items, (memo, item) => memo + item.item_count, 0);
     const title = t('relatedMedia', { count });
 
@@ -224,8 +238,8 @@ const BasePanel = (props: Props) => {
           name={_.first(item.label?.en)}
           onClick={() => setManifestUrl(item.id)}
           thumbnail={item.thumbnail}
-        />
-      ),
+          />
+        ),
       renderTitle: () => title,
       title
     }];
@@ -237,11 +251,58 @@ const BasePanel = (props: Props) => {
   const name = useMemo(() => (item && props.renderName && props.renderName(item)) || item?.name, [item]);
 
   /**
+   * Helper function for truncating the history to a certain point
+   */
+  const getHistoryByIndex = useCallback((history, index) => ([...history].slice(0, index + 1)), []);
+
+  /**
+   * Updates the panel history array when the name changes.
+   */
+  useEffect(() => {
+    if (id && route && name) {
+      const ind = panelHistory.findIndex((item) => item.uuid === id);
+      //note that this hook will trigger redundantly after we navigate from within the panel;
+      //in this case we should have ind = panelHistory.length - 1. We want to avoid resetting
+      //panelHistory in this case so we don't get into loops.
+      if (ind >= 0 && ind < panelHistory.length - 1) {
+        //in this case, we've gone back to something already visited, so slice the history back to it
+        setPanelHistory((current) => (getHistoryByIndex(current, ind)));
+      } else if (ind < 0) {
+        //we get here if this is the first record or if something weird happened. Reset the history.
+        setPanelHistory([{
+          name,
+          uuid: id,
+          route
+        }]);
+      }
+    }
+  }, [name]);
+
+  /**
+   * After we click on a related record and update panelHistory, navigate to it.
+   */
+  useEffect(() => {
+    if (lastClicked && panelHistory.length && id !== panelHistory[panelHistory.length - 1].uuid) {
+      const current = panelHistory[panelHistory.length - 1];
+      navigate(current.route);
+    }
+  }, [lastClicked]);
+
+  /**
+   * When a related record is clicked, update panelHistory and then navigate.
+   */
+  const onNavigate = useCallback((name: string, uuid: string, route: string) => {
+    const ind = panelHistory.findIndex((item) => item.uuid === uuid);
+    setPanelHistory((current) => (ind < 0 ? [...current, { name, uuid, route }] : getHistoryByIndex(current, ind)));
+    setLastClicked(uuid);
+  }, [panelHistory]);
+
+  /**
    * Transforms the related events.
    */
   const relatedEvents = useMemo(() => getRelatedRecords(events, 'date', (event) => ({
     name: event.name,
-    onClick: () => navigate(`/events/${event.uuid}`)
+    onClick: () => onNavigate(event.name, event.uuid, `/events/${event.uuid}`)
   })), [getRelatedRecords, events]);
 
   /**
@@ -249,7 +310,7 @@ const BasePanel = (props: Props) => {
    */
   const relatedInstances = useMemo(() => getRelatedRecords(instances, null, (instance) => ({
     name: instance.name,
-    onClick: () => navigate(`/instances/${instance.uuid}`)
+    onClick: () => onNavigate(instance.name, instance.uuid, `/instances/${instance.uuid}`)
   })), [getRelatedRecords, instances]);
 
   /**
@@ -257,7 +318,7 @@ const BasePanel = (props: Props) => {
    */
   const relatedItems = useMemo(() => getRelatedRecords(items, null, (item) => ({
     name: item.name,
-    onClick: () => navigate(`/items/${item.uuid}`)
+    onClick: () => onNavigate(item.name, item.uuid, `/items/${item.uuid}`)
   })), [getRelatedRecords, items]);
 
   /**
@@ -265,7 +326,7 @@ const BasePanel = (props: Props) => {
    */
   const relatedOrganizations = useMemo(() => getRelatedRecords(organizations, 'occupation', (organization) => ({
     name: organization.name,
-    onClick: () => navigate(`/organizations/${organization.uuid}`)
+    onClick: () => onNavigate(organization.name, organization.uuid, `/organizations/${organization.uuid}`)
   })), [getRelatedRecords, organizations]);
 
   /**
@@ -273,7 +334,7 @@ const BasePanel = (props: Props) => {
    */
   const relatedPeople = useMemo(() => getRelatedRecords(people, 'person', (person) => ({
     name: getNameView(person),
-    onClick: () => navigate(`/people/${person.uuid}`)
+    onClick: () => onNavigate(getNameView(person), person.uuid, `/people/${person.uuid}`)
   })), [getRelatedRecords, people]);
 
   /**
@@ -281,7 +342,7 @@ const BasePanel = (props: Props) => {
    */
   const relatedPlaces = useMemo(() => getRelatedRecords(places, 'location', (place) => ({
     name: place.name,
-    onClick: () => navigate(`/places/${place.uuid}`)
+    onClick: () => onNavigate(place.name, place.uuid, `/places/${place.uuid}`)
   })), [getRelatedRecords, places]);
 
   /**
@@ -296,7 +357,7 @@ const BasePanel = (props: Props) => {
    */
   const relatedWorks = useMemo(() => getRelatedRecords(works, null, (work) => ({
     name: work.name,
-    onClick: () => navigate(`/works/${work.uuid}`)
+    onClick: () => onNavigate(work.name, work.uuid, `/works/${work.uuid}`)
   })), [getRelatedRecords, works]);
 
   /**
@@ -324,7 +385,6 @@ const BasePanel = (props: Props) => {
       }))
       .value()
   ), [item, renderUserDefined]);
-
 
   /**
    * Memo-izes included relations
@@ -357,6 +417,7 @@ const BasePanel = (props: Props) => {
       )}
     >
       <RecordDetailPanel
+        breadcrumbs={panelHistory.length > 1 && _.map(panelHistory.slice(-2), (item) => (item.name))}
         count
         coverUrl={coverUrl}
         icon={props.icon}
@@ -373,6 +434,7 @@ const BasePanel = (props: Props) => {
           worksLoading
         }
         onClose={onClose}
+        onGoBack={panelHistory.length > 1 && onGoBack}
         relations={relations()}
         title={name}
         detailPageUrl={props.resolveDetailPageUrl(item)}

@@ -15,6 +15,7 @@ import {
   useMemo,
   useState
 } from 'react';
+import PanelHistoryContext, { PanelHistoryEntryType } from './PanelHistoryContext';
 
 const DEFAULT_MAX_ZOOM = 14;
 
@@ -41,6 +42,7 @@ const SearchLayout = () => {
   const [filters, setFilters] = useState<boolean>(false);
   const [timeline, setTimeline] = useState<boolean>(false);
   const [view, setView] = useState<string>(Views.list);
+  const [panelHistory, setPanelHistory] = useState<PanelHistoryEntryType[]>([]);
 
   const { searchConfig: config, setBoundingBoxOptions, setControlsClass } = useContext(SearchContext);
 
@@ -105,7 +107,7 @@ const SearchLayout = () => {
   }, [left, rightOpen]);
 
   return (
-    <>
+    <PanelHistoryContext.Provider value={{panelHistory, setPanelHistory}}>
       <div
         className='absolute left-0 right-0 bottom-0 top-[64px]'
       >
@@ -177,7 +179,7 @@ const SearchLayout = () => {
           />
         </div>
       </div>
-    </>
+    </PanelHistoryContext.Provider>
   );
 };
 
