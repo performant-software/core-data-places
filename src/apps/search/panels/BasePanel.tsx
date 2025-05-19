@@ -14,7 +14,7 @@ import { LocationMarkers } from '@performant-software/geospatial';
 import { useSelection } from '@peripleo/maplibre';
 import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
 import { getNameView } from '@utils/people';
-import { getCurrentId, getCurrentPath } from '@utils/router';
+import { getCurrentId } from '@utils/router';
 import clsx from 'clsx';
 import {
   useCallback,
@@ -24,7 +24,7 @@ import {
   useState
 } from 'react';
 import _ from 'underscore';
-import PanelHistoryContext from '../PanelHistoryContext';
+import PanelHistoryContext from '@apps/search/PanelHistoryContext';
 
 interface Props {
   className?: string;
@@ -53,7 +53,6 @@ const BasePanel = (props: Props) => {
 
   const route = useCurrentRoute();
   const id = getCurrentId(route);
-  const path = getCurrentPath(route);
 
   const exclude = props.exclusions || [];
 
@@ -103,7 +102,7 @@ const BasePanel = (props: Props) => {
       const prev = panelHistory[panelHistory.length - 2];
       onNavigate(prev.name, prev.uuid, prev.model);
     }
-  }, []);
+  }, [panelHistory]);
   
   /**
    * Loads the base record from the Core Data API.
