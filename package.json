@@ -33,7 +33,7 @@
     "@performant-software/shared-components": "^3.0.4",
     "@peripleo/maplibre": "^0.8.7",
     "@peripleo/peripleo": "^0.8.7",
-    "@samvera/clover-iiif": "^2.12.2",
+    "@samvera/clover-iiif": "2.9.1",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.4",
     "@tinacms/cli": "^1.9.2",
