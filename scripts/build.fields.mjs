@@ -1,5 +1,5 @@
 import fs from 'fs';
-import config from './public/config.json' with { type: 'json' };
+import config from '../public/config.json' with { type: 'json' };
 
 const CONTEXT_SEPARATOR = '->';
 
@@ -21,7 +21,7 @@ const getLabel = (field) => {
  *
  * @returns {Promise<void>}
  */
-const init = async () => {
+export const buildUserDefinedFields = async () => {
   const fields = {};
 
   for (const projectId of config.core_data.project_ids) {
@@ -46,5 +46,3 @@ const init = async () => {
   const content = JSON.stringify(fields, null, 2);
   fs.writeFileSync('./src/i18n/userDefinedFields.json', content, 'utf8');
 };
-
-init();
