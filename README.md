@@ -191,3 +191,17 @@ Core Data Places can be built in "static" mode, which will remove the dependency
 ## Upgrading
 
 For more information on upgrading your existing Core Data Places site to a newer version, see the [update notes](docs/upgrade-notes.md) section.
+
+## Typesense Fields
+
+To find all of the available fields in the Typesense schema, a `GET` request can be made to the Typesense API:
+
+```
+GET ${TYPESENSE_HOST}/collections/:collection
+```
+
+An `x-typesense-api-key` header will need to be added to the request.
+
+## Core Data Fields and Relationships
+
+To find the UUID values for Core Data user-defined fields and relationships, the "Identifier" column can be added to the respective lists within the Core Data application under Project Settings > Configure.
