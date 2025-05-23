@@ -1,4 +1,5 @@
 # core-data-places
+
 A map-centric website backed by a Core Data project.
 
 ## Getting Started
@@ -186,3 +187,7 @@ See [Keycloak](docs/sso/keycloak-setup.md) documentation for single sign on.
 #### Static Build
 
 Core Data Places can be built in "static" mode, which will remove the dependency on an existing Core Data project. See [static deploy](docs/static-deploy.md) documentation.
+
+## Upgrading
+
+For more information on upgrading your existing Core Data Places site to a newer version, see the [update notes](docs/upgrade-notes.md) section.
