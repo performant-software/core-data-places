@@ -1,6 +1,6 @@
 # core-data-places
 
-A map-centric website backed by a Core Data project.
+A map-centric website backed by a Core Data project and Typesense index.
 
 ## Getting Started
 
