@@ -32,6 +32,9 @@
       "max_zoom": 14,
       "zoom_to_place": true
     },
+    "result_card": {
+      "title": "name"
+    },
     "typesense": {
       "host": "example.typesense.com",
       "port": 443,
