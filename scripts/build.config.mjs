@@ -1,7 +1,6 @@
-import dotenv from 'dotenv';
 import fs from 'fs';
 
-const init = async () => {
+export const fetchConfig = async () => {
   const configUrl = process.env.CONFIG_URL;
 
   if (configUrl) {
@@ -18,10 +17,4 @@ const init = async () => {
   } else {
     console.info('Using local config.json');
   }
-
-  console.info('');
 };
-
-dotenv.config();
-
-init();

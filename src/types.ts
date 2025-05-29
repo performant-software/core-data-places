@@ -5,20 +5,20 @@ export interface SearchConfig {
   timeline?: {
     date_range_facet: string,
     event_path?: string,
-  },
+  };
 
   facets?: Array<{
     name: string,
     type: 'list' | 'select',
     icon?: string
-  }>,
+  }>;
 
   map:{
     cluster_radius?: number,
     geometry: string,
     max_zoom?: number,
-    zoom_to_place?: number
-  },
+    zoom_to_place?: boolean
+  };
 
   result_card: {
     attributes?: Array<{
@@ -26,26 +26,38 @@ export interface SearchConfig {
       icon?: string
     }>,
     title: string
-  },
+  };
 
-  table?: boolean
+  table?: boolean;
+
+  typesense: {
+    host: string,
+    port: number,
+    protocol: string,
+    api_key: string,
+    index_name: string,
+    query_by: string,
+    default_sort?: string,
+    exclude_fields?: string,
+    facets?: {
+      exclude?: Array<string>,
+      include?: Array<string>
+    }
+    overrides?: {
+      [key: string]: string
+    }
+  };
 }
 
 export interface Configuration {
-  branding?: {
-    header_hide_title?: boolean,
-    footer_hide_logo?: boolean,
-    footer_login?: boolean,
-    footer_logo?: string,
-    footer_orgs?: Array<{ alt: string, logo: string, url: string }>,
-    primary?: string
+  content?: {
+    collections?: Array<String>,
+    localize_pages?: boolean
   };
-
-  content?: Array<'posts' | 'paths'>;
 
   core_data: {
     url: string,
-    project_ids: number[]
+    project_ids: string[]
   };
 
   detail_pages: Array<string>;
