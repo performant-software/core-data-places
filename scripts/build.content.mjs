@@ -1,10 +1,9 @@
 import child_process from 'child_process';
-import dotenv from 'dotenv';
 import fs from 'fs';
 
 const TEMP_DIR = './tmp';
 
-const init = async () => {
+export const fetchContent = async () => {
   if (!(process.env.GITHUB_OWNER && process.env.GITHUB_REPO)) {
     return;
   }
@@ -24,7 +23,3 @@ const init = async () => {
   // Remove the temporary directory.
   fs.rmSync(TEMP_DIR, { recursive: true });
 };
-
-dotenv.config();
-
-init();

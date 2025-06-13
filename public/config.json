@@ -8,9 +8,9 @@
   "core_data": {
     "url": "https://staging.coredata.cloud",
     "project_ids": [
-      1,
-      2,
-      3
+      "1",
+      "2",
+      "3"
     ]
   },
   "i18n": {
@@ -31,6 +31,9 @@
       "geometry": "geometry",
       "max_zoom": 14,
       "zoom_to_place": true
+    },
+    "result_card": {
+      "title": "name"
     },
     "typesense": {
       "host": "example.typesense.com",
