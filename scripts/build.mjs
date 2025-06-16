@@ -9,14 +9,14 @@ import { buildSearch } from './build.search.mjs';
   dotenv.config();
 
   console.log('Fetching config.json...');
-  await fetchConfig();
+  const config = await fetchConfig();
 
   console.log('Building userDefinedFields.json from Core Data descriptors...');
-  await buildUserDefinedFields();
+  await buildUserDefinedFields(config);
 
   console.log('Fetching content from repository...');
   await fetchContent();
 
   console.log('Building search.json from configuration...');
-  await buildSearch();
+  await buildSearch(config);
 }());
