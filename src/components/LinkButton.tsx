@@ -8,7 +8,7 @@ interface Props {
 
 const LinkButton = ({ className, content, href, ...props }: Props) => (
   <a
-    class={clsx(
+    className={clsx(
       'inline-block mt-4 rounded-md px-6 py-3 hover:bg-opacity-95 cursor-pointer',
       className
     )}
