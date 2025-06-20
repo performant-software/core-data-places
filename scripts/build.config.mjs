@@ -6,8 +6,8 @@ export const fetchConfig = async () => {
   if (configUrl) {
     const response = await fetch(configUrl);
     const config = await response.json();
-    const content = JSON.stringify(config, null, 2);
 
+    const content = JSON.stringify(config, null, 2);
     fs.writeFileSync('./public/config.json', content, 'utf8');
 
     console.info('Using remote config.json');
@@ -17,4 +17,7 @@ export const fetchConfig = async () => {
   } else {
     console.info('Using local config.json');
   }
+
+  const data = fs.readFileSync('./public/config.json');
+  return JSON.parse(data);
 };

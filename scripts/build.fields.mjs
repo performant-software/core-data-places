@@ -1,5 +1,4 @@
 import fs from 'fs';
-import config from '../public/config.json' with { type: 'json' };
 
 const CONTEXT_SEPARATOR = '->';
 
@@ -19,9 +18,11 @@ const getLabel = (field) => {
 /**
  * Pull in fields/labels from "/projects/:project_id/descriptors".
  *
+ * @param config
+ *
  * @returns {Promise<void>}
  */
-export const buildUserDefinedFields = async () => {
+export const buildUserDefinedFields = async (config) => {
   const fields = {};
 
   for (const projectId of config.core_data.project_ids) {

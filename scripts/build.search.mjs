@@ -1,7 +1,13 @@
 import fs from 'fs';
-import config from '../public/config.json' with { type: 'json' };
 
-export const buildSearch = async () => {
+/**
+ * Pulls in the search indexes from `config.json`.
+ *
+ * @param config
+ *
+ * @returns {Promise<void>}
+ */
+export const buildSearch = async (config) => {
   const searches = {};
 
   for (const search of config.search) {
