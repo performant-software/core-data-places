@@ -1,0 +1,29 @@
+---
+import SearchItem from '@apps/session/SearchItem';
+import { getTranslations } from '@backend/i18n';
+import Container from '@components/Container.astro';
+import Layout from '@layouts/Layout.astro';
+import { getSessionItem } from '@services/session';
+
+const { id, lang } = Astro.params;
+const { t } = await getTranslations(Astro.currentLocale);
+
+const item = await getSessionItem(Astro.session, 'search', id);
+
+---
+
+<Layout
+  footer
+  t={t}
+  title={item?.name}
+>
+  <Container
+    className='py-6'
+  >
+    <SearchItem
+      id={id}
+      lang={lang}
+      client:only='react'
+    />
+  </Container>
+</Layout>

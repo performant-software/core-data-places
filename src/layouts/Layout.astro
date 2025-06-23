@@ -4,6 +4,7 @@ import config from '@config';
 import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
+import { isStaticBuild } from '@utils/app';
 import { useBlackText } from '@utils/layout';
 import { getPages } from '@utils/nav';
 import { getRelativeLocaleUrl } from 'astro:i18n';
@@ -40,15 +41,28 @@ const NavKeys = {
   posts: 'posts'
 };
 
+// Build the list of options for the "Explore" dropdown
+const searchOptions = _.map(config.search, (search) => ({
+  active: Astro.url.pathname.includes(`/${NavKeys.search}/${search.name}`),
+  name: search.name,
+  label: t(`index_${search.name}`),
+  href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.search}/${search.name}`)
+}));
+
+// Add the "Saved" option in "server" mode
+if (!isStaticBuild) {
+  searchOptions.push({
+    active: Astro.url.pathname.includes('/sessions/search'),
+    name: 'search_session',
+    label: t('savedSearch'),
+    href: getRelativeLocaleUrl(currentLocale, '/sessions/search')
+  });
+}
+
 const NavConfig = {
   [NavKeys.search]: {
     label: t('explore'),
-    options: _.map(config.search, (search) => ({
-      active: Astro.url.pathname.includes(`/${NavKeys.search}/${search.name}`),
-      name: search.name,
-      label: t(`index_${search.name}`),
-      href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.search}/${search.name}`)
-    }))
+    options: searchOptions
   },
   [NavKeys.pages]: {
     label: t('pages'),
@@ -126,7 +140,7 @@ if (!_.isEmpty(NavConfig.pages.options)) {
       <Footer
         accessibilityUrl={footer?.accessibility_url}
         items={NavItems}
-        login={footer?.allow_login && !import.meta.env.STATIC_BUILD}
+        login={footer?.allow_login && !isStaticBuild}
         logos={footer?.logos}
         privacyUrl={footer?.privacy_url}
         t={t}

@@ -1,0 +1,25 @@
+---
+import { getTranslations } from '@backend/i18n';
+import Layout from '@layouts/Layout.astro';
+import Container from '@components/Container.astro';
+import Search from '@apps/session/Search';
+
+const { lang } = Astro.params;
+const { t } = await getTranslations(Astro.currentLocale);
+
+---
+
+<Layout
+  footer
+  t={t}
+  title={t('savedSearches')}
+>
+  <Container
+    className='py-6'
+  >
+    <Search
+      lang={lang}
+      client:only='react'
+    />
+  </Container>
+</Layout>

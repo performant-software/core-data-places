@@ -1,4 +1,5 @@
 import ExportButton from '@apps/search/ExportButton';
+import SaveButton from '@apps/search/SaveButton';
 import { useSearchConfig } from '@apps/search/SearchContext';
 import { useTranslations } from '@i18n/useTranslations';
 import {
@@ -144,6 +145,7 @@ const Header = (props: Props) => {
         )}
       </div>
       <ExportButton />
+      <SaveButton />
     </div>
   );
 };

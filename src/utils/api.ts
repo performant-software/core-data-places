@@ -13,7 +13,7 @@ export const buildResponse = (data) => {
 
   const status = 200;
 
-  return new Response(JSON.stringify(data), { status, headers });
+  return new Response(JSON.stringify(data || ''), { status, headers });
 };
 
 interface Params {
