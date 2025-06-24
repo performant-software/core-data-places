@@ -2,6 +2,7 @@ import SearchListItem from '@apps/session/SearchListItem';
 import { deleteSessionItem, deleteSession, fetchSession } from '@backend/api/session';
 import TranslationContext from '@contexts/TranslationContext';
 import { Button } from '@performant-software/core-data';
+import NotificationsStore from '@store/notifications';
 import {
   useCallback,
   useContext,
@@ -55,8 +56,22 @@ const SearchList = ({ sessionId }: Props) => {
     const url = getUrl(id);
     const params = new URLSearchParams({ sessionId });
 
-    navigator.clipboard.writeText(`${window.location.origin}${url}?${params.toString()}`);
-  }, [getUrl, sessionId]);
+    // Copy the text to the clipboard
+    const text = `${window.location.origin}${url}?${params.toString()}`;
+    navigator.clipboard.writeText(text);
+
+    // Display the notification
+    NotificationsStore.set({
+      content: t('clipboardCopyContent'),
+      header: t('clipboardCopyHeader'),
+      icon: {
+        className: 'fill-green-400',
+        name: 'info',
+        size: 24
+      },
+      open: true
+    });
+  }, [getUrl, t, sessionId]);
 
   /**
    * Loads the list of items when the component is mounted.

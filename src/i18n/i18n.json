@@ -338,5 +338,13 @@
   "share": {
     "tinaLabel": "Share",
     "defaultValue": "Share"
+  },
+  "clipboardCopyHeader": {
+    "tinaLabel": "Copied to Clipboard (Header)",
+    "defaultValue": "Copied to Clipboard"
+  },
+  "clipboardCopyContent": {
+    "tinaLabel": "Copied to Clipboard (Content)",
+    "defaultValue": "The URL to share has been copied to your clipboard."
   }
 }

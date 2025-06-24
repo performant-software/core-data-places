@@ -1,5 +1,6 @@
 ---
 import { fetchBranding } from '@backend/tina';
+import NotificationPanel from '@components/NotificationPanel';
 import config from '@config';
 import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
@@ -130,6 +131,9 @@ if (!_.isEmpty(NavConfig.pages.options)) {
       items={NavItems}
       pages={pages}
       title={header?.hide_title ? undefined : branding.title}
+    />
+    <NotificationPanel
+      client:only='react'
     />
     <main
       class='w-full relative bg-white flex flex-col grow'

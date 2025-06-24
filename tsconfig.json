@@ -20,6 +20,7 @@
       "@loaders/*": ["src/loaders/*"],
       "@root/*": ["*"],
       "@services/*": ["src/services/*"],
+      "@store/*": ["src/store/*"],
       "@styles/*": ["src/styles/*"],
       "@tina/*": ["tina/__generated__/*"],
       "@types": ["src/types.ts"],
