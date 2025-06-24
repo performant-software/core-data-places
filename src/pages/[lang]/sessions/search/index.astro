@@ -1,11 +1,16 @@
 ---
-import { getTranslations } from '@backend/i18n';
-import Layout from '@layouts/Layout.astro';
-import Container from '@components/Container.astro';
 import Search from '@apps/session/Search';
+import { getTranslations } from '@backend/i18n';
+import Container from '@components/Container.astro';
+import Layout from '@layouts/Layout.astro';
+import { checkSession } from '@services/session';
 
 const { lang } = Astro.params;
 const { t } = await getTranslations(Astro.currentLocale);
+
+await checkSession(Astro.session, Astro.cookies, Astro.request);
+
+const { value: sessionId } = Astro.cookies.get('astro-session') || {};
 
 ---
 
@@ -19,6 +24,7 @@ const { t } = await getTranslations(Astro.currentLocale);
   >
     <Search
       lang={lang}
+      sessionId={sessionId}
       client:only='react'
     />
   </Container>

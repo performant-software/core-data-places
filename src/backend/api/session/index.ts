@@ -46,8 +46,8 @@ export const fetchSession = async (key: string, params: { [key: string] : string
  * @param key
  * @param id
  */
-export const fetchSessionItem = async (key: string, id: string) => {
-  const response = await fetch(`/api/session/${key}/${id}`);
+export const fetchSessionItem = async (key: string, id: string, sessionId: string = null) => {
+  const response = await fetch(buildUrl(`/api/session/${key}/${id}`, { sessionId }));
   return response.json();
 };
 

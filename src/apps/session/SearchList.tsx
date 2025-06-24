@@ -10,10 +10,19 @@ import {
 } from 'react';
 import _ from 'underscore';
 
-const SearchList = () => {
+interface Props {
+  sessionId?: string;
+}
+
+const SearchList = ({ sessionId }: Props) => {
   const [items, setItems] = useState();
 
   const { lang, t } = useContext(TranslationContext);
+
+  /**
+   * Returns the URL for the passed session item ID.
+   */
+  const getUrl = useCallback((id: string) => `/${lang}/sessions/search/${id}`, [lang]);
 
   /**
    * Loads the list of "search" session items.
@@ -40,7 +49,17 @@ const SearchList = () => {
   }, []);
 
   /**
-   * Loads the list of items whem the component is mounted.
+   * Copies the URL for the passed session item to the user's clipboard.
+   */
+  const onShare = useCallback((id: string) => {
+    const url = getUrl(id);
+    const params = new URLSearchParams({ sessionId });
+
+    navigator.clipboard.writeText(`${window.location.origin}${url}?${params.toString()}`);
+  }, [getUrl, sessionId]);
+
+  /**
+   * Loads the list of items when the component is mounted.
    */
   useEffect(() => onLoad(), []);
 
@@ -72,8 +91,9 @@ const SearchList = () => {
             key={item.id}
             name={item.name}
             onDelete={() => onDelete(item.id)}
+            onShare={() => onShare(item.id)}
             searchName={t(`index_${item.searchName}`)}
-            url={`/${lang}/sessions/search/${item.id}`}
+            url={getUrl(item.id)}
           />
         ))}
       </ul>

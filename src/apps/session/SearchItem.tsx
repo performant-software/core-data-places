@@ -11,19 +11,21 @@ import { useEffect, useState } from 'react';
 interface Props {
   id: string;
   lang: string;
+  sessionId?: string;
 }
 
 const SearchItem = (props: Props) => {
   const [item, setItem] = useState<SearchSession | undefined>();
   const [view, setView] = useState<number>(ItemViews.map);
 
+  const { id, lang, sessionId } = props;
   const { t } = useTranslations();
 
   /**
    * Fetches the session item specified by the passed ID and sets it on the state.
    */
   useEffect(() => {
-    fetchSessionItem('search', props.id)
+    fetchSessionItem('search', id, sessionId)
       .then(setItem);
   }, []);
 
@@ -38,7 +40,7 @@ const SearchItem = (props: Props) => {
     >
       <Peripleo>
         <TranslationContext.Provider
-          value={{ lang: props.lang, t }}
+          value={{ lang, t }}
         >
           <SearchContextProvider
             name={item?.searchName}

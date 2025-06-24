@@ -1,5 +1,6 @@
 import { deleteSessionItem, getSessionItem } from '@services/session';
 import { buildResponse } from '@utils/api';
+import { parseSearchParams } from '@utils/url';
 import { APIRoute } from 'astro';
 
 export const DELETE: APIRoute = async ({ params, session }) => {
@@ -10,10 +11,11 @@ export const DELETE: APIRoute = async ({ params, session }) => {
   return buildResponse(null);
 };
 
-export const GET: APIRoute = async ({ params, session }) => {
+export const GET: APIRoute = async ({ params, request, session }) => {
   const { id, key } = params;
+  const { sessionId } = parseSearchParams(request.url);
 
-  const item = await getSessionItem(session, key, id);
+  const item = await getSessionItem(session, key, id, sessionId);
 
   return buildResponse(item);
 }

@@ -4,16 +4,19 @@ import { useTranslations } from '@i18n/useTranslations';
 
 interface Props {
   lang: string;
+  sessionId?: string;
 }
 
-const Search = ({ lang }: Props) => {
+const Search = ({ lang, sessionId }: Props) => {
   const { t } = useTranslations();
 
   return (
     <TranslationContext.Provider
       value={{ lang, t }}
     >
-      <SearchList />
+      <SearchList
+        sessionId={sessionId}
+      />
     </TranslationContext.Provider>
   );
 };

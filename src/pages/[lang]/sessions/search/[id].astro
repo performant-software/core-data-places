@@ -4,10 +4,12 @@ import { getTranslations } from '@backend/i18n';
 import BackButton from '@components/BackButton';
 import Container from '@components/Container.astro';
 import Layout from '@layouts/Layout.astro';
-import { getSessionItem } from '@services/session';
+import { checkSession, getSessionItem } from '@services/session';
 
 const { id, lang } = Astro.params;
 const { t } = await getTranslations(Astro.currentLocale);
+
+await checkSession(Astro.session, Astro.cookies, Astro.request);
 
 const item = await getSessionItem(Astro.session, 'search', id);
 

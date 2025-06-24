@@ -334,5 +334,9 @@
   "remove": {
     "tinaLabel": "Remove",
     "defaultValue": "Remove"
+  },
+  "share": {
+    "tinaLabel": "Share",
+    "defaultValue": "Share"
   }
 }

@@ -6,6 +6,7 @@ interface Props {
   created: string;
   name: string;
   onDelete(id: string): void;
+  onShare(id: string): void;
   searchName: string;
   url: string;
 }
@@ -48,6 +49,13 @@ const SearchListItem = (props: Props) => {
           rounded
         >
           { t('remove') }
+        </Button>
+        <Button
+          className='border-transparent px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 sm:block'
+          onClick={props.onShare}
+          rounded
+        >
+          { t('share') }
         </Button>
       </div>
     </li>
