@@ -2,6 +2,7 @@ import { useSearchConfig } from '@apps/search/SearchContext';
 import { saveSession } from '@backend/api/session';
 import TranslationContext from '@contexts/TranslationContext';
 import { Button, Input, Modal, useCachedHits } from '@performant-software/core-data';
+import NotificationsStore from '@store/notifications';
 import React, { useCallback, useContext, useState } from 'react';
 
 const SaveButton = () => {
@@ -14,6 +15,22 @@ const SaveButton = () => {
   const { t } = useContext(TranslationContext);
 
   /**
+   * Callback fired after the save action is completed.
+   */
+  const afterSave = useCallback(() => {
+    // Close the save modal and reset the name
+    setOpen(false);
+    setName(undefined);
+
+    // Display the notification
+    NotificationsStore.set({
+      content: t('saveSearchContent'),
+      header: t('saveSearchHeader'),
+      open: true
+    })
+  }, [t]);
+
+  /**
    * Saves the current session and closes the modal.
    */
   const onSave = useCallback(() => {
@@ -24,8 +41,8 @@ const SaveButton = () => {
     };
 
     saveSession('search', data)
-      .then(() => setOpen(false));
-  }, [hits, name, searchName]);
+      .then(afterSave);
+  }, [afterSave, hits, name, searchName]);
 
   return (
     <>

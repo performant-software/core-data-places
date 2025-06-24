@@ -64,11 +64,6 @@ const SearchList = ({ sessionId }: Props) => {
     NotificationsStore.set({
       content: t('clipboardCopyContent'),
       header: t('clipboardCopyHeader'),
-      icon: {
-        className: 'fill-green-400',
-        name: 'info',
-        size: 24
-      },
       open: true
     });
   }, [getUrl, t, sessionId]);

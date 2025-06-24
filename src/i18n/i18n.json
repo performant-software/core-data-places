@@ -346,5 +346,13 @@
   "clipboardCopyContent": {
     "tinaLabel": "Copied to Clipboard (Content)",
     "defaultValue": "The URL to share has been copied to your clipboard."
+  },
+  "saveSearchHeader": {
+    "tinaLabel": "Saved Search (Header)",
+    "defaultValue": "Saved Search"
+  },
+  "saveSearchContent": {
+    "tinaLabel": "Saved Search (Content)",
+    "defaultValue": "Your search has been saved. Navigate to the \"Saved\" list to view your saved search."
   }
 }

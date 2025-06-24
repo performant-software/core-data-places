@@ -3,13 +3,19 @@ import { Notification } from '@performant-software/core-data';
 import NotificationsStore from '@store/notifications';
 import React, { useCallback } from 'react';
 
+const DEFAULT_ICON = {
+  className: 'fill-green-400',
+  name: 'info',
+  size: 24
+};
+
 const DEFAULT_TIMEOUT = 4000;
 
 const NotificationPanel = () => {
   const {
     content,
     header,
-    icon,
+    icon = DEFAULT_ICON,
     open,
     timeout = DEFAULT_TIMEOUT
   } = useStore(NotificationsStore);
