@@ -144,8 +144,12 @@ const Header = (props: Props) => {
           </div>
         )}
       </div>
-      <ExportButton />
-      <SaveButton />
+      <div
+        className='flex gap-x-2'
+      >
+        <ExportButton />
+        <SaveButton />
+      </div>
     </div>
   );
 };
