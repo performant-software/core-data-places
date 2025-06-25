@@ -26,25 +26,47 @@ export const addToSession = async (session: AstroSession, key: string, data: any
 export const checkSession = async (session: AstroSession, cookies: AstroCookies, request: Request) => {
   const { sessionId } = parseSearchParams(request.url);
 
+  const options = {
+    path: '/',
+    httpOnly: true
+  };
+
+  /**
+   * If a session ID is provided on the request, load the session and store the current user's session ID in the
+   * "cdp-session" cookie.
+   */
   if (!_.isEmpty(sessionId)) {
     // Store the current user's session
-    const { value: currentSessionId } = cookies.get('astro-session') || {};
-    cookies.set('cdp-session', currentSessionId, { path: '/', httpOnly: true });
+    const { value: currentSessionId = '' } = cookies.get('astro-session') || {};
+
+    const cookie = {
+      sessionId: currentSessionId,
+      shared: true
+    };
+
+    cookies.set('cdp-session', JSON.stringify(cookie), options);
 
     // Load the shared session
     await session.load(sessionId);
+
     return;
   }
 
   /**
-   * If we're loaded another session and it doesn't match the user's original session cached in "cdp-session",
-   * reload the original session.
+   * If a session ID is not provided on the request, check the "cdp-session" cookie to see if the currently loaded
+   * session is for another user. If so, restore the current user's session from the ID stored in the "cdp-session"
+   * cookie. Then clear the "cdp-session" cookie.
    */
-  const { value: userSessionId } = cookies.get('cdp-session') || {};
-  const { value: loadedSessionId } = cookies.get('astro-session') || {};
+  const userSession = cookies.get('cdp-session')?.json() || {};
 
-  if (!_.isEmpty(userSessionId) && loadedSessionId !== userSessionId) {
-    await session.load(userSessionId);
+  if (userSession.shared) {
+    if (!_.isEmpty(userSession.sessionId)) {
+      await session.load(userSession.sessionId);
+    } else {
+      cookies.set('astro-session', '', options);
+    }
+
+    cookies.set('cdp-session', {}, options);
   }
 };
 
