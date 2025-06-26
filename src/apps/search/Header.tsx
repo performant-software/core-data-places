@@ -1,6 +1,6 @@
 import ExportButton from '@apps/search/ExportButton';
 import SaveButton from '@apps/search/SaveButton';
-import { useSearchConfig } from '@apps/search/SearchContext';
+import SearchContext, { useSearchConfig } from '@apps/search/SearchContext';
 import { useTranslations } from '@i18n/useTranslations';
 import {
   Button,
@@ -10,7 +10,7 @@ import {
   useSearchBox
 } from '@performant-software/core-data';
 import clsx from 'clsx';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { useCurrentRefinements } from 'react-instantsearch';
 import _ from 'underscore';
 
@@ -32,6 +32,7 @@ const Views = {
 
 const Header = (props: Props) => {
   const { tableView = true } = props;
+  const { allowSave } = useContext(SearchContext);
   const config = useSearchConfig();
   const { items } = useCurrentRefinements();
   const { query, refine } = useSearchBox();
@@ -148,7 +149,9 @@ const Header = (props: Props) => {
         className='flex gap-x-2'
       >
         <ExportButton />
-        <SaveButton />
+        { allowSave && (
+          <SaveButton />
+        )}
       </div>
     </div>
   );

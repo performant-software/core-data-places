@@ -12,6 +12,8 @@ const { t } = await getTranslations(Astro.currentLocale);
 const item = await getSessionItem(Astro.session, 'search', id);
 const sessionId = Astro.url.searchParams.get('sessionId');
 
+export const getStaticPaths = () => [];
+
 ---
 
 <Layout
