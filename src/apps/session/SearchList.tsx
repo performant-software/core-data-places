@@ -109,7 +109,6 @@ const SearchList = () => {
         ))}
       </ul>
     </>
-
   );
 };
 

@@ -27,7 +27,7 @@ const SaveButton = () => {
       content: t('saveSearchContent'),
       header: t('saveSearchHeader'),
       open: true
-    })
+    });
   }, [t]);
 
   /**
