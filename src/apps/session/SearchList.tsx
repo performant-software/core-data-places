@@ -1,5 +1,10 @@
 import SearchListItem from '@apps/session/SearchListItem';
-import { deleteSessionItem, deleteSession, fetchSession } from '@backend/api/session';
+import {
+  deleteSessionItem,
+  deleteSession,
+  fetchSession,
+  getSessionId
+} from '@backend/api/session';
 import TranslationContext from '@contexts/TranslationContext';
 import { Button } from '@performant-software/core-data';
 import NotificationsStore from '@store/notifications';
@@ -11,11 +16,7 @@ import {
 } from 'react';
 import _ from 'underscore';
 
-interface Props {
-  sessionId?: string;
-}
-
-const SearchList = ({ sessionId }: Props) => {
+const SearchList = () => {
   const [items, setItems] = useState();
 
   const { lang, t } = useContext(TranslationContext);
@@ -54,7 +55,7 @@ const SearchList = ({ sessionId }: Props) => {
    */
   const onShare = useCallback((id: string) => {
     const url = getUrl(id);
-    const params = new URLSearchParams({ sessionId });
+    const params = new URLSearchParams({ sessionId: getSessionId() });
 
     // Copy the text to the clipboard
     const text = `${window.location.origin}${url}?${params.toString()}`;
@@ -66,7 +67,7 @@ const SearchList = ({ sessionId }: Props) => {
       header: t('clipboardCopyHeader'),
       open: true
     });
-  }, [getUrl, t, sessionId]);
+  }, [getUrl, t]);
 
   /**
    * Loads the list of items when the component is mounted.

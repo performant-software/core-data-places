@@ -1,21 +1,23 @@
 import { deleteSessionItem, getSessionItem } from '@services/session';
 import { buildResponse } from '@utils/api';
-import { parseSearchParams } from '@utils/url';
 import { APIRoute } from 'astro';
 
-export const DELETE: APIRoute = async ({ params, session }) => {
+export const DELETE: APIRoute = async ({ params, request, session }) => {
+  const sessionId = request.headers.get('x-session-id');
+  await session.load(sessionId);
+
   const { id, key } = params;
+  const data = await deleteSessionItem(session, key, id);
 
-  await deleteSessionItem(session, key, id);
-
-  return buildResponse(null);
+  return buildResponse(data);
 };
 
 export const GET: APIRoute = async ({ params, request, session }) => {
-  const { id, key } = params;
-  const { sessionId } = parseSearchParams(request.url);
+  const sessionId = request.headers.get('x-session-id');
+  await session.load(sessionId);
 
-  const item = await getSessionItem(session, key, id, sessionId);
+  const { id, key } = params;
+  const item = await getSessionItem(session, key, id);
 
   return buildResponse(item);
-}
+};

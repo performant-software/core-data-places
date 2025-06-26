@@ -5,12 +5,18 @@ import { APIRoute } from 'astro';
 
 const EXCLUDE_DELIMITER = ',';
 
-export const DELETE: APIRoute = async ({ session }) => {
+export const DELETE: APIRoute = async ({ request, session }) => {
+  const sessionId = request.headers.get('x-session-id');
+  await session.load(sessionId);
+
   await deleteSession(session, 'search');
   return buildResponse(null);
 };
 
 export const GET: APIRoute = async ({ params, request, session }) => {
+  const sessionId = request.headers.get('x-session-id');
+  await session.load(sessionId);
+
   const { key } = params;
 
   const search = parseSearchParams(request.url);
@@ -22,6 +28,9 @@ export const GET: APIRoute = async ({ params, request, session }) => {
 };
 
 export const POST: APIRoute = async ({ params, request, session }) => {
+  const sessionId = request.headers.get('x-session-id');
+  await session.load(sessionId);
+
   const { key } = params;
   const data = await request.json();
 

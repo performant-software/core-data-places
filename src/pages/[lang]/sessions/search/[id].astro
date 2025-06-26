@@ -4,14 +4,13 @@ import { getTranslations } from '@backend/i18n';
 import BackButton from '@components/BackButton';
 import Container from '@components/Container.astro';
 import Layout from '@layouts/Layout.astro';
-import { checkSession, getSessionItem } from '@services/session';
+import { getSessionItem } from '@services/session';
 
 const { id, lang } = Astro.params;
 const { t } = await getTranslations(Astro.currentLocale);
 
-await checkSession(Astro.session, Astro.cookies, Astro.request);
-
 const item = await getSessionItem(Astro.session, 'search', id);
+const sessionId = Astro.url.searchParams.get('sessionId');
 
 ---
 
@@ -33,6 +32,7 @@ const item = await getSessionItem(Astro.session, 'search', id);
       <SearchItem
         id={id}
         lang={lang}
+        sessionId={sessionId}
         client:only='react'
       />
     </div>
