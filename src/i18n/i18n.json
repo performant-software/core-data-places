@@ -307,10 +307,6 @@
     "tinaLabel": "Save Search",
     "defaultValue": "Save Search"
   },
-  "savedSearch": {
-    "tinaLabel": "Saved Search Navigation",
-    "defaultValue": "Saved"
-  },
   "savedSearchName": {
     "tinaLabel": "Saved Search Name",
     "defaultValue": "Saved Search Name"

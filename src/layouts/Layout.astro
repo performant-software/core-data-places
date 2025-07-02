@@ -51,12 +51,12 @@ const searchOptions = _.map(config.search, (search) => ({
   href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.search}/${search.name}`)
 }));
 
-// Add the "Saved" option in "server" mode
+// Add the "Saved Searches" option in "server" mode
 if (!isStaticBuild) {
   searchOptions.push({
     active: Astro.url.pathname.includes('/sessions/search'),
     name: 'search_session',
-    label: t('savedSearch'),
+    label: t('savedSearches'),
     href: getRelativeLocaleUrl(currentLocale, '/sessions/search')
   });
 }

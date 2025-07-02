@@ -85,7 +85,7 @@ const SearchList = () => {
           { t('savedSearches') }
         </h1>
         <Button
-          className='bg-red-400 text-white font-bold'
+          className='bg-red-700 text-white font-bold'
           onClick={onDeleteAll}
           rounded
         >
