@@ -47,6 +47,7 @@ const SaveButton = () => {
   return (
     <>
       <Button
+        className='text-sm text-nowrap'
         onClick={() => setOpen(true)}
         rounded
         secondary

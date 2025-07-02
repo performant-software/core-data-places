@@ -45,27 +45,37 @@ const Header = (props: Props) => {
 
   return (
     <div
-      className={clsx('bg-neutral-100 flex items-center justify-between px-6 py-5 shadow-sm', props.className)}
+      className={clsx('bg-neutral-100 flex items-center justify-between px-6 shadow-sm', props.className)}
     >
-      <div
-        className='flex items-center gap-x-12 w-3/4'
+      <h2
+        className='text-2xl font-bold text-nowrap'
       >
-        <div
-          className='flex items-center'
+        { t(`index_${config.name}`) || t('root') }
+      </h2>
+      <div
+        className='flex items-center gap-x-4 w-3/6'
+      >
+        <Input
+          className='bg-white grow'
+          clearable
+          icon='search'
+          onChange={(value) => refine(value)}
+          placeholder={'Search'}
+          value={query}
+        />
+        <Button
+          className='relative'
+          icon
+          onClick={() => props.onFiltersChange(!props.filters)}
+          primary={props.filters}
         >
-          <Button
-            className='relative'
-            icon
-            onClick={() => props.onFiltersChange(!props.filters)}
-            secondary={props.filters}
-          >
-            <Icon
-              name='filters'
-              size={24}
-            />
-            { facetCount > 0 && (
-              <div
-                className={`
+          <Icon
+            name='filters'
+            size={24}
+          />
+          { facetCount > 0 && (
+            <div
+              className={`
                   absolute
                   flex
                   items-center
@@ -79,36 +89,26 @@ const Header = (props: Props) => {
                   text-xs
                   rounded-full
                 `}
-              >
-                { facetCount }
-              </div>
-            )}
-          </Button>
-          <h2
-            className='text-xl font-bold text-nowrap px-3'
-          >
-            { t(`index_${config.name}`) || t('root') }
-          </h2>
-        </div>
-        <div
-          className='grow'
-        >
-          <Input
-            className='bg-white'
-            clearable
-            icon='search'
-            onChange={(value) => refine(value)}
-            placeholder={'Search'}
-            value={query}
-          />
-        </div>
+            >
+              { facetCount }
+            </div>
+          )}
+        </Button>
+        { allowSave && (
+          <SaveButton />
+        )}
+      </div>
+      <div
+        className='flex items-stretch'
+      >
         { tableView && (
           <ButtonGroup
-            rounded
+            className='text-sm'
+            icon
           >
             <Button
               onClick={() => props.onViewChange(Views.list)}
-              secondary={props.view === Views.list}
+              primary={props.view === Views.list}
             >
               <Icon
                 name='list'
@@ -118,7 +118,7 @@ const Header = (props: Props) => {
             <Button
               disabled={props.timeline}
               onClick={() => props.onViewChange(Views.table)}
-              secondary={props.view === Views.table}
+              primary={props.view === Views.table}
             >
               <Icon
                 name='table'
@@ -127,32 +127,25 @@ const Header = (props: Props) => {
             </Button>
           </ButtonGroup>
         )}
+        <div
+          className='w-[1px] bg-neutral-300 mx-4'
+        />
         { config.timeline?.date_range_facet && (
-          <div
-            className='flex items-center gap-x-2'
+          <Button
+            className='text-sm px-3'
+            disabled={props.view === Views.table}
+            icon
+            onClick={() => props.onTimelineChange(!props.timeline)}
+            primary={props.timeline}
           >
-            <Button
-              className='px-3 py-3'
-              disabled={props.view === Views.table}
-              icon
-              onClick={() => props.onTimelineChange(!props.timeline)}
-              secondary={props.timeline}
-            >
-              <Icon
-                name='timeline'
-              />
-            </Button>
-          </div>
+            <Icon
+              name='timeline'
+            />
+            { t('timeline') }
+          </Button>
         )}
       </div>
-      <div
-        className='flex gap-x-2'
-      >
-        <ExportButton />
-        { allowSave && (
-          <SaveButton />
-        )}
-      </div>
+      <ExportButton />
     </div>
   );
 };
