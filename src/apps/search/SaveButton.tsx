@@ -1,13 +1,19 @@
 import { useSearchConfig } from '@apps/search/SearchContext';
 import { saveSession } from '@backend/api/session';
 import TranslationContext from '@contexts/TranslationContext';
-import { Button, Input, Modal, useCachedHits } from '@performant-software/core-data';
+import {
+  Button,
+  Input,
+  Modal,
+  useCachedHits
+} from '@performant-software/core-data';
 import NotificationsStore from '@store/notifications';
-import React, { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 
 const SaveButton = () => {
   const [name, setName] = useState<string>();
   const [open, setOpen] = useState<boolean>(false);
+  const [saving, setSaving] = useState<boolean>(false);
 
   const { name: searchName } = useSearchConfig();
   const hits = useCachedHits();
@@ -21,6 +27,7 @@ const SaveButton = () => {
     // Close the save modal and reset the name
     setOpen(false);
     setName(undefined);
+    setSaving(false);
 
     // Display the notification
     NotificationsStore.set({
@@ -34,6 +41,8 @@ const SaveButton = () => {
    * Saves the current session and closes the modal.
    */
   const onSave = useCallback(() => {
+    setSaving(true);
+
     const data = {
       data: hits,
       name,
@@ -74,6 +83,7 @@ const SaveButton = () => {
             className='flex justify-end mt-6'
           >
             <Button
+              disabled={!name || saving}
               onClick={onSave}
               primary
               rounded
