@@ -303,6 +303,10 @@
     "tinaLabel": "Save",
     "defaultValue": "Save"
   },
+  "search": {
+    "tinaLabel": "Search",
+    "defaultValue": "Search"
+  },
   "saveSearch": {
     "tinaLabel": "Save Search",
     "defaultValue": "Save Search"

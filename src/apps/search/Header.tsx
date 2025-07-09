@@ -60,7 +60,7 @@ const Header = (props: Props) => {
           clearable
           icon='search'
           onChange={(value) => refine(value)}
-          placeholder={'Search'}
+          placeholder={t('search')}
           value={query}
         />
         <Button
