@@ -39,15 +39,15 @@ const SearchList = () => {
    */
   const onDelete = useCallback((id: string) => {
     deleteSessionItem('search', id)
-      .then(onLoad);
-  }, [onLoad]);
+      .then((data) => setItems(data));
+  }, []);
 
   /**
    * Deletes all of the search session items.
    */
   const onDeleteAll = useCallback(() => {
     deleteSession('search')
-      .then(onLoad);
+      .then(() => setItems(undefined));
   }, []);
 
   /**
