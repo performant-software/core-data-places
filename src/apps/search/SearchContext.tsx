@@ -7,7 +7,7 @@ import {
   type ReactNode
 } from 'react';
 import _ from 'underscore';
-import type { SearchConfig } from '@types';
+import type { Configuration, SearchConfig } from '@types';
 
 interface BoundingBoxOptions {
   padding: {
@@ -20,6 +20,7 @@ interface BoundingBoxOptions {
 }
 
 interface SearchContextType {
+  allowSave: boolean;
   boundingBoxOptions: BoundingBoxOptions;
   searchConfig: SearchConfig;
   setBoundingBoxOptions(boundingBoxOptions: BoundingBoxOptions): void;
@@ -30,20 +31,22 @@ interface SearchContextType {
 const SearchContext = createContext<SearchContextType>(null);
 
 interface Props {
+  allowSave?: boolean;
   children: ReactNode;
   name: string;
 }
 
-export const SearchContextProvider = (props: Props) => {
+export const SearchContextProvider = ({ allowSave, children, name }: Props) => {
   const [boundingBoxOptions, setBoundingBoxOptions] = useState<BoundingBoxOptions>();
   const [controlsClass, setControlsClass] = useState<string>();
 
-  const config = useRuntimeConfig();
-  const searchConfig = useMemo(() => _.findWhere(config.search, { name: props.name }), [config, props.name]);
+  const config = useRuntimeConfig<Configuration>();
+  const searchConfig = useMemo(() => _.findWhere(config.search, { name }), [config, name]);
 
   return (
     <SearchContext.Provider
       value={{
+        allowSave,
         boundingBoxOptions,
         controlsClass,
         searchConfig,
@@ -51,7 +54,7 @@ export const SearchContextProvider = (props: Props) => {
         setControlsClass
       }}
     >
-      { props.children }
+      { children }
     </SearchContext.Provider>
   )
 };

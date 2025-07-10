@@ -227,6 +227,14 @@
     "tinaLabel": "Table",
     "defaultValue": "Table"
   },
+  "map": {
+    "tinaLabel": "Map",
+    "defaultValue": "Map"
+  },
+  "timeline": {
+    "tinaLabel": "Timeline",
+    "defaultValue": "Timeline"
+  },
   "relatedMedia": {
     "tinaLabel": "Related Media",
     "defaultValue": "Media ({{count}})"
@@ -290,5 +298,61 @@
   "accessibility": {
     "tinaLabel": "Accessibility",
     "defaultValue": "Accessibility"
+  },
+  "save": {
+    "tinaLabel": "Save",
+    "defaultValue": "Save"
+  },
+  "search": {
+    "tinaLabel": "Search",
+    "defaultValue": "Search"
+  },
+  "saveSearch": {
+    "tinaLabel": "Save Search",
+    "defaultValue": "Save Search"
+  },
+  "savedSearchName": {
+    "tinaLabel": "Saved Search Name",
+    "defaultValue": "Saved Search Name"
+  },
+  "savedSearches": {
+    "tinaLabel": "Saved Searches",
+    "defaultValue": "Saved Searches"
+  },
+  "clearAll": {
+    "tinaLabel": "Clear All",
+    "defaultValue": "Clear All"
+  },
+  "createdOn": {
+    "tinaLabel": "Created on <datetime>",
+    "defaultValue": "Created on {{date}}"
+  },
+  "view": {
+    "tinaLabel": "View",
+    "defaultValue": "View"
+  },
+  "remove": {
+    "tinaLabel": "Remove",
+    "defaultValue": "Remove"
+  },
+  "share": {
+    "tinaLabel": "Share",
+    "defaultValue": "Share"
+  },
+  "clipboardCopyHeader": {
+    "tinaLabel": "Copied to Clipboard (Header)",
+    "defaultValue": "Copied to Clipboard"
+  },
+  "clipboardCopyContent": {
+    "tinaLabel": "Copied to Clipboard (Content)",
+    "defaultValue": "The URL to share has been copied to your clipboard."
+  },
+  "saveSearchHeader": {
+    "tinaLabel": "Saved Search (Header)",
+    "defaultValue": "Saved Search"
+  },
+  "saveSearchContent": {
+    "tinaLabel": "Saved Search (Content)",
+    "defaultValue": "Your search has been saved. Navigate to the \"Saved\" list to view your saved search."
   }
 }

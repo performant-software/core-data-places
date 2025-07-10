@@ -103,5 +103,13 @@ export interface Configuration {
 
 export interface DataVisualizationProps {
   data: any;
-  title: string;
+  title?: string;
+}
+
+export interface SearchSession {
+  created: string;
+  data: any;
+  id: string;
+  name: string;
+  searchName: string;
 }

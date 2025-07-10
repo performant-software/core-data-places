@@ -1,11 +1,11 @@
 ---
-import Relations from "./Relations.astro";
-import UserDefined from "./UserDefined.astro";
-import { Icon } from '@performant-software/core-data/ssr'
-import MediaContents from "./MediaContents";
+import BackButton from "@components/BackButton";
 import Container from "@components/Container.astro";
 import { getNameView } from "@utils/people";
+import MediaContents from "./MediaContents";
 import PlaceMap from "./PlaceMap";
+import Relations from "./Relations.astro";
+import UserDefined from "./UserDefined.astro";
 
 interface Props {
   coverUrl?: string;
@@ -51,17 +51,12 @@ for (const modelType of Object.keys(record.relatedRecords)) {
   })
 }
 ---
+
 <Container className="py-6 w-full">
-  <button
-    class="absolute top-[26px] rounded-full w-8 h-8 flex items-center justify-center"
-    id="backButton"
-    role="button"
-  >
-    <Icon
-      name="left_arrow"
-      size={30}
-    />
-  </button>
+  <BackButton
+    className='absolute top-[26px]'
+    id='backButton'
+  />
   <div class="ml-12 divide-y divide-solid divide-[#e5e5e5]">
     <h1 class="font-bold text-3xl text-neutral-800 mt-0 mb-6">{name}</h1>
     {(geometry || coverUrl) && (

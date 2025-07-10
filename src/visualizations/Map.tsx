@@ -3,12 +3,12 @@ import VisualizationContainer from '@components/VisualizationContainer';
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
 import { LocationMarkers } from '@performant-software/geospatial';
 import { useRuntimeConfig } from '@peripleo/peripleo';
-import type { DataVisualizationProps } from '@types';
+import type { Configuration, DataVisualizationProps } from '@types';
 import React, { useMemo } from 'react';
 import _ from 'underscore';
 
 const Map = (props: DataVisualizationProps) => {
-  const runtimeConfig = useRuntimeConfig();
+  const runtimeConfig = useRuntimeConfig<Configuration>();
 
   /**
    * Memo-izes the "data" prop as JSON.

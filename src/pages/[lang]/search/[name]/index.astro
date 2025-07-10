@@ -10,6 +10,8 @@ const { lang } = Astro.params
 const { t } = await getTranslations(Astro.currentLocale);
 const { name } = Astro.params;
 
+const allowSave = import.meta.env.STATIC_BUILD !== true;
+
 export const getStaticPaths = () => {
   const paths = [];
 
@@ -31,6 +33,7 @@ export const getStaticPaths = () => {
   tab="search"
 >
   <Search
+    allowSave={allowSave}
     lang={lang}
     name={name}
     client:only='react'

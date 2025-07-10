@@ -2,12 +2,11 @@ import mdx from '@astrojs/mdx';
 import netlify from '@astrojs/netlify';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
-import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'astro/config';
+import auth from 'auth-astro';
 import { loadEnv } from 'vite';
 import config from './public/config.json';
-
-import auth from 'auth-astro';
 
 const { locales, default_locale: defaultLocale } = config.i18n;
 const { STATIC_BUILD } = loadEnv(process.env.STATIC_BUILD, process.cwd(), '');

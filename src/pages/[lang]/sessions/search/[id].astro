@@ -1,0 +1,47 @@
+---
+import SearchItem from '@apps/session/SearchItem';
+import { getTranslations } from '@backend/i18n';
+import BackButton from '@components/BackButton';
+import Container from '@components/Container.astro';
+import Layout from '@layouts/Layout.astro';
+import { getSessionItem } from '@services/session';
+
+const { id, lang } = Astro.params;
+const { t } = await getTranslations(Astro.currentLocale);
+
+const item = await getSessionItem(Astro.session, 'search', id);
+const sessionId = Astro.url.searchParams.get('sessionId');
+
+export const getStaticPaths = () => [];
+
+---
+
+<Layout
+  footer
+  t={t}
+  title={item?.name}
+>
+  <Container
+    className='py-6 relative w-full'
+  >
+    <BackButton
+      className='absolute top-[26px]'
+      id='backButton'
+    />
+    <div
+      class='ml-12'
+    >
+      <SearchItem
+        id={id}
+        lang={lang}
+        sessionId={sessionId}
+        client:only='react'
+      />
+    </div>
+  </Container>
+</Layout>
+
+<script>
+  const backButton = document.querySelector('#backButton')
+  backButton.addEventListener('click', () => history.back())
+</script>

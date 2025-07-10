@@ -32,7 +32,7 @@ const ExportButton = () => {
       >
         <Listbox.Button
           as={Button}
-          className='relative w-full rounded-lg text-left text-smd'
+          className='relative w-full rounded-lg text-left text-sm'
           secondary
         >
           <Icon

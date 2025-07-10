@@ -1,17 +1,9 @@
 import config from '@config';
+import { buildMapData } from '@utils/visualization';
 import { useCallback } from 'react';
 import { wrapFieldsWithMeta } from 'tinacms';
 import JsonUpload from './JsonUpload';
 import _ from 'underscore';
-
-const ATTRIBUTES = [
-  'id',
-  'name',
-  'names',
-  'record_id',
-  'type',
-  'uuid'
-];
 
 const MapInput = wrapFieldsWithMeta((props) => {
   /**
@@ -21,11 +13,7 @@ const MapInput = wrapFieldsWithMeta((props) => {
     const { name, data: records } = JSON.parse(data);
     const searchConfig = _.findWhere(config.search, { name });
 
-    const geometryAttribute = _.first(searchConfig.map.geometry.split('.'));
-    const attributes = _.compact([...ATTRIBUTES, geometryAttribute]);
-    const value = _.map(records, (record) => _.pick(record, ...attributes));
-
-    props.input.onChange(JSON.stringify({ name, data: value }));
+    props.input.onChange(JSON.stringify(buildMapData(searchConfig, records)));
   }, []);
 
   return (
