@@ -26,6 +26,23 @@ export default defineConfig({
   },
   contentApiUrlOverride: '/api/tina/gql',
   localContentPath,
+  cmsCallback: (cms) => {
+    // Enable visual editing
+    if (typeof window !== 'undefined') {
+      // Check if we're in visual editing mode
+      const isEditMode = new URLSearchParams(window.location.search).get('__tina_edit') === 'true';
+      
+      if (isEditMode) {
+        // Enable visual editing features
+        cms.flags = {
+          ...cms.flags,
+          visualEditing: true,
+        };
+      }
+    }
+
+    return cms;
+  },
   media: {
     loadCustomStore: async () => {
       const pack = await import('next-tinacms-s3');
