@@ -31,6 +31,8 @@ const relations = {
   works: {}
 }
 
+const INVERSE_SUFFIX = '_inverse';
+
 // group relations by the UUID of the relationship
 for (const modelType of Object.keys(record.relatedRecords)) {
   if (modelType === 'manifests') {
@@ -42,11 +44,15 @@ for (const modelType of Object.keys(record.relatedRecords)) {
       return
     }
 
-    const relationArray = relations[modelType][rel.project_model_relationship_uuid]
+    const key = rel.project_model_relationship_inverse
+      ? rel.project_model_relationship_uuid + INVERSE_SUFFIX
+      : rel.project_model_relationship_uuid;
+
+    const relationArray = relations[modelType][key];
     if (relationArray) {
-      relationArray.push(rel)
+      relationArray.push(rel);
     } else {
-      relations[modelType][rel.project_model_relationship_uuid] = [rel]
+      relations[modelType][key] = [rel];
     }
   })
 }
