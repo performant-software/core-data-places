@@ -44,6 +44,8 @@ export const getStaticPaths = async () => {
     <PostContent
       content={post?.body}
       title={post?.title}
+      author={post?.author}
+      date={post?.date ? new Date(post.date).toLocaleDateString() : null}
       client:only='react'
     />
   </Container>

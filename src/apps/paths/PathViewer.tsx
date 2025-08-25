@@ -19,6 +19,7 @@ import {
   useState
 } from 'react';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
+import Byline from '@components/Byline';
 
 export interface PathViewerProps {
   path: any;
@@ -160,6 +161,7 @@ const PathViewer = (props: PathViewerProps) => {
                       >
                         { path.title }
                       </h2>
+                      { (path.author || path.date) && <Byline author={path.author} date={new Date(path.date).toLocaleDateString()} /> }
                       <article
                         className='prose prose-xl prose-invert max-w-none'
                       >
