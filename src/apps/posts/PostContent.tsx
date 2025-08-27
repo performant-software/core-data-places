@@ -16,7 +16,7 @@ interface PostContentProps {
   content: TinaMarkdownContent;
   title: string;
   author?: string;
-  date?: string;
+  date?: string | number | Date;
 }
 
 const PostContent = (props: PostContentProps) => {
@@ -39,7 +39,7 @@ const PostContent = (props: PostContentProps) => {
             >
               { props.title }
             </h1>
-            { (props.author || props.date) && <Byline author={props.author} date={props.date} t={t} /> }
+            { (props.author || props.date) && <Byline author={props.author} date={props.date} /> }
             <article
               className='prose prose-lg max-w-none w-full'
             >

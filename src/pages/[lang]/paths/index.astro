@@ -39,7 +39,7 @@ export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ para
           t={t}
           title={path?.title || t('untitled')}
           author={path?.author}
-          date={path?.date ? new Date(path.date).toLocaleDateString() : null}
+          date={path?.date}
         />
       ))}
     </Cards>
