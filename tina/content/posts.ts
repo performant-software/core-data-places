@@ -17,6 +17,16 @@ const Posts: Collection = {
       required: true,
     },
     {
+      name: 'author',
+      label: 'Author',
+      type: 'string'
+    },
+    {
+      name: 'date',
+      label: 'Date',
+      type: 'datetime'
+    },
+    {
       name: 'cardImage',
       label: 'Card Image',
       type: 'image'

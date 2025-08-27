@@ -29,7 +29,6 @@ export const getStaticPaths = async () => {
 
   return staticPaths;
 };
-
 ---
 
 <Layout
@@ -44,6 +43,8 @@ export const getStaticPaths = async () => {
     <PostContent
       content={post?.body}
       title={post?.title}
+      author={post?.author}
+      date={post?.date}
       client:only='react'
     />
   </Container>

@@ -26,6 +26,16 @@ const Paths: Collection = {
       type: 'string'
     },
     {
+      name: 'author',
+      label: 'Author',
+      type: 'string'
+    },
+    {
+      name: 'date',
+      label: 'Date',
+      type: 'datetime'
+    },
+    {
       name: 'description',
       label: 'Description',
       type: 'rich-text',

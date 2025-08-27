@@ -23,6 +23,10 @@
     "tinaLabel": "Posts",
     "defaultValue": "Posts"
   },
+  "by": {
+    "tinaLabel": "By <author>",
+    "defaultValue": "By {{author}}"
+  },
   "openMainMenu": {
     "tinaLabel": "Open Main Menu",
     "defaultValue": "Open Main Menu"
