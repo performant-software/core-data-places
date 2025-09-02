@@ -7,6 +7,7 @@ import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
 import { useBlackText } from '@utils/layout';
 import { getPages } from '@utils/nav';
+import { STATIC_BUILD } from 'astro:env/client';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';
 
@@ -34,8 +35,6 @@ const pages = await getPages(currentLocale);
 
 const { footer: includeFooter, fullscreen, name, title, t, tab } = Astro.props;
 
-const isStaticBuild = import.meta.env.STATIC_BUILD === true;
-
 const NavKeys = {
   search: 'search',
   pages: 'pages',
@@ -52,7 +51,7 @@ const searchOptions = _.map(config.search, (search) => ({
 }));
 
 // Add the "Saved Searches" option in "server" mode
-if (!isStaticBuild) {
+if (!STATIC_BUILD) {
   searchOptions.push({
     active: Astro.url.pathname.includes('/sessions/search'),
     name: 'search_session',
@@ -145,7 +144,7 @@ if (!_.isEmpty(NavConfig.pages.options)) {
       <Footer
         accessibilityUrl={footer?.accessibility_url}
         items={NavItems}
-        login={footer?.allow_login && !isStaticBuild}
+        login={footer?.allow_login && !STATIC_BUILD}
         logos={footer?.logos}
         privacyUrl={footer?.privacy_url}
         t={t}
