@@ -21,3 +21,5 @@ export const GET: APIRoute = async ({ params, request, session }) => {
 
   return buildResponse(item);
 };
+
+export const getStaticPaths = () => [];

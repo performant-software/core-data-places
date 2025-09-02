@@ -38,3 +38,5 @@ export const POST: APIRoute = async ({ params, request, session }) => {
 
   return buildResponse(null);
 };
+
+export const getStaticPaths = () => [];
