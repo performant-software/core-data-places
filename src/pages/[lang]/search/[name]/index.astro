@@ -3,14 +3,13 @@ import Search from '@apps/search/Search';
 import { getTranslations } from '@backend/i18n';
 import config from '@config';
 import Layout from "@layouts/Layout.astro";
+import { STATIC_BUILD } from 'astro:env/client';
 import _ from 'underscore';
 
 const { lang } = Astro.params
 
 const { t } = await getTranslations(Astro.currentLocale);
 const { name } = Astro.params;
-
-const allowSave = import.meta.env.STATIC_BUILD !== true;
 
 export const getStaticPaths = () => {
   const paths = [];
@@ -33,7 +32,7 @@ export const getStaticPaths = () => {
   tab="search"
 >
   <Search
-    allowSave={allowSave}
+    allowSave={!STATIC_BUILD}
     lang={lang}
     name={name}
     client:only='react'
