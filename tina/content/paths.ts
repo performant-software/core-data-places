@@ -1,6 +1,7 @@
-import TinaMediaPicker from '../components/TinaMediaPicker';
 import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection } from '@tinacms/schema-tools';
+import { pathTemplates } from './templates';
+import type { RichTextTemplate } from '@tinacms/schema-tools';
 
 const Paths: Collection = {
   name: 'path',
@@ -40,79 +41,7 @@ const Paths: Collection = {
       label: 'Description',
       type: 'rich-text',
       isBody: true,
-      templates: [
-        {
-          name: 'iframe',
-          label: 'AV Embed',
-          fields: [
-            {
-              name: 'src',
-              label: 'Embed Link',
-              type: 'string',
-              required: true
-            },
-            {
-              name: 'width',
-              label: 'Width (pixels)',
-              type: 'number',
-              ui: {
-                parse: (val?: number)=>val || 0,
-                format: (val?: number)=> val === 0 ? null : val
-              }
-            },
-            {
-              name: 'height',
-              label: 'Height (pixels)',
-              type: 'number',
-              ui: {
-                parse: (val?: number)=>val || 0,
-                format: (val?: number)=> val === 0 ? null : val
-              }
-            }
-          ]
-        },
-        {
-          name: "media",
-          label: "Media",
-          fields: [
-            {
-              name: "media",
-              label: "Media",
-              type: "object",
-              fields: [
-                {
-                  name: "title",
-                  label: "Title",
-                  type: "string",
-                },
-                {
-                  name: "uuid",
-                  label: "UUID",
-                  type: "string"
-                },
-                {
-                  name: "manifest_url",
-                  label: "Manifest URL",
-                  type: "string"
-                },
-                {
-                  name: "content_url",
-                  label: "Content URL",
-                  type: "string"
-                },
-                {
-                  name: "content_preview_url",
-                  label: "Content Preview URL",
-                  type: "string"
-                }
-              ],
-              ui: {
-                component: TinaMediaPicker
-              }
-            }
-          ]
-        }
-      ]
+      templates: pathTemplates as RichTextTemplate<false>[]
     },
     {
       name: 'path',
@@ -167,38 +96,7 @@ const Paths: Collection = {
           name: 'blurb',
           label: 'Blurb',
           type: 'rich-text',
-          templates: [
-            {
-              name: 'iframe',
-              label: 'AV Embed',
-              fields: [
-                {
-                  name: 'src',
-                  label: 'Embed Link',
-                  type: 'string',
-                  required: true
-                },
-                {
-                  name: 'width',
-                  label: 'Width (pixels)',
-                  type: 'number',
-                  ui: {
-                    parse: (val?: number)=>val || 0,
-                    format: (val?: number)=> val === 0 ? null : val
-                  }
-                },
-                {
-                  name: 'height',
-                  label: 'Height (pixels)',
-                  type: 'number',
-                  ui: {
-                    parse: (val?: number)=>val || 0,
-                    format: (val?: number)=> val === 0 ? null : val
-                  }
-                }
-              ]
-            }
-          ]
+          templates: pathTemplates as RichTextTemplate<false>[]
         }
       ]
     }

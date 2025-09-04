@@ -5,7 +5,7 @@ import Branding from './content/branding';
 import I18n from './content/i18n';
 import PagesCollection from './content/pages';
 import PathsCollection from './content/paths';
-import PostsCollection from './content/posts';
+import { getPostsCollection } from './content/posts';
 import Settings from './content/settings';
 import { CustomAuthProvider } from './auth-provider';
 import { TinaUserCollection, UsernamePasswordAuthJSProvider } from 'tinacms-authjs/dist/tinacms';
@@ -13,6 +13,11 @@ import { TinaUserCollection, UsernamePasswordAuthJSProvider } from 'tinacms-auth
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 const localContentPath = process.env.TINA_LOCAL_CONTENT_PATH;
 const useSSO = process.env.TINA_PUBLIC_AUTH_USE_KEYCLOAK === 'true';
+
+//deal with localizing the Posts collection
+const defaultLocale = config.i18n.default_locale;
+const otherLocales = config.i18n.locales.filter((loc) => (loc !== defaultLocale))
+const PostsCollection = getPostsCollection(otherLocales)
 
 export default defineConfig({
   authProvider: isLocal

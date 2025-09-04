@@ -1,7 +1,6 @@
-import TinaMediaPicker from '../components/TinaMediaPicker';
-import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection } from '@tinacms/schema-tools';
-import Visualizations from '@root/tina/content/visualizations';
+import { postTemplates } from './templates';
+import type { RichTextTemplate } from '@tinacms/schema-tools';
 
 const Posts: Collection = {
   name: 'post',
@@ -29,154 +28,56 @@ const Posts: Collection = {
     {
       name: 'cardImage',
       label: 'Card Image',
-      type: 'image'
+      type: 'image',
     },
     {
       name: 'imageAlt',
       label: 'Card Image alt text',
-      type: 'string'
+      type: 'string',
     },
     {
       type: 'rich-text',
       name: 'body',
       label: 'Body',
       isBody: true,
-      templates: [
-        {
-          name: 'iframe',
-          label: 'AV Embed',
-          fields: [
-            {
-              name: 'src',
-              label: 'Embed Link',
-              type: 'string',
-              required: true
-            },
-            {
-              name: 'width',
-              label: 'Width (pixels)',
-              type: 'number',
-              ui: {
-                parse: (val?: number)=>val || 0,
-                format: (val?: number)=> val === 0 ? null : val
-              }
-            },
-            {
-              name: 'height',
-              label: 'Height (pixels)',
-              type: 'number',
-              ui: {
-                parse: (val?: number)=>val || 0,
-                format: (val?: number)=> val === 0 ? null : val
-              }
-            }
-          ]
-        },
-        {
-          name: 'place',
-          label: 'Place',
-          fields: [
-            {
-              name: 'title',
-              label: 'Title',
-              type: 'string',
-              required: true,
-              isTitle: true,
-            },
-            {
-              name: 'place',
-              label: 'Place Data',
-              type: 'object',
-              fields: [
-                {
-                  name: 'title',
-                  label: 'Title',
-                  type: 'string',
-                  required: true,
-                  isTitle: true
-                },
-                {
-                  name: 'uuid',
-                  label: 'UUID',
-                  type: 'string',
-                },
-                {
-                  name: 'animate',
-                  label: 'Animate pulsing place marker?',
-                  type: 'boolean'
-                },
-                {
-                  name: 'buffer',
-                  label: 'Map zoom buffer (in miles)',
-                  type: 'number'
-                },
-                {
-                  name: 'layer',
-                  label: 'Custom Map Layer',
-                  type: 'number',
-                  list: true
-                }
-              ],
-              ui: {
-                component: TinaPlacePicker,
-              },
-              required: true,
-            },
-            {
-              name: 'caption',
-              label: 'Caption',
-              type: 'string',
-              ui: {
-                component: 'textarea'
-              }
-            }
-          ],
-        },
-        {
-          name: "media",
-          label: "Media",
-          fields: [
-            {
-              name: "media",
-              label: "Media",
-              type: "object",
-              fields: [
-                {
-                  name: "title",
-                  label: "Title",
-                  type: "string",
-                },
-                {
-                  name: "uuid",
-                  label: "UUID",
-                  type: "string"
-                },
-                {
-                  name: "manifest_url",
-                  label: "Manifest URL",
-                  type: "string"
-                },
-                {
-                  name: "content_url",
-                  label: "Content URL",
-                  type: "string"
-                },
-                {
-                  name: "content_preview_url",
-                  label: "Content Preview URL",
-                  type: "string"
-                }
-              ],
-              ui: {
-                component: TinaMediaPicker
-              }
-            }
-          ]
-        },
-        ...Visualizations
-      ]
+      templates: postTemplates as RichTextTemplate<false>[],
     },
   ],
+};
+
+/**
+ * Accepts an array of non-default locales and returns the appropriate posts collection schema
+ * @param locales An array of the non-default locales for the project
+ * @returns `Posts` collection with localized content fields
+ */
+export const getPostsCollection = (locales: string[]) => {
+  if (!locales || !locales.length) {
+    return Posts;
+  }
+  const localizedContent = locales.map((key) => ({
+    type: 'object',
+    name: key.replaceAll('-', '_'),
+    label: key,
+    fields: [
+      {
+        type: 'string',
+        name: 'title',
+        label: 'Title',
+      },
+      {
+        type: 'rich-text',
+        name: 'body',
+        label: 'Body',
+      },
+    ],
+  }));
+  return {
+    name: Posts.name,
+    label: Posts.label,
+    path: Posts.path,
+    format: Posts.format,
+    fields: [...Posts.fields, ...localizedContent],
+  } as Collection;
 };
 
 export default Posts;
