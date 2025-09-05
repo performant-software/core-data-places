@@ -25,13 +25,6 @@ const TimelineView = (props: Props) => {
   const to = Math.min(max, Number.isFinite(start[1]) ? start[1] : max);
 
   /**
-   * Only display if the facet is available to refine.
-   */
-  if (!canRefine) {
-    return null;
-  }
-
-  /**
    * Sets the value on the state when the from/to values change.
    */
   useEffect(() => {
@@ -60,6 +53,13 @@ const TimelineView = (props: Props) => {
    * On event click, navigates to the selected event.
    */
   const onEventClick = useCallback((ev) => navigate(`/events/${ev.id}`), []);
+
+  /**
+   * Only display if the facet is available to refine.
+   */
+  if (!canRefine) {
+    return null;
+  }
 
   return (
     <div
