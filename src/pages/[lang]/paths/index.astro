@@ -6,13 +6,20 @@ import Cards from '@components/Cards.astro';
 import Container from '@components/Container.astro';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
+import { hasPathsContent } from '@utils/config';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';
 
 const { t } = await getTranslations(Astro.currentLocale);
 const paths = await fetchPaths();
 
-export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
+export const getStaticPaths = () => {
+  if (!hasPathsContent(config)) {
+    return [];
+  }
+
+  return _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}));
+};
 
 ---
 

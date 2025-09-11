@@ -60,14 +60,14 @@ export interface Configuration {
     project_ids: string[]
   };
 
-  detail_pages: Array<string>;
+  detail_pages?: Array<string>;
 
   i18n: {
     default_locale: string,
     locales: string[]
   },
 
-  layers: Array<{
+  layers?: Array<{
     name: string,
     layer_type: 'geojson' | 'vector' | 'raster' | 'georeference',
     url: string,

@@ -4,6 +4,7 @@ import { fetchPath, fetchPaths } from '@backend/tina';
 import config from '@config';
 import { getTranslations } from '@backend/i18n';
 import Layout from "@layouts/Layout.astro";
+import { hasPathsContent } from '@utils/config';
 import _ from 'underscore';
 
 const { slug } = Astro.params;
@@ -13,6 +14,10 @@ const { t } = await getTranslations(Astro.currentLocale);
 const title = path?.title || t('paths');
 
 export const getStaticPaths = async () => {
+  if (!hasPathsContent(config)) {
+    return [];
+  }
+
   const staticPaths = [];
 
   const locales = config.i18n.locales;
