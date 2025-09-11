@@ -27,7 +27,7 @@ export interface SearchConfig {
     }>,
     title: string,
     tags?: Array<{
-      attribute: string,
+      name: string,
       primary?: boolean,
       secondary?: boolean
     }>
