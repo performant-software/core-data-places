@@ -25,7 +25,12 @@ export interface SearchConfig {
       name: string,
       icon?: string
     }>,
-    title: string
+    title: string,
+    tags?: Array<{
+      name: string,
+      primary?: boolean,
+      secondary?: boolean
+    }>
   };
 
   table?: boolean;

@@ -314,6 +314,30 @@ String
 
 Required: No
 
+#### tags
+
+Array of attributes to display at the top of the search result card in the list view.
+
+Required: No
+
+##### name
+
+The property on the Typesense document to display. This property will also accept a path to drill down into nested objects (e.g. `9a006156-3564-4cb1-bedb-6600c0419226.0.name`).
+
+Required: Yes
+
+##### primary
+
+Whether to use the primary branding color for the tag background
+
+Required: No
+
+##### secondary
+
+Whether to use the secondary branding color for the tag background
+
+Required: No
+
 ### route
 
 The path prefix for which to navigate which clicking on a search result. For example, a value of "/places" will navigate to "/places/:uuid" when click on a search result.

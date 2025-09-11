@@ -70,6 +70,7 @@ const ListView = (props: Props) => {
         onItemClick={onRowClick}
         onItemPointerEnter={onPointEnter}
         onItemPointerLeave={onPointLeave}
+        tags={config.result_card.tags}
       />
     </aside>
   );
