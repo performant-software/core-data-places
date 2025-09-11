@@ -1,51 +1,91 @@
 {
   "content": {
     "collections": [
-      "paths",
       "posts"
     ]
   },
   "core_data": {
-    "url": "https://staging.coredata.cloud",
+    "url": "https://uqam.coredata.cloud",
     "project_ids": [
-      "1",
-      "2",
-      "3"
+      "31",
+      "71"
     ]
   },
   "i18n": {
-    "default_locale": "en",
-    "locales": ["en"]
+    "default_locale": "fr",
+    "locales": [
+      "en",
+      "fr"
+    ]
   },
-  "layers": [{
-    "name": "Maptiler DataViz Style",
-    "layer_type": "vector",
-    "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
-  }],
-  "search": [{
-    "name": "places",
-    "route": "/places",
-    "geosearch": true,
-    "map": {
-      "clusterRadius": 6,
-      "geometry": "geometry",
-      "max_zoom": 14,
-      "zoom_to_place": true
+  "layers": [
+    {
+      "name": "Maptiler DataViz Style",
+      "layer_type": "vector",
+      "url": "https://api.maptiler.com/maps/dataviz/style.json?key=DICl11L0kocVzMWdoynh"
     },
-    "result_card": {
-      "title": "name"
+    {
+      "name": "USGS Imagery Topo (MapServer)",
+      "layer_type": "raster",
+      "url": "https://basemap.nationalmap.gov/arcgis/services/USGSImageryTopo/MapServer/WMSServer?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0&styles=default"
     },
-    "typesense": {
-      "host": "example.typesense.com",
-      "port": 443,
-      "protocol": "https",
-      "api_key": "abcdefg",
-      "index_name": "core_data_places",
-      "query_by": "name",
-      "default_sort": "name",
-      "overrides": {
-        "geoLocationField": "coordinates"
+    {
+      "name": "USGS Topo (MapServer)",
+      "layer_type": "raster",
+      "foo": "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer?bbox=%7Bbbox-epsg-3857%7D&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0&styles=default",
+      "url": "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0&styles=default"
+    },
+    {
+      "name": "New Jersey Natural Earth (WMS)",
+      "layer_type": "raster",
+      "url": "https://img.nj.gov/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015",
+      "overlay": true
+    },
+    {
+      "name": "US States",
+      "layer_type": "geojson",
+      "url": "gz_2010_us_040_00_20m.json",
+      "description": "Data from the United States Census Bureau. https://eric.clst.org/tech/usgeojson/",
+      "overlay": true
+    }
+  ],
+  "search": [
+    {
+      "geosearch": true,
+      "name": "places",
+      "route": "/places",
+      "result_card": {
+        "title": "name",
+        "tags": [
+          {
+            "name": "owner_project.name",
+            "secondary": true
+          }
+        ]
+      },
+      "map": {
+        "geometry": "geometry",
+        "max_zoom": 8,
+        "zoom_to_place": false
+      },
+      "timeline": {
+        "date_range_facet": "event_range_facet",
+        "event_path": "a86fb6d4-0582-4a43-ad10-c5e782c8bce0"
+      },
+      "typesense": {
+        "host": "2km5psj6h9antqeip-1.a1.typesense.net",
+        "port": 443,
+        "protocol": "https",
+        "api_key": "8o051kUN1HK5FEGV4K6LZy8Zal3wyiAj",
+        "index_name": "atlas",
+        "query_by": "name,names",
+        "default_sort": "name",
+        "facets": {
+          "include": [
+            "owner_project.name_facet"
+          ]
+        }
       }
     }
-  }]
+  ]
 }
