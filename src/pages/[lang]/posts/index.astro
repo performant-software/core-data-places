@@ -6,13 +6,20 @@ import Cards from '@components/Cards.astro';
 import Container from '@components/Container.astro';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
+import { hasPostsContent } from '@utils/config';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';
 
 const { t } = await getTranslations(Astro.currentLocale);
 const posts = await fetchPosts();
 
-export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
+export const getStaticPaths = () => {
+  if (!hasPostsContent(config)) {
+    return [];
+  }
+
+  return _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
+}
 
 ---
 
@@ -38,6 +45,8 @@ export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ para
           slug={getRelativeLocaleUrl(Astro.currentLocale, `posts/${post._sys.filename}`)}
           t={t}
           title={post.title}
+          author={post.author}
+          date={post.date}
         />
       ))}
     </Cards>

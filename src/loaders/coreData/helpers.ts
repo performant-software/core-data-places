@@ -1,10 +1,10 @@
 import config from '@config';
-import { LoaderContext } from 'astro/dist/content/loaders';
+import type { LoaderContext } from 'astro/loaders';
 import _ from 'underscore';
 
 const RELATIONSHIP_ATTRIBUTES = [
   'uuid',
-  'project_model_relationship_id',
+  'project_model_relationship_uuid',
   'project_model_relationship_inverse'
 ];
 

@@ -29,7 +29,7 @@
   --color-neutral-dark: #111928;
   --color-neutral-light: #F5F5F5;
   --color-default-primary: #073B4C;
-  --color-default-secondary: var(--color-neutral-200);
+  --color-default-secondary: var(--color-neutral-light);
 
   --color-primary: var(--customColorPrimary, var(--color-default-primary));
   --color-secondary: var(--customColorSecondary, var(--color-default-secondary));

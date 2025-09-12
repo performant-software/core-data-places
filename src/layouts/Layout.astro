@@ -1,11 +1,13 @@
 ---
 import { fetchBranding } from '@backend/tina';
+import NotificationPanel from '@components/NotificationPanel';
 import config from '@config';
 import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
 import { useBlackText } from '@utils/layout';
 import { getPages } from '@utils/nav';
+import { STATIC_BUILD } from 'astro:env/client';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';
 
@@ -40,15 +42,28 @@ const NavKeys = {
   posts: 'posts'
 };
 
+// Build the list of options for the "Explore" dropdown
+const searchOptions = _.map(config.search, (search) => ({
+  active: Astro.url.pathname.includes(`/${NavKeys.search}/${search.name}`),
+  name: search.name,
+  label: t(`index_${search.name}`),
+  href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.search}/${search.name}`)
+}));
+
+// Add the "Saved Searches" option in "server" mode
+if (!STATIC_BUILD) {
+  searchOptions.push({
+    active: Astro.url.pathname.includes('/sessions/search'),
+    name: 'search_session',
+    label: t('savedSearches'),
+    href: getRelativeLocaleUrl(currentLocale, '/sessions/search')
+  });
+}
+
 const NavConfig = {
   [NavKeys.search]: {
     label: t('explore'),
-    options: _.map(config.search, (search) => ({
-      active: Astro.url.pathname.includes(`/${NavKeys.search}/${search.name}`),
-      name: search.name,
-      label: t(`index_${search.name}`),
-      href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.search}/${search.name}`)
-    }))
+    options: searchOptions
   },
   [NavKeys.pages]: {
     label: t('pages'),
@@ -117,6 +132,9 @@ if (!_.isEmpty(NavConfig.pages.options)) {
       pages={pages}
       title={header?.hide_title ? undefined : branding.title}
     />
+    <NotificationPanel
+      client:only='react'
+    />
     <main
       class='w-full relative bg-white flex flex-col grow'
     >
@@ -126,7 +144,7 @@ if (!_.isEmpty(NavConfig.pages.options)) {
       <Footer
         accessibilityUrl={footer?.accessibility_url}
         items={NavItems}
-        login={footer?.allow_login && !import.meta.env.STATIC_BUILD}
+        login={footer?.allow_login && !STATIC_BUILD}
         logos={footer?.logos}
         privacyUrl={footer?.privacy_url}
         t={t}

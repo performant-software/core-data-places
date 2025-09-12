@@ -245,6 +245,12 @@ describe('search', () => {
           expect(attribute.icon).toBeOneOf([undefined, ...icons]);
         });
       });
+
+      describe.each(search.result_card?.tags || [])('tags', (tag) => {
+        test('name is not empty', () => {
+          expect(tag.name).toBeString();
+        });
+      });
     });
 
     test('route matches allowed values', () => {

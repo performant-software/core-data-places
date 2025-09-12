@@ -1,5 +1,7 @@
 ---
-const { alt, date, category, title, author, slug, imageUrl, blurb, t } = Astro.props;
+const { alt, date, dateOptions = {}, category, title, author, slug, imageUrl, blurb, t } = Astro.props;
+
+const dateString = date ? new Date(date).toLocaleDateString(undefined, dateOptions) : null;
 ---
 
 <article
@@ -27,13 +29,13 @@ const { alt, date, category, title, author, slug, imageUrl, blurb, t } = Astro.p
     />
   </div>
   <div
-    class='flex items-center gap-x-4 text-xs'
+    class='flex items-center gap-x-4 text-xs p-2'
   >
     <time
-      datetime='2020-03-16'
+      datetime={date}
       class='text-gray-500'
     >
-      { date }
+      { dateString }
     </time>
     { category && (
       <a
@@ -65,26 +67,21 @@ const { alt, date, category, title, author, slug, imageUrl, blurb, t } = Astro.p
       { blurb }
     </p>
   </div>
-  <div
-    class='relative mt-8 flex items-center gap-x-4'
-  >
+  { author && (
     <div
-      class='text-sm leading-6'
+      class='relative mt-8 flex items-center gap-x-4 p-6'
     >
-      <p
-        class='font-semibold text-gray-900'
+      <div
+        class='text-sm leading-6'
       >
-        <a
-          href='#'
+        <p
+          class='font-semibold text-gray-900'
         >
-          <span
-            class='absolute inset-0'
-          />
-          { author }
-        </a>
-      </p>
+          { t('by', { author }) }
+        </p>
+      </div>
     </div>
-  </div>
+  ) }
   <a
     class='flex justify-end p-8 w-full'
     href={slug}

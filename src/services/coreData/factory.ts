@@ -20,9 +20,10 @@ export const ModelNames = {
 };
 
 /**
- * Returns the name of the models for which a service exists.
+ * Returns the name of the models for which a service exists. We'll exclude media_contents since we do not
+ * want to build static paths for media.
  */
-const getModels = () => _.values(ModelNames);
+const getModels = () => _.without(_.values(ModelNames), ModelNames.mediaContents);
 
 /**
  * Returns the service for the passed name.
