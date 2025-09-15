@@ -1,17 +1,18 @@
 ---
 import PathViewer from "@apps/paths/PathViewer";
-import { fetchPath, fetchPaths } from '@backend/tina';
-import config from '@config';
-import { getTranslations } from '@backend/i18n';
+import { fetchPath, fetchPaths } from "@backend/tina";
+import config from "@config";
+import { getTranslations } from "@backend/i18n";
 import Layout from "@layouts/Layout.astro";
-import { hasPathsContent } from '@utils/config';
-import _ from 'underscore';
+import { hasPathsContent } from "@utils/config";
+import _ from "underscore";
 
 const { slug } = Astro.params;
-const path = await fetchPath(slug);
+const locale = Astro.currentLocale;
+const path = await fetchPath(locale, slug);
 
-const { t } = await getTranslations(Astro.currentLocale);
-const title = path?.title || t('paths');
+const { t } = await getTranslations(locale);
+const title = path?.title || t("paths");
 
 export const getStaticPaths = async () => {
   if (!hasPathsContent(config)) {
@@ -20,33 +21,18 @@ export const getStaticPaths = async () => {
 
   const staticPaths = [];
 
-  const locales = config.i18n.locales;
-  const paths = await fetchPaths();
+  for (const lang of config.i18n.locales) {
+    const paths = await fetchPaths(lang);
 
-  _.each(locales, (lang) => {
-    _.each(paths, (path) => {
-      staticPaths.push({ params: {
-        lang,
-        slug: path?._sys.filename
-      }})
-    });
-  });
+    for (const path of paths) {
+      paths.push({ params: { lang, slug: path._sys.filename } });
+    }
+  }
 
-  return staticPaths;
+  return paths;
 };
-
 ---
 
-<Layout
-  fullscreen
-  t={t}
-  tab='paths'
-  title={title}
->
-  { path && (
-    <PathViewer
-      path={path}
-      client:only='react'
-    />
-  )}
+<Layout fullscreen t={t} tab="paths" title={title}>
+  {path && <PathViewer path={path} client:only="react" />}
 </Layout>

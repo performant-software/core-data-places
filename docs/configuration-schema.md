@@ -18,7 +18,7 @@ Array<"paths" | "posts">
 
 Required: No
 
-### localize_pages
+### localize_content
 
 If set to `true`, pages will be nested within a localized directory (e.g `/pages/en/Home.mdx`). If `false`, pages will not be localized and placed in the root `/pages` directory.
 

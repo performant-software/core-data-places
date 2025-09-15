@@ -43,41 +43,11 @@ const Posts: Collection = {
       templates: postTemplates as RichTextTemplate<false>[],
     },
   ],
-};
-
-/**
- * Accepts an array of non-default locales and returns the appropriate posts collection schema
- * @param locales An array of the non-default locales for the project
- * @returns `Posts` collection with localized content fields
- */
-export const getPostsCollection = (locales: string[]) => {
-  if (!locales || !locales.length) {
-    return Posts;
+  ui: {
+    allowedActions: {
+      createNestedFolder: true
+    }
   }
-  const localizedContent = locales.map((key) => ({
-    type: 'object',
-    name: key.replaceAll('-', '_'),
-    label: key,
-    fields: [
-      {
-        type: 'string',
-        name: 'title',
-        label: 'Title',
-      },
-      {
-        type: 'rich-text',
-        name: 'body',
-        label: 'Body',
-      },
-    ],
-  }));
-  return {
-    name: Posts.name,
-    label: Posts.label,
-    path: Posts.path,
-    format: Posts.format,
-    fields: [...Posts.fields, ...localizedContent],
-  } as Collection;
 };
 
 export default Posts;

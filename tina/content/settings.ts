@@ -18,8 +18,8 @@ const Settings: Collection = {
       type: 'string',
       list: true
     }, {
-      name: 'localize_pages',
-      label: 'Localize Pages',
+      name: 'localize_content',
+      label: 'Localize Content',
       type: 'boolean'
     }]
   }, {

@@ -10,12 +10,10 @@ import { hasPostsContent } from "@utils/config";
 import _ from "underscore";
 
 const { slug } = Astro.params;
-const post = await fetchPost(slug);
 
 const locale = Astro.currentLocale;
 
-const localePost = getLocalizedContent(post, locale.replaceAll("-", "_")); //this is to deal with Tina's field naming restrictions
-
+const post = await fetchPost(locale, slug);
 const { t } = await getTranslations(locale);
 
 export const getStaticPaths = async () => {
@@ -24,22 +22,17 @@ export const getStaticPaths = async () => {
   }
 
   const staticPaths = [];
+  const paths = [];
 
-  const locales = config.i18n.locales;
-  const posts = await fetchPosts();
+  for (const lang of config.i18n.locales) {
+    const posts = await fetchPosts(lang);
 
-  _.each(locales, (lang) => {
-    _.each(posts, (post) => {
-      staticPaths.push({
-        params: {
-          lang,
-          slug: post?._sys.filename,
-        },
-      });
-    });
-  });
+    for (const post of posts) {
+      paths.push({ params: { lang, slug: post._sys.filename } });
+    }
+  }
 
-  return staticPaths;
+  return paths;
 };
 ---
 

@@ -42,8 +42,8 @@ describe('content', () => {
     expect(config.content?.collections).toBeArrayOfValues(collections);
   });
 
-  test('localize_pages matches allowed values', () => {
-    expect(config.content?.localize_pages).toBeBoolean();
+  test('localize_content matches allowed values', () => {
+    expect(config.content?.localize_content).toBeBoolean();
   });
 });
 

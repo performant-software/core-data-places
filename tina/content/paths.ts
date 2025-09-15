@@ -8,6 +8,11 @@ const Paths: Collection = {
   label: 'Paths',
   path: 'content/paths',
   format: 'mdx',
+    ui: {
+    allowedActions: {
+      createNestedFolder: true
+    }
+  },
   fields: [
     {
       name: 'title',

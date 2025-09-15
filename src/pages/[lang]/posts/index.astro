@@ -5,14 +5,13 @@ import Card from '@components/Card.astro';
 import Cards from '@components/Cards.astro';
 import Container from '@components/Container.astro';
 import config from '@config';
-import { getLocalizedContent } from '@i18n/utils';
 import Layout from '@layouts/Layout.astro';
 import { hasPostsContent } from '@utils/config';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';
 
 const { t } = await getTranslations(Astro.currentLocale);
-const posts = await fetchPosts();
+const posts = await fetchPosts(Astro.currentLocale);
 
 export const getStaticPaths = () => {
   if (!hasPostsContent(config)) {
@@ -21,10 +20,6 @@ export const getStaticPaths = () => {
 
   return _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
 }
-
-//Localize the post titles
-const localeField = Astro.currentLocale.replaceAll('-', '_') //this is to deal with Tina's field naming conventions
-const localizedPosts = _.map(posts, (post: any) => (getLocalizedContent(post, localeField)))
 
 ---
 
@@ -43,7 +38,7 @@ const localizedPosts = _.map(posts, (post: any) => (getLocalizedContent(post, lo
       { t('posts') }
     </h1>
     <Cards>
-      { _.map(localizedPosts, (post) => (
+      { posts?.length ? _.map(posts, (post) => (
         <Card
           imageUrl={post?.cardImage}
           alt={post?.imageAlt}
@@ -53,7 +48,7 @@ const localizedPosts = _.map(posts, (post: any) => (getLocalizedContent(post, lo
           author={post.author}
           date={post.date}
         />
-      ))}
+      )) : <p class="italic text-sm">({ t('none') })</p>}
     </Cards>
   </Container>
 </Layout>

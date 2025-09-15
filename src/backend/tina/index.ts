@@ -28,22 +28,26 @@ export const fetchPages = async (locale: string, params?: any) => {
   return filterAll(locale, pages);
 };
 
-export const fetchPath = async (slug: string) => {
-  const response = await client.queries.path({ relativePath: `${slug}.mdx`});
+export const fetchPath = async (locale: string, slug: string) => {
+  const response = await fetchOne(locale, slug, client.queries.path);
   return response.data?.path;
 };
 
-export const fetchPaths = async () => {
+export const fetchPaths = async (locale: string) => {
   const response = await client.queries.pathConnection();
-  return response.data?.pathConnection?.edges?.map((item) => item?.node);
+  const paths = response.data?.pathConnection?.edges?.map((item) => item?.node);
+
+  return filterAll(locale, paths)
 };
 
-export const fetchPost = async (slug: string) => {
-  const response = await client.queries.post({ relativePath: `${slug}.mdx`});
+export const fetchPost = async (locale: string, slug: string) => {
+  const response = await fetchOne(locale, slug, client.queries.post);
   return response.data?.post;
 };
 
-export const fetchPosts = async () => {
+export const fetchPosts = async (locale: string) => {
   const response = await client.queries.postConnection();
-  return response.data?.postConnection?.edges?.map((item) => item?.node);
+  const posts = response.data?.postConnection?.edges?.map((item) => item?.node);
+  
+  return filterAll(locale, posts)
 };
