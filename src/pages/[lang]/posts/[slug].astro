@@ -9,42 +9,33 @@ import { hasPostsContent } from '@utils/config';
 import _ from 'underscore';
 
 const { slug } = Astro.params;
-const post = await fetchPost(slug);
 
-const { t } = await getTranslations(Astro.currentLocale);
+const locale = Astro.currentLocale;
+
+const post = await fetchPost(locale, slug);
+const { t } = await getTranslations(locale);
 
 export const getStaticPaths = async () => {
   if (!hasPostsContent(config)) {
     return [];
   }
 
-  const staticPaths = [];
+  const paths = [];
 
-  const locales = config.i18n.locales;
-  const posts = await fetchPosts();
+  for (const lang of config.i18n.locales) {
+    const posts = await fetchPosts(lang);
 
-  _.each(locales, (lang) => {
-    _.each(posts, (post) => {
-      staticPaths.push({ params: {
-        lang,
-        slug: post?._sys.filename
-      }});
-    });
-  });
+    for (const post of posts) {
+      paths.push({ params: { lang, slug: post._sys.filename } });
+    }
+  }
 
-  return staticPaths;
+  return paths;
 };
 ---
 
-<Layout
-  footer
-  t={t}
-  tab='posts'
-  title={slug}
->
-  <Container
-    className='pb-16 w-full'
-  >
+<Layout footer t={t} tab='posts' title={post?.title}>
+  <Container className='pb-16 w-full'>
     <PostContent
       content={post?.body}
       title={post?.title}

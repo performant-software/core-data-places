@@ -8,7 +8,7 @@ import _ from 'underscore';
  * @param items
  */
 export const filterAll = async (locale: string, items: Array<any>) => {
-  if (!config.content.localize_pages) {
+  if (!config.content.localize_content) {
     return items;
   }
 
@@ -35,11 +35,8 @@ export const filterAll = async (locale: string, items: Array<any>) => {
 
     if (localized[locale]) {
       filtered.push(localized[locale]);
-    } else if (localized[config.i18n.default_locale]) {
-      filtered.push(localized[config.i18n.default_locale])
     }
   });
-
   return filtered;
 };
 
@@ -53,7 +50,7 @@ export const filterAll = async (locale: string, items: Array<any>) => {
 export const fetchOne = async (locale: string, slug: string, query: any) => {
   let response;
 
-  if (!config.content.localize_pages) {
+  if (!config.content.localize_content) {
     response = await query({ relativePath: `${slug}.mdx` });
   } else {
     response = await query({ relativePath: `${locale}/${slug}.mdx` });

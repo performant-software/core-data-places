@@ -11,7 +11,7 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';
 
 const { t } = await getTranslations(Astro.currentLocale);
-const paths = await fetchPaths();
+const paths = await fetchPaths(Astro.currentLocale);
 
 export const getStaticPaths = () => {
   if (!hasPathsContent(config)) {
@@ -38,7 +38,7 @@ export const getStaticPaths = () => {
       { t('paths') }
     </h1>
     <Cards>
-      { _.map(paths, (path) => (
+      { !_.isEmpty(paths) && _.map(paths, (path) => (
         <Card
           imageUrl={path?.image}
           alt={path?.imageAlt}
@@ -48,7 +48,8 @@ export const getStaticPaths = () => {
           author={path?.author}
           date={path?.date}
         />
-      ))}
+      )) } 
+      { _.isEmpty(paths) && <p class="italic text-sm">({ t('none') })</p> }
     </Cards>
   </Container>
 </Layout>

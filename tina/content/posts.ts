@@ -8,6 +8,11 @@ const Posts: Collection = {
   label: 'Posts',
   path: 'content/posts',
   format: 'mdx',
+  ui: {
+    allowedActions: {
+      createNestedFolder: true
+    }
+  },
   fields: [
     {
       type: 'string',

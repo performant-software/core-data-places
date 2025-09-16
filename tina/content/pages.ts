@@ -34,6 +34,11 @@ const Pages: Collection = {
   label: 'Pages',
   path: 'content/pages',
   format: 'mdx',
+  ui: {
+    allowedActions: {
+      createNestedFolder: true
+    }
+  },
   fields: [{
     name: 'title',
     label: 'Title',

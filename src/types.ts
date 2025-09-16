@@ -57,7 +57,7 @@ export interface SearchConfig {
 export interface Configuration {
   content?: {
     collections?: Array<String>,
-    localize_pages?: boolean
+    localize_content?: boolean
   };
 
   core_data: {

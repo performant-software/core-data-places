@@ -5,6 +5,7 @@ A map-centric website backed by a Core Data project and Typesense index.
 ## Getting Started
 
 #### Requirements
+
 - Node 20.x
 - Netlify CLI
 - Core Data Project
@@ -19,6 +20,7 @@ Copy the `.env.example` file to `.env` and enter required variables. For a local
 Add a `/public/config.dev.json` file, which will be ignored by Git, to copy local config settings when starting the application. Use the `config.json` table below to configure your project.
 
 To start, run:
+
 ```
 npm install && netlify dev
 ```
@@ -31,7 +33,7 @@ npm install && netlify dev
 
 #### Create a content repository
 
-On GitHub, create a new content repository. The posts, paths, and pages records you create will be stored here, as well as any i18n, your project configuration, and default user accounts. 
+On GitHub, create a new content repository. The posts, paths, and pages records you create will be stored here, as well as any i18n, your project configuration, and default user accounts.
 
 ###### Directory Structure
 
@@ -81,10 +83,10 @@ The `title` attribute will be set as the `<title>` element of the HTML page. Set
 Copy the `/public/config.json` file into your content repository to `/content/settings/config.json` and adjust the configuration as desired.
 
 | Key                                    | Type    | Description                                                                                                                                                                      |
-|----------------------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | content                                | Object  | TinaCMS content collections configuration                                                                                                                                        |
 | content.collections                    | Array   | Array of content keys to allow for data entry and routing: "posts", "paths"                                                                                                      |
-| content.localize_pages                 | Boolean | If `true` pages content will be pulled from a locale directory (e.g. `/en/My-Awesome-Page.mdx`)                                                                                  |
+| content.localize_content               | Boolean | If `true` pages and other content will be pulled from a locale directory (e.g. `/en/My-Awesome-Page.mdx`)                                                                        |
 | core_data                              | Object  | Core Data configuration                                                                                                                                                          |
 | core_data.url                          | String  | URL of the Core Data application                                                                                                                                                 |
 | core_data.project_ids                  | Array   | Array of Core Data project IDs as strings                                                                                                                                        |
@@ -99,11 +101,11 @@ Copy the `/public/config.json` file into your content repository to `/content/se
 | layers.overlay                         | Boolean | If `true`, map layer will be rendered as overlay layer. If `false`, map layer will be rendered as base layer                                                                     |
 | result_filtering                       | Object  | Lists of fields and relationships to exclude per model.                                                                                                                          |
 | result_filtering.events.exclude        | Array   | List of attributes, user defined fields and associations to be excluded from the search detail panel and detail pages. See [Search detail filtering](search-detail-filtering.md) |
-| result_filtering.instances.exclude     | Array   | List of attributes, user defined fields and associations to be excluded from the search detail panel and detail pages. See [Search detail filtering](search-detail-filtering.md) |                     
+| result_filtering.instances.exclude     | Array   | List of attributes, user defined fields and associations to be excluded from the search detail panel and detail pages. See [Search detail filtering](search-detail-filtering.md) |
 | result_filtering.items.exclude         | Array   | List of attributes, user defined fields and associations to be excluded from the search detail panel and detail pages. See [Search detail filtering](search-detail-filtering.md) |
-| result_filtering.organizations.exclude | Array   | List of attributes, user defined fields and associations to be excluded from the search detail panel and detail pages. See [Search detail filtering](search-detail-filtering.md) |                    
-| result_filtering.people.exclude        | Array   | List of attributes, user defined fields and associations to be excluded from the search detail panel and detail pages. See [Search detail filtering](search-detail-filtering.md) |                   
-| result_filtering.places.exclude        | Array   | List of attributes, user defined fields and associations to be excluded from the search detail panel and detail pages. See [Search detail filtering](search-detail-filtering.md) |                  
+| result_filtering.organizations.exclude | Array   | List of attributes, user defined fields and associations to be excluded from the search detail panel and detail pages. See [Search detail filtering](search-detail-filtering.md) |
+| result_filtering.people.exclude        | Array   | List of attributes, user defined fields and associations to be excluded from the search detail panel and detail pages. See [Search detail filtering](search-detail-filtering.md) |
+| result_filtering.places.exclude        | Array   | List of attributes, user defined fields and associations to be excluded from the search detail panel and detail pages. See [Search detail filtering](search-detail-filtering.md) |
 | result_filtering.works.exclude         | Array   | List of attributes, user defined fields and associations to be excluded from the search detail panel and detail pages. See [Search detail filtering](search-detail-filtering.md) |
 | search                                 | Array   | Search UI configuration                                                                                                                                                          |
 | search.facets                          | Array   | Search facets configuration.                                                                                                                                                     |
