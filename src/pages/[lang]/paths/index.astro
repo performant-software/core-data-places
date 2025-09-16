@@ -38,7 +38,7 @@ export const getStaticPaths = () => {
       { t('paths') }
     </h1>
     <Cards>
-      { paths?.length ? _.map(paths, (path) => (
+      { !_.isEmpty(paths) && _.map(paths, (path) => (
         <Card
           imageUrl={path?.image}
           alt={path?.imageAlt}
@@ -48,7 +48,8 @@ export const getStaticPaths = () => {
           author={path?.author}
           date={path?.date}
         />
-      )) : <p class="italic text-sm">({ t('none') })</p> }
+      )) } 
+      { _.isEmpty(paths) && <p class="italic text-sm">({ t('none') })</p> }
     </Cards>
   </Container>
 </Layout>
