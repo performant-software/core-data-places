@@ -16,9 +16,9 @@ export const fetchI18ns = async () => {
   return response.data?.i18nConnection?.edges?.map((item) => item?.node);
 };
 
-export const fetchPage = async (locale: string, slug: string) => {
+export const fetchPage = async (locale: string, slug: string, dataOnly = true) => {
   const response = await fetchOne(locale, slug, client.queries.pages);
-  return response.data?.pages;
+  return dataOnly ? response.data?.pages : response;
 };
 
 export const fetchPages = async (locale: string, params?: any) => {
@@ -28,9 +28,9 @@ export const fetchPages = async (locale: string, params?: any) => {
   return filterAll(locale, pages);
 };
 
-export const fetchPath = async (slug: string) => {
+export const fetchPath = async (slug: string, dataOnly = true) => {
   const response = await client.queries.path({ relativePath: `${slug}.mdx`});
-  return response.data?.path;
+  return dataOnly ? response.data?.path : response;
 };
 
 export const fetchPaths = async () => {
@@ -38,9 +38,9 @@ export const fetchPaths = async () => {
   return response.data?.pathConnection?.edges?.map((item) => item?.node);
 };
 
-export const fetchPost = async (slug: string) => {
+export const fetchPost = async (slug: string, dataOnly = true) => {
   const response = await client.queries.post({ relativePath: `${slug}.mdx`});
-  return response.data?.post;
+  return dataOnly ? response.data?.post : response;
 };
 
 export const fetchPosts = async () => {

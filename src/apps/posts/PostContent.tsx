@@ -11,16 +11,27 @@ import Map from '@visualizations/Map';
 import Table from '@visualizations/Table';
 import Timeline from '@visualizations/Timeline';
 import { TinaMarkdown, TinaMarkdownContent } from 'tinacms/dist/rich-text';
+import { tinaField, useTina } from "tinacms/dist/react";
+import { useMemo } from 'react';
 
 interface PostContentProps {
-  content: TinaMarkdownContent;
-  title: string;
+  post: any;
+  content?: TinaMarkdownContent;
+  title?: string;
   author?: string;
   date?: string | number | Date;
 }
 
 const PostContent = (props: PostContentProps) => {
   const { t } = useTranslations();
+
+  const { data } = useTina({
+    query: props.post.query,
+    variables: props.post.variables,
+    data: props.post.data
+  });
+
+  const post = useMemo(() => data?.post, [data]);
 
   return (
     <RuntimeConfig
@@ -36,12 +47,14 @@ const PostContent = (props: PostContentProps) => {
           >
             <h1
               className='text-3xl py-6'
+              data-tina-field={tinaField(post, "title")}
             >
-              { props.title }
+              { post?.title }
             </h1>
-            { (props.author || props.date) && <Byline author={props.author} date={props.date} /> }
+            { (post?.author || post?.date) && <Byline author={post.author} date={post.date} /> }
             <article
               className='prose prose-lg max-w-none w-full'
+              data-tina-field={tinaField(post, "body")}
             >
               <TinaMarkdown
                 components={{
@@ -53,7 +66,7 @@ const PostContent = (props: PostContentProps) => {
                   place: PlaceInsert,
                   timeline: Timeline
                 }}
-                content={props.content}
+                content={post?.body}
               />
             </article>
           </div>
