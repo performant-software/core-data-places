@@ -5,6 +5,9 @@ import { parseFeature } from '@utils/map';
 import React, { useMemo } from 'react';
 
 const PlaceInsert = (props: any) => {
+  if (!props?.place || !props?.place?.uuid) {
+    return null;
+  }
   const { selected, setSelected } = useSelectionState();
 
   /**
