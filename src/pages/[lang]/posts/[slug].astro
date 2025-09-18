@@ -9,8 +9,8 @@ import { hasPostsContent } from '@utils/config';
 import _ from 'underscore';
 
 const { slug } = Astro.params;
-const post = await fetchPost(slug);
-
+const post = await fetchPost(slug, false);
+console.log(post)
 const { t } = await getTranslations(Astro.currentLocale);
 
 export const getStaticPaths = async () => {
@@ -46,10 +46,7 @@ export const getStaticPaths = async () => {
     className='pb-16 w-full'
   >
     <PostContent
-      content={post?.body}
-      title={post?.title}
-      author={post?.author}
-      date={post?.date}
+      post={post}
       client:only='react'
     />
   </Container>

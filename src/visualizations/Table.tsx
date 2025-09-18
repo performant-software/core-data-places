@@ -6,6 +6,13 @@ import { useContext, useMemo } from 'react';
 import _ from 'underscore';
 
 const Table = (props: DataVisualizationProps) => {
+  /**
+   * Don't render if no data was passed.
+   */
+  if (!props?.data) {
+    return null;
+  }
+  
   const { t } = useContext(TranslationContext);
 
   /**

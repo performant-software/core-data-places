@@ -8,6 +8,13 @@ import React, { useMemo } from 'react';
 import _ from 'underscore';
 
 const Map = (props: DataVisualizationProps) => {
+  /**
+   * Don't render if no data was passed
+   */
+  if (!props?.data) {
+    return null;
+  }
+  
   const runtimeConfig = useRuntimeConfig<Configuration>();
 
   /**

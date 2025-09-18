@@ -6,6 +6,13 @@ import _ from 'underscore';
 
 const TimelineVisualization = (props: DataVisualizationProps) => {
   /**
+   * Don't render if no data was passed.
+   */
+  if (!props?.data) {
+    return null;
+  }
+  
+  /**
    * Memo-izes the "data" prop as JSON.
    */
   const data = useMemo(() => JSON.parse(props.data), [props.data]);

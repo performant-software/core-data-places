@@ -18,6 +18,13 @@ interface Props extends DataVisualizationProps {
 const DEFAULT_INTERVAL = 10;
 
 const EventsByYear = (props: Props) => {
+  /**
+   * Don't render if no data is passed.
+   */
+  if (!props?.data) {
+    return null;
+  }
+  
   const { interval = DEFAULT_INTERVAL } = props;
 
   /**

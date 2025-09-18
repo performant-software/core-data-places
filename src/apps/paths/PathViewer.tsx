@@ -20,23 +20,29 @@ import {
 } from 'react';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import Byline from '@components/Byline';
+import { tinaField, useTina } from 'tinacms/dist/react';
 
 export interface PathViewerProps {
   path: any;
 }
 
 const PathViewer = (props: PathViewerProps) => {
-  const [current, setCurrent] = useState(-1);
+  const [currentPlace, setCurrentPlace] = useState(-1);
 
-  const { path } = props;
+  const { data } = useTina({
+      query: props.path.query,
+      variables: props.path.variables,
+      data: props.path.data
+    });
+  const path = useMemo(() => (data.path), [data])
   const contentDiv = useRef(null);
 
   const { t } = useTranslations();
 
   /**
-   * Memo-izes the current place.
+   * Memo-izes the currentPlace place.
    */
-  const place = useMemo(() => path?.path[current] && path.path[current].place, [current, path]);
+  const place = useMemo(() => path?.path[currentPlace] && path.path[currentPlace].place, [currentPlace, path]);
 
   /**
    * Memo-izes the array of place IDs.
@@ -46,7 +52,7 @@ const PathViewer = (props: PathViewerProps) => {
     : path.path.map(({ place: { uuid }}) => uuid), [place]);
 
   /**
-   * Scrolls to the top of the content div when the current path changes.
+   * Scrolls to the top of the content div when the currentPlace path changes.
    */
   useEffect(() => {
     const { current: instance } = contentDiv;
@@ -54,7 +60,7 @@ const PathViewer = (props: PathViewerProps) => {
     if (instance) {
       instance.scroll({ top: 0, behavior: 'smooth' });
     }
-  }, [current]);
+  }, [currentPlace]);
 
   return (
     <RuntimeConfig
@@ -67,6 +73,7 @@ const PathViewer = (props: PathViewerProps) => {
         >
           <div
             className='w-full flex flex-row grow relative h-[calc(100vh-96px)]'
+            data-tina-field={tinaField(path, "path")}
           >
             { path && (
               <div
@@ -92,26 +99,26 @@ const PathViewer = (props: PathViewerProps) => {
                 <ArrowUturnLeftIcon
                   className={clsx(
                     'h-8 w-8',
-                    { 'text-gray-500 cursor-default': current < 0 },
-                    { 'cursor-pointer hover:scale-105 transition': current >= 0 }
+                    { 'text-gray-500 cursor-default': currentPlace < 0 },
+                    { 'cursor-pointer hover:scale-105 transition': currentPlace >= 0 }
                   )}
-                  onClick={() => setCurrent(-1)}
+                  onClick={() => setCurrentPlace(-1)}
                 />
                 <ArrowLeftCircleIcon
                   className={clsx(
                     'h-8 w-8',
-                    { 'text-gray-500 cursor-default': current === 0 },
-                    { 'cursor-pointer hover:scale-105 transition': current !== 0 }
+                    { 'text-gray-500 cursor-default': currentPlace === 0 },
+                    { 'cursor-pointer hover:scale-105 transition': currentPlace !== 0 }
                   )}
-                  onClick={() => current > 0 && setCurrent((i) => i - 1)}
+                  onClick={() => currentPlace > 0 && setCurrentPlace((i) => i - 1)}
                 />
                 <ArrowRightCircleIcon
                   className={clsx(
                     'h-8 w-8',
-                    { 'text-gray-500 cursor-default': current === path.path.length - 1 },
-                    { 'cursor-pointer hover:scale-105 transition': current !== path.path.length - 1 }
+                    { 'text-gray-500 cursor-default': currentPlace === path.path.length - 1 },
+                    { 'cursor-pointer hover:scale-105 transition': currentPlace !== path.path.length - 1 }
                   )}
-                  onClick={() => current < path.path.length - 1 && setCurrent((i) => i + 1)}
+                  onClick={() => currentPlace < path.path.length - 1 && setCurrentPlace((i) => i + 1)}
                 />
               </div>
             )}
@@ -134,18 +141,18 @@ const PathViewer = (props: PathViewerProps) => {
                 <div
                   className='flex flex-col py-16 px-12 gap-16'
                 >
-                  { current >= 0 && (
+                  { currentPlace >= 0 && (
                     <>
                       <h2
                         className='text-3xl'
                       >
-                        { path.path[current].place.title }
+                        { path.path[currentPlace].place.title }
                       </h2>
                       <article
                         className='prose prose-invert max-w-none'
                       >
                         <TinaMarkdown
-                          content={path.path[current].blurb}
+                          content={path.path[currentPlace].blurb}
                           components={{
                             iframe: IframeEmbed,
                             media: MediaInsert
@@ -154,7 +161,7 @@ const PathViewer = (props: PathViewerProps) => {
                       </article>
                     </>
                   )}
-                  { current < 0 && (
+                  { currentPlace < 0 && (
                     <>
                       <h2
                         className='text-3xl'
@@ -184,7 +191,7 @@ const PathViewer = (props: PathViewerProps) => {
                           rounded-full 
                           px-6
                         `}
-                        onClick={() => setCurrent(0)}
+                        onClick={(e: any) => { e.preventDefault(); e.stopPropagation(); console.log('click!!!'); setCurrentPlace(0); }}
                       >
                         <p>
                           { t('startTour') }
