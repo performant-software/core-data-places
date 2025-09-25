@@ -52,6 +52,7 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
     let count = 1;
     let pages = 1;
     let total = 1;
+    let failed = 0;
 
     const records = [];
 
@@ -126,6 +127,7 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
           logger.info(`${uuid} complete in ${recordEnd - recordStart}ms`);
         } catch (error) {
           logger.info(`Error loading record ${uuid}: ${error}`);
+          failed += 1;
         } finally {
           await delay(DELAY);
           count += 1;
@@ -133,7 +135,7 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
       }
     }
 
-    logger.info('Completed fetching data.');
+    logger.info(`Completed fetching data.${failed ? ` ${failed} record(s) failed to fetch.` : ''}`);
 
     // Store the items in the Astro content layer
     for (const record of records) {
@@ -147,7 +149,7 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
 
     const endTime = Date.now();
     logger.info(
-      `Datastore updated. ${count - 1} record(s) in ${endTime - startTime}ms`
+      `Datastore updated. ${count - failed - 1} record(s) in ${endTime - startTime}ms`
     );
   },
 });
