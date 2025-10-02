@@ -48,7 +48,7 @@ const Place = (props: Props) => {
         </>
       )}
       resolveDetailPageUrl={resolveDetailPageUrl}
-      resolveGeometry={(place) => CoreDataUtils.toFeatureCollection([place])}
+      resolveGeometry={(place) => place?.place_geometry && CoreDataUtils.toFeatureCollection([place])}
       service={PlacesService}
     />
   );

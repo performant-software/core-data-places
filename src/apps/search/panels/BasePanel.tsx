@@ -214,7 +214,10 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
       return props.resolveGeometry(item);
     }
 
-    return !_.isEmpty(places) && CoreDataUtils.toFeatureCollection(places);
+    return !_.isEmpty(places.filter((place) => place.place_geometry)) &&
+      CoreDataUtils.toFeatureCollection(
+        places.filter((place) => place.place_geometry)
+      );
   }, [item, places, props.resolveGeometry]);
   
   /**
