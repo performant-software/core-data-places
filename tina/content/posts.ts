@@ -8,6 +8,11 @@ const Posts: Collection = {
   label: 'Posts',
   path: 'content/posts',
   format: 'mdx',
+  ui: {
+    router({ document }) {
+      return `${document._sys.relativePath.split('/').length > 1 ? `/${document._sys.relativePath.split('/')[0]}` : '/en'}/posts/${document._sys.filename}`;
+    },
+  },
   fields: [
     {
       type: 'string',

@@ -1,51 +1,116 @@
 {
+  "detail_pages": [
+    "places",
+    "events"
+  ],
   "content": {
     "collections": [
-      "paths",
-      "posts"
-    ]
+      "posts",
+      "paths"
+    ],
+    "localize_pages": true
   },
   "core_data": {
-    "url": "https://staging.coredata.cloud",
+    "url": "https://app.coredata.cloud",
     "project_ids": [
-      "1",
-      "2",
-      "3"
+      "85"
     ]
   },
   "i18n": {
     "default_locale": "en",
-    "locales": ["en"]
+    "locales": [
+      "en",
+      "sp",
+      "pt-br",
+      "fr"
+    ]
   },
-  "layers": [{
-    "name": "Maptiler DataViz Style",
-    "layer_type": "vector",
-    "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
-  }],
-  "search": [{
-    "name": "places",
-    "route": "/places",
-    "geosearch": true,
-    "map": {
-      "clusterRadius": 6,
-      "geometry": "geometry",
-      "max_zoom": 14,
-      "zoom_to_place": true
+  "layers": [
+    {
+      "name": "Maptiler DataViz Style",
+      "layer_type": "vector",
+      "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
     },
-    "result_card": {
-      "title": "name"
+    {
+      "name": "USGS Imagery Topo (MapServer)",
+      "layer_type": "raster",
+      "url": "https://basemap.nationalmap.gov/arcgis/services/USGSImageryTopo/MapServer/WMSServer?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0&styles=default"
     },
-    "typesense": {
-      "host": "example.typesense.com",
-      "port": 443,
-      "protocol": "https",
-      "api_key": "abcdefg",
-      "index_name": "core_data_places",
-      "query_by": "name",
-      "default_sort": "name",
-      "overrides": {
-        "geoLocationField": "coordinates"
+    {
+      "name": "USGS Topo (MapServer)",
+      "layer_type": "raster",
+      "url": "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0&styles=default"
+    },
+    {
+      "name": "US States",
+      "layer_type": "geojson",
+      "url": "gz_2010_us_040_00_20m.json",
+      "overlay": true
+    }
+  ],
+  "search": [
+    {
+      "name": "Places",
+      "route": "/places",
+      "geosearch": true,
+      "map": {
+        "geometry": "geometry",
+        "max_zoom": 14,
+        "zoom_to_place": true
+      },
+      "result_card": {
+        "title": "name"
+      },
+      "timeline": {
+        "date_range_facet": "event_range_facet",
+        "event_path": "1538d574-7d78-4fcc-959e-ca9f9c86e14f"
+      },
+      "typesense": {
+        "host": "czlf39ts8mj74bq0p-1.a1.typesense.net",
+        "port": 443,
+        "protocol": "https",
+        "api_key": "jGCcfd8YLne4KieMOj6KWbr7NDFHNDVQ",
+        "index_name": "cdra_places",
+        "query_by": "name",
+        "facets": {
+          "exclude": [
+            "owner_project.name_facet",
+            "all_projects.name_facet",
+            "name_facet"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Events",
+      "route": "/events",
+      "geosearch": true,
+      "map": {
+        "geometry": "1538d574-7d78-4fcc-959e-ca9f9c86e14f.geometry",
+        "max_zoom": 14,
+        "zoom_to_place": true
+      },
+      "result_card": {
+        "title": "name"
+      },
+      "timeline": {
+        "date_range_facet": "event_range_facet"
+      },
+      "typesense": {
+        "host": "czlf39ts8mj74bq0p-1.a1.typesense.net",
+        "port": 443,
+        "protocol": "https",
+        "api_key": "ZVn0DyHllZx7ZeELRiW6KCnLxu0hsv6f",
+        "index_name": "cdra_events",
+        "query_by": "name",
+        "facets": {
+          "exclude": [
+            "owner_project.name_facet",
+            "all_projects.name_facet",
+            "name_facet"
+          ]
+        }
       }
     }
-  }]
+  ]
 }

@@ -7,6 +7,7 @@ import { defineConfig, envField } from 'astro/config';
 import auth from 'auth-astro';
 import { loadEnv } from 'vite';
 import config from './public/config.json';
+import tinaDirective from "./astro-tina-directive/register"
 
 const { locales, default_locale: defaultLocale } = config.i18n;
 const { STATIC_BUILD } = loadEnv(process.env.STATIC_BUILD, process.cwd(), '');
@@ -22,7 +23,7 @@ export default defineConfig({
   },
   output: STATIC_BUILD === 'true' ? 'static' : 'server',
   adapter: netlify(),
-  integrations: [mdx(), sitemap(), react(), auth()],
+  integrations: [mdx(), sitemap(), react(), auth(), tinaDirective()],
   vite: {
     optimizeDeps: {
       esbuildOptions: {

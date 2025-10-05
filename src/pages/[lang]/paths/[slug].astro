@@ -9,9 +9,10 @@ import _ from 'underscore';
 
 const { slug } = Astro.params;
 const path = await fetchPath(slug);
+const pathResponse = await fetchPath(slug, false);
+const title = path?.title || t('paths');
 
 const { t } = await getTranslations(Astro.currentLocale);
-const title = path?.title || t('paths');
 
 export const getStaticPaths = async () => {
   if (!hasPathsContent(config)) {
@@ -45,7 +46,7 @@ export const getStaticPaths = async () => {
 >
   { path && (
     <PathViewer
-      path={path}
+      path={pathResponse}
       client:only='react'
     />
   )}

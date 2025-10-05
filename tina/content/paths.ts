@@ -7,6 +7,11 @@ const Paths: Collection = {
   label: 'Paths',
   path: 'content/paths',
   format: 'mdx',
+  ui: {
+    router({ document }) {
+      return `${document._sys.relativePath.split('/').length > 1 ? `/${document._sys.relativePath.split('/')[0]}` : '/en'}/paths/${document._sys.filename}`;
+    },
+  },
   fields: [
     {
       name: 'title',
