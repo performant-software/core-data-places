@@ -49,12 +49,17 @@ export const getAttributes = (config) => config.result_card.attributes?.slice(0,
  */
 export const getFacetLabel = (attribute, t) => {
   let value;
+  
+  // exclude these from facet labels, e.g. 'Organizations' rather than 'Organizations: Name'
+  const DEFAULT_FIELDIDS = ["name", "names"]
 
   const relationshipId = TypesenseUtils.getRelationshipId(attribute);
   const fieldId = TypesenseUtils.getFieldId(attribute);
 
-  if (relationshipId && fieldId) {
+  if (relationshipId && fieldId && !DEFAULT_FIELDIDS.includes(fieldId)) {
     value = t('facetLabel', { relationship: t(relationshipId), field: t(fieldId) })
+  } else if (relationshipId) {
+    value = t(relationshipId);
   } else if (fieldId) {
     value = t(fieldId);
   }
