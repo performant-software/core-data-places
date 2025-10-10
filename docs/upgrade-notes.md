@@ -122,7 +122,7 @@ TINA_PUBLIC_AUTH_USE_KEYCLOAK=true
 }
 ```
 
-- `search.results_filtering` - an object specifying fields to exclude on the detail panel for different model types, e.g.
+- `search.result_filtering` - an object specifying fields to exclude on the detail panel for different model types, e.g.
 
 ```
 "result_filtering": {

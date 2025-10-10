@@ -83,6 +83,7 @@ for (const modelType of Object.keys(record.relatedRecords)) {
     <slot />
     <UserDefined
       record={record}
+      excludes={excludes}
     />
     {relations.manifests && (
       <MediaContents

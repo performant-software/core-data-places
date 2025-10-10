@@ -12,7 +12,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 const { lang, uuid } = Astro.params;
 
 const { organization } = await OrganizationsService.getFull(uuid);
-const excludes = config.search?.result_filtering?.organizations?.exclude || [];
+const excludes = config.result_filtering?.organizations?.exclude || [];
 
 const coverUrl = getCoverImage(organization);
 const geometry = getRelatedGeometry(organization);
