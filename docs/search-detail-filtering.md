@@ -1,6 +1,6 @@
 # Search detail filtering
 
-You can filter what is shown in the detail pane when clicking an item in the search view. This is accomplished by adding a result_filtering object to the search block in the config.json file in the content directory.
+You can filter what is shown in the detail pane when clicking an item in the search view. This is accomplished by adding a result_filtering object in the config.json file in the content directory.
 
 - To filter native fields add the name of the native field to the exclude array:
 

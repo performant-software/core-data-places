@@ -13,7 +13,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 const { lang, uuid } = Astro.params;
 
 const { person } = await PeopleService.getFull(uuid);
-const excludes = config.search?.result_filtering?.people?.exclude || [];
+const excludes = config.result_filtering?.people?.exclude || [];
 
 const coverUrl = getCoverImage(person);
 const geometry = getRelatedGeometry(person);
