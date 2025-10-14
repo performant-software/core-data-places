@@ -18,7 +18,7 @@ interface Props {
   record: any;
 }
 
-const { authorities, coverUrl, excludes, geometry, lang, name, record } = Astro.props;
+const { coverUrl, excludes, geometry, lang, name, record } = Astro.props;
 
 const relations = {
   events: {},
@@ -89,7 +89,6 @@ for (const modelType of Object.keys(record.relatedRecords)) {
     />
     <Identifiers
       record={record}
-      authorities={authorities}
     />
     {relations.manifests && (
       <MediaContents

@@ -14,7 +14,6 @@ const { lang, uuid } = Astro.params;
 
 const { person } = await PeopleService.getFull(uuid);
 const excludes = config.result_filtering?.people?.exclude || [];
-const authorities = config.web_authorities?.people?.authorities || [];
 
 const coverUrl = getCoverImage(person);
 const geometry = getRelatedGeometry(person);
@@ -24,7 +23,6 @@ export const getStaticPaths = async () => await getDetailPagePaths(config, Model
 
 <Layout footer t={t} title={person.name}>
   <RecordDetail
-    authorities={authorities}
     excludes={excludes}
     lang={lang}
     name={getNameView(person)}
