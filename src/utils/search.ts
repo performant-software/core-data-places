@@ -46,15 +46,20 @@ export const getAttributes = (config) => config.result_card.attributes?.slice(0,
  *
  * @param attribute
  * @param t
+ * @param inverse
  */
-export const getFacetLabel = (attribute, t) => {
+export const getFacetLabel = (attribute, t, inverse = false, inverseSuffix = '_inverse') => {
   let value;
   
   // exclude these from facet labels, e.g. 'Organizations' rather than 'Organizations: Name'
   const DEFAULT_FIELDIDS = ["name", "names"]
 
-  const relationshipId = TypesenseUtils.getRelationshipId(attribute);
+  let relationshipId = TypesenseUtils.getRelationshipId(attribute);
   const fieldId = TypesenseUtils.getFieldId(attribute);
+
+  if (inverse) {
+    relationshipId = relationshipId + inverseSuffix;
+  }
 
   if (relationshipId && fieldId && !DEFAULT_FIELDIDS.includes(fieldId)) {
     value = t('facetLabel', { relationship: t(relationshipId), field: t(fieldId) })
