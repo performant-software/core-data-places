@@ -6,8 +6,10 @@ import MediaContents from "./MediaContents";
 import PlaceMap from "./PlaceMap";
 import Relations from "./Relations.astro";
 import UserDefined from "./UserDefined.astro";
+import Identifiers from "./Identifiers.astro";
 
 interface Props {
+  authorities?: any[];
   coverUrl?: string;
   excludes: string[];
   geometry?: any;
@@ -16,7 +18,7 @@ interface Props {
   record: any;
 }
 
-const { coverUrl, excludes, geometry, lang, name, record } = Astro.props;
+const { authorities, coverUrl, excludes, geometry, lang, name, record } = Astro.props;
 
 const relations = {
   events: {},
@@ -84,6 +86,10 @@ for (const modelType of Object.keys(record.relatedRecords)) {
     <UserDefined
       record={record}
       excludes={excludes}
+    />
+    <Identifiers
+      record={record}
+      authorities={authorities}
     />
     {relations.manifests && (
       <MediaContents

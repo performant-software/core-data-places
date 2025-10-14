@@ -144,6 +144,10 @@ Copy the `/public/config.json` file into your content repository to `/content/se
 | search.typesense.facets.exclude        | Array   | Array of facet names to exclude                                                                                                                                                  |
 | search.typesense.facets.include        | Array   | Array of facet names to include                                                                                                                                                  |
 | search.typesense.overrides             | Object  | Overrides for the [typesense-instantsearch-adapter](https://github.com/typesense/typesense-instantsearch-adapter).                                                               |
+| web_authorities                        | Object  | Provides base URLs for web authorities configured in core data for each data 
+model                                                                                                                                                    |
+| web_authorities.::model::.web_authorities | Array   | For all relevant models (`events`, `items`, `people`, etc), an array of web authorities each with a `source_type` and 
+`base_url`                                                                                                                                               |
 
 See [Configuration Schema](docs/configuration-schema.md) for more detailed information.
 

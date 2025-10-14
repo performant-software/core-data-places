@@ -167,6 +167,125 @@ const Settings: Collection = {
       }]
     }]
   }, {
+    name: 'web_authorities',
+    label: 'Web Authorities',
+    type: 'object',
+    fields: [{
+      name: 'events',
+      label: 'Events',
+      type: 'object',
+      fields: [{
+        name: 'authorities',
+        label: 'Authorities',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'source_type',
+          label: 'source_type',
+          type: 'string',
+        }, {
+          name: 'base_url',
+          label: 'base_url',
+          type: 'string'
+        }]
+      }]
+    }, {
+      name: 'instances',
+      label: 'Instances',
+      type: 'object',
+      fields: [{
+        name: 'authorities',
+        label: 'Authorities',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'source_type',
+          label: 'source_type',
+          type: 'string',
+        }, {
+          name: 'base_url',
+          label: 'base_url',
+          type: 'string'
+        }]
+      }]
+    }, {
+      name: 'organizations',
+      label: 'Organizations',
+      type: 'object',
+      fields: [{
+        name: 'authorities',
+        label: 'Authorities',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'source_type',
+          label: 'source_type',
+          type: 'string',
+        }, {
+          name: 'base_url',
+          label: 'base_url',
+          type: 'string'
+        }]
+      }]
+    }, {
+      name: 'people',
+      label: 'People',
+      type: 'object',
+      fields: [{
+        name: 'authorities',
+        label: 'Authorities',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'source_type',
+          label: 'source_type',
+          type: 'string',
+        }, {
+          name: 'base_url',
+          label: 'base_url',
+          type: 'string'
+        }]
+      }]
+    }, {
+      name: 'places',
+      label: 'Places',
+      type: 'object',
+      fields: [{
+        name: 'authorities',
+        label: 'Authorities',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'source_type',
+          label: 'source_type',
+          type: 'string',
+        }, {
+          name: 'base_url',
+          label: 'base_url',
+          type: 'string'
+        }]
+      }]
+    }, {
+      name: 'works',
+      label: 'Works',
+      type: 'object',
+      fields: [{
+        name: 'authorities',
+        label: 'Authorities',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'source_type',
+          label: 'source_type',
+          type: 'string',
+        }, {
+          name: 'base_url',
+          label: 'base_url',
+          type: 'string'
+        }]
+      }]
+    }]
+  }, {
     name: 'search',
     label: 'Search',
     type: 'object',
