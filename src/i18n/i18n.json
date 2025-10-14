@@ -358,5 +358,9 @@
   "saveSearchContent": {
     "tinaLabel": "Saved Search (Content)",
     "defaultValue": "Your search has been saved. Navigate to the \"Saved\" list to view your saved search."
+  },
+  "webAuthorities": {
+    "tinaLabel": "Web Authorities",
+    "defaultValue": "Web Authorities"
   }
 }
