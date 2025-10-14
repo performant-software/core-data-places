@@ -6,6 +6,7 @@ import MediaContents from "./MediaContents";
 import PlaceMap from "./PlaceMap";
 import Relations from "./Relations.astro";
 import UserDefined from "./UserDefined.astro";
+import Identifiers from "./Identifiers.astro";
 
 interface Props {
   coverUrl?: string;
@@ -84,6 +85,9 @@ for (const modelType of Object.keys(record.relatedRecords)) {
     <UserDefined
       record={record}
       excludes={excludes}
+    />
+    <Identifiers
+      record={record}
     />
     {relations.manifests && (
       <MediaContents
