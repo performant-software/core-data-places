@@ -1,6 +1,7 @@
 import config from '@config';
 import type { LoaderContext } from 'astro/loaders';
 import _ from 'underscore';
+import { CONTENT_MODE } from "astro:env/client";
 
 const RELATIONSHIP_ATTRIBUTES = [
   'uuid',
@@ -50,6 +51,10 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
       }
 
       for (const { uuid } of listRecords) {
+        if (CONTENT_MODE === "add" && store.get(uuid)) {
+          logger.info(`Record ${uuid} already exists. Skipping.`);
+          continue;
+        }
         const recordStart = Date.now();
         logger.info(`Loading ${uuid} ${count} of ${total}`);
 

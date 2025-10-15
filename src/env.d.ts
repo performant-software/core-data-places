@@ -11,4 +11,5 @@ declare module 'underscore';
 declare module "astro:env/client" {
   export const STATIC_BUILD: boolean;
   export const USE_CONTENT_CACHE: boolean;
+  export const CONTENT_MODE: string;
 }
