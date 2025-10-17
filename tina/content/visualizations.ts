@@ -6,6 +6,7 @@ import TimelineInput from '@root/tina/components/TimelineInput';
 import { createDataVisualization } from '@root/tina/utils/content';
 import { includeTimeline } from '@root/tina/utils/visualizations';
 import _ from 'underscore';
+import StackedTimelineInput from '../components/StackedTimelineInput';
 
 export const Visualizations = {
   eventsByYear: 'events_by_year'
@@ -51,6 +52,17 @@ if (includeEventsByYear) {
       type: 'number'
     }]
   }));
+}
+
+// Add "stacked_timeline" if an Events model is configured for search
+const includeStackedTimeline = _.some(config.search, (search) => search.name === 'events');
+
+if (includeStackedTimeline) {
+  schema.push(createDataVisualization({
+    name: 'stacked_timeline',
+    label: 'Stacked Timeline',
+    component: StackedTimelineInput
+  }))
 }
 
 export default schema;

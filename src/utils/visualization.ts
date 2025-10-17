@@ -114,6 +114,35 @@ export const buildTimelineData = (config: SearchConfig, records: any) => {
 };
 
 /**
+ * Returns the data for the stacked timeline visualization
+ * @param config
+ * @param records
+ */
+
+export const buildStackedTimelineData = (config: SearchConfig, records: any) => {
+  const events = [];
+
+  console.log(records)
+
+  _.each(records, (record: any) => {
+    if (record.start_date && record.end_date) {
+      events.push({
+        name: record.name,
+        date_range: [
+          record.start_date[0],
+          record.end_date[1]
+        ]
+      })
+    }
+  });
+
+  return {
+    name: config.name,
+    events
+  }
+}
+
+/**
  * Returns the year range for the passed start/end date array.
  *
  * @param dateArray
