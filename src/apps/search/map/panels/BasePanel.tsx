@@ -1,5 +1,5 @@
 import ManifestThumbnail, { type Collection } from '@apps/search/ManifestThumbnail';
-import SearchContext, { useSearchConfig } from '@apps/search/SearchContext';
+import MapSearchContext from '@apps/search/map/MapSearchContext';
 import Base from '@backend/api/coreData/base';
 import UserDefinedFieldView from '@components/UserDefinedFieldView';
 import TranslationContext from '@contexts/TranslationContext';
@@ -24,7 +24,8 @@ import {
   useState
 } from 'react';
 import _ from 'underscore';
-import PanelHistoryContext from '@apps/search/PanelHistoryContext';
+import PanelHistoryContext from '@apps/search/map/PanelHistoryContext';
+import { useSearchConfig } from "@apps/search/SearchConfigContext";
 
 interface Props {
   className?: string;
@@ -56,7 +57,7 @@ const BasePanel = (props: Props) => {
 
   const exclude = props.exclusions || [];
 
-  const { boundingBoxOptions } = useContext(SearchContext);
+  const { boundingBoxOptions } = useContext(MapSearchContext);
   
   /**
    * Transforms the passed list of items and groups them by the relationship ID.

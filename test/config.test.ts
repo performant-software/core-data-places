@@ -1,6 +1,7 @@
 import { Configuration } from '@types';
 import _config from '@config' with { type: 'json' };
 import { describe, expect, test } from 'vitest';
+import fs from "node:fs";
 
 const config = _config as Configuration;
 
@@ -32,6 +33,12 @@ const icons = [
   'zoom_out'
 ];
 
+const validSearchTypes = [
+  'map',
+  'list',
+  'grid'
+];
+
 describe('content', () => {
   const collections = [
     'paths',
@@ -60,6 +67,12 @@ describe('core_data', () => {
     expect(config.core_data?.project_ids).toBeArrayOf(String);
   });
 });
+
+describe('custom_components', () => {
+  test.skipIf(!fs.existsSync('./content/components/Hit.tsx'))('Hit component has correct props', async () => {
+    await expect('Hit.tsx').toExtendProps();
+  });
+})
 
 describe('detail_pages', () => {
   const names = [
@@ -201,10 +214,14 @@ describe('search', () => {
       expect(search.geosearch).toBeBoolean();
     });
 
-    describe('map', () => {
+    test.skipIf(!search.type)('type matches allowed values', () => {
+      expect(search.type).toBeOneOf(validSearchTypes);
+    })
+
+    describe.skipIf(search.type && search.type !== 'map')('map', () => {
       test('is not empty', () => {
         expect(search.map).toBeObject();
-      });
+      })
 
       test('cluster_radius is numeric', () => {
         expect(search.map?.cluster_radius).toBeOneOf([undefined, expect.any(Number)]);

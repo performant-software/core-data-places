@@ -1,10 +1,12 @@
 ---
-import Search from '@apps/search/Search';
+import MapSearch from '@apps/search/map/MapSearch';
 import { getTranslations } from '@backend/i18n';
 import config from '@config';
 import Layout from "@layouts/Layout.astro";
 import { STATIC_BUILD } from 'astro:env/client';
 import _ from 'underscore';
+import ListSearch from "@apps/search/list/ListSearch";
+import { SearchConfig } from "@types";
 
 const { lang } = Astro.params
 
@@ -15,14 +17,17 @@ export const getStaticPaths = () => {
   const paths = [];
 
   _.each(config.i18n.locales, (lang) => {
-    _.each(config.search, ({ name }) => {
-      paths.push({ params: { lang, name }});
+    _.each(config.search, ({name}) => {
+      paths.push({params: {lang, name}});
     });
   });
 
   return paths;
 };
 
+const searchConfig = config.search.find((s) => s.name === name) as SearchConfig;
+
+const isListSearch = searchConfig.type === 'list' || searchConfig.type === 'grid';
 ---
 
 <Layout
@@ -31,10 +36,21 @@ export const getStaticPaths = () => {
   title={t('explore')}
   tab="search"
 >
-  <Search
-    allowSave={!STATIC_BUILD}
-    lang={lang}
-    name={name}
-    client:only='react'
-  />
+  {isListSearch
+    ? (
+      <ListSearch
+        lang={lang}
+        name={name}
+        client:only='react'
+      />
+    )
+    : (
+      <MapSearch
+        allowSave={!STATIC_BUILD}
+        lang={lang}
+        name={name}
+        client:only='react'
+      />
+    )
+  }
 </Layout>

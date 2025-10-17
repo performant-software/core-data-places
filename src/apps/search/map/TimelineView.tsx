@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { FacetTimeline, useCachedHits, Typesense as TypesenseUtils } from '@performant-software/core-data';
 import { useNavigate } from '@peripleo/peripleo';
-import { useSearchConfig } from '@apps/search/SearchContext';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRange } from 'react-instantsearch';
 import _ from 'underscore';
+import { useSearchConfig } from "@apps/search/SearchConfigContext";
 
 interface Props {
   className?: string;

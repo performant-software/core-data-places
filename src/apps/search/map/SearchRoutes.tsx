@@ -1,11 +1,11 @@
-import Event from '@apps/search/panels/Event';
-import Instance from '@apps/search/panels/Instance';
-import Item from '@apps/search/panels/Item';
-import Organization from '@apps/search/panels/Organization';
-import Person from '@apps/search/panels/Person';
-import Place from '@apps/search/panels/Place';
-import Selection from '@apps/search/Selection';
-import Work from '@apps/search/panels/Work';
+import Event from '@apps/search/map/panels/Event';
+import Instance from '@apps/search/map/panels/Instance';
+import Item from '@apps/search/map/panels/Item';
+import Organization from '@apps/search/map/panels/Organization';
+import Person from '@apps/search/map/panels/Person';
+import Place from '@apps/search/map/panels/Place';
+import Selection from '@apps/search/map/Selection';
+import Work from '@apps/search/map/panels/Work';
 import { Route, Routes } from '@peripleo/peripleo';
 
 interface Props {

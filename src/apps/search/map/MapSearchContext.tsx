@@ -1,13 +1,8 @@
-import { useRuntimeConfig } from '@peripleo/peripleo';
 import {
   createContext,
-  useContext,
-  useMemo,
   useState,
   type ReactNode
 } from 'react';
-import _ from 'underscore';
-import type { Configuration, SearchConfig } from '@types';
 
 interface BoundingBoxOptions {
   padding: {
@@ -22,13 +17,12 @@ interface BoundingBoxOptions {
 interface SearchContextType {
   allowSave: boolean;
   boundingBoxOptions: BoundingBoxOptions;
-  searchConfig: SearchConfig;
   setBoundingBoxOptions(boundingBoxOptions: BoundingBoxOptions): void;
   controlsClass?: string;
   setControlsClass(controlsClass: string): void;
 }
 
-const SearchContext = createContext<SearchContextType>(null);
+const MapSearchContext = createContext<SearchContextType>(null);
 
 interface Props {
   allowSave?: boolean;
@@ -36,32 +30,23 @@ interface Props {
   name: string;
 }
 
-export const SearchContextProvider = ({ allowSave, children, name }: Props) => {
+export const MapSearchContextProvider = ({ allowSave, children, name }: Props) => {
   const [boundingBoxOptions, setBoundingBoxOptions] = useState<BoundingBoxOptions>();
   const [controlsClass, setControlsClass] = useState<string>();
 
-  const config = useRuntimeConfig<Configuration>();
-  const searchConfig = useMemo(() => _.findWhere(config.search, { name }), [config, name]);
-
   return (
-    <SearchContext.Provider
+    <MapSearchContext.Provider
       value={{
         allowSave,
         boundingBoxOptions,
         controlsClass,
-        searchConfig,
         setBoundingBoxOptions,
         setControlsClass
       }}
     >
       { children }
-    </SearchContext.Provider>
+    </MapSearchContext.Provider>
   )
 };
 
-export const useSearchConfig = () => {
-  const { searchConfig } = useContext(SearchContext);
-  return searchConfig;
-};
-
-export default SearchContext;
+export default MapSearchContext;

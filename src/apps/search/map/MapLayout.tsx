@@ -1,11 +1,11 @@
-import MapView from '@apps/search/MapView';
+import MapView from '@apps/search/map/MapView';
 import Facets from '@apps/search/Facets';
-import Header, { Views } from '@apps/search/Header';
-import ListView from '@apps/search/ListView';
-import SearchContext from '@apps/search/SearchContext';
-import SearchRoutes from '@apps/search/SearchRoutes';
-import TableView from '@apps/search/TableView';
-import TimelineView from '@apps/search/TimelineView';
+import Header, { Views } from '@apps/search/map/Header';
+import ListView from '@apps/search/map/ListView';
+import MapSearchContext from '@apps/search/map/MapSearchContext';
+import SearchRoutes from '@apps/search/map/SearchRoutes';
+import TableView from '@apps/search/map/TableView';
+import TimelineView from '@apps/search/map/TimelineView';
 import { useCurrentRoute } from '@peripleo/peripleo';
 import { getCurrentId, getCurrentPath } from '@utils/router';
 import clsx from 'clsx';
@@ -16,6 +16,8 @@ import {
   useState
 } from 'react';
 import PanelHistoryContext, { PanelHistoryEntryType } from './PanelHistoryContext';
+import GeosearchFilter from "@apps/search/map/GeosearchFilter";
+import { useSearchConfig } from "@apps/search/SearchConfigContext";
 
 const DEFAULT_MAX_ZOOM = 14;
 
@@ -38,13 +40,14 @@ const TIMELINE_PAD_OFFSET = -30;
 
 const PATH_SELECT = 'select';
 
-const SearchLayout = () => {
+const MapLayout = () => {
   const [filters, setFilters] = useState<boolean>(false);
   const [timeline, setTimeline] = useState<boolean>(false);
   const [view, setView] = useState<string>(Views.list);
   const [panelHistory, setPanelHistory] = useState<PanelHistoryEntryType[]>([]);
 
-  const { searchConfig: config, setBoundingBoxOptions, setControlsClass } = useContext(SearchContext);
+  const { setBoundingBoxOptions, setControlsClass } = useContext(MapSearchContext);
+  const config = useSearchConfig()
 
   const route = useCurrentRoute();
   const id = getCurrentId(route);
@@ -133,9 +136,12 @@ const SearchLayout = () => {
             className='flex flex-col'
           >
             <Facets
-              className='w-[240px]'
+              className='w-[240px] px-6 bg-neutral-100 backdrop-blur-sm shadow-sm overflow-y-auto'
+              config={config}
               open={filters}
-            />
+            >
+              <GeosearchFilter />
+            </Facets>
           </div>
           { view === Views.list && (
             <div
@@ -183,4 +189,4 @@ const SearchLayout = () => {
   );
 };
 
-export default SearchLayout;
+export default MapLayout;

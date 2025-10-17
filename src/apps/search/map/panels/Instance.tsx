@@ -1,4 +1,4 @@
-import BasePanel from '@apps/search/panels/BasePanel';
+import BasePanel from '@apps/search/map/panels/BasePanel';
 import InstancesService from '@backend/api/coreData/instances';
 import TranslationContext from '@contexts/TranslationContext';
 import { useRuntimeConfig } from '@peripleo/peripleo';

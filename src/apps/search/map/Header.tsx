@@ -1,7 +1,6 @@
-import ExportButton from '@apps/search/ExportButton';
-import SaveButton from '@apps/search/SaveButton';
-import SearchContext, { useSearchConfig } from '@apps/search/SearchContext';
-import { useTranslations } from '@i18n/useTranslations';
+import ExportButton from '@apps/search/map/ExportButton';
+import SaveButton from '@apps/search/map/SaveButton';
+import MapSearchContext from '@apps/search/map/MapSearchContext';
 import {
   Button,
   ButtonGroup,
@@ -14,6 +13,8 @@ import { useContext, useMemo } from 'react';
 import { useCurrentRefinements } from 'react-instantsearch';
 import _ from 'underscore';
 import { useSearching } from '@performant-software/core-data';
+import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import TranslationContext from "@contexts/TranslationContext";
 
 interface Props {
   className?: string;
@@ -33,11 +34,11 @@ const Views = {
 
 const Header = (props: Props) => {
   const { tableView = true } = props;
-  const { allowSave } = useContext(SearchContext);
+  const { allowSave } = useContext(MapSearchContext);
   const config = useSearchConfig();
   const { items } = useCurrentRefinements();
   const { query, refine } = useSearchBox();
-  const { t } = useTranslations();
+  const { t } = useContext(TranslationContext);
 
   const isSearching = useSearching();
 

@@ -1,9 +1,9 @@
-import { useSearchConfig } from '@apps/search/SearchContext';
 import TranslationContext from '@contexts/TranslationContext';
 import { Listbox, Transition } from '@headlessui/react';
 import { Button, Icon, useCachedHits } from '@performant-software/core-data';
 import { exportAsJSON } from '@utils/search';
 import { Fragment, useCallback, useContext } from 'react';
+import { useSearchConfig } from "@apps/search/SearchConfigContext";
 
 const Options = {
   json: 'json'

@@ -7,7 +7,7 @@ import _ from 'underscore';
 
 interface Props {
   attribute: string;
-  className: string;
+  className?: string;
   icon?: string;
 }
 

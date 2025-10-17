@@ -1,4 +1,4 @@
-import BasePanel from '@apps/search/panels/BasePanel';
+import BasePanel from '@apps/search/map/panels/BasePanel';
 import PlacesService from '@backend/api/coreData/places';
 import TranslationContext from '@contexts/TranslationContext';
 import { CoreData as CoreDataUtils, PlaceLayersSelector } from '@performant-software/core-data';

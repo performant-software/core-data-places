@@ -1,4 +1,3 @@
-import { useSearchConfig } from '@apps/search/SearchContext';
 import TranslationContext from '@contexts/TranslationContext';
 import { SelectRecordPanel } from '@performant-software/core-data';
 import { useSelection } from '@peripleo/maplibre';
@@ -13,6 +12,7 @@ import {
   useMemo
 } from 'react';
 import _ from 'underscore';
+import { useSearchConfig } from "@apps/search/SearchConfigContext";
 
 interface Props {
   className?: string;
