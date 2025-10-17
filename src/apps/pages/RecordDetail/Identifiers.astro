@@ -8,7 +8,7 @@ const { record } = Astro.props
 const lang = Astro.currentLocale;
 const { t } = await getTranslations(lang);
 ---
-{record.web_identifiers && (
+{record.web_identifiers && !_.isEmpty(record.web_identifiers) && (
   <>
     <div class="py-6">
         <h2 class="capitalize text-lg font-semibold">{t('webAuthorities')}</h2>
