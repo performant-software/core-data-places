@@ -122,8 +122,6 @@ export const buildTimelineData = (config: SearchConfig, records: any) => {
 export const buildStackedTimelineData = (config: SearchConfig, records: any) => {
   const events = [];
 
-  console.log(records)
-
   _.each(records, (record: any) => {
     if (record.start_date && record.end_date) {
       events.push({
@@ -131,14 +129,15 @@ export const buildStackedTimelineData = (config: SearchConfig, records: any) => 
         date_range: [
           record.start_date[0],
           record.end_date[1]
-        ]
+        ],
+        uuid: record.uuid
       })
     }
   });
 
   return {
     name: config.name,
-    events
+    events: events?.sort((a,b) => (a.date_range[0] - b.date_range[0]))
   }
 }
 
