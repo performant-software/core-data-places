@@ -1,4 +1,5 @@
 ---
+import ImageWithCitation from '@components/ImageWithCitation.astro';
 import _ from 'underscore';
 
 const { items, title } = Astro.props;
@@ -22,10 +23,12 @@ const { items, title } = Astro.props;
         class='flex justify-center py-8 w-full max-h-[400px] lg:w-[375px] lg:max-h-[400px]'
         href={item.url}
       >
-        <img
+        <ImageWithCitation
           alt={item.image_alt}
-          class='w-full h-full object-cover'
+          classNames={{ image: 'w-full h-full object-cover' }}
           src={item.image}
+          citation={item.citation}
+          citationLink={item.citation_link}
         />
       </a>
     ))}
