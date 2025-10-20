@@ -195,6 +195,14 @@ const Pages: Collection = {
           name: 'url',
           label: 'URL',
           type: 'string'
+        }, {
+          name: 'citation',
+          label: 'Image Citation Text',
+          type: 'string'
+        }, {
+          name: 'citation_link',
+          label: 'Image Citation Link',
+          type: 'string'
         }]
       }]
     }, {
@@ -295,6 +303,14 @@ const Pages: Collection = {
       },{
         name: 'url',
         label: 'URL',
+        type: 'string'
+      }, {
+        name: 'citation',
+        label: 'Image Citation Text',
+        type: 'string'
+      }, {
+        name: 'citation_link',
+        label: 'Image Citation Link',
         type: 'string'
       }, {
         name: 'background_position',
