@@ -1,3 +1,4 @@
+import ImageWithCitation from '@components/ImageWithCitation';
 import LinkButton from '@components/LinkButton';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
@@ -6,6 +7,8 @@ import _ from 'underscore';
 interface Props {
   backgroundPosition: 'top' | 'bottom' | 'left' | 'right';
   buttonText?: string;
+  citation?: string;
+  citationLink?: string;
   description?: string;
   image: string;
   imageAlt?: string;
@@ -171,10 +174,12 @@ const TextImage = (props: Props) => {
             height: imageHeight ? `${imageHeight}px` : undefined
           }}
         >
-          <img
+          <ImageWithCitation
             alt={props.imageAlt}
-            className='w-full h-full object-cover'
+            classNames={{ image: 'w-full h-full object-cover', root: 'w-full h-full', citation: `text-xs text-gray-400${props.citationLink ? ' underline' : ''}` }}
             src={props.image}
+            citation={props.citation}
+            citationLink={props.citationLink}
           />
         </div>
       </div>

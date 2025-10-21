@@ -1,0 +1,32 @@
+---
+interface Props {
+  alt?: string;
+  citation?: string;
+  citationLink?: string;
+  classNames?: {
+    root?: string;
+    image?: string;
+    citation?: string;
+  };
+  src: string;
+}
+
+const { alt, citation, citationLink, classNames, src } = Astro.props;
+---
+
+{
+  citation ? (
+    <div class={classNames?.root}>
+      <img alt={alt} src={src} class={classNames?.image} />
+      {citationLink ? (
+        <a href={citationLink} class={classNames?.citation}>
+          {citation}
+        </a>
+      ) : (
+        <p class={classNames?.citation}>{citation}</p>
+      )}
+    </div>
+  ) : (
+    <img alt={alt} src={src} class={classNames?.image} />
+  )
+}
