@@ -176,7 +176,7 @@ const TextImage = (props: Props) => {
         >
           <ImageWithCitation
             alt={props.imageAlt}
-            classNames={{ image: 'w-full h-full object-cover', root: 'w-full h-full', citation: 'text-xs text-gray-400' }}
+            classNames={{ image: 'w-full h-full object-cover', root: 'w-full h-full', citation: `text-xs text-gray-400${props.citationLink ? ' underline' : ''}` }}
             src={props.image}
             citation={props.citation}
             citationLink={props.citationLink}
