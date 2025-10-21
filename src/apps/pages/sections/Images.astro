@@ -25,7 +25,7 @@ const { items, title } = Astro.props;
       >
         <ImageWithCitation
           alt={item.image_alt}
-          classNames={{ image: 'w-full h-full object-cover' }}
+          classNames={{ root: 'w-full h-full', image: 'w-full h-full object-cover', citation: 'text-xs text-gray-400' }}
           src={item.image}
           citation={item.citation}
           citationLink={item.citation_link}
