@@ -15,10 +15,10 @@ const StackedTimelineInput = wrapFieldsWithMeta((props) => {
     const { name, data: records } = JSON.parse(data);
     const searchConfig = _.findWhere(config.search, { name });
 
-    if (_.find(records, (record) => record?.start_date)) {
+    if (_.find(records, (record) => record?.start_date) || searchConfig.timeline) {
       props.input.onChange(JSON.stringify(buildStackedTimelineData(searchConfig, records)));
     } else {
-      setError('Only Event models support the "Stacked Timeline" visualization.');
+      setError('Only Event models or models with "timeline" configured support the "Stacked Timeline" visualization.');
     }
   }, []);
 

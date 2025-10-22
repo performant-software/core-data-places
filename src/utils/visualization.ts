@@ -122,13 +122,27 @@ export const buildTimelineData = (config: SearchConfig, records: any) => {
 export const buildStackedTimelineData = (config: SearchConfig, records: any) => {
   const events = [];
 
-  _.each(records, (record: any) => {
-    if (record.start_date && record.end_date) {
+  let eventData = records;
+  
+  // If timeline is configured, use the specified `event_path`
+  if (config.timeline?.event_path) {
+    eventData = _.map(records, (record) => (record[config.timeline.event_path]))
+  }
+
+  _.each(eventData, (record: any) => {
+    if (record.start_date?.length || record.end_date?.length) {
+      const start = record.start_date?.length && record.start_date[INDEX_START_DATE];
+
+      // fall back on using start_date.end_date or start_date.start_date if necessary
+      const end = record.end_date?.length 
+        ? (record.end_date[INDEX_END_DATE] || record.end_date[0]) 
+        : (record.start_date[INDEX_END_DATE] || record.start_date[0]);
+      
       events.push({
         name: record.name,
         date_range: [
-          record.start_date[0],
-          record.end_date[1]
+          start || end,
+          end || start
         ],
         uuid: record.uuid
       })

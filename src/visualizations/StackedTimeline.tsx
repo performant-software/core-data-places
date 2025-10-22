@@ -10,9 +10,27 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  LabelList
+  LabelList,
+  TooltipContentProps
 } from 'recharts';
 import config from '@config';
+import _ from 'underscore';
+
+const CustomTooltip = ({ active, payload, label }: TooltipContentProps<string | number, string>) => {
+  const isVisible = active && payload && payload.length;
+  const start = useMemo(() => (new Date(payload[0]?.value[0]*1000).getFullYear()), [payload]);
+  const end = useMemo(() => (new Date(payload[0]?.value[1]*1000).getFullYear()), [payload]);
+  return (
+    <div className="custom-tooltip bg-white rounded-md drop-shadow-xl p-4 flex flex-col gap-2 not-prose border border-primary" style={{ visibility: isVisible ? 'visible' : 'hidden' }}>
+      {isVisible && (
+        <>
+          <p className="label">{label}</p>
+          <p className="desc">{`${Math.abs(start)}${start < 0 ? 'BCE' : ''} - ${Math.abs(end)}${end < 0 ? 'BCE' : ''}`}</p>
+        </>
+      )}
+    </div>
+  );
+};
 
 const StackedTimeline = (props: DataVisualizationProps) => {
   
@@ -77,17 +95,11 @@ const StackedTimeline = (props: DataVisualizationProps) => {
               dataKey='date_range'
               fill='var(--color-primary)'
               onClick={config.detail_pages?.includes('events') ? onClickBar : null}
+              minPointSize={1}
             >
               <LabelList dataKey='name' content={renderLabel} />
             </Bar>
-            <Tooltip cursor={false} formatter={(value, name, props) => {
-              const start = new Date(value[0]*1000).getFullYear()
-              const end = new Date(value[1]*1000).getFullYear()
-              return ([
-                `${Math.abs(start)}${start < 0 ? 'BCE' : ''} - ${Math.abs(end)}${end < 0 ? 'BCE' : ''}`,
-                name.toString().replaceAll('_', ' ').toUpperCase()
-              ])
-            }}/>
+            <Tooltip cursor={false} content={CustomTooltip} />
           </BarChart>
         </ResponsiveContainer>
       </div>
