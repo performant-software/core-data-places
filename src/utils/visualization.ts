@@ -126,7 +126,14 @@ export const buildStackedTimelineData = (config: SearchConfig, records: any) => 
   
   // If timeline is configured, use the specified `event_path`
   if (config.timeline?.event_path) {
-    eventData = _.map(records, (record) => (record[config.timeline.event_path]))
+    eventData = [];
+    _.each(records, (record) => {
+      if (Array.isArray(record[config.timeline.event_path])) {
+        eventData = [...eventData, ...record[config.timeline.event_path]]
+      } else if (record[config.timeline.event_path]) {
+        eventData.push(record[config.timeline.event_path])
+      }
+    })
   }
 
   _.each(eventData, (record: any) => {
