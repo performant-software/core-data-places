@@ -47,15 +47,13 @@ class Base {
       let pages = 1;
       for (let page = 1; page <= pages; page++ ) {
         try {
-          console.log(page)
           const response = await this.service.fetchAll(_.extend(REQUEST_PARAMS_GETALL, { page }));
           if (response.list?.pages > pages) {
             pages = response.list?.pages;
-            console.log(pages);
           }
           records = [...records, ...response[this.name]];
         } catch (error) {
-          console.log(page, error);
+          console.log(error);
         }
       }
     }
