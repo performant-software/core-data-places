@@ -88,7 +88,7 @@ const NavConfig = {
 
 const NavItems = [
   NavConfig.search,
-  ..._.map(config.content?.collections, (key) => NavConfig[key]),
+  ..._.map(config.content?.collections, (key) => NavConfig[key?.toLowerCase()]),
 ];
 
 if (!_.isEmpty(NavConfig.pages.options)) {

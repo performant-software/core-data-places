@@ -6,6 +6,7 @@ import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, RuntimeConfig } from '@peripleo/peripleo';
+import StackedTimeline from '@visualizations/StackedTimeline';
 import EventsByYear from '@visualizations/EventsByYear';
 import Map from '@visualizations/Map';
 import Table from '@visualizations/Table';
@@ -51,6 +52,7 @@ const PostContent = (props: PostContentProps) => {
                   map: Map,
                   media: MediaInsert,
                   place: PlaceInsert,
+                  stacked_timeline: StackedTimeline,
                   timeline: Timeline
                 }}
                 content={props.content}

@@ -32,6 +32,10 @@ const EventsByYearInput = wrapFieldsWithMeta((props) => {
    * Fetches all of the events with the passed IDs.
    */
   const onChange = useCallback((data) => {
+    if (!data) {
+      props.input.onChange(null);
+      return;
+    }
     const { name, data: records } = JSON.parse(data);
 
     const searchConfig = _.findWhere(config.search, { name });

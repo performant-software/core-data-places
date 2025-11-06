@@ -10,6 +10,10 @@ const MapInput = wrapFieldsWithMeta((props) => {
    * Removes all of the extraneous data from the uploaded JSON.
    */
   const onChange = useCallback((data) => {
+    if (!data) {
+      props.input.onChange(null);
+      return;
+    }
     const { name, data: records } = JSON.parse(data);
     const searchConfig = _.findWhere(config.search, { name });
 

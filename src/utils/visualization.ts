@@ -114,6 +114,55 @@ export const buildTimelineData = (config: SearchConfig, records: any) => {
 };
 
 /**
+ * Returns the data for the stacked timeline visualization
+ * @param config
+ * @param records
+ */
+
+export const buildStackedTimelineData = (config: SearchConfig, records: any) => {
+  const events = [];
+
+  let eventData = records;
+  
+  // If timeline is configured, use the specified `event_path`
+  if (config.timeline?.event_path) {
+    eventData = [];
+    _.each(records, (record) => {
+      if (Array.isArray(record[config.timeline.event_path])) {
+        eventData = [...eventData, ...record[config.timeline.event_path]]
+      } else if (record[config.timeline.event_path]) {
+        eventData.push(record[config.timeline.event_path])
+      }
+    })
+  }
+
+  _.each(eventData, (record: any) => {
+    if (record.start_date?.length || record.end_date?.length) {
+      const start = record.start_date?.length && record.start_date[INDEX_START_DATE];
+
+      // fall back on using start_date.end_date or start_date.start_date if necessary
+      const end = record.end_date?.length 
+        ? (record.end_date[INDEX_END_DATE] || record.end_date[0]) 
+        : (record.start_date[INDEX_END_DATE] || record.start_date[0]);
+      
+      events.push({
+        name: record.name,
+        date_range: [
+          start || end,
+          end || start
+        ],
+        uuid: record.uuid
+      })
+    }
+  });
+
+  return {
+    name: config.name,
+    events: events?.sort((a,b) => (a.date_range[0] - b.date_range[0]))
+  }
+}
+
+/**
  * Returns the year range for the passed start/end date array.
  *
  * @param dateArray
