@@ -10,8 +10,8 @@ import {
   useSearchBox
 } from '@performant-software/core-data';
 import clsx from 'clsx';
-import { useContext, useMemo } from 'react';
-import { useCurrentRefinements } from 'react-instantsearch';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useCurrentRefinements, useInstantSearch } from 'react-instantsearch';
 import _ from 'underscore';
 
 interface Props {
@@ -30,16 +30,42 @@ const Views = {
   table: 'table'
 };
 
+const LoadingStatuses = [
+  'loading',
+  'stalled'
+]
+
 const Header = (props: Props) => {
+  const [allowStateChange, setAllowStateChange] = useState(false);
+
   const { tableView = true } = props;
   const { allowSave } = useContext(SearchContext);
   const config = useSearchConfig();
   const { items } = useCurrentRefinements();
   const { query, refine } = useSearchBox();
   const { t } = useTranslations();
+  const { status } = useInstantSearch();
+
+  const allowStateChangeTimeout = useRef(null);
 
   /**
-   * Memo-izes the number of value values applied.
+   * Disables the search input and facet button while the search is loading.
+   */
+  useEffect(() => {
+    if (LoadingStatuses.includes(status) && !query) {
+      setAllowStateChange(false);
+      clearTimeout(allowStateChangeTimeout.current);
+    } else {
+      allowStateChangeTimeout.current = setTimeout(() => {
+        setAllowStateChange(true)
+      }, 250)
+    }
+
+    return () => clearTimeout(allowStateChangeTimeout.current);
+  }, [status, query]);
+
+  /**
+   * Memo-izes the number of values applied.
    */
   const facetCount = useMemo(() => _.reduce(items, (memo, item) => memo + item.refinements.length, 0), [items]);
 
@@ -58,6 +84,7 @@ const Header = (props: Props) => {
         <Input
           className='bg-white grow'
           clearable
+          disabled={!allowStateChange}
           icon='search'
           onChange={(value) => refine(value)}
           placeholder={t('search')}
@@ -65,6 +92,7 @@ const Header = (props: Props) => {
         />
         <Button
           className='relative'
+          disabled={!allowStateChange}
           icon
           onClick={() => props.onFiltersChange(!props.filters)}
           primary={props.filters}
