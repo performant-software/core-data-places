@@ -46,13 +46,7 @@ const Header = (props: Props) => {
   /**
    * Disables the search input and facet button while the search is loading.
    */
-  useEffect(() => {
-    if (isSearching && !query) {
-      setAllowStateChange(false);
-    } else {
-      setAllowStateChange(true)
-    }
-  }, [isSearching, query]);
+  const allowSearchChange = useMemo(() => !isSearching || query, [isSearching, query]);
 
   /**
    * Memo-izes the number of values applied.
@@ -74,7 +68,7 @@ const Header = (props: Props) => {
         <Input
           className='bg-white grow'
           clearable
-          disabled={!allowStateChange}
+          disabled={!allowSearchChange}
           icon='search'
           onChange={(value) => refine(value)}
           placeholder={t('search')}
@@ -82,7 +76,7 @@ const Header = (props: Props) => {
         />
         <Button
           className='relative'
-          disabled={!allowStateChange}
+          disabled={!allowSearchChange}
           icon
           onClick={() => props.onFiltersChange(!props.filters)}
           primary={props.filters}
