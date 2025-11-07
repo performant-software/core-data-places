@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import { useContext, useMemo } from 'react';
 import { useCurrentRefinements } from 'react-instantsearch';
 import _ from 'underscore';
-import { useSearching } from "@performant-software/core-data";
+import { useSearching } from '@performant-software/core-data';
 
 interface Props {
   className?: string;
@@ -39,7 +39,7 @@ const Header = (props: Props) => {
   const { query, refine } = useSearchBox();
   const { t } = useTranslations();
 
-  const isSearching = useSearching()
+  const isSearching = useSearching();
 
   /**
    * Disables the search input and facet button while the search is loading.
