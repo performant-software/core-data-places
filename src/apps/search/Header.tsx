@@ -10,7 +10,7 @@ import {
   useSearchBox
 } from '@performant-software/core-data';
 import clsx from 'clsx';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useMemo } from 'react';
 import { useCurrentRefinements } from 'react-instantsearch';
 import _ from 'underscore';
 import { useSearching } from "@performant-software/core-data";
@@ -32,8 +32,6 @@ const Views = {
 };
 
 const Header = (props: Props) => {
-  const [allowStateChange, setAllowStateChange] = useState(false);
-
   const { tableView = true } = props;
   const { allowSave } = useContext(SearchContext);
   const config = useSearchConfig();
