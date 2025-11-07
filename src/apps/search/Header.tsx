@@ -10,8 +10,8 @@ import {
   useSearchBox
 } from '@performant-software/core-data';
 import clsx from 'clsx';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useCurrentRefinements, useInstantSearch } from 'react-instantsearch';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCurrentRefinements } from 'react-instantsearch';
 import _ from 'underscore';
 import { useSearching } from "@performant-software/core-data";
 
@@ -41,8 +41,6 @@ const Header = (props: Props) => {
   const { query, refine } = useSearchBox();
   const { t } = useTranslations();
 
-  const allowStateChangeTimeout = useRef(null);
-
   const isSearching = useSearching()
 
   /**
@@ -51,14 +49,9 @@ const Header = (props: Props) => {
   useEffect(() => {
     if (isSearching && !query) {
       setAllowStateChange(false);
-      clearTimeout(allowStateChangeTimeout.current);
     } else {
-      allowStateChangeTimeout.current = setTimeout(() => {
-        setAllowStateChange(true)
-      }, 250)
+      setAllowStateChange(true)
     }
-
-    return () => clearTimeout(allowStateChangeTimeout.current);
   }, [isSearching, query]);
 
   /**
