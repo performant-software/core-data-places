@@ -13,6 +13,7 @@ import clsx from 'clsx';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useCurrentRefinements, useInstantSearch } from 'react-instantsearch';
 import _ from 'underscore';
+import { useSearching } from "@performant-software/core-data";
 
 interface Props {
   className?: string;
@@ -30,11 +31,6 @@ const Views = {
   table: 'table'
 };
 
-const LoadingStatuses = [
-  'loading',
-  'stalled'
-]
-
 const Header = (props: Props) => {
   const [allowStateChange, setAllowStateChange] = useState(false);
 
@@ -44,15 +40,16 @@ const Header = (props: Props) => {
   const { items } = useCurrentRefinements();
   const { query, refine } = useSearchBox();
   const { t } = useTranslations();
-  const { status } = useInstantSearch();
 
   const allowStateChangeTimeout = useRef(null);
+
+  const isSearching = useSearching()
 
   /**
    * Disables the search input and facet button while the search is loading.
    */
   useEffect(() => {
-    if (LoadingStatuses.includes(status) && !query) {
+    if (isSearching && !query) {
       setAllowStateChange(false);
       clearTimeout(allowStateChangeTimeout.current);
     } else {
@@ -62,7 +59,7 @@ const Header = (props: Props) => {
     }
 
     return () => clearTimeout(allowStateChangeTimeout.current);
-  }, [status, query]);
+  }, [isSearching, query]);
 
   /**
    * Memo-izes the number of values applied.
