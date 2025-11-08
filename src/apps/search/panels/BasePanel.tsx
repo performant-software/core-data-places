@@ -454,6 +454,13 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
           animate
           boundingBoxOptions={boundingBoxOptions}
           data={geometry}
+          fillStyle={{
+            type: "fill",
+            paint: {
+              "fill-color": "#ffd546",
+              "fill-opacity": 0.4,
+            },
+          }}
           fitBoundingBox={_.get(config.map, 'zoom_to_place', true)}
           layerId='current'
         />
