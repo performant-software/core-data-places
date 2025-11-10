@@ -60,6 +60,12 @@ export default defineConfig({
         context: 'client',
         default: false,
         optional: true
+      }),
+      CONTENT_MODE: envField.string({
+        access: 'public',
+        context: 'client',
+        default: 'update',
+        optional: true
       })
     }
   }

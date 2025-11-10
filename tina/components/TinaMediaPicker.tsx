@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { wrapFieldsWithMeta } from 'tinacms';
 import MediaContentsService from '@backend/api/coreData/mediaContents';
+import { useEffect, useState } from 'react'
+import { wrapFieldsWithMeta } from 'tinacms';
 import TinaModelPicker from './TinaModelPicker';
 
 interface CustomTinaFieldProps {
@@ -12,22 +12,26 @@ interface CustomTinaFieldProps {
 const TinaMediaPicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   const [selectedMedia, setSelectedMedia] = useState<any>();
 
+  useEffect(() => {
+    props.input.onChange({
+      ...props.input.value,
+      title: selectedMedia?.name,
+      uuid: selectedMedia?.uuid,
+      manifest_url: selectedMedia?.manifest_url,
+      content_url: selectedMedia?.content_url,
+      content_preview_url: selectedMedia?.content_preview_url
+    });
+  }, [selectedMedia]);
+
   return (
     <TinaModelPicker
-      {...props}
-      onLoad={() => (
+      onChange={setSelectedMedia}
+      onLoad={(params) => (
         MediaContentsService
-          .fetchAll()
+          .fetchAll(params)
           .then((response) => response.media_contents)
       )}
-      onSelectItem={(_item) => setSelectedMedia(_item)}
-      getValue={(media) => ({
-        title: media.name,
-        uuid: media.uuid,
-        manifest_url: media.manifest_url,
-        content_url: media.content_url,
-        content_preview_url: media.content_preview_url
-      })}
+      value={selectedMedia}
     >
      { selectedMedia && (
         <div

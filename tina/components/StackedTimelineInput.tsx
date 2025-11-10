@@ -1,13 +1,11 @@
 import config from '@config';
-import { FuzzyDate as FuzzyDateUtils, ObjectJs as ObjectUtils } from '@performant-software/shared-components';
-import { includeTimeline } from '@root/tina/utils/visualizations';
-import { buildTimelineData } from '@utils/visualization';
+import { buildStackedTimelineData } from '@utils/visualization';
 import { useCallback, useState } from 'react';
 import { wrapFieldsWithMeta } from 'tinacms';
 import _ from 'underscore';
 import JsonUpload from './JsonUpload';
 
-const TimelineInput = wrapFieldsWithMeta((props) => {
+const StackedTimelineInput = wrapFieldsWithMeta((props) => {
   const [error, setError] = useState<string | undefined>();
 
   /**
@@ -21,10 +19,10 @@ const TimelineInput = wrapFieldsWithMeta((props) => {
     const { name, data: records } = JSON.parse(data);
     const searchConfig = _.findWhere(config.search, { name });
 
-    if (includeTimeline(searchConfig)) {
-      props.input.onChange(JSON.stringify(buildTimelineData(searchConfig, records)));
+    if (_.find(records, (record) => record?.start_date) || searchConfig.timeline) {
+      props.input.onChange(JSON.stringify(buildStackedTimelineData(searchConfig, records)));
     } else {
-      setError('The uploaded dataset does not support the "Timeline" visualization.');
+      setError('Only Event models or models with "timeline" configured support the "Stacked Timeline" visualization.');
     }
   }, []);
 
@@ -45,4 +43,4 @@ const TimelineInput = wrapFieldsWithMeta((props) => {
   );
 });
 
-export default TimelineInput;
+export default StackedTimelineInput;

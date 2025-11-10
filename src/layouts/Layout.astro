@@ -17,6 +17,15 @@ import '@styles/index.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+// Tell the browser to always check the freshness of the cache
+Astro.response.headers.set("Cache-Control", "public, max-age=0, must-revalidate");
+
+// Tell Netlify's CDN to treat it as fresh for 5 minutes, then for up to a week return a stale version
+// while it revalidates. Use Durable Cache to minimize the need for serverless function calls.
+Astro.response.headers.set(
+  "Netlify-CDN-Cache-Control", "public, durable, s-maxage=300, stale-while-revalidate=604800"
+);
+
 const branding = await fetchBranding();
 const { header, footer } = branding;
 
@@ -88,7 +97,7 @@ const NavConfig = {
 
 const NavItems = [
   NavConfig.search,
-  ..._.map(config.content?.collections, (key) => NavConfig[key]),
+  ..._.map(config.content?.collections, (key) => NavConfig[key?.toLowerCase()]),
 ];
 
 if (!_.isEmpty(NavConfig.pages.options)) {

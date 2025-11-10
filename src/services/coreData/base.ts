@@ -7,10 +7,6 @@ const REQUEST_PARAMS = {
   per_page: 0
 };
 
-const REQUEST_PARAMS_GETALL = {
-  per_page: 10
-};
-
 /**
  * Base class for all Core Data services. This class is responsible for fetching data from either the Astro
  * content layer or directly from Core Data.
@@ -36,26 +32,15 @@ class Base {
   /**
    * Returns all the records.
    */
-  async getAll() {
+  async getAll(params: { [key: string] : any } = {}) {
     let records;
 
     if (this.useCache()) {
       const entries = await getCollection(this.name);
       records = _.map(entries, (entry) => entry.data);
     } else {
-      records = [];
-      let pages = 1;
-      for (let page = 1; page <= pages; page++ ) {
-        try {
-          const response = await this.service.fetchAll(_.extend(REQUEST_PARAMS_GETALL, { page }));
-          if (response.list?.pages > pages) {
-            pages = response.list?.pages;
-          }
-          records = [...records, ...response[this.name]];
-        } catch (error) {
-          console.log(error);
-        }
-      }
+      const response = await this.service.fetchAll(_.defaults(params, REQUEST_PARAMS));
+      records = response[this.name];
     }
 
     return {

@@ -1,6 +1,5 @@
 import PlacesService from '@backend/api/coreData/places';
-import { Combobox, Switch } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { Switch } from '@headlessui/react';
 import { useEffect, useState } from 'react'
 import { wrapFieldsWithMeta } from 'tinacms';
 import TinaModelPicker from './TinaModelPicker';
@@ -42,6 +41,12 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   };
 
   useEffect(() => {
+    props.input.onChange({
+      ...props.input.value,
+      title: selectedPlace?.name,
+      uuid: selectedPlace?.uuid
+    });
+
     if (selectedPlace && !selectedPlace.place_geometry) {
       setMessage('NOTE: The selected place has no specified location in Core Data. This may cause errors.')
     }
@@ -52,18 +57,14 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
 
   return (
     <TinaModelPicker
-      {...props}
-      onLoad={() => (
+      message={message}
+      onChange={setSelectedPlace}
+      onLoad={(params) => (
         PlacesService
-          .fetchAll()
+          .fetchAll(params)
           .then(({ places }) => places)
       )}
-      onSelectItem={(_item) => setSelectedPlace(_item)}
-      getValue={(place) => ({
-        title: place.name,
-        uuid: place.uuid
-      })}
-      message={message}
+      value={selectedPlace || {}}
     >
       { selectedPlace && (
         <div

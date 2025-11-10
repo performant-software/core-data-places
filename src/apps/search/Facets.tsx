@@ -8,7 +8,7 @@ import SelectFacet from '@apps/search/SelectFacet';
 import TranslationContext from '@contexts/TranslationContext';
 import { FacetStateContext } from '@performant-software/core-data';
 import clsx from 'clsx';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import _ from 'underscore';
 
 const TYPE_LIST = 'list';
@@ -24,6 +24,28 @@ const Facets = (props: Props) => {
   const config = useSearchConfig();
   const { attributes, rangeAttributes } = useContext(FacetStateContext);
   const { t } = useContext(TranslationContext);
+
+  const { typesense } = config;
+
+  const sortAttributes = useCallback((atts: string[]) => {
+    const copy = [...atts];
+    if (!copy) {
+      return [];
+    }
+    if (typesense?.facets?.include) {
+      return copy.sort((a,b) => {
+        const index_a = typesense.facets.include.findIndex((facet) => facet === a);
+        const index_b = typesense.facets.include.findIndex((facet) => facet === b);
+        return index_a - index_b;
+      })
+    } else {
+      return copy;
+    }
+  }, [typesense])
+
+  const sortedAttributes = useMemo(() => sortAttributes(attributes), [attributes, sortAttributes]);
+
+  const sortedRangeAttributes = useMemo(() => sortAttributes(rangeAttributes), [rangeAttributes, sortAttributes]);
 
   /**
    * Returns the `search.facets` value for the passed attribute key populated with the passed default values.
@@ -96,8 +118,8 @@ const Facets = (props: Props) => {
       </div>
       <CurrentRefinementsList />
       <GeosearchFilter />
-      { _.map(rangeAttributes, (attribute) => renderFacet(attribute, TYPE_RANGE)) }
-      { _.map(attributes, (attribute) => renderFacet(attribute, TYPE_LIST)) }
+      { _.map(sortedRangeAttributes, (attribute) => renderFacet(attribute, TYPE_RANGE)) }
+      { _.map(sortedAttributes, (attribute) => renderFacet(attribute, TYPE_LIST)) }
     </aside>
   );
 };

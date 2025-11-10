@@ -13,6 +13,7 @@ import clsx from 'clsx';
 import { useContext, useMemo } from 'react';
 import { useCurrentRefinements } from 'react-instantsearch';
 import _ from 'underscore';
+import { useSearching } from '@performant-software/core-data';
 
 interface Props {
   className?: string;
@@ -38,8 +39,15 @@ const Header = (props: Props) => {
   const { query, refine } = useSearchBox();
   const { t } = useTranslations();
 
+  const isSearching = useSearching();
+
   /**
-   * Memo-izes the number of value values applied.
+   * Disables the search input and facet button while the search is loading.
+   */
+  const allowSearchChange = useMemo(() => !isSearching || query, [isSearching, query]);
+
+  /**
+   * Memo-izes the number of values applied.
    */
   const facetCount = useMemo(() => _.reduce(items, (memo, item) => memo + item.refinements.length, 0), [items]);
 
@@ -58,6 +66,7 @@ const Header = (props: Props) => {
         <Input
           className='bg-white grow'
           clearable
+          disabled={!allowSearchChange}
           icon='search'
           onChange={(value) => refine(value)}
           placeholder={t('search')}
@@ -65,6 +74,7 @@ const Header = (props: Props) => {
         />
         <Button
           className='relative'
+          disabled={!allowSearchChange}
           icon
           onClick={() => props.onFiltersChange(!props.filters)}
           primary={props.filters}
