@@ -1,5 +1,5 @@
-import SearchContext, { useSearchConfig } from '@apps/search/SearchContext';
-import Tooltip from '@apps/search/Tooltip';
+import MapSearchContext from '@apps/search/map/MapSearchContext';
+import Tooltip from '@apps/search/map/Tooltip';
 import Map from '@components/Map';
 import {
   SearchResultsLayer,
@@ -13,6 +13,7 @@ import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
 import { parseFeature } from '@utils/search';
 import { useContext, useEffect, useMemo } from 'react';
 import _ from 'underscore';
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 const MapView = () => {
   const config = useSearchConfig();
@@ -23,7 +24,7 @@ const MapView = () => {
   const hits = useCachedHits();
   const searching  = useSearching();
 
-  const { boundingBoxOptions, controlsClass } = useContext(SearchContext);
+  const { boundingBoxOptions, controlsClass } = useContext(MapSearchContext);
 
   /**
    * Memo-izes the data to be displayed on the map as a feature collection.
@@ -35,7 +36,7 @@ const MapView = () => {
 
   /**
    * If we're on the place detail page or refining results by the map view port, we'll suppress the auto-bounding box
-   * on the SearchResultsLayer component. Also suppress the auto-bounding box if "zoom_to_place" is "false".
+   * on the SearchResultsLayer component. Also suppress the auto-bounding box if 'zoom_to_place' is 'false'.
   */
  const fitBoundingBox = useMemo(() => (
    !isRefinedWithMap() && route === '/' && config.map.zoom_to_place

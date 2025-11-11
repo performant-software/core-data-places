@@ -1,15 +1,14 @@
-import ClearRefinementsButton from '@apps/search/ClearRefinementsButton';
-import CurrentRefinementsList from '@apps/search/CurrentRefinementsList';
-import GeosearchFilter from '@apps/search/GeosearchFilter';
-import ListFacet from '@apps/search/ListFacet';
-import RangeFacet from '@apps/search/RangeFacet';
-import { useSearchConfig } from '@apps/search/SearchContext';
-import SelectFacet from '@apps/search/SelectFacet';
+import ClearRefinementsButton from '@apps/search/map/ClearRefinementsButton';
+import CurrentRefinementsList from '@apps/search/map/CurrentRefinementsList';
+import ListFacet from '@apps/search/map/ListFacet';
+import RangeFacet from '@apps/search/map/RangeFacet';
+import SelectFacet from '@apps/search/map/SelectFacet';
 import TranslationContext from '@contexts/TranslationContext';
 import { FacetStateContext } from '@performant-software/core-data';
 import clsx from 'clsx';
 import { useCallback, useContext, useMemo } from 'react';
 import _ from 'underscore';
+import { SearchConfig } from '@types';
 
 const TYPE_LIST = 'list';
 const TYPE_RANGE = 'range';
@@ -17,15 +16,16 @@ const TYPE_SELECT = 'select';
 
 interface Props {
   className?: string;
+  children?: React.ReactNode;
+  config: SearchConfig;
   open?: boolean;
 }
 
 const Facets = (props: Props) => {
-  const config = useSearchConfig();
   const { attributes, rangeAttributes } = useContext(FacetStateContext);
   const { t } = useContext(TranslationContext);
 
-  const { typesense } = config;
+  const { typesense } = props.config;
 
   const sortAttributes = useCallback((atts: string[]) => {
     const copy = [...atts];
@@ -41,7 +41,7 @@ const Facets = (props: Props) => {
     } else {
       return copy;
     }
-  }, [typesense])
+  }, [typesense]);
 
   const sortedAttributes = useMemo(() => sortAttributes(attributes), [attributes, sortAttributes]);
 
@@ -51,11 +51,11 @@ const Facets = (props: Props) => {
    * Returns the `search.facets` value for the passed attribute key populated with the passed default values.
    */
   const getFacetConfiguration = useCallback((name, defaults = {}) => {
-    const { facets = {} } = config;
+    const { facets = {} } = props.config;
     const facet = _.defaults(_.findWhere(facets, { name }) || {}, defaults);
 
     return facet;
-  }, [config]);
+  }, [props.config]);
 
   /**
    * Renders the facet for the passed attribute.
@@ -67,6 +67,7 @@ const Facets = (props: Props) => {
       return (
         <ListFacet
           attribute={attribute}
+          key={attribute}
           icon={facet.icon}
         />
       );
@@ -76,6 +77,7 @@ const Facets = (props: Props) => {
       return (
         <SelectFacet
           attribute={attribute}
+          key={attribute}
           icon={facet.icon}
         />
       );
@@ -85,6 +87,7 @@ const Facets = (props: Props) => {
       return (
         <RangeFacet
           attribute={attribute}
+          key={attribute}
           icon={facet.icon}
         />
       );
@@ -96,11 +99,6 @@ const Facets = (props: Props) => {
   return (
     <aside
       className={clsx(
-        'px-6',
-        'bg-neutral-100',
-        'backdrop-blur-sm',
-        'shadow-sm',
-        'overflow-y-auto',
         { 'flex flex-col grow': props.open },
         { 'hidden': !props.open },
         props.className
@@ -117,7 +115,7 @@ const Facets = (props: Props) => {
         <ClearRefinementsButton />
       </div>
       <CurrentRefinementsList />
-      <GeosearchFilter />
+      { props.children }
       { _.map(sortedRangeAttributes, (attribute) => renderFacet(attribute, TYPE_RANGE)) }
       { _.map(sortedAttributes, (attribute) => renderFacet(attribute, TYPE_LIST)) }
     </aside>

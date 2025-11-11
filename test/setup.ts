@@ -68,5 +68,22 @@ expect.extend({
       message: pass ? undefined : () => `expected ${received} to be a non-empty string`,
       pass
     };
+  },
+  /**
+   * Checks that the recieved custom component does not contain any props that are not in the base component.
+   */
+  toExtendProps: async (recieved: React.FC<any>) => {
+    const customComp = (await import(`./content/components/${recieved}`)).default;
+    const defaultComp = (await import(`./src/components/custom/default/${recieved}`)).default;
+
+    const keys1 = Object.keys(customComp.propTypes || {});
+    const keys2 = Object.keys(defaultComp.propTypes || {});
+
+    const pass = keys1.every(key => keys2.includes(key));
+
+    return {
+      message: pass ? undefined : () => `expected ${keys1} to extend ${keys2}`,
+      pass
+    }
   }
 });

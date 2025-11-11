@@ -1,11 +1,11 @@
-import { useSearchConfig } from '@apps/search/SearchContext';
-import SearchHighlight from '@apps/search/SearchHighlight';
+import SearchHighlight from '@apps/search/map/SearchHighlight';
 import TranslationContext from '@contexts/TranslationContext';
 import Badge from '@components/Badge';
 import { parseFeature } from '@utils/search';
 import { useContext, useMemo } from 'react';
 import { useCachedHits } from '@performant-software/core-data';
 import _ from 'underscore';
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 interface Props {
   hovered: any;
@@ -17,7 +17,7 @@ const Tooltip = (props: Props) => {
   const cachedHits = useCachedHits();
 
   /**
-   * Memo-izes the passed hovered items by parsing "properties" attribute of each.
+   * Memo-izes the passed hovered items by parsing 'properties' attribute of each.
    */
   const features = useMemo(() => {
     let items = props.hovered;

@@ -3,6 +3,7 @@ import _ from 'underscore';
 
 const DEFAULT_JSON_FILENAME = 'search-results.json';
 const MAX_ATTRIBUTES = 4;
+export const INVERSE_SUFFIX = '_inverse';
 
 /**
  * Adds a link to the document and downloads the passed file.
@@ -35,11 +36,11 @@ export const exportAsJSON = (hits, filename = DEFAULT_JSON_FILENAME) => {
 };
 
 /**
- * Returns the attributes from the "result_card" prop.
+ * Returns the attributes from the 'result_card' prop.
  *
  * @param config
  */
-export const getAttributes = (config) => config.result_card.attributes?.slice(0, MAX_ATTRIBUTES);
+export const getAttributes = (config) => config.result_card.attributes?.slice(0, MAX_ATTRIBUTES) || [];
 
 /**
  * Returns the facet label for the passed attribute.
@@ -52,16 +53,16 @@ export const getFacetLabel = (attribute, t, inverse = false, inverseSuffix = '_i
   let value;
   
   // exclude these from facet labels, e.g. 'Organizations' rather than 'Organizations: Name'
-  const DEFAULT_FIELDIDS = ["name", "names"]
+  const DEFAULT_FIELD_IDS = ['name', 'names'];
 
   let relationshipId = TypesenseUtils.getRelationshipId(attribute);
   const fieldId = TypesenseUtils.getFieldId(attribute);
 
-  if (inverse) {
+  if (relationshipId && inverse) {
     relationshipId = relationshipId + inverseSuffix;
   }
 
-  if (relationshipId && fieldId && !DEFAULT_FIELDIDS.includes(fieldId)) {
+  if (relationshipId && fieldId && !DEFAULT_FIELD_IDS.includes(fieldId)) {
     value = t('facetLabel', { relationship: t(relationshipId), field: t(fieldId) })
   } else if (relationshipId) {
     value = t(relationshipId);
@@ -71,6 +72,37 @@ export const getFacetLabel = (attribute, t, inverse = false, inverseSuffix = '_i
 
   return value;
 };
+
+/**
+ * Get the label for a relationship UUID.
+ * This is NOT meant for fields (e.g. '<uuid>.name'), only for top-level relationships.
+ */
+export const getRelationshipLabel = (uuid: string, t: any, inverse = false) => {
+  let value = uuid;
+
+  if (inverse) {
+    value = `${uuid}${INVERSE_SUFFIX}`;
+  }
+
+  return t(value);
+};
+
+export const isInverse = (attribute: string, hits: any[]) => {
+  if (hits.length === 0) {
+    return false;
+  }
+
+  const attributeBase = attribute.split('.')[0];
+
+  const sampleHit = _.find(hits, (hit) => (
+      hit &&
+      hit[attributeBase] &&
+      Array.isArray(hit[attributeBase]) &&
+      typeof hit[attributeBase][0] === 'object'
+  ));
+
+  return sampleHit && sampleHit[attributeBase][0]['inverse'];
+}
 
 /**
  * Gets the label for a search column as given by the result_card.attributes config array.

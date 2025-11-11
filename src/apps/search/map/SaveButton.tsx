@@ -1,4 +1,3 @@
-import { useSearchConfig } from '@apps/search/SearchContext';
 import { saveSession } from '@backend/api/session';
 import TranslationContext from '@contexts/TranslationContext';
 import {
@@ -8,7 +7,8 @@ import {
   useCachedHits
 } from '@performant-software/core-data';
 import NotificationsStore from '@store/notifications';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 const SaveButton = () => {
   const [name, setName] = useState<string>();

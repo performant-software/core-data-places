@@ -1,7 +1,6 @@
-import { useSearchConfig } from '@apps/search/SearchContext';
-import SearchHighlight from '@apps/search/SearchHighlight';
-import useHoverable from '@apps/search/useHoverable';
-import useSelectable from '@apps/search/useSelectable';
+import SearchHighlight from '@apps/search/map/SearchHighlight';
+import useHoverable from '@apps/search/map/useHoverable';
+import useSelectable from '@apps/search/map/useSelectable';
 import TranslationContext from '@contexts/TranslationContext';
 import { SearchResultsTable, useCachedHits } from '@performant-software/core-data';
 import { useNavigate } from '@peripleo/peripleo';
@@ -9,6 +8,7 @@ import { getAttributes, getColumnLabel, getHitValue } from '@root/src/utils/sear
 import clsx from 'clsx';
 import { useCallback, useContext, useMemo } from 'react';
 import _ from 'underscore';
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 interface Props {
   className?: string;

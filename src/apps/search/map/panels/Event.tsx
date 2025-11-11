@@ -1,4 +1,4 @@
-import BasePanel from '@apps/search/panels/BasePanel';
+import BasePanel from '@apps/search/map/panels/BasePanel';
 import EventsService from '@backend/api/coreData/events';
 import TranslationContext from '@contexts/TranslationContext';
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';

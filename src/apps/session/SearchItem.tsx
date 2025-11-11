@@ -1,4 +1,4 @@
-import { SearchContextProvider } from '@apps/search/SearchContext';
+import { MapSearchContextProvider } from '@apps/search/map/MapSearchContext';
 import SearchVisualizations, { ItemViews } from '@apps/session/SearchVisualizations';
 import { fetchSessionItem } from '@backend/api/session';
 import TranslationContext from '@contexts/TranslationContext';
@@ -42,7 +42,7 @@ const SearchItem = (props: Props) => {
         <TranslationContext.Provider
           value={{ lang, t }}
         >
-          <SearchContextProvider
+          <MapSearchContextProvider
             name={item?.searchName}
           >
             <div
@@ -86,7 +86,7 @@ const SearchItem = (props: Props) => {
               data={item.data}
               view={view}
             />
-          </SearchContextProvider>
+          </MapSearchContextProvider>
         </TranslationContext.Provider>
       </Peripleo>
     </RuntimeConfig>

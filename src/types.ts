@@ -13,7 +13,7 @@ export interface SearchConfig {
     icon?: string
   }>;
 
-  map:{
+  map?:{
     cluster_radius?: number,
     geometry: string,
     max_zoom?: number,
@@ -34,6 +34,8 @@ export interface SearchConfig {
   };
 
   table?: boolean;
+
+  type?: 'grid' | 'list' | 'map';
 
   typesense: {
     host: string,
@@ -117,4 +119,25 @@ export interface SearchSession {
   id: string;
   name: string;
   searchName: string;
+}
+
+export interface HitComponentProps {
+  attributes: {
+    label: string;
+    icon: string;
+    name: string;
+    value: string;
+  }[]
+  relationships: {
+    label: string;
+    names: string[];
+  }
+  highlightComponent?: React.FC<any>;
+  hit: any;
+  tags?: {
+    name: string;
+    primary?: boolean;
+    secondary?: boolean;
+    value: string;
+  }[]
 }
