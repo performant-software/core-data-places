@@ -4,7 +4,7 @@ import Table from '@visualizations/Table';
 import Timeline from '@visualizations/Timeline';
 import clsx from 'clsx';
 import { useMemo } from 'react';
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 interface Props {
   data: any;

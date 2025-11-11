@@ -1,7 +1,7 @@
-import { Pill } from "@performant-software/core-data/ssr";
-import PropTypes from "prop-types";
-import { useMemo } from "react";
-import { HitComponentProps } from "@types";
+import { Pill } from '@performant-software/core-data/ssr';
+import PropTypes from 'prop-types';
+import { useMemo } from 'react';
+import { HitComponentProps } from '@types';
 
 const GridHit = (props: HitComponentProps) => {
   const relationshipUuids = useMemo(
@@ -59,7 +59,7 @@ const GridHit = (props: HitComponentProps) => {
       )}
     </div>
   )
-}
+};
 
 GridHit.propTypes = {
   attributes: PropTypes.arrayOf(PropTypes.shape({
@@ -76,6 +76,6 @@ GridHit.propTypes = {
     secondary: PropTypes.bool,
     value: PropTypes.string,
   })),
-}
+};
 
 export default GridHit;

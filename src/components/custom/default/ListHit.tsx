@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
-import { useMemo } from "react";
-import { Pill } from "@performant-software/core-data/ssr";
-import { HitComponentProps } from "@types";
+import PropTypes from 'prop-types';
+import { useMemo } from 'react';
+import { Pill } from '@performant-software/core-data/ssr';
+import { HitComponentProps } from '@types';
 
 const ListHit = (props: HitComponentProps) => {
   const relationshipUuids = useMemo(
@@ -67,7 +67,7 @@ const ListHit = (props: HitComponentProps) => {
       )}
     </div>
   )
-}
+};
 
 ListHit.propTypes = {
   attributes: PropTypes.arrayOf(PropTypes.shape({
@@ -83,7 +83,7 @@ ListHit.propTypes = {
     primary: PropTypes.bool,
     secondary: PropTypes.bool,
     value: PropTypes.string,
-  })),
-}
+  }))
+};
 
 export default ListHit;

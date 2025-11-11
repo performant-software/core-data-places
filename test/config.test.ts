@@ -1,7 +1,7 @@
 import { Configuration } from '@types';
 import _config from '@config' with { type: 'json' };
 import { describe, expect, test } from 'vitest';
-import fs from "node:fs";
+import fs from 'node:fs';
 
 const config = _config as Configuration;
 
@@ -216,12 +216,12 @@ describe('search', () => {
 
     test.skipIf(!search.type)('type matches allowed values', () => {
       expect(search.type).toBeOneOf(validSearchTypes);
-    })
+    });
 
     describe.skipIf(search.type && search.type !== 'map')('map', () => {
       test('is not empty', () => {
         expect(search.map).toBeObject();
-      })
+      });
 
       test('cluster_radius is numeric', () => {
         expect(search.map?.cluster_radius).toBeOneOf([undefined, expect.any(Number)]);

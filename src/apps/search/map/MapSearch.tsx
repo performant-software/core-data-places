@@ -4,9 +4,9 @@ import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, Router, RuntimeConfig } from '@peripleo/peripleo';
-import MapLayout from "@apps/search/map/MapLayout";
-import { SearchConfigContextProvider } from "@apps/search/SearchConfigContext";
-import MapSearchProvider from "@apps/search/map/MapSearchProvider";
+import MapLayout from '@apps/search/map/MapLayout';
+import { SearchConfigContextProvider } from '@apps/search/SearchConfigContext';
+import MapSearchProvider from '@apps/search/map/MapSearchProvider';
 
 interface Props {
   allowSave?: boolean;
@@ -36,7 +36,7 @@ const MapSearch = ({allowSave, lang, name}: Props) => {
                   <TranslationContext.Provider
                     value={{lang, t}}
                   >
-                    <MapLayout/>
+                    <MapLayout />
                   </TranslationContext.Provider>
                 </MapSearchProvider>
               </TypesenseSearch>

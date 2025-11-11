@@ -8,7 +8,7 @@ import {
 } from '@performant-software/core-data';
 import NotificationsStore from '@store/notifications';
 import { useCallback, useContext, useState } from 'react';
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 const SaveButton = () => {
   const [name, setName] = useState<string>();

@@ -1,15 +1,11 @@
-import type { ReactNode } from "react";
-import { useGeoSearch, useInfiniteHits, useSearchBox } from "react-instantsearch";
-import { PersistentSearchStateContextProvider } from "@performant-software/core-data";
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import type { ReactNode } from 'react';
+import { useGeoSearch, useInfiniteHits, useSearchBox } from 'react-instantsearch';
+import { PersistentSearchStateContextProvider } from '@performant-software/core-data';
 
 const MapSearchProvider = (props: { children: ReactNode }) => {
-  const config = useSearchConfig();
   const geoSearch = useGeoSearch();
   const infiniteHits = useInfiniteHits();
   const searchBox = useSearchBox();
-
-  const { typesense } = config;
 
   return (
     <PersistentSearchStateContextProvider
@@ -17,7 +13,7 @@ const MapSearchProvider = (props: { children: ReactNode }) => {
       geoSearch={geoSearch}
       searchBox={searchBox}
     >
-      {props.children}
+      { props.children }
     </PersistentSearchStateContextProvider>
   )
 };

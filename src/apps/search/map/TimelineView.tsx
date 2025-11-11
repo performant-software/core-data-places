@@ -4,7 +4,7 @@ import { useNavigate } from '@peripleo/peripleo';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRange } from 'react-instantsearch';
 import _ from 'underscore';
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 interface Props {
   className?: string;

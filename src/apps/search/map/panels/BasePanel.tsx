@@ -25,7 +25,7 @@ import {
 } from 'react';
 import _ from 'underscore';
 import PanelHistoryContext from '@apps/search/map/PanelHistoryContext';
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 interface Props {
   className?: string;
@@ -456,10 +456,10 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
           boundingBoxOptions={boundingBoxOptions}
           data={geometry}
           fillStyle={{
-            type: "fill",
+            type: 'fill',
             paint: {
-              "fill-color": "#ffd546",
-              "fill-opacity": 0.4,
+              'fill-color': '#ffd546',
+              'fill-opacity': 0.4,
             },
           }}
           fitBoundingBox={_.get(config.map, 'zoom_to_place', true)}

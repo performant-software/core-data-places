@@ -13,7 +13,7 @@ import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
 import { parseFeature } from '@utils/search';
 import { useContext, useEffect, useMemo } from 'react';
 import _ from 'underscore';
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 const MapView = () => {
   const config = useSearchConfig();
@@ -36,7 +36,7 @@ const MapView = () => {
 
   /**
    * If we're on the place detail page or refining results by the map view port, we'll suppress the auto-bounding box
-   * on the SearchResultsLayer component. Also suppress the auto-bounding box if "zoom_to_place" is "false".
+   * on the SearchResultsLayer component. Also suppress the auto-bounding box if 'zoom_to_place' is 'false'.
   */
  const fitBoundingBox = useMemo(() => (
    !isRefinedWithMap() && route === '/' && config.map.zoom_to_place

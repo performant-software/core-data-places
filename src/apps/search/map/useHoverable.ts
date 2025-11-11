@@ -3,7 +3,7 @@ import { useHoverState } from '@peripleo/maplibre';
 import { parseFeature } from '@utils/map';
 import { useCallback, useMemo } from 'react';
 import _ from 'underscore';
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 const useHoverable = () => {
   const config = useSearchConfig();

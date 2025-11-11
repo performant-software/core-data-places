@@ -129,8 +129,8 @@ export interface HitComponentProps {
     value: string;
   }[]
   relationships: {
-    label: string,
-    names: string[]
+    label: string;
+    names: string[];
   }
   highlightComponent?: React.FC<any>;
   hit: any;

@@ -1,10 +1,10 @@
-import Hits from "@apps/search/list/Hits";
-import { SearchBox } from "react-instantsearch";
-import Facets from "@apps/search/Facets";
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
-import Pagination from "@apps/search/list/Pagination";
-import { useContext } from "react";
-import TranslationContext from "@contexts/TranslationContext";
+import Hits from '@apps/search/list/Hits';
+import { SearchBox } from 'react-instantsearch';
+import Facets from '@apps/search/Facets';
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import Pagination from '@apps/search/list/Pagination';
+import { useContext } from 'react';
+import TranslationContext from '@contexts/TranslationContext';
 
 interface Props {
   lang: string;
@@ -16,8 +16,8 @@ const ListLayout = (props: Props) => {
   const { t } = useContext(TranslationContext);
 
   return (
-    <div className="flex flex-row bg-neutral-50">
-      <div className="w-[300px]">
+    <div className='flex flex-row bg-neutral-50'>
+      <div className='w-[300px]'>
         <SearchBox
           placeholder={t('search')}
           classNames={{
@@ -30,12 +30,12 @@ const ListLayout = (props: Props) => {
           }}
         />
         <Facets
-          className="px-6 py-0"
+          className='px-6 py-0'
           config={config}
           open
         />
       </div>
-      <div className="flex-1 p-6">
+      <div className='flex-1 p-6'>
         <Pagination />
         <Hits lang={props.lang} />
         <Pagination />

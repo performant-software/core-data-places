@@ -13,8 +13,8 @@ import { useContext, useMemo } from 'react';
 import { useCurrentRefinements } from 'react-instantsearch';
 import _ from 'underscore';
 import { useSearching } from '@performant-software/core-data';
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
-import TranslationContext from "@contexts/TranslationContext";
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import TranslationContext from '@contexts/TranslationContext';
 
 interface Props {
   className?: string;

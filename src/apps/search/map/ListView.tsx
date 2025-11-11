@@ -7,7 +7,7 @@ import { getAttributes, getHitValue } from '@utils/search';
 import clsx from 'clsx';
 import { useCallback, useMemo } from 'react';
 import _ from 'underscore';
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 interface Props {
   className?: string;

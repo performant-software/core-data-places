@@ -1,9 +1,8 @@
 import ListLayout from '@apps/search/list/ListLayout';
-import { SearchConfig } from "@types";
-import { SearchConfigContextProvider } from "@apps/search/SearchConfigContext";
-import TranslationContext from "@contexts/TranslationContext";
-import { useTranslations } from "@i18n/useTranslations";
-import TypesenseSearch from "@apps/search/TypesenseSearch";
+import { SearchConfigContextProvider } from '@apps/search/SearchConfigContext';
+import TranslationContext from '@contexts/TranslationContext';
+import { useTranslations } from '@i18n/useTranslations';
+import TypesenseSearch from '@apps/search/TypesenseSearch';
 
 interface Props {
   lang: string;

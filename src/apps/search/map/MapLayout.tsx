@@ -16,8 +16,8 @@ import {
   useState
 } from 'react';
 import PanelHistoryContext, { PanelHistoryEntryType } from './PanelHistoryContext';
-import GeosearchFilter from "@apps/search/map/GeosearchFilter";
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import GeosearchFilter from '@apps/search/map/GeosearchFilter';
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 const DEFAULT_MAX_ZOOM = 14;
 
@@ -47,7 +47,7 @@ const MapLayout = () => {
   const [panelHistory, setPanelHistory] = useState<PanelHistoryEntryType[]>([]);
 
   const { setBoundingBoxOptions, setControlsClass } = useContext(MapSearchContext);
-  const config = useSearchConfig()
+  const config = useSearchConfig();
 
   const route = useCurrentRoute();
   const id = getCurrentId(route);

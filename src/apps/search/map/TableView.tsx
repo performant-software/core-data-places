@@ -8,7 +8,7 @@ import { getAttributes, getColumnLabel, getHitValue } from '@root/src/utils/sear
 import clsx from 'clsx';
 import { useCallback, useContext, useMemo } from 'react';
 import _ from 'underscore';
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 interface Props {
   className?: string;

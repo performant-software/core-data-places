@@ -1,6 +1,6 @@
 import { SearchBox } from 'react-instantsearch';
-import { useContext } from "react";
-import TranslationContext from "@contexts/TranslationContext";
+import { useContext } from 'react';
+import TranslationContext from '@contexts/TranslationContext';
 
 const Searchbox = () => {
   const { t } = useContext(TranslationContext);

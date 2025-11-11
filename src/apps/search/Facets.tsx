@@ -8,7 +8,7 @@ import { FacetStateContext } from '@performant-software/core-data';
 import clsx from 'clsx';
 import { useCallback, useContext, useMemo } from 'react';
 import _ from 'underscore';
-import { SearchConfig } from "@types";
+import { SearchConfig } from '@types';
 
 const TYPE_LIST = 'list';
 const TYPE_RANGE = 'range';
@@ -41,7 +41,7 @@ const Facets = (props: Props) => {
     } else {
       return copy;
     }
-  }, [typesense])
+  }, [typesense]);
 
   const sortedAttributes = useMemo(() => sortAttributes(attributes), [attributes, sortAttributes]);
 
@@ -115,7 +115,7 @@ const Facets = (props: Props) => {
         <ClearRefinementsButton />
       </div>
       <CurrentRefinementsList />
-      {props.children}
+      { props.children }
       { _.map(sortedRangeAttributes, (attribute) => renderFacet(attribute, TYPE_RANGE)) }
       { _.map(sortedAttributes, (attribute) => renderFacet(attribute, TYPE_LIST)) }
     </aside>

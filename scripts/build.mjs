@@ -3,7 +3,7 @@ import { fetchConfig } from './build.config.mjs';
 import { fetchContent } from './build.content.mjs';
 import { buildUserDefinedFields } from './build.fields.mjs';
 import { buildSearch } from './build.search.mjs';
-import { copyComponents } from "./build.components.mjs";
+import { copyComponents } from './build.components.mjs';
 
 (async function() {
   // Pull in environment variables

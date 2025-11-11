@@ -5,8 +5,8 @@ import { useMemo, type ReactNode } from 'react';
 import {
   InstantSearch, useRange, useRefinementList,
 } from 'react-instantsearch';
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
-import { FacetStateContextProvider } from "@performant-software/core-data";
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import { FacetStateContextProvider } from '@performant-software/core-data';
 
 const TypesenseSearch = (props: { children: ReactNode }) => {
   const config = useSearchConfig();

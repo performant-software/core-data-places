@@ -3,7 +3,7 @@ import { Icon } from '@performant-software/core-data';
 import { getFacetLabel, isInverse } from '@utils/search';
 import clsx from 'clsx';
 import { useContext, type ReactNode, useState, useEffect } from 'react';
-import { useHits } from "react-instantsearch";
+import { useHits } from 'react-instantsearch';
 
 interface Props {
   attribute: string;

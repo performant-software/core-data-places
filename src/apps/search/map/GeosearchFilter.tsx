@@ -1,7 +1,7 @@
 import TranslationContext from '@contexts/TranslationContext';
 import { Checkbox, useGeoSearchToggle } from '@performant-software/core-data';
 import { useContext } from 'react';
-import { useSearchConfig } from "@apps/search/SearchConfigContext";
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 const GeosearchFilter = () => {
   const config = useSearchConfig();

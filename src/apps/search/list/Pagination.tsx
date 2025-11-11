@@ -1,6 +1,6 @@
 import { Pagination as PerformantPagination } from '@performant-software/core-data';
-import { useHitsPerPage, usePagination } from "react-instantsearch";
-import { useCallback, useState } from "react";
+import { useHitsPerPage, usePagination } from 'react-instantsearch';
+import { useCallback, useState } from 'react';
 
 const HITS_PER_PAGE_DUMMY_ARRAY = [
   { value: 50, default: true, label: ''}
@@ -31,13 +31,13 @@ const Pagination = () => {
   }, [refineHitsPerPage]);
 
   const onChangePage = useCallback((value: number) => {
-    setPage(value)
+    setPage(value);
     refine(value - 1);
   }, [refine]);
 
   return (
     <PerformantPagination
-      className="bg-transparent!"
+      className='bg-transparent!'
       nbHits={nbHits}
       page={page}
       nbPages={nbPages}
