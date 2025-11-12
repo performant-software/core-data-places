@@ -46,7 +46,7 @@ const INVERSE_SUFFIX = '_inverse';
  * @param excludes
  */
 export const groupRelationships = (relatedRecords: any[], excludes: string[]) => {
-  const relations = []
+  const relations = {}
 
   relatedRecords.forEach(rel => {
     if (excludes.includes(rel.project_model_relationship_uuid)) {
