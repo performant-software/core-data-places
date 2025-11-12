@@ -11,7 +11,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 
 const { lang, uuid } = Astro.params;
 
-const { organization } = await OrganizationsService.getFull(uuid);
+const { organization } = await OrganizationsService.getOne(uuid);
 const excludes = config.result_filtering?.organizations?.exclude || [];
 
 const coverUrl = getCoverImage(organization);
@@ -26,8 +26,10 @@ export const getStaticPaths = async () => await getDetailPagePaths(config, Model
     excludes={excludes}
     geometry={geometry}
     lang={lang}
+    model='organizations'
     name={organization.name}
     record={organization}
+    server:defer
   >
     {organization.description && !excludes.includes('description')
       ? <p class="text-neutral-800 py-6 break-words">{organization.description}</p>

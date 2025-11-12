@@ -1,0 +1,21 @@
+---
+import { Models } from '@types';
+import ServiceFactory from '@services/coreData/factory';
+import MediaContents from "@apps/pages/RecordDetail/MediaContents";
+
+interface Props {
+  lang: string;
+  model: string;
+  uuid: string;
+}
+
+const { lang, model, uuid } = Astro.props;
+
+const service = ServiceFactory.getService(model);
+const { manifests } = await service.getRelatedManifests(uuid);
+---
+<MediaContents
+  client:only='react'
+  data={manifests}
+  lang={lang}
+/>

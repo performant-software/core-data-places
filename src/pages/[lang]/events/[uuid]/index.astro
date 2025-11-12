@@ -12,7 +12,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 
 const { lang, uuid } = Astro.params;
 
-const { event } = await EventsService.getFull(uuid);
+const { event } = await EventsService.getOne(uuid);
 const excludes = config.result_filtering?.events?.exclude || [];
 
 const coverUrl = getCoverImage(event);
@@ -26,9 +26,11 @@ export const getStaticPaths = async () => await getDetailPagePaths(config, Model
     coverUrl={coverUrl}
     excludes={excludes}
     geometry={geometry}
+    model='events'
     lang={lang}
     name={event.name}
     record={event}
+    server:defer
   >
     {event.description ? <p class="text-neutral-800 py-6 break-words">{event.description}</p> : null}
     {['start_date', 'end_date'].map(field => {

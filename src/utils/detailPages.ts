@@ -3,7 +3,7 @@ import { CoreData as CoreDataUtils } from '@performant-software/core-data/ssr';
 
 type Models = 'events' | 'instances' | 'items' | 'mediaContents' | 'organizations' | 'people' | 'places' | 'works';
 
-export const getDetailPagePaths = (async (config: any, model: Models) => {
+export const getDetailPagePaths = (async (config: any, model: string) => {
   let routes = [];
 
   if (!config.detail_pages || !config.detail_pages.includes(model)) {
@@ -36,4 +36,33 @@ export const getRelatedGeometry = (record: any) => {
   }
 
   return null
+}
+
+const INVERSE_SUFFIX = '_inverse';
+
+/**
+ * Groups a set of related records (e.g. related people) by relationship UUID.
+ * @param relatedRecords
+ * @param excludes
+ */
+export const groupRelationships = (relatedRecords: any[], excludes: string[]) => {
+  const relations = []
+
+  relatedRecords.forEach(rel => {
+    if (excludes.includes(rel.project_model_relationship_uuid)) {
+      return
+    }
+
+    const key = rel.project_model_relationship_inverse
+        ? rel.project_model_relationship_uuid + INVERSE_SUFFIX
+        : rel.project_model_relationship_uuid;
+
+    if (relations[key]) {
+      relations[key].push(rel);
+    } else {
+      relations[key] = [rel];
+    }
+  })
+
+  return relations
 }

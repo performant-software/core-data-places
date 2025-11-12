@@ -1,71 +1,39 @@
 ---
-import BackButton from "@components/BackButton";
-import Container from "@components/Container.astro";
-import { getNameView } from "@utils/people";
-import MediaContents from "./MediaContents";
-import PlaceMap from "./PlaceMap";
-import Relations from "./Relations.astro";
-import UserDefined from "./UserDefined.astro";
-import Identifiers from "./Identifiers.astro";
+import BackButton from '@components/BackButton';
+import Container from '@components/Container.astro';
+import PlaceMap from './PlaceMap';
+import UserDefined from './UserDefined.astro';
+import Identifiers from './Identifiers.astro';
+import RelatedEvents from '@apps/pages/RecordDetail/RelatedEvents.astro';
+import RelatedItems from '@apps/pages/RecordDetail/RelatedItems.astro';
+import RelatedInstances from '@apps/pages/RecordDetail/RelatedInstances.astro';
+import RelatedOrganizations from '@apps/pages/RecordDetail/RelatedOrganizations.astro';
+import RelatedPeople from '@apps/pages/RecordDetail/RelatedPeople.astro';
+import RelatedPlaces from '@apps/pages/RecordDetail/RelatedPlaces.astro';
+import RelatedWorks from '@apps/pages/RecordDetail/RelatedWorks.astro';
+import RelatedTaxonomies from '@apps/pages/RecordDetail/RelatedTaxonomies.astro';
+import RelatedMedia from '@apps/pages/RecordDetail/RelatedMedia.astro';
 
 interface Props {
   coverUrl?: string;
   excludes: string[];
   geometry?: any;
   lang: string;
+  model: string;
   name: string;
   record: any;
 }
 
-const { coverUrl, excludes, geometry, lang, name, record } = Astro.props;
-
-const relations = {
-  events: {},
-  instances: {},
-  items: {},
-  manifests: record.relatedRecords?.manifests,
-  mediaContents: {},
-  organizations: {},
-  people: {},
-  places: {},
-  taxonomies: {},
-  works: {}
-}
-
-const INVERSE_SUFFIX = '_inverse';
-
-// group relations by the UUID of the relationship
-for (const modelType of Object.keys(record.relatedRecords)) {
-  if (modelType === 'manifests') {
-    continue
-  }
-
-  record.relatedRecords[modelType].forEach(rel => {
-    if (excludes.includes(rel.project_model_relationship_uuid)) {
-      return
-    }
-
-    const key = rel.project_model_relationship_inverse
-      ? rel.project_model_relationship_uuid + INVERSE_SUFFIX
-      : rel.project_model_relationship_uuid;
-
-    const relationArray = relations[modelType][key];
-    if (relationArray) {
-      relationArray.push(rel);
-    } else {
-      relations[modelType][key] = [rel];
-    }
-  })
-}
+const { coverUrl, excludes, geometry, lang, model, name, record } = Astro.props;
 ---
 
-<Container className="py-6 w-full">
+<Container className='py-6 w-full'>
   <BackButton
     className='absolute top-[26px]'
     id='backButton'
   />
-  <div class="ml-12 divide-y divide-solid divide-[#e5e5e5]">
-    <h1 class="font-bold text-3xl text-neutral-800 mt-0 mb-6">{name}</h1>
+  <div class='ml-12 divide-y divide-solid divide-[#e5e5e5]'>
+    <h1 class='font-bold text-3xl text-neutral-800 mt-0 mb-6'>{name}</h1>
     {(geometry || coverUrl) && (
       <div class='h-[360px] py-6 mx-auto flex gap-6 w-full'>
         {coverUrl && (
@@ -89,81 +57,60 @@ for (const modelType of Object.keys(record.relatedRecords)) {
     <Identifiers
       record={record}
     />
-    {relations.manifests && (
-      <MediaContents
-        client:only="react"
-        data={relations.manifests}
-        lang={lang}
-      />
-    )}
-    {Object.keys(relations.events).map((uuid) => (
-      <Relations
-        data={relations.events[uuid]}
-        icon='date'
-        model="events"
-        resolveName={event => event.name}
-        uuid={uuid}
-      />
-    ))}
-    {Object.keys(relations.instances).map((uuid) => (
-      <Relations
-        data={relations.instances[uuid]}
-        model="instances"
-        resolveName={instance => instance.name}
-        uuid={uuid}
-      />
-    ))}
-    {Object.keys(relations.items).map((uuid) => (
-      <Relations
-        data={relations.items[uuid]}
-        model="items"
-        resolveName={item => item.name}
-        uuid={uuid}
-      />
-    ))}
-    {Object.keys(relations.organizations).map((uuid) => (
-      <Relations
-        data={relations.organizations[uuid]}
-        icon="occupation"
-        model="organizations"
-        resolveName={organization => organization.name}
-        uuid={uuid}
-      />
-    ))}
-    {Object.keys(relations.people).map((uuid) => (
-      <Relations
-        data={relations.people[uuid]}
-        icon="person"
-        model="people"
-        resolveName={person => getNameView(person)}
-        uuid={uuid}
-      />
-    ))}
-    {Object.keys(relations.places).map((uuid) => (
-      <Relations
-        data={relations.places[uuid]}
-        icon="location"
-        model="places"
-        resolveName={place => place.name}
-        uuid={uuid}
-      />
-    ))}
-    {Object.keys(relations.taxonomies).map((uuid) => (
-      <Relations
-        data={relations.taxonomies[uuid]}
-        model="taxonomies"
-        resolveName={item => item.name}
-        uuid={uuid}
-      />
-    ))}
-    {Object.keys(relations.works).map((uuid) => (
-      <Relations
-        data={relations.works[uuid]}
-        model="works"
-        resolveName={work => work.name}
-        uuid={uuid}
-      />
-    ))}
+    <RelatedMedia
+      lang={lang}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedEvents
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedInstances
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedItems
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedOrganizations
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedPeople
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedPlaces
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedTaxonomies
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedWorks
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
   </div>
 </Container>
 

@@ -11,7 +11,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 
 const { lang, uuid } = Astro.params;
 
-const { work } = await WorksService.getFull(uuid)
+const { work } = await WorksService.getOne(uuid)
 const excludes = config.result_filtering?.works?.exclude || []
 
 const coverUrl = getCoverImage(work);
@@ -26,7 +26,9 @@ export const getStaticPaths = async () => await getDetailPagePaths(config, Model
     excludes={excludes}
     geometry={geometry}
     lang={lang}
+    model='works'
     name={work.name}
     record={work}
+    server:defer
   />
 </Layout>

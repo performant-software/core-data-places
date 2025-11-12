@@ -1,0 +1,26 @@
+---
+import { Models } from '@types';
+import ServiceFactory from '@services/coreData/factory';
+import Relations from '@apps/pages/RecordDetail/Relations.astro';
+import { groupRelationships } from '@utils/detailPages';
+
+interface Props {
+  excludes: string[];
+  model: string;
+  uuid: string;
+}
+
+const { excludes, model, uuid } = Astro.props;
+
+const service = ServiceFactory.getService(model);
+const { instances } = await service.getRelatedInstances(uuid);
+const relationships = groupRelationships(instances, excludes);
+---
+{Object.keys(relationships).map((uuid) => (
+  <Relations
+    data={relationships[uuid]}
+    model='instances'
+    resolveName={instance => instance.name}
+    uuid={uuid}
+  />
+))}

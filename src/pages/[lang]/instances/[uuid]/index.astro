@@ -11,7 +11,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 
 const { lang, uuid } = Astro.params;
 
-const { instance } = await InstancesService.getFull(uuid);
+const { instance } = await InstancesService.getOne(uuid);
 const excludes = config.result_filtering?.instances?.exclude || [];
 
 const coverUrl = getCoverImage(instance);
@@ -26,7 +26,9 @@ export const getStaticPaths = async () => await getDetailPagePaths(config, Model
     excludes={excludes}
     geometry={geometry}
     lang={lang}
+    model='instances'
     name={instance.name}
     record={instance}
+    server:defer
   />
 </Layout>
