@@ -1,0 +1,59 @@
+---
+import UserDefined from '@apps/pages/RecordDetail/UserDefined.astro';
+import Identifiers from '@apps/pages/RecordDetail/Identifiers.astro';
+import RelatedMedia from '@apps/pages/RecordDetail/RelatedMedia.astro';
+import PlaceMap from '@apps/pages/RecordDetail/PlaceMap';
+import RelatedPlaces from '@apps/pages/RecordDetail/RelatedPlaces.astro';
+import ServiceFactory from '@services/coreData/factory';
+import { getCoverImage, getRelatedGeometry } from '@utils/detailPages';
+
+interface Props {
+  excludes: string[];
+  lang: string;
+  name: string;
+  record: any;
+  model: string
+}
+
+const { excludes, lang, record, model, name } = Astro.props;
+
+const service = ServiceFactory.getService(model);
+const { places } = await service.getRelatedPlaces(record.uuid, true);
+const { mediaContents } = await service.getRelatedMediaContents(record.uuid);
+
+const geometry = model === 'places'
+  ? !excludes.includes('place_geometry') ? record.place_geometry?.geometry_json : null
+  : getRelatedGeometry(places);
+
+const coverUrl = getCoverImage(mediaContents);
+---
+{(geometry || coverUrl) && (
+  <div class='h-[360px] py-6 mx-auto flex gap-6 w-full'>
+    {coverUrl && (
+      <img
+        alt={name}
+        class={`${geometry ? 'w-[30%]' : 'w-full'} h-full object-cover`}
+        src={coverUrl}
+      />
+    )}
+    {geometry && (
+      <div class={coverUrl ? 'w-[70%]' : 'w-full'}>
+        <PlaceMap client:only='react' lang={lang} geometry={geometry}/>
+      </div>
+    )}
+  </div>
+)}
+<slot />
+<UserDefined
+  record={record}
+  excludes={excludes}
+/>
+<Identifiers
+  record={record}
+/>
+<RelatedPlaces
+  excludes={excludes}
+  model={model}
+  places={places}
+  uuid={record.uuid}
+/>

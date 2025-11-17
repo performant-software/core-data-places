@@ -2,6 +2,7 @@ import config from '@config';
 import { hasContentCollection } from '@root/src/content.config';
 import { getCollection, getEntry } from 'astro:content';
 import _ from 'underscore';
+import { CoreData as CoreDataUtils } from '@performant-software/core-data/ssr';
 
 const REQUEST_PARAMS = {
   per_page: 0
@@ -173,7 +174,7 @@ class Base {
         const response = await this.service.fetchRelatedMedia(id, REQUEST_PARAMS);
         mediaContents = response.media_contents;
       }
-  
+
       return { mediaContents };
     }
 
@@ -217,8 +218,9 @@ class Base {
    * Returns the related places for the record with the passed ID.
    *
    * @param id
+   * @param includeGeometry
    */
-  async getRelatedPlaces(id: string) {
+  async getRelatedPlaces(id: string, includeGeometry = false) {
     let places;
 
     if (this.useCache()) {
@@ -228,7 +230,13 @@ class Base {
       places = response.places;
     }
 
-    return { places };
+    let geometry;
+
+    if (includeGeometry && places && places.length > 0) {
+      geometry = CoreDataUtils.toFeatureCollection(places);
+    }
+
+    return { geometry, places };
   }
 
   /**

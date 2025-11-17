@@ -6,7 +6,7 @@ import { getTranslations } from '@backend/i18n';
 import { ModelNames } from '@services/coreData/factory';
 import PeopleService from '@services/coreData/people';
 import { getNameView } from "@utils/people";
-import { getCoverImage, getDetailPagePaths, getRelatedGeometry } from "@utils/detailPages";
+import { getDetailPagePaths } from "@utils/detailPages";
 
 const { t } = await getTranslations(Astro.currentLocale);
 
@@ -14,9 +14,6 @@ const { lang, uuid } = Astro.params;
 
 const { person } = await PeopleService.getOne(uuid);
 const excludes = config.result_filtering?.people?.exclude || [];
-
-const coverUrl = getCoverImage(person);
-const geometry = getRelatedGeometry(person);
 
 export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.people);
 ---
@@ -28,9 +25,6 @@ export const getStaticPaths = async () => await getDetailPagePaths(config, Model
     model='people'
     name={getNameView(person)}
     record={person}
-    coverUrl={coverUrl}
-    geometry={geometry}
-    server:defer
   >
     {person.biography && !excludes.includes('biography')
       ? <p class="text-neutral-800 py-6 break-words">{person.biography}</p>

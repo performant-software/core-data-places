@@ -13,18 +13,17 @@ import RelatedPlaces from '@apps/pages/RecordDetail/RelatedPlaces.astro';
 import RelatedWorks from '@apps/pages/RecordDetail/RelatedWorks.astro';
 import RelatedTaxonomies from '@apps/pages/RecordDetail/RelatedTaxonomies.astro';
 import RelatedMedia from '@apps/pages/RecordDetail/RelatedMedia.astro';
+import GeoHeader from "@apps/pages/RecordDetail/GeoHeader.astro";
 
 interface Props {
-  coverUrl?: string;
   excludes: string[];
-  geometry?: any;
   lang: string;
   model: string;
   name: string;
   record: any;
 }
 
-const { coverUrl, excludes, geometry, lang, model, name, record } = Astro.props;
+const { excludes, lang, model, name, record } = Astro.props;
 ---
 
 <Container className='py-6 w-full'>
@@ -34,28 +33,13 @@ const { coverUrl, excludes, geometry, lang, model, name, record } = Astro.props;
   />
   <div class='ml-12 divide-y divide-solid divide-[#e5e5e5]'>
     <h1 class='font-bold text-3xl text-neutral-800 mt-0 mb-6'>{name}</h1>
-    {(geometry || coverUrl) && (
-      <div class='h-[360px] py-6 mx-auto flex gap-6 w-full'>
-        {coverUrl && (
-          <img
-            class={`${geometry ? 'w-[30%]' : 'w-full'} h-full object-cover`}
-            src={coverUrl}
-          />
-        )}
-        {geometry && (
-          <div class={coverUrl ? 'w-[70%]' : 'w-full'}>
-            <PlaceMap client:only='react' lang={lang} geometry={geometry} />
-          </div>
-        )}
-      </div>
-    )}
-    <slot />
-    <UserDefined
-      record={record}
+    <GeoHeader
       excludes={excludes}
-    />
-    <Identifiers
+      lang={lang}
+      model={model}
+      name={name}
       record={record}
+      server:defer
     />
     <RelatedMedia
       lang={lang}
@@ -88,12 +72,6 @@ const { coverUrl, excludes, geometry, lang, model, name, record } = Astro.props;
       server:defer
     />
     <RelatedPeople
-      excludes={excludes}
-      model={model}
-      uuid={record.uuid}
-      server:defer
-    />
-    <RelatedPlaces
       excludes={excludes}
       model={model}
       uuid={record.uuid}

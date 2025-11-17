@@ -22,17 +22,17 @@ export const getDetailPagePaths = (async (config: any, model: string) => {
   return routes;
 });
 
-export const getCoverImage = (record: any) => {
-  if (record?.relatedRecords?.mediaContents && record.relatedRecords.mediaContents.length > 0) {
-    return record.relatedRecords.mediaContents[0].content_iiif_url
+export const getCoverImage = (mediaContents?: any[]) => {
+  if (mediaContents && mediaContents.length > 0) {
+    return mediaContents[0].content_iiif_url
   }
 
   return null
 }
 
-export const getRelatedGeometry = (record: any) => {
-  if (record?.relatedRecords?.places && record.relatedRecords.places.length > 0) {
-    return CoreDataUtils.toFeatureCollection(record.relatedRecords.places)
+export const getRelatedGeometry = (places?: any[]) => {
+  if (places && places.length > 0) {
+    return CoreDataUtils.toFeatureCollection(places)
   }
 
   return null

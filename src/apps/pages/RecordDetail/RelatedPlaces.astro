@@ -1,5 +1,4 @@
 ---
-import { Models } from '@types';
 import ServiceFactory from '@services/coreData/factory';
 import Relations from '@apps/pages/RecordDetail/Relations.astro';
 import { groupRelationships } from '@utils/detailPages';
@@ -7,13 +6,12 @@ import { groupRelationships } from '@utils/detailPages';
 interface Props {
   excludes: string[];
   model: string;
+  places: any[]
   uuid: string;
 }
 
-const { excludes, model, uuid } = Astro.props;
+const { excludes, model, places, uuid } = Astro.props;
 
-const service = ServiceFactory.getService(model);
-const { places } = await service.getRelatedPlaces(uuid);
 const relationships = groupRelationships(places, excludes);
 ---
 {Object.keys(relationships).map((uuid) => (
