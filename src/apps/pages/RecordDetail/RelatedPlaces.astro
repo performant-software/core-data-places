@@ -1,5 +1,4 @@
 ---
-import ServiceFactory from '@services/coreData/factory';
 import Relations from '@apps/pages/RecordDetail/Relations.astro';
 import { groupRelationships } from '@utils/detailPages';
 
@@ -10,7 +9,7 @@ interface Props {
   uuid: string;
 }
 
-const { excludes, model, places, uuid } = Astro.props;
+const { excludes, places } = Astro.props;
 
 const relationships = groupRelationships(places, excludes);
 ---
