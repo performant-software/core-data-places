@@ -1,12 +1,12 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import config from "@config";
-import RecordDetail from "@apps/pages/RecordDetail/index.astro";
+import Layout from '@layouts/Layout.astro';
+import config from '@config';
+import RecordDetail from '@apps/pages/RecordDetail/index.astro';
 import { getTranslations } from '@backend/i18n';
 import { ModelNames } from '@services/coreData/factory';
 import PeopleService from '@services/coreData/people';
-import { getNameView } from "@utils/people";
-import { getDetailPagePaths } from "@utils/detailPages";
+import { getNameView } from '@utils/people';
+import { getDetailPagePaths } from '@utils/detailPages';
 
 const { t } = await getTranslations(Astro.currentLocale);
 
@@ -27,7 +27,7 @@ export const getStaticPaths = async () => await getDetailPagePaths(config, Model
     record={person}
   >
     {person.biography && !excludes.includes('biography')
-      ? <p class="text-neutral-800 py-6 break-words">{person.biography}</p>
+      ? <p class='text-neutral-800 py-6 break-words'>{person.biography}</p>
       : null}
   </RecordDetail>
 </Layout>
