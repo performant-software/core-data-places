@@ -3,7 +3,7 @@ import { CoreData as CoreDataUtils } from '@performant-software/core-data/ssr';
 
 type Models = 'events' | 'instances' | 'items' | 'mediaContents' | 'organizations' | 'people' | 'places' | 'works';
 
-export const getDetailPagePaths = (async (config: any, model: string) => {
+export const getDetailPagePaths = (async (config: any, model: Models) => {
   let routes = [];
 
   if (!config.detail_pages || !config.detail_pages.includes(model)) {
