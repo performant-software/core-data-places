@@ -26,7 +26,6 @@ import {
 import _ from 'underscore';
 import PanelHistoryContext from '@apps/search/map/PanelHistoryContext';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
-import { preProcessFile } from 'typescript';
 import { useCachedPlaces } from '../MapFeaturesContext';
 
 interface Props {
