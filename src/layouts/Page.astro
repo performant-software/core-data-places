@@ -30,7 +30,6 @@ const SectionTypes = {
 };
 
 ---
-
 <Layout
   footer
   fullscreen
@@ -38,10 +37,9 @@ const SectionTypes = {
   tab={page?._sys?.filename}
   title={page?.title}
 >
-  { _.map(page?.sections, (section, index) => (
+  { _.map(page?.sections, section => (
     <section
       class='relative'
-      key={index}
     >
       { section.__typename === SectionTypes.carousel && (
         <Container>

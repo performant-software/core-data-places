@@ -1,31 +1,27 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import config from "@config";
-import RecordDetail from "@apps/pages/RecordDetail/index.astro";
+import Layout from '@layouts/Layout.astro';
+import config from '@config';
+import RecordDetail from '@apps/pages/RecordDetail/index.astro';
 import { getTranslations } from '@backend/i18n';
 import { ModelNames } from '@services/coreData/factory';
 import InstancesService from '@services/coreData/instances';
-import { getCoverImage, getDetailPagePaths, getRelatedGeometry } from "@utils/detailPages";
+import { getDetailPagePaths } from '@utils/detailPages';
 
 const { t } = await getTranslations(Astro.currentLocale);
 
 const { lang, uuid } = Astro.params;
 
-const { instance } = await InstancesService.getFull(uuid);
+const { instance } = await InstancesService.getOne(uuid);
 const excludes = config.result_filtering?.instances?.exclude || [];
-
-const coverUrl = getCoverImage(instance);
-const geometry = getRelatedGeometry(instance);
 
 export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.instances);
 ---
 
 <Layout footer t={t} title={instance.name}>
   <RecordDetail
-    coverUrl={coverUrl}
     excludes={excludes}
-    geometry={geometry}
     lang={lang}
+    model='instances'
     name={instance.name}
     record={instance}
   />

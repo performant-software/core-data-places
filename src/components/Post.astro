@@ -1,0 +1,15 @@
+---
+import PostContent from "@apps/posts/PostContent";
+import {fetchPost} from "@backend/tina";
+
+const { slug } = Astro.props;
+
+const post = await fetchPost(slug);
+---
+<PostContent
+  content={post?.body}
+  title={post?.title}
+  author={post?.author}
+  date={post?.date}
+  client:only='react'
+/>

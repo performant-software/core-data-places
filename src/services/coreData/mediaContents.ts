@@ -18,11 +18,6 @@ class MediaContents extends Base {
     return Promise.reject();
   }
 
-  async getFull(id: string) {
-    // Not implemented
-    return Promise.reject();
-  }
-
   async getRelatedEvents(id: string) {
     // Not implemented
     return Promise.reject();

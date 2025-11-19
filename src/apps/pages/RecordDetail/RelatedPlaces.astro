@@ -1,0 +1,28 @@
+---
+import Relations from '@apps/pages/RecordDetail/Relations.astro';
+import { groupRelationships } from '@utils/detailPages';
+import config from '@config';
+import { getTranslations } from '@backend/i18n';
+
+interface Props {
+  excludes: string[];
+  places: any[];
+}
+
+const { excludes, places } = Astro.props;
+
+const lang = Astro.currentLocale;
+const relationships = groupRelationships(places, excludes);
+const { t } = await getTranslations(lang);
+---
+{Object.keys(relationships).map((uuid) => (
+  <Relations
+    data={relationships[uuid]}
+    icon='location'
+    label={t(uuid)}
+    resolveDetailUrl={(place) => `/${lang}/places/${place.uuid}`}
+    resolveName={place => place.name}
+    showLinks={config.detail_pages.includes('places')}
+    uuid={uuid}
+  />
+))}

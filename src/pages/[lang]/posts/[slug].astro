@@ -1,7 +1,7 @@
 ---
-import PostContent from '@apps/posts/PostContent';
+import Post from '@components/Post.astro';
 import { getTranslations } from '@backend/i18n';
-import { fetchPost, fetchPosts } from '@backend/tina';
+import { fetchPosts } from '@backend/tina';
 import Container from '@components/Container.astro';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
@@ -9,7 +9,6 @@ import { hasPostsContent } from '@utils/config';
 import _ from 'underscore';
 
 const { slug } = Astro.params;
-const post = await fetchPost(slug);
 
 const { t } = await getTranslations(Astro.currentLocale);
 
@@ -45,12 +44,9 @@ export const getStaticPaths = async () => {
   <Container
     className='pb-16 w-full'
   >
-    <PostContent
-      content={post?.body}
-      title={post?.title}
-      author={post?.author}
-      date={post?.date}
-      client:only='react'
+    <Post
+      slug={slug}
+      server:defer
     />
   </Container>
 </Layout>

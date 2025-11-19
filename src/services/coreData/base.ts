@@ -49,54 +49,6 @@ class Base {
   }
 
   /**
-   * Returns the full record for the passed ID. The returned object will include a `relatedRecords` attribute.
-   *
-   * @param id
-   */
-  async getFull(id: string) {
-    let record;
-
-    if (this.useCache()) {
-      const entry = await getEntry(this.name, id);
-      record = entry?.data;
-    } else {
-      const response = await this.service.fetchOne(id);
-      record = response[this.param];
-
-      const { events } = await this.getRelatedEvents(id);
-      const { instances } = await this.getRelatedInstances(id);
-      const { items } = await this.getRelatedItems(id);
-      const { mediaContents } = await this.getRelatedMediaContents(id);
-      const { organizations } = await this.getRelatedOrganizations(id);
-      const { people } = await this.getRelatedPeople(id);
-      const { places } = await this.getRelatedPlaces(id);
-      const { taxonomies } = await this.getRelatedTaxonomies(id);
-      const { works } = await this.getRelatedWorks(id);
-
-      const manifests = await this.getRelatedManifests(id);
-
-      _.extend(record, {
-        relatedRecords: {
-          events,
-          instances,
-          items,
-          manifests,
-          mediaContents,
-          organizations,
-          people,
-          places,
-          taxonomies,
-          works
-        }
-      });
-    }
-
-    return {
-      [this.param]: record
-    };
-  }
-
-  /**
    * Returns the record for the passed ID.
    *
    * @param id
@@ -221,7 +173,7 @@ class Base {
         const response = await this.service.fetchRelatedMedia(id, REQUEST_PARAMS);
         mediaContents = response.media_contents;
       }
-  
+
       return { mediaContents };
     }
 

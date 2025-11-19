@@ -1,0 +1,31 @@
+---
+import ServiceFactory from '@services/coreData/factory';
+import Relations from '@apps/pages/RecordDetail/Relations.astro';
+import { groupRelationships } from '@utils/detailPages';
+import config from '@config';
+import { getTranslations } from '@backend/i18n';
+
+interface Props {
+  excludes: string[];
+  model: string;
+  uuid: string;
+}
+
+const { excludes, model, uuid } = Astro.props;
+
+const lang = Astro.currentLocale;
+const service = ServiceFactory.getService(model);
+const { instances } = await service.getRelatedInstances(uuid);
+const relationships = groupRelationships(instances, excludes);
+const { t } = await getTranslations(lang);
+---
+{Object.keys(relationships).map((uuid) => (
+  <Relations
+    data={relationships[uuid]}
+    label={t(uuid)}
+    resolveDetailUrl={(instance) => `/${lang}/instances/${instance.uuid}`}
+    resolveName={instance => instance.name}
+    showLinks={config.detail_pages.includes('instances')}
+    uuid={uuid}
+  />
+))}

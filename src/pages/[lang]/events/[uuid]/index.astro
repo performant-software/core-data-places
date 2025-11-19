@@ -1,42 +1,38 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import config from "@config";
-import RecordDetail from "@apps/pages/RecordDetail/index.astro";
+import Layout from '@layouts/Layout.astro';
+import config from '@config';
+import RecordDetail from '@apps/pages/RecordDetail/index.astro';
 import { getTranslations } from '@backend/i18n';
 import EventsService from '@services/coreData/events';
 import { ModelNames } from '@services/coreData/factory';
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
-import { getCoverImage, getDetailPagePaths, getRelatedGeometry } from '@utils/detailPages';
+import { getDetailPagePaths } from '@utils/detailPages';
 
 const { t } = await getTranslations(Astro.currentLocale);
 
 const { lang, uuid } = Astro.params;
 
-const { event } = await EventsService.getFull(uuid);
+const { event } = await EventsService.getOne(uuid);
 const excludes = config.result_filtering?.events?.exclude || [];
-
-const coverUrl = getCoverImage(event);
-const geometry = getRelatedGeometry(event);
 
 export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.events);
 ---
 
 <Layout footer t={t} title={event.name}>
   <RecordDetail
-    coverUrl={coverUrl}
     excludes={excludes}
-    geometry={geometry}
+    model='events'
     lang={lang}
     name={event.name}
     record={event}
   >
-    {event.description ? <p class="text-neutral-800 py-6 break-words">{event.description}</p> : null}
+    {event.description ? <p class='text-neutral-800 py-6 break-words'>{event.description}</p> : null}
     {['start_date', 'end_date'].map(field => {
       if (event[field] && !excludes.includes(field)) {
         return (
-          <div class="py-6">
-            <h2 class="capitalize text-lg font-semibold">{t(field)}</h2>
-            <div class="text-neutral-800">
+          <div class='py-6'>
+            <h2 class='capitalize text-lg font-semibold'>{t(field)}</h2>
+            <div class='text-neutral-800'>
               <p>{FuzzyDateUtils.getDateView(event[field])}</p>
             </div>
           </div>
