@@ -5,6 +5,7 @@ import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import Pagination from '@apps/search/list/Pagination';
 import { useContext } from 'react';
 import TranslationContext from '@contexts/TranslationContext';
+import SortBy from '@apps/search/list/SortBy';
 
 interface Props {
   lang: string;
@@ -36,7 +37,7 @@ const ListLayout = (props: Props) => {
         />
       </div>
       <div className='flex-1 p-6'>
-        <Pagination />
+        <SortBy />
         <Hits lang={props.lang} />
         <Pagination />
       </div>

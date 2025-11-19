@@ -362,5 +362,21 @@
   "webAuthorities": {
     "tinaLabel": "Web Authorities",
     "defaultValue": "Web Authorities"
+  },
+  "sortBy": {
+    "tinaLabel": "Sort by",
+    "defaultValue": "Sort by"
+  },
+  "relevance": {
+    "tinaLabel": "Relevance",
+    "defaultValue": "Relevance"
+  },
+  "A-Z": {
+    "tinaLabel": "A-Z",
+    "defaultValue": "A-Z"
+  },
+  "Z-A": {
+    "tinaLabel": "Z-A",
+    "defaultValue": "Z-A"
   }
 }
