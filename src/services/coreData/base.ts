@@ -2,7 +2,6 @@ import config from '@config';
 import { hasContentCollection } from '@root/src/content.config';
 import { getCollection, getEntry } from 'astro:content';
 import _ from 'underscore';
-import { CoreData as CoreDataUtils } from '@performant-software/core-data/ssr';
 
 const REQUEST_PARAMS = {
   per_page: 0

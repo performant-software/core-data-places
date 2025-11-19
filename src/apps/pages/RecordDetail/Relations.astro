@@ -11,14 +11,14 @@ interface Props {
   uuid: string;
 }
 
-const { data, icon, label, resolveDetailUrl, resolveName } = Astro.props;
+const { data, icon, label, resolveDetailUrl, resolveName, showLinks } = Astro.props;
 ---
 {(Object.keys(data)).length > 0 && (
   <div class='py-6'>
     <h2 class='capitalize text-lg font-semibold mb-2'>{label} ({data.length})</h2>
     <ul class='grid grid-cols-3 items-start justify-start'>
       {data.map((record) =>
-        resolveDetailUrl ? (
+        showLinks && resolveDetailUrl ? (
           <li>
             <a
               class='flex gap-2 my-2 text-wrap items-center font-semibold'
