@@ -8,36 +8,35 @@ import { getCoverImage, getRelatedGeometry } from '@utils/detailPages';
 
 interface Props {
   excludes: string[];
+  geometry?: any;
   lang: string;
+  model: string;
   name: string;
   record: any;
-  model: string
 }
 
-const { excludes, lang, record, model, name } = Astro.props;
+const { excludes, geometry, lang, record, model, name } = Astro.props;
 
 const service = ServiceFactory.getService(model);
 const { places } = await service.getRelatedPlaces(record.uuid, true);
 const { mediaContents } = await service.getRelatedMediaContents(record.uuid);
 
-const geometry = model === 'places'
-  ? !excludes.includes('place_geometry') ? record.place_geometry?.geometry_json : null
-  : getRelatedGeometry(places);
+const mapGeometry = geometry || getRelatedGeometry(places);
 
 const coverUrl = getCoverImage(mediaContents);
 ---
-{(geometry || coverUrl) && (
+{(mapGeometry || coverUrl) && (
   <div class='h-[360px] py-6 mx-auto flex gap-6 w-full'>
     {coverUrl && (
       <img
         alt={name}
-        class={`${geometry ? 'w-[30%]' : 'w-full'} h-full object-cover`}
+        class={`${mapGeometry ? 'w-[30%]' : 'w-full'} h-full object-cover`}
         src={coverUrl}
       />
     )}
-    {geometry && (
+    {mapGeometry && (
       <div class={coverUrl ? 'w-[70%]' : 'w-full'}>
-        <PlaceMap client:only='react' lang={lang} geometry={geometry}/>
+        <PlaceMap client:only='react' lang={lang} geometry={mapGeometry}/>
       </div>
     )}
   </div>

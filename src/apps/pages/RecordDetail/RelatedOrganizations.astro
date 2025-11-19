@@ -2,6 +2,8 @@
 import ServiceFactory from '@services/coreData/factory';
 import Relations from '@apps/pages/RecordDetail/Relations.astro';
 import { groupRelationships } from '@utils/detailPages';
+import config from '@config';
+import { getTranslations } from '@backend/i18n';
 
 interface Props {
   excludes: string[];
@@ -11,16 +13,20 @@ interface Props {
 
 const { excludes, model, uuid } = Astro.props;
 
+const lang = Astro.currentLocale;
 const service = ServiceFactory.getService(model);
 const { organizations } = await service.getRelatedOrganizations(uuid);
 const relationships = groupRelationships(organizations, excludes);
+const { t } = await getTranslations(lang);
 ---
 {Object.keys(relationships).map((uuid) => (
   <Relations
     data={relationships[uuid]}
     icon='occupation'
-    model='organizations'
+    label={t(uuid)}
+    resolveDetailUrl={(organization) => `/${lang}/organizations/${organization.uuid}`}
     resolveName={organization => organization.name}
+    showLinks={config.detail_pages.includes('organizations')}
     uuid={uuid}
   />
 ))}

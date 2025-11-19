@@ -14,12 +14,17 @@ const { lang, uuid } = Astro.params;
 const { place } = await PlacesService.getOne(uuid);
 const excludes = config.result_filtering?.places?.exclude || [];
 
+const geometry = excludes.includes('place_geometry')
+  ? null
+  : place?.place_geometry?.geometry_json;
+
 export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.places);
 ---
 
 <Layout footer t={t} title={place.name}>
   <RecordDetail
     excludes={excludes}
+    geometry={geometry}
     lang={lang}
     model='places'
     name={place.name}
