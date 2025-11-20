@@ -263,6 +263,10 @@
     "tinaLabel": "Item",
     "defaultValue": "Item"
   },
+  "media": {
+    "tinaLabel": "Media",
+    "defaultValue": "Media"
+  },
   "organization": {
     "tinaLabel": "Organization",
     "defaultValue": "Organization"

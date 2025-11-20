@@ -275,6 +275,7 @@ describe('search', () => {
         '/events',
         '/instances',
         '/items',
+        '/media',
         '/organizations',
         '/people',
         '/places',

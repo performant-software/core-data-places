@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 import { HitComponentProps } from '@types';
 
-const GridHit = (props: HitComponentProps) => {
+const ImageHit = (props: HitComponentProps) => {
   const relationshipUuids = useMemo(
     () => Object.keys(props.relationships),
     [props.relationships]
   );
 
   return (
-    <div className='bg-white rounded-md shadow-md overflow-hidden w-[275px] flex flex-col divide-zinc-200 divide-y h-full'>
+    <div className='bg-white rounded-md shadow-md overflow-hidden w-[275px] flex flex-col divide-zinc-200 divide-y h-auto'>
       {props.hit.thumbnail && (
         <img
           alt={props.hit.name}
-          className='object-cover w-full h-[140px]'
+          className='object-cover w-full h-[380px]'
           src={props.hit.thumbnail}
         />
       )}
@@ -32,7 +32,7 @@ const GridHit = (props: HitComponentProps) => {
         </div>
         {props.highlightComponent
           ? <props.highlightComponent hit={props.hit} className='font-bold' attribute='name'/>
-          : <p className='font-bold text-wrap'>{props.hit.name}</p>
+          : <p className='font-semibold text-wrap'>{props.hit.name}</p>
         }
       </div>
       {props.attributes.length > 0 && (
@@ -68,7 +68,7 @@ const GridHit = (props: HitComponentProps) => {
   )
 };
 
-GridHit.propTypes = {
+ImageHit.propTypes = {
   attributes: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     icon: PropTypes.string,
@@ -85,4 +85,4 @@ GridHit.propTypes = {
   })),
 };
 
-export default GridHit;
+export default ImageHit;
