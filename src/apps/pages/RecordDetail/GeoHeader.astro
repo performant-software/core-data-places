@@ -41,17 +41,16 @@ const coverUrl = getCoverImage(mediaContents);
     )}
   </div>
 )}
-<slot />
 <UserDefined
   record={record}
   excludes={excludes}
 />
+<slot />
 <Identifiers
   record={record}
 />
 <RelatedPlaces
   excludes={excludes}
-  model={model}
   places={places}
   uuid={record.uuid}
 />
