@@ -23,6 +23,10 @@
     "tinaLabel": "Posts",
     "defaultValue": "Posts"
   },
+  "backTo": {
+    "tinaLabel": "Back to <label>",
+    "defaultValue": "Back to {{label}}"
+  },
   "by": {
     "tinaLabel": "By <author>",
     "defaultValue": "By {{author}}"
@@ -38,6 +42,34 @@
   "mapLayers": {
     "tinaLabel": "Map Layers",
     "defaultValue": "Map Layers"
+  },
+  "events": {
+    "tinaLabel": "Events",
+    "defaultValue": "Events"
+  },
+  "instances": {
+    "tinaLabel": "Instances",
+    "defaultValue": "Instances"
+  },
+  "items": {
+    "tinaLabel": "Items",
+    "defaultValue": "Items"
+  },
+  "organizations": {
+    "tinaLabel": "Organizations",
+    "defaultValue": "Organizations"
+  },
+  "people": {
+    "tinaLabel": "People",
+    "defaultValue": "People"
+  },
+  "places": {
+    "tinaLabel": "Places",
+    "defaultValue": "Places"
+  },
+  "works": {
+    "tinaLabel": "Works",
+    "defaultValue": "Works"
   },
   "relatedOrganizations": {
     "tinaLabel": "Related Organizations",

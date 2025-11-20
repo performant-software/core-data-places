@@ -5,6 +5,7 @@ interface Props {
   className?: string;
   id?: string;
   onClick?(): void;
+  size?: number;
 }
 
 const BackButton = (props: Props) => (
@@ -19,7 +20,7 @@ const BackButton = (props: Props) => (
   >
     <Icon
       name='left_arrow'
-      size={30}
+      size={props.size || 30}
     />
   </button>
 );

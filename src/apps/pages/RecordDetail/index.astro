@@ -10,6 +10,7 @@ import RelatedWorks from '@apps/pages/RecordDetail/RelatedWorks.astro';
 import RelatedTaxonomies from '@apps/pages/RecordDetail/RelatedTaxonomies.astro';
 import RelatedMedia from '@apps/pages/RecordDetail/RelatedMedia.astro';
 import GeoHeader from '@apps/pages/RecordDetail/GeoHeader.astro';
+import { getTranslations } from '@backend/i18n';
 
 interface Props {
   excludes: string[];
@@ -21,15 +22,23 @@ interface Props {
 }
 
 const { excludes, geometry, lang, model, name, record } = Astro.props;
+const { t } = await getTranslations(lang);
 ---
 
-<Container className='py-6 w-full'>
-  <BackButton
-    className='absolute top-[26px]'
-    id='backButton'
-  />
-  <div class='ml-12 divide-y divide-solid divide-[#e5e5e5]'>
-    <h1 class='font-bold text-3xl text-neutral-800 mt-0 mb-6'>{name}</h1>
+<div class="bg-primary w-full pb-6">
+  <Container>
+    <div class="pb-4 flex items-center gap-2">
+      <BackButton
+        id='backButton'
+        size={24}
+      />
+      <span class="uppercase font-semibold">{t('backTo', { label: t(model) })}</span>
+    </div>
+    <h1 class="text-5xl font-header">{name}</h1>
+  </Container>
+</div>
+<Container className='py-6'>
+  <div class='divide-y divide-solid divide-[#e5e5e5]'>
     <GeoHeader
       excludes={excludes}
       geometry={geometry}
