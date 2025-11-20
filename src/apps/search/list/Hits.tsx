@@ -1,6 +1,6 @@
 import { useHits } from 'react-instantsearch';
 import GridHit from '@components/custom/project/GridHit'
-import ImageHit from '@components/custom/default/ImageHit'
+import ImageHit from '@components/custom/project/ImageHit'
 import ListHit from '@components/custom/project/ListHit'
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import { Highlight } from 'react-instantsearch';
@@ -15,8 +15,8 @@ interface Props {
 }
 
 const hitComponents = {
-  image: ImageHit,
   grid: GridHit,
+  image: ImageHit,
   list: ListHit
 };
 
