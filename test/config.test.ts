@@ -34,9 +34,10 @@ const icons = [
 ];
 
 const validSearchTypes = [
-  'map',
+  'grid',
+  'image',
   'list',
-  'grid'
+  'map'
 ];
 
 describe('content', () => {
@@ -275,6 +276,7 @@ describe('search', () => {
         '/events',
         '/instances',
         '/items',
+        '/media',
         '/organizations',
         '/people',
         '/places',

@@ -1,6 +1,7 @@
 import { useHits } from 'react-instantsearch';
-import ListHit from '@components/custom/project/ListHit'
 import GridHit from '@components/custom/project/GridHit'
+import ImageHit from '@components/custom/project/ImageHit'
+import ListHit from '@components/custom/project/ListHit'
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import { Highlight } from 'react-instantsearch';
 import { useCallback, useContext, useMemo, useRef } from 'react';
@@ -13,14 +14,20 @@ interface Props {
   lang: string;
 }
 
+const hitComponents = {
+  grid: GridHit,
+  image: ImageHit,
+  list: ListHit
+};
+
 const Hits = (props: Props) => {
   const searchConfig = useSearchConfig();
   const { items } = useHits();
   const { t } = useContext(TranslationContext);
 
-  const isGrid = useMemo(() => searchConfig.type === 'grid', [searchConfig.type]);
+  const isGrid = useMemo(() => searchConfig.type !== 'list', [searchConfig.type]);
 
-  const HitComponent = useMemo(() => isGrid ? GridHit : ListHit, [isGrid]);
+  const HitComponent = useMemo(() => hitComponents[searchConfig.type], [searchConfig.type]);
 
   // keep a mapping of facet labels outside the component
   // so we don't need to run the utility functions over and over

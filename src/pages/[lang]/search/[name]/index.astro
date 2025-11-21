@@ -25,7 +25,7 @@ export const getStaticPaths = () => {
 
 const searchConfig = config.search.find((s) => s.name === name) as SearchConfig;
 
-const isListSearch = searchConfig.type === 'list' || searchConfig.type === 'grid';
+const isListSearch = !!searchConfig.type && searchConfig.type !== 'map';
 ---
 
 <Layout
