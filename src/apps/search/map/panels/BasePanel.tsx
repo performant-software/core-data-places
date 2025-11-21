@@ -26,6 +26,7 @@ import {
 import _ from 'underscore';
 import PanelHistoryContext from '@apps/search/map/PanelHistoryContext';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import { useCachedPlaces } from '../MapFeaturesContext';
 
 interface Props {
   className?: string;
@@ -49,6 +50,7 @@ const BasePanel = (props: Props) => {
 
   const navigate = useNavigate();
   const config = useSearchConfig();
+  const { updatePlace } = useCachedPlaces();
   const { t } = useContext(TranslationContext);
   const { setSelected } = useSelection();
 
@@ -209,7 +211,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
   
   /**
    * Memo-izes the geometry.
-   */
+   *
   const geometry = useMemo(() => {
     if (props.resolveGeometry && item) {
       return props.resolveGeometry(item);
@@ -220,6 +222,19 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
         places.filter((place) => place.place_geometry)
       );
   }, [item, places, props.resolveGeometry]);
+  */
+
+  useEffect(() => {
+    if (props.resolveGeometry && item) {
+      const highRes = props.resolveGeometry(item);
+      updatePlace(highRes);
+    } else if (!_.isEmpty(places.filter((place) => place.place_geometry))) {
+      const place = CoreDataUtils.toFeatureCollection(
+        places.filter((place) => place.place_geometry)
+      );
+      updatePlace(place);
+    }
+  }, [item, places, props.resolveGeometry])
   
   /**
    * Memo-izes the related media items.
@@ -450,7 +465,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
           />
         )}
       </RecordDetailPanel>
-      { geometry && (
+      {/* geometry && (
         <LocationMarkers
           animate
           boundingBoxOptions={boundingBoxOptions}
@@ -465,7 +480,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
           fitBoundingBox={_.get(config.map, 'zoom_to_place', true)}
           layerId='current'
         />
-      )}
+      ) */}
       { manifestUrl && (
         <MediaGallery
           manifestUrl={manifestUrl}

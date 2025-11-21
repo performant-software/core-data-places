@@ -3,17 +3,18 @@ import Tooltip from '@apps/search/map/Tooltip';
 import Map from '@components/Map';
 import {
   SearchResultsLayer,
-  Typesense as TypesenseUtils,
-  useCachedHits,
+  // Typesense as TypesenseUtils,
+  // useCachedHits,
   useGeoSearch,
   useSearching
 } from '@performant-software/core-data';
 import { HoverTooltip, useSelectionValue } from '@peripleo/maplibre';
-import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
+import { Feature, FeatureCollection, useCurrentRoute, useNavigate } from '@peripleo/peripleo';
 import { parseFeature } from '@utils/search';
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import _ from 'underscore';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import { useCachedPlaces } from './MapFeaturesContext';
 
 const MapView = () => {
   const config = useSearchConfig();
@@ -21,18 +22,20 @@ const MapView = () => {
   const navigate = useNavigate();
   const { selected } = useSelectionValue() || {};
   const route = useCurrentRoute();
-  const hits = useCachedHits();
+  // const hits = useCachedHits();
+  const places = useCachedPlaces();
   const searching  = useSearching();
 
   const { boundingBoxOptions, controlsClass } = useContext(MapSearchContext);
 
   /**
    * Memo-izes the data to be displayed on the map as a feature collection.
-   */
+   *
   const data = useMemo(() => {
     const options = config.map.cluster_radius ? { type: 'Point' } : undefined;
     return TypesenseUtils.toFeatureCollection(hits, config.map.geometry, options);
   }, [hits]);
+  */
 
   /**
    * If we're on the place detail page or refining results by the map view port, we'll suppress the auto-bounding box
@@ -79,7 +82,7 @@ const MapView = () => {
     >
       <SearchResultsLayer
         boundingBoxOptions={boundingBoxOptions}
-        data={data}
+        data={places}
         cluster={!!config.map.cluster_radius}
         clusterRadius={config.map.cluster_radius}
         fitBoundingBox={fitBoundingBox}
