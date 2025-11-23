@@ -1,12 +1,18 @@
 ---
 import clsx from 'clsx';
-const { size } = Astro.props;
+const { size, color } = Astro.props;
 ---
 
 <div
   class={clsx(
-    { 'py-4 lg:py-8': size === 'small' },
-    { 'py-8 lg:py-16': size === 'medium' },
-    { 'py-16 lg:py-32': size === 'large' }
+    'w-full',
+    { 'h-[2px]': !!color },
+    { 'my-4 lg:my-8': size === 'small' },
+    { 'my-8 lg:my-16': size === 'medium' },
+    { 'my-16 lg:my-32': size === 'large' },
+    { 'bg-primary': color === 'primary' },
+    { 'bg-secondary': color === 'secondary' },
+    { 'bg-white': color === 'white' },
+    { 'bg-black': color === 'black' }
   )}
 />
