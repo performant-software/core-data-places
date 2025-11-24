@@ -1,0 +1,38 @@
+---
+import { TinaMarkdown } from 'tinacms/dist/rich-text';
+import clsx from 'clsx';
+import _ from 'underscore';
+
+const { content, gap } = Astro.props;
+
+const ColumnTypes = {
+  text: 'Text',
+  image: 'Image'
+};
+---
+
+<div
+  class={clsx(
+    'w-full grid grid-cols-1',
+    { 'lg:grid-cols-2': content.length === 2 },
+    { 'lg:grid-cols-3': content.length === 3 },
+    { 'lg:grid-cols-4': content.length === 4 },   
+    { 'gap-16': gap === 'large' },
+    { 'gap-8': gap === 'small' || !gap }
+  )}
+>
+  {
+    _.map(content, (col: any) => ( 
+    <div>
+      { col.__typename.endsWith(ColumnTypes.image) && ( 
+        <img src={col.image} class='w-full object-cover' />
+      )}
+      { col.__typename.endsWith(ColumnTypes.text) && ( 
+        <div class="prose max-w-none">
+          <TinaMarkdown content={col.content} />
+        </div>
+      )}
+    </div>
+    ))
+  }
+</div>

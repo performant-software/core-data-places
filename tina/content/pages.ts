@@ -345,6 +345,108 @@ const Pages: Collection = {
         label: 'Button Text',
         type: 'string'
       }]
+    }, {
+      name: 'two_column',
+      label: 'Two Columns',
+      fields: [{
+        name: 'columns',
+        label: 'Columns',
+        type: 'object',
+        list: true,
+        ui: {
+          min: 2,
+          max: 2
+        },
+        templates: [{
+          name: 'text',
+          label: 'Rich Text',
+          fields: [{
+            name: 'content',
+            label: 'Content',
+            type: 'rich-text'
+          }]
+        }, {
+          name: 'image',
+          label: 'Image',
+          fields: [{
+            name: 'image',
+            label: 'Image',
+            type: 'image'
+          }]
+        }]
+      }, {
+        name: 'ratio',
+        label: 'Column Layout',
+        type: 'string',
+        options: [{
+          label: 'Quarter | Three quarters',
+          value: '3'
+        }, {
+          label: 'Third | Two thirds',
+          value: '4'
+        }, {
+          label: 'Half | Half',
+          value: '6'
+        }, {
+          label: 'Two thirds | Third',
+          value: '8'
+        }, {
+          label: 'Three quarters | Quarter',
+          value: '9'
+        }]
+      }, {
+        name: 'gap',
+        label: 'Column Gap',
+        type: 'string',
+        options: [{
+          label: 'Large',
+          value: 'large'
+        }, {
+          label: 'Small',
+          value: 'small'
+        }]
+      }]
+    }, {
+      name: 'multi_column',
+      label: 'Multi Columns',
+      fields: [{
+        name: 'columns',
+        label: 'Columns',
+        type: 'object',
+        list: true,
+        ui: {
+          min: 2,
+          max: 4
+        },
+        templates: [{
+          name: 'text',
+          label: 'Rich Text',
+          fields: [{
+            name: 'content',
+            label: 'Content',
+            type: 'rich-text'
+          }]
+        }, {
+          name: 'image',
+          label: 'Image',
+          fields: [{
+            name: 'image',
+            label: 'Image',
+            type: 'image'
+          }]
+        }]
+      }, {
+        name: 'gap',
+        label: 'Column Gap',
+        type: 'string',
+        options: [{
+          label: 'Large',
+          value: 'large'
+        }, {
+          label: 'Small',
+          value: 'small'
+        }]
+      }]
     }]
   }]
 };
