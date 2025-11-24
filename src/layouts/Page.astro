@@ -3,9 +3,11 @@ import Carousel from '@apps/pages/sections/Carousel';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Hero from '@apps/pages/sections/Hero.astro';
 import Images from '@apps/pages/sections/Images.astro';
+import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
 import Spacer from '@apps/pages/sections/Spacer.astro';
 import Text from '@apps/pages/sections/Text.astro';
 import TextImage from '@apps/pages/sections/TextImage';
+import TwoColumn from '@apps/pages/sections/TwoColumn.astro';
 import { getTranslations } from '@backend/i18n';
 import { fetchPage } from '@backend/tina';
 import Container from '@components/Container.astro';
@@ -24,9 +26,11 @@ const SectionTypes = {
   freeText: 'PagesSectionsFree_text',
   hero: 'PagesSectionsHero',
   images: 'PagesSectionsImages',
+  multiColumn: 'PagesSectionsMulti_column',
   spacer: 'PagesSectionsSpacer',
   textBlock: 'PagesSectionsText_block',
-  textImage: 'PagesSectionsText_image'
+  textImage: 'PagesSectionsText_image',
+  twoColumn: 'PagesSectionsTwo_column'
 };
 
 ---
@@ -110,6 +114,23 @@ const SectionTypes = {
             title={section.title}
             url={section.url}
             client:load
+          />
+        </Container>
+      )}
+      { section.__typename === SectionTypes.twoColumn && (
+        <Container>
+          <TwoColumn
+            content={section.columns}
+            ratio={Number(section.ratio)}
+            gap={section.gap}
+          />
+        </Container>
+      )}
+      { section.__typename === SectionTypes.multiColumn && (
+        <Container>
+          <MultiColumn
+            content={section.columns}
+            gap={section.gap}
           />
         </Container>
       )}
