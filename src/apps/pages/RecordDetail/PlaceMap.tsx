@@ -1,11 +1,15 @@
 import { Peripleo, RuntimeConfig } from '@peripleo/peripleo';
 import { LocationMarkers } from '@performant-software/geospatial';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
-import Map from "@components/Map";
+import Map from '@components/Map';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
 
 interface Props {
+  classNames?: {
+    controls?: string
+    root?: string,
+  };
   geometry: any;
   lang: string;
 }
@@ -22,7 +26,7 @@ const PlaceMap = (props: Props) => {
         preprocess={PeripleoUtils.normalize}
       >
         <Peripleo>
-          <Map>
+          <Map classNames={props.classNames}>
             <LocationMarkers
               boundingBoxOptions={{
                 animate: false

@@ -11,6 +11,9 @@ import RelatedTaxonomies from '@apps/pages/RecordDetail/RelatedTaxonomies.astro'
 import RelatedMedia from '@apps/pages/RecordDetail/RelatedMedia.astro';
 import GeoHeader from '@apps/pages/RecordDetail/GeoHeader.astro';
 import { getTranslations } from '@backend/i18n';
+import RelatedPlaces from '@apps/pages/RecordDetail/RelatedPlaces.astro';
+import UserDefined from '@apps/pages/RecordDetail/UserDefined.astro';
+import Identifiers from '@apps/pages/RecordDetail/Identifiers.astro';
 
 interface Props {
   excludes: string[];
@@ -25,28 +28,35 @@ const { excludes, geometry, lang, model, name, record } = Astro.props;
 const { t } = await getTranslations(lang);
 ---
 
-<div class="bg-primary w-full pb-6">
+<div class='bg-primary w-full pb-6'>
   <Container>
-    <div class="pb-4 flex items-center gap-2">
+    <div class='pb-4 flex items-center gap-2'>
       <BackButton
         id='backButton'
         size={24}
       />
-      <span class="uppercase font-semibold">{t('backTo', { label: t(model) })}</span>
+      <span class='uppercase font-semibold'>{t('backTo', { label: t(model) })}</span>
     </div>
-    <h1 class="text-5xl font-header">{name}</h1>
+    <h1 class='text-5xl font-header'>{name}</h1>
   </Container>
 </div>
-<Container className='py-6'>
-  <div class='divide-y divide-solid divide-[#e5e5e5]'>
-    <GeoHeader
-      excludes={excludes}
-      geometry={geometry}
-      lang={lang}
-      model={model}
-      name={name}
+<GeoHeader
+  geometry={geometry}
+  lang={lang}
+  model={model}
+  name={name}
+  record={record}
+  server:defer
+/>
+<div class='py-6 divide-y divide-solid divide-[#e5e5e5]'>
+  <Container>
+    <slot />
+    <UserDefined
       record={record}
-      server:defer
+      excludes={excludes}
+    />
+    <Identifiers
+      record={record}
     />
     <RelatedMedia
       lang={lang}
@@ -78,6 +88,12 @@ const { t } = await getTranslations(lang);
       uuid={record.uuid}
       server:defer
     />
+    <RelatedPlaces
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
     <RelatedPeople
       excludes={excludes}
       model={model}
@@ -96,8 +112,8 @@ const { t } = await getTranslations(lang);
       uuid={record.uuid}
       server:defer
     />
-  </div>
-</Container>
+  </Container>
+</div>
 
 <script>
   const backButton = document.querySelector('#backButton')

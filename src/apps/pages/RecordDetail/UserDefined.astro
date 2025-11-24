@@ -7,7 +7,7 @@ const { record, excludes } = Astro.props
 const lang = Astro.currentLocale;
 const { t } = await getTranslations(lang);
 ---
-{record.user_defined && (
+{record.user_defined && Object.keys(record.user_defined).length > 0 && (
   <div class="grid grid-cols-2">
     {Object.keys(record.user_defined).map(uuid => (
       !excludes.includes(uuid) && <div class="py-6">
