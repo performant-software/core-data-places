@@ -1,5 +1,6 @@
 ---
 import Carousel from '@apps/pages/sections/Carousel';
+import CenteredText from '@apps/pages/sections/CenteredText.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Hero from '@apps/pages/sections/Hero.astro';
 import Images from '@apps/pages/sections/Images.astro';
@@ -21,6 +22,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 
 const SectionTypes = {
   carousel: 'PagesSectionsCarousel',
+  centeredText: 'PagesSectionsCentered_text',
   freeText: 'PagesSectionsFree_text',
   hero: 'PagesSectionsHero',
   images: 'PagesSectionsImages',
@@ -112,6 +114,16 @@ const SectionTypes = {
             client:load
           />
         </Container>
+      )}
+      { section.__typename === SectionTypes.centeredText && (
+        <CenteredText
+          background={section.background}
+          clip={section.clip}
+          color={section.color}
+          content={section.content}
+          fullWidth={section.full_width}
+          image={section.image}
+        />
       )}
     </section>
   ))}

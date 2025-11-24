@@ -18,6 +18,13 @@ const SpacerValues = {
   large: 'large'
 };
 
+const ColorValues = {
+  primary: 'primary',
+  white: 'white',
+  black: 'black',
+  secondary: 'secondary'
+}
+
 const SpacerSizes = [{
   label: 'Small',
   value: SpacerValues.small
@@ -28,6 +35,20 @@ const SpacerSizes = [{
   label: 'Large',
   value: SpacerValues.large
 }];
+
+const ColorOptions = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
+  label: 'Secondary (defaults to off-white)',
+  value: ColorValues.secondary
+}, {
+  label: 'White',
+  value: ColorValues.white
+}, {
+  label: 'Black',
+  value: ColorValues.black
+}]
 
 const Pages: Collection = {
   name: 'pages',
@@ -344,6 +365,44 @@ const Pages: Collection = {
         name: 'button_text',
         label: 'Button Text',
         type: 'string'
+      }]
+    }, {
+      name: 'centered_text',
+      label: 'Centered Text with Background',
+      fields: [{
+        name: 'content',
+        label: 'Text Content',
+        type: 'rich-text'
+      }, {
+        name: 'color',
+        label: 'Text Mode',
+        type: 'string',
+        options: [{
+          label: 'Dark Text',
+          value: 'black'
+        }, {
+          label: 'Light Text',
+          value: 'white'
+        }]
+      }, {
+        name: 'image',
+        label: 'Background Image',
+        type: 'image'
+      }, {
+        name: 'clip',
+        label: 'Clip image to content height?',
+        type: 'boolean'
+      }, {
+        name: 'full_width',
+        label: 'Full width image?',
+        description: 'If checked, the image will extend to the edges of the screen.',
+        type: 'boolean'
+      }, {
+        name: 'background',
+        label: 'Background Color',
+        description: 'Will display if no image is provided.',
+        type: 'string',
+        options: ColorOptions
       }]
     }]
   }]
