@@ -1,4 +1,4 @@
-import { Collection } from '@tinacms/schema-tools';
+import { Collection, RichTextTemplate } from '@tinacms/schema-tools';
 import _ from 'underscore';
 
 const LABEL_SEPARATOR = ': ';
@@ -28,6 +28,25 @@ const SpacerSizes = [{
   label: 'Large',
   value: SpacerValues.large
 }];
+
+const richTextTemplates: RichTextTemplate<false>[] = [{
+  name: 'search',
+  label: 'Search Bar',
+  fields: [{
+    name: 'placeholder',
+    label: 'Placeholder',
+    type: 'string'
+  }, {
+    name: 'button_text',
+    label: 'Button Text',
+    type: 'string'
+  }, {
+    name: 'url',
+    label: 'Search URL',
+    type: 'string',
+    description: 'Should be the full URL excluding only the query string itself, e.g. `https:://mysite.com/search?index[query]=`.'
+  }]
+}]
 
 const Pages: Collection = {
   name: 'pages',
@@ -98,7 +117,8 @@ const Pages: Collection = {
         name: 'body',
         label: 'Body',
         type: 'rich-text',
-        isBody: true
+        isBody: true,
+        templates: richTextTemplates
       }]
     }, {
       name: 'hero',
