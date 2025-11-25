@@ -1,28 +1,60 @@
 ---
-import Relations from '@apps/pages/RecordDetail/Relations.astro';
-import { groupRelationships } from '@utils/detailPages';
+import { getRelatedGeometry, groupRelationships } from '@utils/detailPages';
 import config from '@config';
 import { getTranslations } from '@backend/i18n';
+import ServiceFactory from '@services/coreData/factory';
+import PlaceMap from '@apps/pages/RecordDetail/PlaceMap';
+import { Icon } from '@performant-software/core-data/ssr';
 
 interface Props {
   excludes: string[];
-  places: any[];
+  model: string;
+  uuid: string;
 }
 
-const { excludes, places } = Astro.props;
+const { excludes, model, uuid } = Astro.props;
 
 const lang = Astro.currentLocale;
+const service = ServiceFactory.getService(model);
+const { places } = await service.getRelatedPlaces(uuid);
 const relationships = groupRelationships(places, excludes);
 const { t } = await getTranslations(lang);
+
+const showLinks = config.detail_pages.includes('places');
+const resolveDetailUrl = (record: any) => `/${lang}/places/${record.uuid}`;
 ---
 {Object.keys(relationships).map((uuid) => (
-  <Relations
-    data={relationships[uuid]}
-    icon='location'
-    label={t(uuid)}
-    resolveDetailUrl={(place) => `/${lang}/places/${place.uuid}`}
-    resolveName={place => place.name}
-    showLinks={config.detail_pages.includes('places')}
-    uuid={uuid}
-  />
+  <div class='py-6 w-full'>
+    <h2 class='capitalize text-xl font-semibold font-header mb-2'>{t(uuid)}</h2>
+    <div class='grid grid-cols-[1fr_2fr] h-[300px] bg-white w-full gap-6'>
+      <ul class='items-start justify-start font-body divide-y divide-neutral-200'>
+        {relationships[uuid].map((place) =>
+          showLinks && resolveDetailUrl ? (
+            <li class='pb-2'>
+              <a
+                class='flex gap-2 my-2 text-wrap items-center font-semibold'
+                href={resolveDetailUrl(place)}
+              >
+                <Icon name='location' size={16} />
+                { place.name }
+              </a>
+            </li>
+          ) : (
+            <li class='flex gap-2 my-2 text-wrap items-center font-semibold pb-2'>
+              <Icon name='location' size={16} />
+              { place.name }
+            </li>
+          )
+        )}
+      </ul>
+      <PlaceMap
+        client:only='react'
+        classNames={{
+          root: 'h-full!'
+        }}
+        geometry={getRelatedGeometry(relationships[uuid])}
+        lang={lang}
+      />
+    </div>
+  </div>
 ))}
