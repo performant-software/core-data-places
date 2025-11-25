@@ -37,7 +37,7 @@ const textPrimary = useBlackText(colorPrimary) ? 'var(--color-black)' : 'var(--c
 const colorSecondary = branding.secondary_color;
 const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? 'var(--color-black)' : 'var(--color-white)';
 
-const colorBackground = branding.background_color || 'var(--color-white)';
+const colorLayout = branding.background_color || 'var(--color-white)';
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
@@ -126,13 +126,13 @@ if (!_.isEmpty(NavConfig.pages.options)) {
         customColorSecondary: colorSecondary,
         customTextPrimary: textPrimary,
         customTextSecondary: textSecondary,
-        customColorBackground: colorBackground
+        customColorLayout: colorLayout
       }}
     >
     </style>
   </head>
   <body
-    class='flex h-full sm:min-h-screen flex-col bg-background text-neutral-dark mx-auto font-sans'
+    class='flex h-full sm:min-h-screen flex-col bg-layout text-neutral-dark mx-auto font-sans'
     transition:animate='initial'
   >
     <Header
