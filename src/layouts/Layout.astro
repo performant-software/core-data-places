@@ -47,6 +47,7 @@ const pages = await getPages(currentLocale);
 const { footer: includeFooter, fullscreen, name, title, t, tab } = Astro.props;
 
 const NavKeys = {
+  gallery: 'gallery',
   search: 'search',
   pages: 'pages',
   paths: 'paths',
@@ -94,6 +95,11 @@ const NavConfig = {
     active: tab === NavKeys.posts,
     label: t('posts'),
     href: getRelativeLocaleUrl(currentLocale, NavKeys.posts)
+  },
+  [NavKeys.gallery]: {
+    active: tab === NavKeys.gallery,
+    label: t('gallery'),
+    href: getRelativeLocaleUrl(currentLocale, NavKeys.gallery)
   }
 };
 
@@ -104,6 +110,10 @@ const NavItems = [
 
 if (!_.isEmpty(NavConfig.pages.options)) {
   NavItems.push(NavConfig.pages);
+}
+
+if (config.gallery) {
+  NavItems.push(NavConfig.gallery);
 }
 
 ---

@@ -1,0 +1,30 @@
+---
+import Container from '@components/Container.astro';
+import { getManifestMetadata } from '@services/gallery';
+import ManifestGrid from '@apps/pages/Gallery/ManifestGrid';
+import { getTranslations } from '@backend/i18n';
+import config from '@config';
+
+const items = await getManifestMetadata(Astro.currentLocale)
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+const hasImageSearch = config.search.some(item => item.route === '/media');
+---
+<Container className='my-6'>
+  <div class='flex items-center justify-between gap-4'>
+    <h1 class='text-3xl font-header'>{t('galleries')}</h1>
+    {hasImageSearch && (
+      <a
+        class='bg-primary py-2 px-4 rounded-lg text-white font-semibold'
+        href={`/${Astro.currentLocale}/search/media`}
+      >
+        {t('search')}
+      </a>
+    )}
+  </div>
+  <ManifestGrid
+    items={items}
+    client:only='react'
+  />
+</Container>

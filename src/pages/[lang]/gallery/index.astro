@@ -1,0 +1,18 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { getTranslations } from '@backend/i18n';
+import Gallery from '@apps/pages/Gallery/index.astro';
+import _ from 'underscore';
+import config from '@config';
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
+---
+<Layout
+  t={t}
+>
+  <Gallery
+    server:defer
+  />
+</Layout>
