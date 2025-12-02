@@ -10,7 +10,9 @@ const { t } = await getTranslations(Astro.currentLocale);
 export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
 ---
 <Layout
+  footer
   t={t}
+  title={t('gallery')}
 >
   <Gallery
     server:defer

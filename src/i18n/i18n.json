@@ -422,5 +422,9 @@
   "gallery": {
     "tinaLabel": "Gallery",
     "defaultValue": "Gallery"
+  },
+  "viewAllImages": {
+    "tinaLabel": "View All Images",
+    "defaultValue": "View All Images"
   }
 }
