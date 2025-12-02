@@ -16,7 +16,7 @@ const hasImageSearch = config.search.some(item => item.route === '/media');
     <h1 class='text-3xl font-header'>{t('galleries')}</h1>
     {hasImageSearch && (
       <a
-        class='bg-primary py-3 px-5 rounded-lg text-white'
+        class='bg-primary py-3 px-5 rounded-lg text-white text-sm'
         href={`/${Astro.currentLocale}/search/media`}
       >
         { t('viewAllImages') }
