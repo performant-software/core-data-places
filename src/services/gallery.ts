@@ -1,24 +1,7 @@
 import { hasContentCollection } from '@root/src/content.config';
-import { getCollection, getEntry } from 'astro:content';
-import { fetchJson, getManifest, getManifests, truncateManifestId } from '@utils/galleries';
+import { getEntry } from 'astro:content';
+import { fetchJson, getManifest, getManifestUrl } from '@utils/galleries';
 import config from '@config';
-
-const BASE_URL = import.meta.env.PUBLIC_BASE_URL;
-
-/**
- * Returns all manifests.
- */
-export const getAll = async () => {
-  let data;
-
-  if (hasContentCollection('galleries')) {
-    data = await getCollection('galleries');
-  } else {
-    data = await getManifests();
-  }
-
-  return data;
-};
 
 /**
  * Returns the i18n data for the passed locale.
@@ -49,14 +32,6 @@ export const getItemLabel = (item: any, locale: string) => {
   }
 
   return item.id;
-}
-
-export const getManifestUrl = (manifestId: string) => {
-  if (hasContentCollection('galleries')) {
-    return `${BASE_URL}/api/gallery/${encodeURIComponent(truncateManifestId(manifestId))}.json`;
-  }
-
-  return manifestId;
 }
 
 export const getManifestMetadata = async (locale: string): Promise<string[]> => {

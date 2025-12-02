@@ -1,4 +1,7 @@
 import config from '@config';
+import { hasContentCollection } from '@root/src/content.config';
+
+const BASE_URL = import.meta.env.PUBLIC_BASE_URL;
 
 /**
  * Fetches data from a URL and parses it as JSON.
@@ -47,4 +50,25 @@ export const getStaticManifestEndpointPaths = async () => {
   return topLevel.items.map(({ id }) => ({
     params: { manifestId: encodeURIComponent(truncateManifestId((id))) }
   }));
+};
+
+/**
+ * Generates the URL for a manifest when running in static mode.
+ * @param manifestId
+ */
+export const getStaticManifestUrl = (manifestId: string) => (
+  `${BASE_URL}/api/gallery/${encodeURIComponent(truncateManifestId(manifestId))}.json`
+);
+
+/**
+ * Gets the URL for the passed manifest ID.
+ * Will return a local API route if CDP is running statically.
+ * @param manifestId
+ */
+export const getManifestUrl = (manifestId: string) => {
+  if (hasContentCollection('galleries')) {
+    return getStaticManifestUrl(manifestId);
+  }
+
+  return manifestId;
 };

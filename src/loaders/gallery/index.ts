@@ -1,6 +1,6 @@
 import { LoaderContext } from 'astro/loaders';
 import { defineCollection } from 'astro:content';
-import { getManifests } from '@utils/galleries';
+import { getManifests, getStaticManifestUrl } from '@utils/galleries';
 
 const loader = {
   name: 'gallery-loader',
@@ -12,7 +12,12 @@ const loader = {
     const data = await getManifests();
 
     for (const item of data) {
-      store.set({ id: item.id, data: item });
+      const manifest = {
+        ...item,
+        id: getStaticManifestUrl(item.id)
+      }
+
+      store.set({ id: item.id, data: manifest });
     }
   }
 }
