@@ -15,12 +15,12 @@ const loader = {
       const manifest = {
         ...item,
         id: getStaticManifestUrl(item.id)
-      }
+      };
 
       store.set({ id: item.id, data: manifest });
     }
   }
-}
+};
 
 export default {
   galleries: defineCollection({ loader })
