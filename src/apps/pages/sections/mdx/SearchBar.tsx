@@ -16,7 +16,7 @@ const SearchBar = (props: SearchBarProps) => {
         className='relative flex flex-row items-center'
       >
         <input
-          className='py-4 pe-4 ps-13 w-[720px] h-full rounded-l-md'
+          className='py-4 pe-4 ps-13 w-[720px] h-full rounded-l-md bg-white'
           type='text'
           name='query'
           placeholder={placeholder}
