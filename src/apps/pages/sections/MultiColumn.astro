@@ -2,37 +2,69 @@
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import clsx from 'clsx';
 import _ from 'underscore';
+import LinkButton from '@components/LinkButton';
+import Column from '@components/pageBuilder/Column.astro';
 
-const { content, gap } = Astro.props;
+const { 
+  buttonText,
+  content, 
+  gap,   
+  textAlignment,
+  title,
+  url
+} = Astro.props;
 
-const ColumnTypes = {
-  text: 'Text',
-  image: 'Image'
-};
+//we need to figure out the column ratios
+let total = 0;
+if (content) {
+  for (const col of content) {
+    if (col.width) {
+      total += Number(col.width.split('-').slice(-1))
+    }
+  }
+}
+
+const gridCols = total === 12 ? 'lg:grid-cols-12' : 'lg:auto-cols-fr lg:grid-flow-col';
 ---
 
 <div
-  class={clsx(
-    'w-full grid grid-cols-1',
-    { 'lg:grid-cols-2': content.length === 2 },
-    { 'lg:grid-cols-3': content.length === 3 },
-    { 'lg:grid-cols-4': content.length === 4 },   
-    { 'gap-16': gap === 'large' },
-    { 'gap-8': gap === 'small' || !gap }
-  )}
+  class='flex flex-col'
 >
-  {
-    _.map(content, (col: any) => ( 
-    <div>
-      { col.__typename.endsWith(ColumnTypes.image) && ( 
-        <img src={col.image} class='w-full object-cover' />
+  { title && (
+    <h2
+      class={clsx(
+        'text-4xl font-bold py-4',
+        { 'flex justify-center': textAlignment === 'center' }
       )}
-      { col.__typename.endsWith(ColumnTypes.text) && ( 
-        <div class="prose max-w-none">
-          <TinaMarkdown content={col.content} />
-        </div>
+    >
+      { title }
+    </h2>
+  )}
+  <div
+    class={clsx(
+      'w-full grid grid-cols-1',
+      gridCols,   
+      { 'gap-16': gap === 'large' },
+      { 'gap-8': gap === 'small' || !gap }
+    )}
+  >
+    {
+      _.map(content, (col: any) => ( 
+        <Column items={col.content} classNames={total === 12 && col.width} />
+      ))
+    }
+  </div>
+  { url && (
+    <div
+      class={clsx(
+        'py-4',
+        { 'flex justify-center': textAlignment === 'center' }
       )}
+    >
+      <LinkButton
+        className='bg-primary'
+        content={buttonText}
+        href={url}
+      />
     </div>
-    ))
-  }
-</div>
+  )}

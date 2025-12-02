@@ -1,0 +1,18 @@
+---
+import clsx from "clsx";
+import _ from "underscore";
+import ColumnContent from "./ColumnContent.astro";
+
+const { items, classNames } = Astro.props;
+---
+
+<div 
+  class={clsx(
+    classNames,
+    'flex flex-col'
+  )}
+>
+  { _.map(items, (item) => ( 
+    <ColumnContent item={item} />
+  ))}
+</div>

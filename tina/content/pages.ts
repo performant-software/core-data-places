@@ -225,55 +225,6 @@ const Pages: Collection = {
         options: SpacerSizes
       }]
     }, {
-      name: 'text_block',
-      label: 'Text Block',
-      ui: {
-        itemProps: (item) => {
-          return { label: getLabel('Text Block', item?.title) };
-        }
-      },
-      fields: [{
-        name: 'title',
-        label: 'Title',
-        type: 'string'
-      }, {
-        name: 'url',
-        label: 'URL',
-        type: 'string'
-      }, {
-        name: 'button_text',
-        label: 'Button Text',
-        type: 'string'
-      }, {
-        name: 'text_alignment',
-        label: 'Text Alignment',
-        type: 'string',
-        options: [{
-          label: 'Left',
-          value: 'left'
-        }, {
-          label: 'Center',
-          value: 'center'
-        }]
-      }, {
-        name: 'items',
-        label: 'Items',
-        type: 'object',
-        list: true,
-        fields: [{
-          name: 'title',
-          label: 'Title',
-          type: 'string'
-        }, {
-          name: 'description',
-          label: 'Description',
-          type: 'string',
-          ui: {
-            component: 'textarea'
-          }
-        }]
-      }]
-    }, {
       name: 'text_image',
       label: 'Text Image Block',
       ui: {
@@ -346,94 +297,35 @@ const Pages: Collection = {
         type: 'string'
       }]
     }, {
-      name: 'two_column',
-      label: 'Two Columns',
-      fields: [{
-        name: 'columns',
-        label: 'Columns',
-        type: 'object',
-        list: true,
-        ui: {
-          min: 2,
-          max: 2
-        },
-        templates: [{
-          name: 'text',
-          label: 'Rich Text',
-          fields: [{
-            name: 'content',
-            label: 'Content',
-            type: 'rich-text'
-          }]
-        }, {
-          name: 'image',
-          label: 'Image',
-          fields: [{
-            name: 'image',
-            label: 'Image',
-            type: 'image'
-          }]
-        }]
-      }, {
-        name: 'ratio',
-        label: 'Column Layout',
-        type: 'string',
-        options: [{
-          label: 'Quarter | Three quarters',
-          value: '3'
-        }, {
-          label: 'Third | Two thirds',
-          value: '4'
-        }, {
-          label: 'Half | Half',
-          value: '6'
-        }, {
-          label: 'Two thirds | Third',
-          value: '8'
-        }, {
-          label: 'Three quarters | Quarter',
-          value: '9'
-        }]
-      }, {
-        name: 'gap',
-        label: 'Column Gap',
-        type: 'string',
-        options: [{
-          label: 'Large',
-          value: 'large'
-        }, {
-          label: 'Small',
-          value: 'small'
-        }]
-      }]
-    }, {
       name: 'multi_column',
       label: 'Multi Columns',
+      ui: {
+        itemProps: (item) => {
+          return { label: getLabel('Multi-column', item?.title) };
+        }
+      },
       fields: [{
-        name: 'columns',
-        label: 'Columns',
-        type: 'object',
-        list: true,
-        ui: {
-          min: 2,
-          max: 4
-        },
-        templates: [{
-          name: 'text',
-          label: 'Rich Text',
-          fields: [{
-            name: 'content',
-            label: 'Content',
-            type: 'rich-text'
-          }]
+        name: 'title',
+        label: 'Title',
+        type: 'string'
+      }, {
+        name: 'url',
+        label: 'URL',
+        type: 'string'
+      }, {
+        name: 'button_text',
+        label: 'Button Text',
+        type: 'string'
+      }, {
+        name: 'text_alignment',
+        label: 'Text Alignment',
+        type: 'string',
+        options: [{
+          label: 'Left',
+          value: 'left'
         }, {
-          name: 'image',
-          label: 'Image',
-          fields: [{
-            name: 'image',
-            label: 'Image',
-            type: 'image'
-          }]
+          label: 'Center',
+          value: 'center'
         }]
       }, {
         name: 'gap',
@@ -445,6 +337,76 @@ const Pages: Collection = {
         }, {
           label: 'Small',
           value: 'small'
+        }]
+      }, {
+        name: 'columns',
+        label: 'Columns',
+        type: 'object',
+        list: true,
+        ui: {
+          min: 1,
+          max: 4
+        },
+        fields: [{
+          name: 'width',
+          label: 'Column width (percent)',
+          type: 'string',
+          options: [{
+            label: '25%',
+            value: 'col-span-3'
+          }, {
+            label: '33%',
+            value: 'col-span-4'
+          }, {
+            label: '50%',
+            value: 'col-span-6'
+          }, {
+            label: '67%',
+            value: 'col-span-8'
+          }, {
+            label: '75%',
+            value: 'col-span-9'
+          }, {
+            label: '100%',
+            value: 'col-span-12'
+          }]
+        }, {
+          name: 'content',
+          label: 'Content',
+          type: 'object',
+          list: true,
+          templates: [{
+            name: 'richtext',
+            label: 'Rich Text',
+            fields: [{
+              name: 'text',
+              label: 'Text',
+              type: 'rich-text'
+            }]
+          }, {
+            name: 'image',
+            label: 'Image',
+            fields: [{
+              name: 'image',
+              label: 'Image',
+              type: 'image'
+            }]
+          }, {
+            name: 'basic',
+            label: 'Title and Description (plain text)',
+            fields: [{
+              name: 'title',
+              label: 'Title',
+              type: 'string'
+            }, {
+              name: 'description',
+              label: 'Description',
+              type: 'string',
+              ui: {
+                component: 'textarea'
+              }
+            }]
+          }]
         }]
       }]
     }]
