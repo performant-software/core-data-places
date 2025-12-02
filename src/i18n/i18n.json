@@ -415,9 +415,9 @@
     "tinaLabel": "Z-A",
     "defaultValue": "Z-A"
   },
-  "galleries": {
-    "tinaLabel": "Galleries",
-    "defaultValue": "Galleries"
+  "imageGalleries": {
+    "tinaLabel": "Image Galleries",
+    "defaultValue": "Image Galleries"
   },
   "gallery": {
     "tinaLabel": "Gallery",
