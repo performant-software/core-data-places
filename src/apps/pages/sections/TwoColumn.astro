@@ -1,0 +1,52 @@
+---
+import { TinaMarkdown } from 'tinacms/dist/rich-text';
+import clsx from 'clsx';
+
+const { content, ratio, gap } = Astro.props;
+
+const ColumnTypes = {
+  text: 'Text',
+  image: 'Image'
+};
+---
+
+<div
+  class={clsx(
+    'w-full grid grid-cols-1 lg:grid-cols-12',
+    { 'gap-16': gap === 'large' },
+    { 'gap-8': gap === 'small' || !gap }
+  )}
+>
+  <div class={clsx(
+    { 'lg:col-span-3': ratio === 3 },
+    { 'lg:col-span-4': ratio === 4 },
+    { 'lg:col-span-6': ratio === 6 || !ratio },
+    { 'lg:col-span-8': ratio === 8 },    
+    { 'lg:col-span-9': ratio === 9 }
+  )}>
+    { content[0].__typename.endsWith(ColumnTypes.image) && ( 
+      <img src={content[0].image} class='w-full object-cover' />
+    )}
+    { content[0].__typename.endsWith(ColumnTypes.text) && ( 
+      <div class="prose max-w-none">
+        <TinaMarkdown content={content[0].content} />
+      </div>
+    )}
+  </div>
+  <div class={clsx(
+    { 'lg:col-span-9': ratio === 3 },
+    { 'lg:col-span-8': ratio === 4 },
+    { 'lg:col-span-6': ratio === 6 || !ratio },
+    { 'lg:col-span-4': ratio === 8 },    
+    { 'lg:col-span-3': ratio === 9 }    
+  )}>
+    { content[1].__typename.endsWith(ColumnTypes.image) && ( 
+      <img src={content[1].image} class='w-full object-cover' />
+    )}
+    { content[1].__typename.endsWith(ColumnTypes.text) && ( 
+      <div class="prose max-w-none">
+        <TinaMarkdown content={content[1].content} />
+      </div>
+    )}
+  </div>
+</div>
