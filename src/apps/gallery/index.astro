@@ -1,0 +1,51 @@
+---
+import Container from '@components/Container.astro';
+import ManifestGrid from '@apps/gallery/ManifestGrid';
+import { getTranslations } from '@backend/i18n';
+import config from '@config';
+import { fetchJson, getItemLabel } from '@utils/galleries';
+import { getManifestUrl } from '@services/gallery';
+
+const getItemLabel = (item: any, locale: string) => {
+  const hasMatchingLabel = item.label[locale] && item.label[locale].length > 0;
+  if (hasMatchingLabel) {
+    return item.label[locale][0];
+  }
+
+  const hasEnglishLabel = item.label['en'] && item.label['en'].length > 0;
+  if (hasEnglishLabel) {
+    return item.label['en'][0];
+  }
+
+  return item.id;
+}
+
+const manifest = await fetchJson(config.gallery)
+
+const items = manifest.items.map((item) => ({
+  id: getManifestUrl(item.id),
+  thumbnail: item.thumbnail[0]?.id,
+  label: getItemLabel(item, Astro.currentLocale)
+}));
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+const imageSearchConfig = config.search.find(item => item.type === 'image');
+---
+<Container className='my-6'>
+  <div class='flex items-center justify-between gap-4'>
+    <h1 class='text-3xl font-header'>{t('imageGalleries')}</h1>
+    {imageSearchConfig && (
+      <a
+        class='bg-primary py-3 px-5 rounded-lg text-white text-sm'
+        href={`/${Astro.currentLocale}/search/${imageSearchConfig.name}`}
+      >
+        { t('viewAllImages') }
+      </a>
+    )}
+  </div>
+  <ManifestGrid
+    items={items}
+    client:only='react'
+  />
+</Container>
