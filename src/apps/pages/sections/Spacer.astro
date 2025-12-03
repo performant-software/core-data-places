@@ -1,18 +1,6 @@
 ---
-import clsx from 'clsx';
+import SpacerComponent from '@components/Spacer';
 const { size, color } = Astro.props;
 ---
 
-<div
-  class={clsx(
-    'w-full',
-    { 'h-[2px]': !!color },
-    { 'my-4 lg:my-8': size === 'small' },
-    { 'my-8 lg:my-16': size === 'medium' },
-    { 'my-16 lg:my-32': size === 'large' },
-    { 'bg-primary': color === 'primary' },
-    { 'bg-secondary': color === 'secondary' },
-    { 'bg-white': color === 'white' },
-    { 'bg-black': color === 'black' }
-  )}
-/>
+<SpacerComponent size={size} color={color} />

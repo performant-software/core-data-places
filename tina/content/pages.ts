@@ -23,7 +23,7 @@ const colorValues = {
   white: 'white',
   primary: 'primary',
   secondary: 'secondary'
-}
+};
 
 const SpacerSizes = [{
   label: 'Small',
@@ -64,7 +64,7 @@ const richTextTemplates: RichTextTemplate<false>[] = [{
     type: 'string',
     options: colorOptions
   }]
-}]
+}];
 
 const Pages: Collection = {
   name: 'pages',
