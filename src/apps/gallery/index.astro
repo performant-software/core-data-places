@@ -30,7 +30,7 @@ const items = manifest.items.map((item) => ({
 
 const { t } = await getTranslations(Astro.currentLocale);
 
-const imageSearchConfig = config.search.find(item => item.type === '/image');
+const imageSearchConfig = config.search.find(item => item.type === 'image');
 ---
 <Container className='my-6'>
   <div class='flex items-center justify-between gap-4'>

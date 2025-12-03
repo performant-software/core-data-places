@@ -13,11 +13,14 @@ export const fetchJson = async (url: string) => {
 };
 
 /**
- * The project_ids param disappears from the manifest ID when accessed directly from Core Data,
- * so we need to truncate it to match the ID in the content collection.
+ * Generates a URL from a manifest ID with search params removed.
  * @param manifestId
  */
-export const truncateManifestId = (manifestId: string) => manifestId.split('?project_ids')[0];
+export const truncateManifestId = (manifestId: string) => {
+  const url = new URL(manifestId);
+  url.search = ''
+  return url.href;
+}
 
 
 /**
