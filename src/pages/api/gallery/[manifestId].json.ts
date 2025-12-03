@@ -1,7 +1,8 @@
 import { buildResponse } from '@utils/api';
 import { APIRoute } from 'astro';
 import { getOne } from '@services/gallery';
-import { getStaticManifestEndpointPaths } from '@utils/galleries';
+import { fetchJson, truncateManifestId } from '@utils/galleries';
+import config from '@config';
 
 export const GET: APIRoute = async ({ params }) => {
   const { manifestId } = params;
@@ -11,4 +12,10 @@ export const GET: APIRoute = async ({ params }) => {
   return buildResponse(data);
 };
 
-export const getStaticPaths = async () => await getStaticManifestEndpointPaths();
+export const getStaticPaths = async () => {
+  const topLevel = await fetchJson(config.gallery);
+
+  return topLevel.items.map(({ id }) => ({
+    params: { manifestId: encodeURIComponent(truncateManifestId((id))) }
+  }));
+};

@@ -1,7 +1,6 @@
 import { hasContentCollection } from '@root/src/content.config';
 import { getEntry } from 'astro:content';
-import { fetchJson, getManifest, getManifestUrl } from '@utils/galleries';
-import config from '@config';
+import { getManifest, getStaticManifestUrl } from '@utils/galleries';
 
 /**
  * Returns the i18n data for the passed locale.
@@ -20,26 +19,15 @@ export const getOne = async (key: string) => {
   return data;
 };
 
-export const getItemLabel = (item: any, locale: string) => {
-  const hasMatchingLabel = item.label[locale] && item.label[locale].length > 0;
-  if (hasMatchingLabel) {
-    return item.label[locale][0];
+/**
+ * Gets the URL for the passed manifest ID.
+ * Will return a local API route if CDP is running statically.
+ * @param manifestId
+ */
+export const getManifestUrl = (manifestId: string) => {
+  if (hasContentCollection('galleries')) {
+    return getStaticManifestUrl(manifestId);
   }
 
-  const hasEnglishLabel = item.label['en'] && item.label['en'].length > 0;
-  if (hasEnglishLabel) {
-    return item.label['en'][0];
-  }
-
-  return item.id;
-}
-
-export const getManifestMetadata = async (locale: string): Promise<string[]> => {
-  const topLevel = await fetchJson(config.gallery);
-
-  return topLevel.items.map((item) => ({
-    id: getManifestUrl(item.id),
-    thumbnail: item.thumbnail[0]?.id,
-    label: getItemLabel(item, locale)
-  }));
+  return manifestId;
 };

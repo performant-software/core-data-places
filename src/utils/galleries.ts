@@ -29,7 +29,7 @@ export const getManifests = async () => {
   const json = await fetchJson(config.gallery);
   const items = json.items || []
 
-  for await (const item of items) {
+  for (const item of items) {
     const manifest = await fetchJson(item.id);
     data.push(manifest);
   }
@@ -44,14 +44,6 @@ export const getManifest = async (url: string) => {
   return await fetchJson(url);
 };
 
-export const getStaticManifestEndpointPaths = async () => {
-  const topLevel = await fetchJson(config.gallery);
-
-  return topLevel.items.map(({ id }) => ({
-    params: { manifestId: encodeURIComponent(truncateManifestId((id))) }
-  }));
-};
-
 /**
  * Generates the URL for a manifest when running in static mode.
  * @param manifestId
@@ -60,15 +52,3 @@ export const getStaticManifestUrl = (manifestId: string) => (
   `${BASE_URL}/api/gallery/${encodeURIComponent(truncateManifestId(manifestId))}.json`
 );
 
-/**
- * Gets the URL for the passed manifest ID.
- * Will return a local API route if CDP is running statically.
- * @param manifestId
- */
-export const getManifestUrl = (manifestId: string) => {
-  if (hasContentCollection('galleries')) {
-    return getStaticManifestUrl(manifestId);
-  }
-
-  return manifestId;
-};
