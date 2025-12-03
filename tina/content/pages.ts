@@ -1,4 +1,4 @@
-import { Collection } from '@tinacms/schema-tools';
+import { Collection, RichTextTemplate } from '@tinacms/schema-tools';
 import _ from 'underscore';
 
 const LABEL_SEPARATOR = ': ';
@@ -18,6 +18,13 @@ const SpacerValues = {
   large: 'large'
 };
 
+const colorValues = {
+  black: 'black',
+  white: 'white',
+  primary: 'primary',
+  secondary: 'secondary'
+};
+
 const SpacerSizes = [{
   label: 'Small',
   value: SpacerValues.small
@@ -27,6 +34,36 @@ const SpacerSizes = [{
 }, {
   label: 'Large',
   value: SpacerValues.large
+}];
+
+const colorOptions = [{
+  label: 'White',
+  value: colorValues.white
+}, {
+  label: 'Black',
+  value: colorValues.black
+}, {
+  label: 'Primary',
+  value: colorValues.primary
+}, {
+  label: 'Secondary (defaults to off-white)',
+  value: colorValues.secondary
+}];
+
+const richTextTemplates: RichTextTemplate<false>[] = [{
+  name: 'spacer',
+  label: 'Spacer',
+  fields: [{
+    name: 'size',
+    label: 'Size',
+    type: 'string',
+    options: SpacerSizes
+  }, {
+    name: 'color',
+    label: 'Color',
+    type: 'string',
+    options: colorOptions
+  }]
 }];
 
 const Pages: Collection = {
@@ -98,6 +135,7 @@ const Pages: Collection = {
         name: 'body',
         label: 'Body',
         type: 'rich-text',
+        templates: richTextTemplates,
         isBody: true
       }]
     }, {
@@ -223,6 +261,11 @@ const Pages: Collection = {
         type: 'string',
         required: true,
         options: SpacerSizes
+      }, {
+        name: 'color',
+        label: 'Color',
+        type: 'string',
+        options: colorOptions
       }]
     }, {
       name: 'text_block',
