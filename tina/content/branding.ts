@@ -51,6 +51,13 @@ const Branding: Collection = {
       component: 'color'
     }
   }, {
+    name: 'background_color',
+    label: 'Background Color',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
     name: 'header',
     label: 'Header',
     type: 'object',

@@ -37,6 +37,8 @@ const textPrimary = useBlackText(colorPrimary) ? 'var(--color-black)' : 'var(--c
 const colorSecondary = branding.secondary_color;
 const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? 'var(--color-black)' : 'var(--color-white)';
 
+const colorLayout = branding.background_color || 'var(--color-white)';
+
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
 
@@ -45,6 +47,7 @@ const pages = await getPages(currentLocale);
 const { footer: includeFooter, fullscreen, name, title, t, tab } = Astro.props;
 
 const NavKeys = {
+  gallery: 'gallery',
   search: 'search',
   pages: 'pages',
   paths: 'paths',
@@ -92,6 +95,11 @@ const NavConfig = {
     active: tab === NavKeys.posts,
     label: t('posts'),
     href: getRelativeLocaleUrl(currentLocale, NavKeys.posts)
+  },
+  [NavKeys.gallery]: {
+    active: tab === NavKeys.gallery,
+    label: t('gallery'),
+    href: getRelativeLocaleUrl(currentLocale, NavKeys.gallery)
   }
 };
 
@@ -102,6 +110,10 @@ const NavItems = [
 
 if (!_.isEmpty(NavConfig.pages.options)) {
   NavItems.push(NavConfig.pages);
+}
+
+if (config.gallery) {
+  NavItems.push(NavConfig.gallery);
 }
 
 ---
@@ -123,13 +135,14 @@ if (!_.isEmpty(NavConfig.pages.options)) {
         customColorPrimary: colorPrimary,
         customColorSecondary: colorSecondary,
         customTextPrimary: textPrimary,
-        customTextSecondary: textSecondary
+        customTextSecondary: textSecondary,
+        customColorLayout: colorLayout
       }}
     >
     </style>
   </head>
   <body
-    class='flex h-full sm:min-h-screen flex-col bg-white text-neutral-dark mx-auto font-sans'
+    class='flex h-full sm:min-h-screen flex-col bg-layout text-neutral-dark mx-auto font-sans'
     transition:animate='initial'
   >
     <Header
@@ -145,7 +158,7 @@ if (!_.isEmpty(NavConfig.pages.options)) {
       client:only='react'
     />
     <main
-      class='w-full relative bg-white flex flex-col grow'
+      class='w-full relative flex flex-col grow'
     >
       <slot />
     </main>

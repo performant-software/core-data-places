@@ -18,6 +18,13 @@ const SpacerValues = {
   large: 'large'
 };
 
+const colorValues = {
+  black: 'black',
+  white: 'white',
+  primary: 'primary',
+  secondary: 'secondary'
+};
+
 const SpacerSizes = [{
   label: 'Small',
   value: SpacerValues.small
@@ -47,6 +54,36 @@ const richTextTemplates: RichTextTemplate<false>[] = [{
     description: 'Should be the full URL excluding only the query string itself, e.g. `https:://mysite.com/search?index[query]=`.'
   }]
 }]
+
+const colorOptions = [{
+  label: 'White',
+  value: colorValues.white
+}, {
+  label: 'Black',
+  value: colorValues.black
+}, {
+  label: 'Primary',
+  value: colorValues.primary
+}, {
+  label: 'Secondary (defaults to off-white)',
+  value: colorValues.secondary
+}];
+
+const richTextTemplates: RichTextTemplate<false>[] = [{
+  name: 'spacer',
+  label: 'Spacer',
+  fields: [{
+    name: 'size',
+    label: 'Size',
+    type: 'string',
+    options: SpacerSizes
+  }, {
+    name: 'color',
+    label: 'Color',
+    type: 'string',
+    options: colorOptions
+  }]
+}];
 
 const Pages: Collection = {
   name: 'pages',
@@ -243,6 +280,11 @@ const Pages: Collection = {
         type: 'string',
         required: true,
         options: SpacerSizes
+      }, {
+        name: 'color',
+        label: 'Color',
+        type: 'string',
+        options: colorOptions
       }]
     }, {
       name: 'text_block',
