@@ -1,9 +1,8 @@
 ---
-import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import clsx from 'clsx';
 import _ from 'underscore';
 import LinkButton from '@components/LinkButton';
-import Column from '@components/pageBuilder/Column.astro';
+import Column from '@apps/pages/sections/Column.astro';
 
 const { 
   buttonText,
@@ -13,6 +12,8 @@ const {
   title,
   url
 } = Astro.props;
+
+const TOTAL_COLUMNS = 12;
 
 //we need to figure out the column ratios
 let total = 0;
@@ -24,7 +25,7 @@ if (content) {
   }
 }
 
-const gridCols = total === 12 ? 'lg:grid-cols-12' : 'lg:auto-cols-fr lg:grid-flow-col';
+const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr lg:grid-flow-col';
 ---
 
 <div
@@ -50,7 +51,7 @@ const gridCols = total === 12 ? 'lg:grid-cols-12' : 'lg:auto-cols-fr lg:grid-flo
   >
     {
       _.map(content, (col: any) => ( 
-        <Column items={col.content} classNames={total === 12 && col.width} />
+        <Column items={col.content} className={clsx({ [col.width] : total === TOTAL_COLUMNS })} />
       ))
     }
   </div>

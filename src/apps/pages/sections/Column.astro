@@ -1,14 +1,14 @@
 ---
 import clsx from "clsx";
 import _ from "underscore";
-import ColumnContent from "./ColumnContent.astro";
+import ColumnContent from "@apps/pages/sections/ColumnContent.astro";
 
-const { items, classNames } = Astro.props;
+const { items, className } = Astro.props;
 ---
 
 <div 
   class={clsx(
-    classNames,
+    className,
     'flex flex-col'
   )}
 >
