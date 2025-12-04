@@ -1,6 +1,7 @@
 ---
 import clsx from 'clsx';
 import LinkButton from '@components/LinkButton';
+import SearchBar from '@apps/pages/sections/SearchBar';
 
 const Height = {
   small: 'small',
@@ -13,6 +14,7 @@ const {
   height = Height.small,
   imageAlt,
   imageUrl,
+  search,
   subtitle,
   textAlignment,
   title,
@@ -65,9 +67,17 @@ const {
           <LinkButton
             className='bg-secondary'
             content={buttonText}
-            url={url}
+            href={url}
           />
         </div>
+      )}
+      { search && ( 
+        <SearchBar 
+          buttonText={search.button_text}
+          searchName={search.search_name}
+          placeholder={search.placeholder}
+          client:only="react"
+        />
       )}
     </div>
   )}
