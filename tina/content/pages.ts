@@ -23,7 +23,7 @@ const ColorValues = {
   white: 'white',
   black: 'black',
   secondary: 'secondary'
-}
+};
 
 const SpacerSizes = [{
   label: 'Small',
