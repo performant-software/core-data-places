@@ -41,23 +41,30 @@ const {
     { 'min-h-[720px]': height === Height.large }
   )}
 >
-  { image && <img src={image} alt={imageAlt} class={clsx(
-    'w-full h-full object-cover',
-    { 'absolute inset-0' : clip }
-  )} /> }
-  { darken && <div
-    class='absolute top-0 left-0 w-full h-full bg-gray-900/30'
-  /> }
+  { image && (
+    <img 
+      src={image} 
+      alt={imageAlt} 
+      class={clsx(
+        'w-full h-full object-cover',
+        { 'absolute inset-0' : clip }
+      )} 
+    /> 
+  ) }
+  { darken && (
+    <div
+      class='absolute top-0 left-0 w-full h-full bg-gray-900/30'
+    /> 
+  ) }
   <div class={clsx(
     { 'absolute inset-0 w-full h-full flex flex-col justify-center': !clip },
     { 'items-center': textAlignment === 'center' }
   )} >
     <Container className={clsx(
-        'flex flex-col justify-center',
-        { 'overflow-hidden': clip },
-        { 'items-center text-center': textAlignment === 'center' }
-      )}
-    >
+      'flex flex-col justify-center',
+      { 'overflow-hidden': clip },
+      { 'items-center text-center': textAlignment === 'center' }
+    )} >
       { (title || subtitle || url) && (
         <div
           class={clsx(
@@ -92,16 +99,18 @@ const {
           )}
         </div>
       )}      
-      { content && content.children?.length && <div class={clsx(
-        'prose max-w-none py-8 lg:py-16 z-10',
-        { '!text-white': color === 'white' },
-        { '!text-black': !color || color === 'black'},
-        { 'text-center': textAlignment === 'center' }
-      )}>
-        <TinaMarkdown
-          content={content}
-        />
-      </div> }
+      { content && content.children?.length && (
+        <div class={clsx(
+          'prose max-w-none py-8 lg:py-16 z-10',
+          { '!text-white': color === 'white' },
+          { '!text-black': !color || color === 'black'},
+          { 'text-center': textAlignment === 'center' }
+        )}>
+          <TinaMarkdown
+            content={content}
+          />
+        </div> 
+      ) }
     </Container>
   </div>     
 </div>
