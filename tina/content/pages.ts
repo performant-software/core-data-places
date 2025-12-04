@@ -1,4 +1,4 @@
-import { Collection } from '@tinacms/schema-tools';
+import { Collection, RichTextTemplate } from '@tinacms/schema-tools';
 import _ from 'underscore';
 
 const LABEL_SEPARATOR = ': ';
@@ -48,7 +48,23 @@ const ColorOptions = [{
 }, {
   label: 'Black',
   value: ColorValues.black
-}]
+}];
+
+const richTextTemplates: RichTextTemplate<false>[] = [{
+  name: 'spacer',
+  label: 'Spacer',
+  fields: [{
+    name: 'size',
+    label: 'Size',
+    type: 'string',
+    options: SpacerSizes
+  }, {
+    name: 'color',
+    label: 'Color',
+    type: 'string',
+    options: ColorOptions
+  }]
+}];
 
 const Pages: Collection = {
   name: 'pages',
@@ -119,6 +135,7 @@ const Pages: Collection = {
         name: 'body',
         label: 'Body',
         type: 'rich-text',
+        templates: richTextTemplates,
         isBody: true
       }]
     }, {
@@ -183,6 +200,11 @@ const Pages: Collection = {
         type: 'string',
         required: true,
         options: SpacerSizes
+      }, {
+        name: 'color',
+        label: 'Color',
+        type: 'string',
+        options: ColorOptions
       }]
     }, {
       name: 'text_block',

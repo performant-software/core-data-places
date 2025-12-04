@@ -35,6 +35,7 @@
   --color-secondary: var(--customColorSecondary, var(--color-default-secondary));
   --color-text-primary: var(--customTextPrimary, var(--color-white));
   --color-text-secondary: var(--customTextSecondary, var(--color-black));
+  --color-layout: var(--customColorLayout, var(--color-white));
 
   --font-header: var(--customFontHeader, Inter);
   --font-body: var(--customFontBody, Inter);

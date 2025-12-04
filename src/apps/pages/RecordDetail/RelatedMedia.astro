@@ -13,7 +13,7 @@ const { lang, model, uuid } = Astro.props;
 const service = ServiceFactory.getService(model);
 const manifests = await service.getRelatedManifests(uuid);
 ---
-{manifests && (
+{manifests && manifests?.items?.length > 0 && (
   <MediaContents
     client:only='react'
     data={manifests}
