@@ -135,8 +135,8 @@ const Pages: Collection = {
         name: 'body',
         label: 'Body',
         type: 'rich-text',
-        templates: richTextTemplates,
-        isBody: true
+        isBody: true,
+        templates: richTextTemplates
       }]
     }, {
       name: 'images',
@@ -349,6 +349,24 @@ const Pages: Collection = {
         name: 'button_text',
         label: 'Button Text',
         type: 'string'
+      }, {
+        name: 'search',
+        label: 'Search Bar',
+        type: 'object',
+        fields: [{
+          name: 'search_name',
+          label: 'Search Name',
+          description: 'This should match the name configured for the search in Settings.',
+          type: 'string'
+        }, {
+          name: 'button_text',
+          label: 'Button Text',
+          type: 'string'
+        }, {
+          name: 'placeholder',
+          label: 'Search Placeholder',
+          type: 'string'
+        }]
       }, {
         name: 'content',
         label: 'Rich Text Content',
