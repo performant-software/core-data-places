@@ -207,32 +207,6 @@ const Pages: Collection = {
         options: ColorOptions
       }]
     }, {
-      name: 'text_block',
-      label: 'Text Block',
-      ui: {
-        itemProps: (item) => {
-          return { label: getLabel('Text Block', item?.title) };
-        }
-      },
-      fields: [{
-        name: 'title',
-        label: 'Title',
-        type: 'string'
-      }, {
-        name: 'url',
-        label: 'URL',
-        type: 'string'
-      }, {
-        name: 'button_text',
-        label: 'Button Text',
-        type: 'string'
-      }, {
-        name: 'text_alignment',
-        label: 'Text Alignment',
-        type: 'string',
-        options: ColorOptions
-      }]
-    }, {
       name: 'text_image',
       label: 'Text Image Block',
       ui: {
