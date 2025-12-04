@@ -101,7 +101,7 @@ const {
           )}
         </div>
       )}      
-      { content && content.children?.length && (
+      { content && content.children?.length ? (
         <div class={clsx(
           'prose max-w-none py-8 lg:py-16 z-10',
           { '!text-white': color === 'white' },
@@ -112,7 +112,7 @@ const {
             content={content}
           />
         </div> 
-      ) }
+      ) : null }
       { search && ( 
         <SearchBar 
           buttonText={search.button_text}
