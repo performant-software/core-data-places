@@ -1,0 +1,71 @@
+---
+import clsx from 'clsx';
+import _ from 'underscore';
+import LinkButton from '@components/LinkButton';
+import Column from '@apps/pages/sections/Column.astro';
+
+const { 
+  buttonText,
+  content, 
+  gap,   
+  textAlignment,
+  title,
+  url
+} = Astro.props;
+
+const TOTAL_COLUMNS = 12;
+
+//we need to figure out the column ratios
+let total = 0;
+if (content) {
+  for (const col of content) {
+    if (col.width) {
+      total += Number(col.width.split('-').slice(-1))
+    }
+  }
+}
+
+const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr lg:grid-flow-col';
+---
+
+<div
+  class='flex flex-col'
+>
+  { title && (
+    <h2
+      class={clsx(
+        'text-4xl font-bold py-4',
+        { 'flex justify-center': textAlignment === 'center' }
+      )}
+    >
+      { title }
+    </h2>
+  )}
+  <div
+    class={clsx(
+      'w-full grid grid-cols-1',
+      gridCols,   
+      { 'gap-16': gap === 'large' },
+      { 'gap-8': gap === 'small' || !gap }
+    )}
+  >
+    {
+      _.map(content, (col: any) => ( 
+        <Column items={col.content} className={clsx({ [col.width] : total === TOTAL_COLUMNS })} />
+      ))
+    }
+  </div>
+  { url && (
+    <div
+      class={clsx(
+        'py-4',
+        { 'flex justify-center': textAlignment === 'center' }
+      )}
+    >
+      <LinkButton
+        className='bg-primary'
+        content={buttonText}
+        href={url}
+      />
+    </div>
+  )}

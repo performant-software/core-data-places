@@ -1,0 +1,37 @@
+---
+import { TinaMarkdown } from "tinacms/dist/rich-text";
+
+const { item } = Astro.props;
+
+const BlockTypes = {
+  text: 'Richtext',
+  image: 'Image',
+  basic: 'Basic'
+}
+---
+{ item.__typename.endsWith(BlockTypes.image) && ( 
+  <img src={item.image} class='w-full object-cover' />
+)}
+
+{ item.__typename.endsWith(BlockTypes.text) && ( 
+  <div class="prose max-w-none">
+    <TinaMarkdown content={item.text} />
+  </div>
+)}
+
+{ !item.__typename || item.__typename.endsWith(BlockTypes.basic) && ( 
+  <div
+    class='flex flex-col w-full'
+  >
+    <h4
+      class='text-3xl font-bold'
+    >
+      { item?.title }
+    </h4>
+    <p
+      class='font-light'
+    >
+      { item?.description }
+    </p>
+  </div>
+)}
