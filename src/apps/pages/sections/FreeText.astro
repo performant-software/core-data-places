@@ -1,6 +1,5 @@
 ---
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
-import { richTextComponents } from '@root/src/utils/pageBuilder';
 import Spacer from '@components/Spacer';
 
 const { content } = Astro.props;
@@ -17,18 +16,3 @@ const components = {
     components={components}
   />
 </article>
-
-<script>
-  window.document.addEventListener('DOMContentLoaded', () => {
-    const searchBars = document.querySelectorAll('#search-bar');
-    for (const search of searchBars) {
-      if (search instanceof HTMLElement && search.dataset.url) {
-        search.addEventListener('submit', (event) => {
-          event.preventDefault();
-          const input = search.querySelector('input');
-          window.location.href = `${search.dataset.url}${input.value}`
-        })
-      }
-    }
-  })
-</script>
