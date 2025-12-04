@@ -12,17 +12,6 @@ const getLabel = (...args) => {
   return _.compact(args).join(LABEL_SEPARATOR);
 };
 
-const ModelNames = {
-  events: 'events',
-  instances: 'instances',
-  items: 'items',
-  mediaContents: 'media_contents',
-  organizations: 'organizations',
-  people: 'people',
-  places: 'places',
-  works: 'works'
-};
-
 const SpacerValues = {
   small: 'small',
   medium: 'medium',
@@ -60,32 +49,6 @@ const colorOptions = [{
   label: 'Secondary (defaults to off-white)',
   value: colorValues.secondary
 }];
-
-const modelOptions = [{
-  label: 'Events',
-  value: ModelNames.events
-}, {
-  label: 'Instances',
-  value: ModelNames.instances
-}, {
-  label: 'Items',
-  value: ModelNames.items 
-}, {
-  label: 'Media Contents',
-  value: ModelNames.mediaContents
-}, {
-  label: 'Organizations',
-  value: ModelNames.organizations
-}, {
-  label: 'People',
-  value: ModelNames.people
-}, {
-  label: 'Places',
-  value: ModelNames.places
-}, {
-  label: 'Works',
-  value: ModelNames.works
-}]
 
 const richTextTemplates: RichTextTemplate<false>[] = [{
   name: 'spacer',
@@ -215,10 +178,10 @@ const Pages: Collection = {
         label: 'Search Bar',
         type: 'object',
         fields: [{
-          name: 'model',
-          label: 'Search Model',
-          type: 'string',
-          options: modelOptions
+          name: 'search_name',
+          label: 'Search Name',
+          description: 'This should match the name configured for the search in Settings.',
+          type: 'string'
         }, {
           name: 'button_text',
           label: 'Button Text',

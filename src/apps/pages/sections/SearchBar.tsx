@@ -5,11 +5,11 @@ import { useCallback, useMemo, useState } from 'react';
 interface SearchBarProps {
   buttonText?: string;
   placeholder?: string;
-  model: string;
+  searchName: string;
 }
 
 const SearchBar = (props: SearchBarProps) => {
-  const { buttonText, placeholder, model } = props;
+  const { buttonText, placeholder, searchName } = props;
   const [query, setQuery] = useState('');
 
  const language = useMemo(() => getLanguageFromUrl(window.location.pathname), [window.location.pathname]);
@@ -17,9 +17,9 @@ const SearchBar = (props: SearchBarProps) => {
   const onSubmit = useCallback((e: any) => {
     e.preventDefault();
     if (query) {
-      window.location.href = `/${language}/search/${model}?q=${query}`;
+      window.location.href = `/${language}/search/${searchName}?q=${query}`;
     }
-  }, [model, query, language]);
+  }, [searchName, query, language]);
 
   return (
     <div className='not-prose w-[840px] border rounded-md border-black text-black text-sm'>
