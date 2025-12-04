@@ -1,7 +1,7 @@
 ---
+import Banner from '@apps/pages/sections/Banner.astro';
 import Carousel from '@apps/pages/sections/Carousel';
 import FreeText from '@apps/pages/sections/FreeText.astro';
-import Hero from '@apps/pages/sections/Hero.astro';
 import Images from '@apps/pages/sections/Images.astro';
 import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
 import Spacer from '@apps/pages/sections/Spacer.astro';
@@ -20,9 +20,9 @@ const page = await fetchPage(locale, slug);
 const { t } = await getTranslations(Astro.currentLocale);
 
 const SectionTypes = {
+  banner: 'PagesSectionsBanner',
   carousel: 'PagesSectionsCarousel',
   freeText: 'PagesSectionsFree_text',
-  hero: 'PagesSectionsHero',
   images: 'PagesSectionsImages',
   multiColumn: 'PagesSectionsMulti_column',
   spacer: 'PagesSectionsSpacer',
@@ -56,20 +56,6 @@ const SectionTypes = {
           />
         </Container>
       )}
-      { section.__typename === SectionTypes.hero && (
-        <Container>
-          <Hero
-            buttonText={section.button_text}
-            height={section.height}
-            imageAlt={section.background_image_alt}
-            imageUrl={section.background_image}
-            subtitle={section.subtitle}
-            textAlignment={section.text_alignment}
-            title={section.title}
-            url={section.url}
-          />
-        </Container>
-      )}
       { section.__typename === SectionTypes.images && (
         <Container>
           <Images
@@ -81,6 +67,7 @@ const SectionTypes = {
       { section.__typename === SectionTypes.spacer && (
         <Container>
           <Spacer
+            color={section.color}
             size={section.size}
           />
         </Container>
@@ -113,6 +100,25 @@ const SectionTypes = {
             gap={section.gap}
           />
         </Container>
+      )}
+      { section.__typename === SectionTypes.banner && (
+        <Banner
+          background={section.background}
+          buttonText={section.button_text}
+          clip={section.clip}
+          color={section.color}
+          content={section.content}
+          darken={section.darken}
+          fullWidth={section.full_width}
+          height={section.height}
+          image={section.background_image}
+          imageAlt={section.background_image_alt}
+          search={section.search}
+          subtitle={section.subtitle}
+          textAlignment={section.text_alignment}
+          title={section.title}
+          url={section.url}
+        />
       )}
     </section>
   ))}

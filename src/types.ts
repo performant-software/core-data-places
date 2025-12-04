@@ -74,6 +74,8 @@ export interface Configuration {
     locales: string[]
   },
 
+  gallery?: string,
+
   layers?: Array<{
     name: string,
     layer_type: 'geojson' | 'vector' | 'raster' | 'georeference',

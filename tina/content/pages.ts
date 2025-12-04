@@ -1,4 +1,4 @@
-import { Collection } from '@tinacms/schema-tools';
+import { Collection, RichTextTemplate } from '@tinacms/schema-tools';
 import _ from 'underscore';
 
 const LABEL_SEPARATOR = ': ';
@@ -18,6 +18,13 @@ const SpacerValues = {
   large: 'large'
 };
 
+const ColorValues = {
+  primary: 'primary',
+  white: 'white',
+  black: 'black',
+  secondary: 'secondary'
+};
+
 const SpacerSizes = [{
   label: 'Small',
   value: SpacerValues.small
@@ -27,6 +34,36 @@ const SpacerSizes = [{
 }, {
   label: 'Large',
   value: SpacerValues.large
+}];
+
+const ColorOptions = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
+  label: 'Secondary (defaults to off-white)',
+  value: ColorValues.secondary
+}, {
+  label: 'White',
+  value: ColorValues.white
+}, {
+  label: 'Black',
+  value: ColorValues.black
+}];
+
+const richTextTemplates: RichTextTemplate<false>[] = [{
+  name: 'spacer',
+  label: 'Spacer',
+  fields: [{
+    name: 'size',
+    label: 'Size',
+    type: 'string',
+    options: SpacerSizes
+  }, {
+    name: 'color',
+    label: 'Color',
+    type: 'string',
+    options: ColorOptions
+  }]
 }];
 
 const Pages: Collection = {
@@ -98,68 +135,8 @@ const Pages: Collection = {
         name: 'body',
         label: 'Body',
         type: 'rich-text',
-        isBody: true
-      }]
-    }, {
-      name: 'hero',
-      label: 'Hero',
-      ui: {
-        itemProps: (item) => {
-          return { label: getLabel('Hero', item?.title) };
-        }
-      },
-      fields: [{
-        name: 'title',
-        label: 'Title',
-        type: 'string'
-      }, {
-        name: 'subtitle',
-        label: 'Subtitle',
-        type: 'string',
-        ui: {
-          component: 'textarea'
-        }
-      }, {
-        name: 'background_image',
-        label: 'Background Image',
-        type: 'image'
-      }, {
-        name: 'background_image_alt',
-        label: 'Background Image Alt Text',
-        type: 'string'
-      }, {
-        name: 'url',
-        label: 'URL',
-        type: 'string'
-      }, {
-        name: 'button_text',
-        label: 'Button Text',
-        type: 'string'
-      }, {
-        name: 'text_alignment',
-        label: 'Text Alignment',
-        type: 'string',
-        options: [{
-          label: 'Left',
-          value: 'left'
-        }, {
-          label: 'Center',
-          value: 'center'
-        }]
-      }, {
-        name: 'height',
-        label: 'Height',
-        type: 'string',
-        options: [{
-          label: 'Small',
-          value: 'small'
-        }, {
-          label: 'Medium',
-          value: 'medium'
-        }, {
-          label: 'Large',
-          value: 'large'
-        }]
+        isBody: true,
+        templates: richTextTemplates
       }]
     }, {
       name: 'images',
@@ -223,6 +200,37 @@ const Pages: Collection = {
         type: 'string',
         required: true,
         options: SpacerSizes
+      }, {
+        name: 'color',
+        label: 'Color',
+        type: 'string',
+        options: ColorOptions
+      }]
+    }, {
+      name: 'text_block',
+      label: 'Text Block',
+      ui: {
+        itemProps: (item) => {
+          return { label: getLabel('Text Block', item?.title) };
+        }
+      },
+      fields: [{
+        name: 'title',
+        label: 'Title',
+        type: 'string'
+      }, {
+        name: 'url',
+        label: 'URL',
+        type: 'string'
+      }, {
+        name: 'button_text',
+        label: 'Button Text',
+        type: 'string'
+      }, {
+        name: 'text_alignment',
+        label: 'Text Alignment',
+        type: 'string',
+        options: ColorOptions
       }]
     }, {
       name: 'text_image',
@@ -408,6 +416,109 @@ const Pages: Collection = {
             }]
           }]
         }]
+      }]
+    }, {
+      name: 'banner',
+      label: 'Full Width Banner',
+      fields:  [{
+        name: 'title',
+        label: 'Title',
+        type: 'string'
+      }, {
+        name: 'subtitle',
+        label: 'Subtitle',
+        type: 'string',
+        ui: {
+          component: 'textarea'
+        }
+      }, {
+        name: 'url',
+        label: 'URL',
+        type: 'string'
+      }, {
+        name: 'button_text',
+        label: 'Button Text',
+        type: 'string'
+      }, {
+        name: 'search',
+        label: 'Search Bar',
+        type: 'object',
+        fields: [{
+          name: 'search_name',
+          label: 'Search Name',
+          description: 'This should match the name configured for the search in Settings.',
+          type: 'string'
+        }, {
+          name: 'button_text',
+          label: 'Button Text',
+          type: 'string'
+        }, {
+          name: 'placeholder',
+          label: 'Search Placeholder',
+          type: 'string'
+        }]
+      }, {
+        name: 'content',
+        label: 'Rich Text Content',
+        type: 'rich-text'
+      }, {
+        name: 'text_alignment',
+        label: 'Text Alignment',
+        type: 'string',
+        options: [{
+          label: 'Left',
+          value: 'left'
+        }, {
+          label: 'Center',
+          value: 'center'
+        }]
+      }, {
+        name: 'height',
+        label: 'Height',
+        type: 'string',
+        options: [{
+          label: 'Small',
+          value: 'small'
+        }, {
+          label: 'Medium',
+          value: 'medium'
+        }, {
+          label: 'Large',
+          value: 'large'
+        }]
+      }, {
+        name: 'color',
+        label: 'Text Mode',
+        type: 'string',
+        options: [{
+          label: 'Dark Text',
+          value: 'black'
+        }, {
+          label: 'Light Text',
+          value: 'white'
+        }]
+      }, {
+        name: 'background_image',
+        label: 'Background Image',
+        type: 'image'
+      }, {
+        name: 'background_image_alt',
+        label: 'Background Image Alt Text',
+        type: 'string'
+      }, {
+        name: 'clip',
+        label: 'Clip image to content height?',
+        type: 'boolean'
+      }, {
+        name: 'background',
+        label: 'Background Color',
+        description: 'Will display if no image is provided.',
+        type: 'string',
+        options: ColorOptions
+      }, {
+        name: 'darken',
+        label: 'Darken Background?',
+        type: 'boolean'
       }]
     }]
   }]
