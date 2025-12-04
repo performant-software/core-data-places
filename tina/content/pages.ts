@@ -408,11 +408,11 @@ const Pages: Collection = {
           value: 'white'
         }]
       }, {
-        name: 'image',
+        name: 'background_image',
         label: 'Background Image',
         type: 'image'
       }, {
-        name: 'image_alt',
+        name: 'background_image_alt',
         label: 'Background Image Alt Text',
         type: 'string'
       }, {
