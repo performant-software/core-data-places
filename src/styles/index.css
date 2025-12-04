@@ -78,3 +78,10 @@ h1, h2, h3, h4, h5, h6 {
 .swiper-pagination > .swiper-pagination-bullet-active {
   background-color: var(--color-black);
 }
+
+/*
+* Overriding some very opinionated default prose styles
+*/
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: inherit;
+}

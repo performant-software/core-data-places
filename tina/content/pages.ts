@@ -18,10 +18,10 @@ const SpacerValues = {
   large: 'large'
 };
 
-const colorValues = {
-  black: 'black',
-  white: 'white',
+const ColorValues = {
   primary: 'primary',
+  white: 'white',
+  black: 'black',
   secondary: 'secondary'
 };
 
@@ -36,18 +36,18 @@ const SpacerSizes = [{
   value: SpacerValues.large
 }];
 
-const colorOptions = [{
-  label: 'White',
-  value: colorValues.white
-}, {
-  label: 'Black',
-  value: colorValues.black
-}, {
+const ColorOptions = [{
   label: 'Primary',
-  value: colorValues.primary
+  value: ColorValues.primary
 }, {
   label: 'Secondary (defaults to off-white)',
-  value: colorValues.secondary
+  value: ColorValues.secondary
+}, {
+  label: 'White',
+  value: ColorValues.white
+}, {
+  label: 'Black',
+  value: ColorValues.black
 }];
 
 const richTextTemplates: RichTextTemplate<false>[] = [{
@@ -62,7 +62,7 @@ const richTextTemplates: RichTextTemplate<false>[] = [{
     name: 'color',
     label: 'Color',
     type: 'string',
-    options: colorOptions
+    options: ColorOptions
   }]
 }];
 
@@ -139,85 +139,6 @@ const Pages: Collection = {
         templates: richTextTemplates
       }]
     }, {
-      name: 'hero',
-      label: 'Hero',
-      ui: {
-        itemProps: (item) => {
-          return { label: getLabel('Hero', item?.title) };
-        }
-      },
-      fields: [{
-        name: 'title',
-        label: 'Title',
-        type: 'string'
-      }, {
-        name: 'subtitle',
-        label: 'Subtitle',
-        type: 'string',
-        ui: {
-          component: 'textarea'
-        }
-      }, {
-        name: 'background_image',
-        label: 'Background Image',
-        type: 'image'
-      }, {
-        name: 'background_image_alt',
-        label: 'Background Image Alt Text',
-        type: 'string'
-      }, {
-        name: 'url',
-        label: 'URL',
-        type: 'string'
-      }, {
-        name: 'button_text',
-        label: 'Button Text',
-        type: 'string'
-      }, {
-        name: 'search',
-        label: 'Search Bar',
-        type: 'object',
-        fields: [{
-          name: 'search_name',
-          label: 'Search Name',
-          description: 'This should match the name configured for the search in Settings.',
-          type: 'string'
-        }, {
-          name: 'button_text',
-          label: 'Button Text',
-          type: 'string'
-        }, {
-          name: 'placeholder',
-          label: 'Search Placeholder',
-          type: 'string'
-        }]
-      }, {
-        name: 'text_alignment',
-        label: 'Text Alignment',
-        type: 'string',
-        options: [{
-          label: 'Left',
-          value: 'left'
-        }, {
-          label: 'Center',
-          value: 'center'
-        }]
-      }, {
-        name: 'height',
-        label: 'Height',
-        type: 'string',
-        options: [{
-          label: 'Small',
-          value: 'small'
-        }, {
-          label: 'Medium',
-          value: 'medium'
-        }, {
-          label: 'Large',
-          value: 'large'
-        }]
-      }]
-    }, {
       name: 'images',
       label: 'Images',
       ui: {
@@ -283,7 +204,7 @@ const Pages: Collection = {
         name: 'color',
         label: 'Color',
         type: 'string',
-        options: colorOptions
+        options: ColorOptions
       }]
     }, {
       name: 'text_block',
@@ -405,6 +326,109 @@ const Pages: Collection = {
         name: 'button_text',
         label: 'Button Text',
         type: 'string'
+      }]
+    }, {
+      name: 'banner',
+      label: 'Full Width Banner',
+      fields:  [{
+        name: 'title',
+        label: 'Title',
+        type: 'string'
+      }, {
+        name: 'subtitle',
+        label: 'Subtitle',
+        type: 'string',
+        ui: {
+          component: 'textarea'
+        }
+      }, {
+        name: 'url',
+        label: 'URL',
+        type: 'string'
+      }, {
+        name: 'button_text',
+        label: 'Button Text',
+        type: 'string'
+      }, {
+        name: 'search',
+        label: 'Search Bar',
+        type: 'object',
+        fields: [{
+          name: 'search_name',
+          label: 'Search Name',
+          description: 'This should match the name configured for the search in Settings.',
+          type: 'string'
+        }, {
+          name: 'button_text',
+          label: 'Button Text',
+          type: 'string'
+        }, {
+          name: 'placeholder',
+          label: 'Search Placeholder',
+          type: 'string'
+        }]
+      }, {
+        name: 'content',
+        label: 'Rich Text Content',
+        type: 'rich-text'
+      }, {
+        name: 'text_alignment',
+        label: 'Text Alignment',
+        type: 'string',
+        options: [{
+          label: 'Left',
+          value: 'left'
+        }, {
+          label: 'Center',
+          value: 'center'
+        }]
+      }, {
+        name: 'height',
+        label: 'Height',
+        type: 'string',
+        options: [{
+          label: 'Small',
+          value: 'small'
+        }, {
+          label: 'Medium',
+          value: 'medium'
+        }, {
+          label: 'Large',
+          value: 'large'
+        }]
+      }, {
+        name: 'color',
+        label: 'Text Mode',
+        type: 'string',
+        options: [{
+          label: 'Dark Text',
+          value: 'black'
+        }, {
+          label: 'Light Text',
+          value: 'white'
+        }]
+      }, {
+        name: 'background_image',
+        label: 'Background Image',
+        type: 'image'
+      }, {
+        name: 'background_image_alt',
+        label: 'Background Image Alt Text',
+        type: 'string'
+      }, {
+        name: 'clip',
+        label: 'Clip image to content height?',
+        type: 'boolean'
+      }, {
+        name: 'background',
+        label: 'Background Color',
+        description: 'Will display if no image is provided.',
+        type: 'string',
+        options: ColorOptions
+      }, {
+        name: 'darken',
+        label: 'Darken Background?',
+        type: 'boolean'
       }]
     }]
   }]
