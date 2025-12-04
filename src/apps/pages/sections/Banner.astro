@@ -3,6 +3,7 @@ import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import clsx from 'clsx';
 import Container from '@components/Container.astro';
 import LinkButton from '@components/LinkButton';
+import SearchBar from '@apps/pages/sections/SearchBar';
 
 const Height = {
   small: 'small',
@@ -20,6 +21,7 @@ const {
   height, 
   image,
   imageAlt,
+  search,
   subtitle,
   textAlignment,
   title,
@@ -111,6 +113,14 @@ const {
           />
         </div> 
       ) }
+      { search && ( 
+        <SearchBar 
+          buttonText={search.button_text}
+          searchName={search.search_name}
+          placeholder={search.placeholder}
+          client:only="react"
+        />
+      )}
     </Container>
   </div>     
 </div>
