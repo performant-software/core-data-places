@@ -1,0 +1,107 @@
+---
+import { TinaMarkdown } from 'tinacms/dist/rich-text';
+import clsx from 'clsx';
+import Container from '@components/Container.astro';
+import LinkButton from '@components/LinkButton';
+
+const Height = {
+  small: 'small',
+  medium: 'medium',
+  large: 'large'
+};
+
+const {
+  background, 
+  buttonText,
+  clip, 
+  color, 
+  content, 
+  darken, 
+  height, 
+  image,
+  imageAlt,
+  subtitle,
+  textAlignment,
+  title,
+  url
+} = Astro.props;
+---
+
+<div
+  class={clsx(
+    'w-full relative flex flex-col justify-center',
+    { 'items-center': textAlignment === 'center' },
+    { 'overflow-hidden': clip },
+    { 'bg-primary': background === 'primary' },
+    { 'bg-secondary': background === 'secondary' },
+    { 'bg-white': background === 'white' },
+    { 'bg-black': background === 'black' },
+    { 'min-h-[220px]': height === Height.small },
+    { 'min-h-[420px]': height === Height.medium },
+    { 'min-h-[720px]': height === Height.large }
+  )}
+>
+  { image && <img src={image} alt={imageAlt} class={clsx(
+    'w-full h-full object-cover',
+    { 'absolute inset-0' : clip }
+  )} /> }
+  { darken && <div
+    class='absolute top-0 left-0 w-full h-full bg-gray-900/30'
+  /> }
+  <div class={clsx(
+    { 'absolute inset-0 w-full h-full flex flex-col justify-center': !clip },
+    { 'items-center': textAlignment === 'center' }
+  )} >
+    <Container className={clsx(
+        'flex flex-col justify-center',
+        { 'overflow-hidden': clip },
+        { 'items-center text-center': textAlignment === 'center' }
+      )}
+    >
+      { (title || subtitle || url) && (
+        <div
+          class={clsx(
+            'relative flex flex-col z-10 text-white py-12 max-w-full lg:max-w-[60%] gap-y-8',
+            { 'items-center text-center lg:px-40 lg:max-w-full': textAlignment === 'center' }
+          )}
+        >
+          { title && (
+            <h1
+              class='text-7xl font-bold uppercase m-0'
+            >
+              { title }
+            </h1>
+          )}
+          { subtitle && (
+            <p
+              class='font-light'
+            >
+              { subtitle }
+            </p>
+          )}
+          { url && (
+            <div
+              class='z-10'
+            >
+              <LinkButton
+                className='bg-secondary'
+                content={buttonText}
+                href={url}
+              />
+            </div>
+          )}
+        </div>
+      )}      
+      { content && content.children?.length && <div class={clsx(
+        'prose max-w-none py-8 lg:py-16 z-10',
+        { '!text-white': color === 'white' },
+        { '!text-black': !color || color === 'black'},
+        { 'text-center': textAlignment === 'center' }
+      )}>
+        <TinaMarkdown
+          content={content}
+        />
+      </div> }
+    </Container>
+  </div>     
+</div>

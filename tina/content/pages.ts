@@ -122,67 +122,6 @@ const Pages: Collection = {
         isBody: true
       }]
     }, {
-      name: 'hero',
-      label: 'Hero',
-      ui: {
-        itemProps: (item) => {
-          return { label: getLabel('Hero', item?.title) };
-        }
-      },
-      fields: [{
-        name: 'title',
-        label: 'Title',
-        type: 'string'
-      }, {
-        name: 'subtitle',
-        label: 'Subtitle',
-        type: 'string',
-        ui: {
-          component: 'textarea'
-        }
-      }, {
-        name: 'background_image',
-        label: 'Background Image',
-        type: 'image'
-      }, {
-        name: 'background_image_alt',
-        label: 'Background Image Alt Text',
-        type: 'string'
-      }, {
-        name: 'url',
-        label: 'URL',
-        type: 'string'
-      }, {
-        name: 'button_text',
-        label: 'Button Text',
-        type: 'string'
-      }, {
-        name: 'text_alignment',
-        label: 'Text Alignment',
-        type: 'string',
-        options: [{
-          label: 'Left',
-          value: 'left'
-        }, {
-          label: 'Center',
-          value: 'center'
-        }]
-      }, {
-        name: 'height',
-        label: 'Height',
-        type: 'string',
-        options: [{
-          label: 'Small',
-          value: 'small'
-        }, {
-          label: 'Medium',
-          value: 'medium'
-        }, {
-          label: 'Large',
-          value: 'large'
-        }]
-      }]
-    }, {
       name: 'images',
       label: 'Images',
       ui: {
@@ -367,12 +306,56 @@ const Pages: Collection = {
         type: 'string'
       }]
     }, {
-      name: 'centered_text',
-      label: 'Centered Text with Background',
-      fields: [{
+      name: 'banner',
+      label: 'Full Width Banner',
+      fields:  [{
+        name: 'title',
+        label: 'Title',
+        type: 'string'
+      }, {
+        name: 'subtitle',
+        label: 'Subtitle',
+        type: 'string',
+        ui: {
+          component: 'textarea'
+        }
+      }, {
+        name: 'url',
+        label: 'URL',
+        type: 'string'
+      }, {
+        name: 'button_text',
+        label: 'Button Text',
+        type: 'string'
+      }, {
         name: 'content',
-        label: 'Text Content',
+        label: 'Rich Text Content',
         type: 'rich-text'
+      }, {
+        name: 'text_alignment',
+        label: 'Text Alignment',
+        type: 'string',
+        options: [{
+          label: 'Left',
+          value: 'left'
+        }, {
+          label: 'Center',
+          value: 'center'
+        }]
+      }, {
+        name: 'height',
+        label: 'Height',
+        type: 'string',
+        options: [{
+          label: 'Small',
+          value: 'small'
+        }, {
+          label: 'Medium',
+          value: 'medium'
+        }, {
+          label: 'Large',
+          value: 'large'
+        }]
       }, {
         name: 'color',
         label: 'Text Mode',
@@ -389,13 +372,12 @@ const Pages: Collection = {
         label: 'Background Image',
         type: 'image'
       }, {
+        name: 'image_alt',
+        label: 'Background Image Alt Text',
+        type: 'string'
+      }, {
         name: 'clip',
         label: 'Clip image to content height?',
-        type: 'boolean'
-      }, {
-        name: 'full_width',
-        label: 'Full width image?',
-        description: 'If checked, the image will extend to the edges of the screen.',
         type: 'boolean'
       }, {
         name: 'background',
@@ -403,6 +385,10 @@ const Pages: Collection = {
         description: 'Will display if no image is provided.',
         type: 'string',
         options: ColorOptions
+      }, {
+        name: 'darken',
+        label: 'Darken Background?',
+        type: 'boolean'
       }]
     }]
   }]
