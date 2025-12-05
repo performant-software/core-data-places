@@ -1,7 +1,7 @@
 ---
 import { getTranslations } from '@backend/i18n';
 import Card from '@components/Card.astro';
-import { TinaMarkdown } from 'tinacms/dist/rich-text';
+import RichText from '@apps/pages/sections/RichText.astro';
 
 const { item } = Astro.props;
 
@@ -21,7 +21,7 @@ const BlockTypes = {
 
 { item.__typename.endsWith(BlockTypes.text) && ( 
   <div class="prose max-w-none">
-    <TinaMarkdown content={item.text} />
+    <RichText content={item.text} />
   </div>
 )}
 

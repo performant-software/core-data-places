@@ -1,9 +1,9 @@
 ---
-import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import clsx from 'clsx';
 import Container from '@components/Container.astro';
 import LinkButton from '@components/LinkButton';
 import SearchBar from '@apps/pages/sections/SearchBar';
+import RichText from '@apps/pages/sections/RichText.astro';
 
 const Height = {
   small: 'small',
@@ -108,9 +108,7 @@ const {
           { '!text-black': !color || color === 'black'},
           { 'text-center': textAlignment === 'center' }
         )}>
-          <TinaMarkdown
-            content={content}
-          />
+          <RichText content={content} />
         </div> 
       ) : null }
       { search && ( 
