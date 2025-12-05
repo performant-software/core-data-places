@@ -18,7 +18,7 @@ const SpacerValues = {
   large: 'large'
 };
 
-const ColorValues = {
+export const ColorValues = {
   primary: 'primary',
   white: 'white',
   black: 'black',
@@ -63,6 +63,32 @@ const richTextTemplates: RichTextTemplate<false>[] = [{
     label: 'Color',
     type: 'string',
     options: ColorOptions
+  }]
+}, {
+  name: 'button',
+  label: 'Button Link',
+  fields: [{
+    name: 'content',
+    label: 'Button Text',
+    type: 'string'
+  }, {
+    name: 'href',
+    label: 'Button Link',
+    type: 'string'
+  }, {
+    name: 'color',
+    label: 'Color',
+    type: 'string',
+    options: ColorOptions
+  }, {
+    name: 'text',
+    label: 'Text Color',
+    type: 'string',
+    options: ColorOptions
+  }, {
+    name: 'arrow',
+    label: 'Include arrow icon?',
+    type: 'boolean'
   }]
 }];
 
@@ -363,7 +389,8 @@ const Pages: Collection = {
             fields: [{
               name: 'text',
               label: 'Text',
-              type: 'rich-text'
+              type: 'rich-text',
+              templates: richTextTemplates
             }]
           }, {
             name: 'image',
@@ -434,7 +461,8 @@ const Pages: Collection = {
       }, {
         name: 'content',
         label: 'Rich Text Content',
-        type: 'rich-text'
+        type: 'rich-text',
+        templates: richTextTemplates
       }, {
         name: 'text_alignment',
         label: 'Text Alignment',
