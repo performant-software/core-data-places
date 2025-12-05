@@ -25,7 +25,7 @@ const { t } = await getTranslations(lang);
     label={t(uuid)}
     resolveDetailUrl={(work) => `/${lang}/works/${work.uuid}`}
     resolveName={work => work.name}
-    showLinks={config.detail_pages.includes('works')}
+    showLinks={config.detail_pages.models.includes('works')}
     uuid={uuid}
   />
 ))}

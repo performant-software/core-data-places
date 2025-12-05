@@ -1,0 +1,40 @@
+---
+import UserDefinedFieldView from "@components/UserDefinedFieldView";
+
+interface Props {
+  fields: {
+    label: string;
+    uuid: string;
+  }[];
+  item: any;
+}
+
+const { fields, item } = Astro.props;
+
+const displayFields = [];
+
+if (item.user_defined) {
+  for (const field of fields) {
+    if (item.user_defined[field.uuid]) {
+      displayFields.push({
+        label: field.label,
+        value: item.user_defined[field.uuid]
+      });
+    }
+  }
+}
+---
+<div class="w-full bg-white rounded-[5px] p-6 divide-y divide-neutral-300">
+  <p class="font-semibold pb-4">{item.name}</p>
+  <ul class="pt-4 flex flex-wrap justify-start gap-4">
+    {displayFields.map(displayField => (
+      <li>
+        <span class="text-neutral-400 uppercase font-semibold text-xs">{displayField.label}</span>
+        <UserDefinedFieldView
+          type={displayField.value.type}
+          value={displayField.value.value}
+        />
+      </li>
+    ))}
+  </ul>
+</div>

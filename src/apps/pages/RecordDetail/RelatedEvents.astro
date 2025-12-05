@@ -26,7 +26,7 @@ const { t } = await getTranslations(lang);
     label={t(uuid)}
     resolveDetailUrl={event => `/${lang}/events/${event.uuid}`}
     resolveName={event => event.name}
-    showLinks={config.detail_pages.includes('events')}
+    showLinks={config.detail_pages.models.includes('events')}
     uuid={uuid}
   />
 ))}
