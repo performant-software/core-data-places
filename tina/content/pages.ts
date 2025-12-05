@@ -388,6 +388,45 @@ const Pages: Collection = {
                 component: 'textarea'
               }
             }]
+          }, {
+            name: 'card',
+            label: 'Card Link',
+            fields: [{
+              name: 'slug',
+              label: 'Link',
+              type: 'string'
+            }, {
+              name: 'title',
+              label: 'Title',
+              type: 'string'
+            }, {
+              name: 'author',
+              label: 'Author',
+              type: 'string'
+            }, {
+              name: 'date',
+              label: 'Date',
+              type: 'datetime'
+            }, {
+              name: 'category',
+              label: 'Category',
+              type: 'string'
+            }, {
+              name: 'image',
+              label: 'Image',
+              type: 'image',
+            }, {
+              name: 'alt',
+              label: 'Image Alt Text',
+              type: 'string'
+            }, {
+              name: 'blurb',
+              label: 'Blurb',
+              type: 'string',
+              ui: {
+                component: 'textarea'
+              }
+            }]
           }]
         }]
       }]

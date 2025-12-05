@@ -1,13 +1,19 @@
 ---
-import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { getTranslations } from '@backend/i18n';
+import Card from '@components/Card.astro';
+import { TinaMarkdown } from 'tinacms/dist/rich-text';
 
 const { item } = Astro.props;
 
+const { t } = await getTranslations(Astro.currentLocale);
+
 const BlockTypes = {
-  text: 'Richtext',
+  basic: 'Basic',
+  card: 'Card',
   image: 'Image',
-  basic: 'Basic'
+  text: 'Richtext'
 }
+
 ---
 { item.__typename.endsWith(BlockTypes.image) && ( 
   <img src={item.image} class='w-full object-cover' />
@@ -34,4 +40,18 @@ const BlockTypes = {
       { item?.description }
     </p>
   </div>
+)}
+
+{ item.__typename.endsWith(BlockTypes.card) && ( 
+  <Card
+    alt={item.alt}
+    author={item.author}
+    blur={item.blurb}
+    category={item.category}
+    date={item.date}
+    imageUrl={item.image}
+    slug={item.slug}
+    t={t}
+    title={item.title}
+  />
 )}
