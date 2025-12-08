@@ -33,9 +33,15 @@
 
   --color-primary: var(--customColorPrimary, var(--color-default-primary));
   --color-secondary: var(--customColorSecondary, var(--color-default-secondary));
+  --color-tertiary: var(--customColorTertiary, var(--color-white));
   --color-text-primary: var(--customTextPrimary, var(--color-white));
   --color-text-secondary: var(--customTextSecondary, var(--color-black));
+  --color-content: var(--customContent, var(--color-black))
+  --color-content-alt: var(--customContentAlternate, var(--color-neutral-dark));
   --color-layout: var(--customColorLayout, var(--color-white));
+  --color-layout-alt: var(--customColorLayoutSecondary, var(--color-netural-light));
+  --color-text-light: var(--customContentLight, var(--color-white));
+  --color-text-dark: var(--customContentDark, var(--color-black));
 
   --font-header: var(--customFontHeader, Inter);
   --font-body: var(--customFontBody, Inter);

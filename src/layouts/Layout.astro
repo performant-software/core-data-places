@@ -31,13 +31,24 @@ const { header, footer } = branding;
 
 const { font_header: fontHeader, font_body: fontBody } = branding;
 
-const colorPrimary = branding.primary_color;
-const textPrimary = useBlackText(colorPrimary) ? 'var(--color-black)' : 'var(--color-white)';
+//dark and light mode default text color
+const textDark = branding.content_color || 'var(--color-black)';
+const textLight = branding.content_dark_bg || 'var(--color-white)';
 
+const colorPrimary = branding.primary_color;
 const colorSecondary = branding.secondary_color;
-const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? 'var(--color-black)' : 'var(--color-white)';
+const colorTertiary = branding.tertiary_color || colorPrimary;
+
+//these are for use in layout components like header and footer
+const textPrimary = useBlackText(colorPrimary) ? textDark : textLight;
+const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? textDark : textLight;
 
 const colorLayout = branding.background_color || 'var(--color-white)';
+const colorLayoutAlternate = branding.background_alternate || 'var(--color-neutral-light)';
+
+//these are for use in the page builder components, where the background will be `colorLayout` by default
+const colorContent = useBlackText(colorLayout) ? textDark : textLight;
+const colorContentAlternate = branding.content_alternate || 'var(--color-neutral-dark)';
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
@@ -134,9 +145,15 @@ if (config.gallery) {
         customFontBody: fontBody,
         customColorPrimary: colorPrimary,
         customColorSecondary: colorSecondary,
+        customColorTertiary: colorTertiary,
         customTextPrimary: textPrimary,
         customTextSecondary: textSecondary,
-        customColorLayout: colorLayout
+        customContent: colorContent,
+        customContentAlternate: colorContentAlternate,
+        customContentLight: textLight,
+        customContentDark: textDark,
+        customColorLayout: colorLayout,
+        customColorLayoutAlternate: colorLayoutAlternate
       }}
     >
     </style>
