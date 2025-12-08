@@ -533,6 +533,158 @@ const Pages: Collection = {
         label: 'Darken Background?',
         type: 'boolean'
       }]
+    }, {
+      name: 'tabs',
+      label: 'Tabbed Content',
+      fields: [{
+        name: 'tabs',
+        label: 'Tabs',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'label',
+          label: 'Tab Label',
+          type: 'string'
+        }, {
+          name: 'content',
+          label: 'Tab Content',
+          type: 'object',
+          list: true,
+          fields: [{
+            name: 'text_alignment',
+            label: 'Text Alignment',
+            type: 'string',
+            options: [{
+              label: 'Left',
+              value: 'left'
+            }, {
+              label: 'Center',
+              value: 'center'
+            }]
+          }, {
+            name: 'gap',
+            label: 'Column Gap',
+            type: 'string',
+            options: [{
+              label: 'Large',
+              value: 'large'
+            }, {
+              label: 'Small',
+              value: 'small'
+            }]
+          }, {
+            name: 'columns',
+            label: 'Columns',
+            type: 'object',
+            list: true,
+            ui: {
+              min: 1,
+              max: 4
+            },
+            fields: [{
+              name: 'width',
+              label: 'Column width (percent)',
+              type: 'string',
+              options: [{
+                label: '25%',
+                value: 'col-span-3'
+              }, {
+                label: '33%',
+                value: 'col-span-4'
+              }, {
+                label: '50%',
+                value: 'col-span-6'
+              }, {
+                label: '67%',
+                value: 'col-span-8'
+              }, {
+                label: '75%',
+                value: 'col-span-9'
+              }, {
+                label: '100%',
+                value: 'col-span-12'
+              }]
+            }, {
+              name: 'content',
+              label: 'Content',
+              type: 'object',
+              list: true,
+              templates: [{
+                name: 'richtext',
+                label: 'Rich Text',
+                fields: [{
+                  name: 'text',
+                  label: 'Text',
+                  type: 'rich-text',
+                  templates: richTextTemplates
+                }]
+              }, {
+                name: 'image',
+                label: 'Image',
+                fields: [{
+                  name: 'image',
+                  label: 'Image',
+                  type: 'image'
+                }]
+              }, {
+                name: 'basic',
+                label: 'Title and Description (plain text)',
+                fields: [{
+                  name: 'title',
+                  label: 'Title',
+                  type: 'string'
+                }, {
+                  name: 'description',
+                  label: 'Description',
+                  type: 'string',
+                  ui: {
+                    component: 'textarea'
+                  }
+                }]
+              }, {
+                name: 'card',
+                label: 'Card Link',
+                fields: [{
+                  name: 'slug',
+                  label: 'Link',
+                  type: 'string'
+                }, {
+                  name: 'title',
+                  label: 'Title',
+                  type: 'string'
+                }, {
+                  name: 'author',
+                  label: 'Author',
+                  type: 'string'
+                }, {
+                  name: 'date',
+                  label: 'Date',
+                  type: 'datetime'
+                }, {
+                  name: 'category',
+                  label: 'Category',
+                  type: 'string'
+                }, {
+                  name: 'image',
+                  label: 'Image',
+                  type: 'image',
+                }, {
+                  name: 'alt',
+                  label: 'Image Alt Text',
+                  type: 'string'
+                }, {
+                  name: 'blurb',
+                  label: 'Blurb',
+                  type: 'string',
+                  ui: {
+                    component: 'textarea'
+                  }
+                }]
+              }]
+            }]
+          }]
+        }]
+      }]
     }]
   }]
 };
