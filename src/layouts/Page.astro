@@ -6,6 +6,7 @@ import FreeText from '@apps/pages/sections/FreeText.astro';
 import Images from '@apps/pages/sections/Images.astro';
 import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
 import Spacer from '@apps/pages/sections/Spacer.astro';
+import Tabs from '@apps/pages/sections/Tabs.astro';
 import TextImage from '@apps/pages/sections/TextImage';
 import { getTranslations } from '@backend/i18n';
 import { fetchPage } from '@backend/tina';
@@ -30,6 +31,7 @@ const SectionTypes = {
   multiColumn: 'PagesSectionsMulti_column',
   featureQuote: 'PagesSectionsFeature_quote',
   spacer: 'PagesSectionsSpacer',
+  tabs: 'PagesSectionsTabs',
   textImage: 'PagesSectionsText_image',
 };
 
@@ -131,6 +133,13 @@ const SectionTypes = {
           title={section.title}
           url={section.url}
         />
+      )}
+      { section.__typename === SectionTypes.tabs && ( 
+        <Container>
+          <Tabs
+            tabs={section.tabs}
+          />
+        </Container>
       )}
       { section.__typename === SectionTypes.featureQuote && ( 
         <FeatureQuote
