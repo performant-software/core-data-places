@@ -13,6 +13,7 @@ const getLabel = (...args) => {
 };
 
 const SpacerValues = {
+  none: 'none',
   small: 'small',
   medium: 'medium',
   large: 'large'
@@ -30,6 +31,9 @@ export const ColorValues = {
 };
 
 const SpacerSizes = [{
+  label: 'None',
+  value: SpacerValues.none
+}, {
   label: 'Small',
   value: SpacerValues.small
 }, {
@@ -139,6 +143,11 @@ const richTextTemplates: RichTextTemplate<false>[] = [{
     type: 'string',
     options: ColorOptionsText
   }, {
+    name: 'border',
+    label: 'Border Color (leave blank for none)',
+    type: 'string',
+    options: ColorOptions
+  }, {
     name: 'arrow',
     label: 'Include arrow icon?',
     type: 'boolean'
@@ -173,6 +182,16 @@ const Pages: Collection = {
       name: 'carousel',
       label: 'Carousel',
       fields: [{
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
+      }, {
         name: 'items',
         label: 'Items',
         type: 'object',
@@ -211,6 +230,16 @@ const Pages: Collection = {
       name: 'free_text',
       label: 'Free Text',
       fields: [{
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
+      }, {
         name: 'body',
         label: 'Body',
         type: 'rich-text',
@@ -229,6 +258,16 @@ const Pages: Collection = {
         name: 'title',
         label: 'Title',
         type: 'string'
+      }, {
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
       }, {
         name: 'items',
         label: 'Items',
@@ -283,7 +322,12 @@ const Pages: Collection = {
         name: 'color',
         label: 'Color',
         type: 'string',
-        options: ColorOptions
+        options: ColorOptionsBg
+      }, {
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
       }]
     }, {
       name: 'text_image',
@@ -400,6 +444,16 @@ const Pages: Collection = {
           value: 'small'
         }]
       }, {
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
+      }, {
         name: 'columns',
         label: 'Columns',
         type: 'object',
@@ -431,6 +485,15 @@ const Pages: Collection = {
             label: '100%',
             value: 'col-span-12'
           }]
+        }, {
+          name: 'border',
+          label: 'Border Color (leave blank for none)',
+          type: 'string',
+          options: ColorOptions
+        }, {
+          name: 'rounded',
+          label: 'Rounded Corners?',
+          type: 'boolean'
         }, {
           name: 'content',
           label: 'Content',
@@ -582,15 +645,9 @@ const Pages: Collection = {
         }]
       }, {
         name: 'color',
-        label: 'Text Mode',
+        label: 'Text Color',
         type: 'string',
-        options: [{
-          label: 'Dark Text',
-          value: 'black'
-        }, {
-          label: 'Light Text',
-          value: 'white'
-        }]
+        options: ColorOptionsText
       }, {
         name: 'background_image',
         label: 'Background Image',
