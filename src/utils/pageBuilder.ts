@@ -35,21 +35,21 @@ export const toBackgroundClass = (color: string) => {
 export const toBorderClass = (color: string) => {
   switch (color) {
     case 'primary':
-      return 'border border-primary';
+      return 'border-2 border-primary';
     case 'secondary':
-      return 'border border-secondary';
+      return 'border-2 border-secondary';
     case 'tertiary':
-      return 'border border-tertiary';
+      return 'border-2 border-tertiary';
     case 'layout':
-      return 'border border-layout';
+      return 'border-2 border-layout';
     case 'layout_alternate':
-      return 'border border-layout-alt';
+      return 'border-2 border-layout-alt';
     case 'content_light':
-      return 'border border-text-light';
+      return 'border-2 border-text-light';
     case 'content_dark':
-      return 'border border-text-dark';
+      return 'border-2 border-text-dark';
     case 'content_alternate':
-      return 'border border-content-alt';
+      return 'border-2 border-content-alt';
     default:
       return '';
   } 

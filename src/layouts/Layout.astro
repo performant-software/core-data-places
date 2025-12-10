@@ -37,7 +37,7 @@ const textLight = branding.content_dark_bg || 'var(--color-white)';
 
 const colorPrimary = branding.primary_color;
 const colorSecondary = branding.secondary_color;
-const colorTertiary = branding.tertiary_color || colorPrimary;
+const colorTertiary = branding.tertiary_color || 'var(--color-black)';
 
 //these are for use in layout components like header and footer
 const textPrimary = useBlackText(colorPrimary) ? textDark : textLight;

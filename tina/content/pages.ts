@@ -467,6 +467,9 @@ const Pages: Collection = {
           label: 'Column width (percent)',
           type: 'string',
           options: [{
+            label: '16.5%',
+            value: 'col-span-2'
+          }, {
             label: '25%',
             value: 'col-span-3'
           }, {
@@ -484,6 +487,20 @@ const Pages: Collection = {
           }, {
             label: '100%',
             value: 'col-span-12'
+          }]
+        }, {
+          name: 'justify',
+          label: 'Vertical Alignment',
+          type: 'string',
+          options: [{
+            label: 'Top (default)',
+            value: 'justify-start'
+          }, {
+            label: 'Center',
+            value: 'justify-center'
+          }, {
+            label: 'Bottom',
+            value: 'justify-end'
           }]
         }, {
           name: 'border',

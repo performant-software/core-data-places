@@ -55,7 +55,8 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
         <Column items={col.content} className={clsx(
           { [col.width] : total === TOTAL_COLUMNS },
           toBorderClass(col.border),
-          { 'rounded-md': col.rounded }
+          { 'rounded-md': col.rounded },
+          col.justify
         )} />
       ))
     }

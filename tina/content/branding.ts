@@ -4,6 +4,9 @@ const Fonts = [{
   label: 'Afacad',
   value: 'Afacad'
 }, {
+  label: 'Baskervville',
+  value: 'Baskervville'
+}, {
   label: 'DM Sans',
   value: 'DM Sans'
 }, {
