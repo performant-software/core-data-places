@@ -55,7 +55,7 @@ const lang = getLanguageFromUrl(Astro.url.pathname);
 
 const pages = await getPages(currentLocale);
 
-const { footer: includeFooter, fullscreen, name, title, t, tab } = Astro.props;
+const { footer: includeFooter, fullscreen, name, title, t, tab, transparent } = Astro.props;
 
 const NavKeys = {
   gallery: 'gallery',
@@ -170,6 +170,7 @@ if (config.gallery) {
       items={NavItems}
       pages={pages}
       title={header?.hide_title ? undefined : branding.title}
+      transparent={transparent}
     />
     <NotificationPanel
       client:only='react'

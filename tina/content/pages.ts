@@ -174,6 +174,10 @@ const Pages: Collection = {
     label: 'Navigation Menu',
     type: 'boolean'
   }, {
+    name: 'transparent',
+    label: 'Make top navbar transparent?',
+    type: 'boolean'
+  }, {
     name: 'sections',
     label: 'Sections',
     type: 'object',
