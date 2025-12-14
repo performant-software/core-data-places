@@ -688,6 +688,39 @@ const Pages: Collection = {
         label: 'Darken Background?',
         type: 'boolean'
       }]
+    }, {
+      name: 'feature_quote',
+      label: 'Feature Quote',
+      fields: [{
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
+      }, {
+        name: 'quote',
+        label: 'Quotation Text',
+        type: 'string',
+        ui: {
+          component: 'textarea'
+        }
+      }, {
+        name: 'attribution',
+        label: 'Attribution',
+        type: 'string'
+      }, {
+        name: 'date',
+        label: 'Date',
+        type: 'string'
+      }, {
+        name: 'icon',
+        label: 'Icon',
+        type: 'image'
+      }]
     }]
   }]
 };
