@@ -72,6 +72,51 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-secondary);
 }
 
+
+/*
+* Page builder styles
+*/
+
+.page-builder h1, .page-builder h2, .page-builder h3, .page-builder h4 {
+  font-weight: 400;
+}
+
+.page-builder .prose h1 {
+  font-variant: small-caps;
+  font-size: 3rem;
+}
+
+.page-builder .prose h1:has(+ h1) {
+  margin-bottom: 0;
+}
+
+.page-builder .prose h2 {
+  font-size: 2.4rem;
+}
+
+.page-builder .prose h3, .page-builder .prose h4 {
+  font-style: italic;
+  font-size: 1.5rem;
+}
+
+.page-builder .prose h4 {
+  color: var(--color-secondary);
+  margin-bottom: 0;
+}
+
+.page-builder .prose h5 {
+  font-size: 1.5rem;
+}
+
+.page-builder .prose h6 {
+  font-style: italic;
+  font-size: 1.125rem;
+}
+
+.page-builder .link-button + .link-button {
+  margin-left: 1.5rem;
+}
+
 /*
  * Swiper styles
  */

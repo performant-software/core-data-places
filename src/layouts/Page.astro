@@ -36,10 +36,17 @@ const SectionTypes = {
   t={t}
   tab={page?._sys?.filename}
   title={page?.title}
+  transparent={page?.transparent}
 >
-  { _.map(page?.sections, section => (
+  { _.map(page?.sections, (section, idx) => (
     <section
-      class='relative'
+      class={clsx(
+        'page-builder',
+        'relative',
+        toBackgroundClass(section.background),
+        toTextClass(section.text),
+        { '-mt-20': page.transparent && idx === 0 }
+      )}
     >
       { section.__typename === SectionTypes.carousel && (
         <Container>
