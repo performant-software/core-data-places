@@ -5,6 +5,7 @@ import LinkButton from '@components/LinkButton';
 import SearchBar from '@apps/pages/sections/SearchBar';
 import RichText from '@apps/pages/sections/RichText.astro';
 import { toBackgroundClass, toTextClass } from '@utils/pageBuilder';
+import HeroLinks from '@apps/pages/sections/HeroLinks.astro';
 
 const Height = {
   small: 'small',
@@ -22,6 +23,7 @@ const {
   height, 
   image,
   imageAlt,
+  navigation,
   search,
   subtitle,
   textAlignment,
@@ -117,5 +119,8 @@ const {
         />
       )}
     </Container>
+    { navigation && ( 
+      <HeroLinks links={navigation} />
+    )}
   </div>     
 </div>

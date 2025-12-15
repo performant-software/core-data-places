@@ -178,6 +178,31 @@ const Pages: Collection = {
     label: 'Make top navbar transparent?',
     type: 'boolean'
   }, {
+    name: 'hero_links',
+    label: 'Hero Navigation',
+    description: 'When defined, will display at the bottom of the specified Hero section.',
+    type: 'object',
+    list: true,
+    fields: [{
+      name: 'link',
+      label: 'Link',
+      type: 'string'
+    }, {
+      name: 'label',
+      label: 'Label',
+      type: 'string'
+    }, {
+      name: 'background',
+      label: 'Background Color',
+      type: 'string',
+      options: ColorOptionsBg
+    }, {
+      name: 'text',
+      label: 'Text Color',
+      type: 'string',
+      options: ColorOptionsText
+    }]
+  }, {
     name: 'sections',
     label: 'Sections',
     type: 'object',
@@ -661,6 +686,10 @@ const Pages: Collection = {
       name: 'banner',
       label: 'Full Width Banner',
       fields:  [{
+        name: 'hero',
+        label: 'Is hero?',
+        type: 'boolean'
+      }, {
         name: 'title',
         label: 'Title',
         type: 'string'
