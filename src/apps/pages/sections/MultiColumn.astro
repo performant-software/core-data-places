@@ -56,7 +56,8 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
           { [col.width] : total === TOTAL_COLUMNS },
           toBorderClass(col.border),
           { 'rounded-md': col.rounded },
-          col.justify
+          col.justify,
+          col.align
         )} />
       ))
     }

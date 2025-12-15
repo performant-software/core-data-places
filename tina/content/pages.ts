@@ -507,6 +507,20 @@ const Pages: Collection = {
             value: 'justify-end'
           }]
         }, {
+          name: 'align',
+          label: 'Horizontal Alignment',
+          type: 'string',
+          options: [{
+            label: 'Left (default)',
+            value: ''
+          }, {
+            label: 'Center',
+            value: 'items-center text-center'
+          }, {
+            label: 'Bottom',
+            value: 'justify-end'
+          }]         
+        }, {
           name: 'border',
           label: 'Border Color (leave blank for none)',
           type: 'string',
@@ -536,6 +550,10 @@ const Pages: Collection = {
               name: 'image',
               label: 'Image',
               type: 'image'
+            }, {
+              name: 'rounded',
+              label: 'Rounded Corners?',
+              type: 'boolean'
             }]
           }, {
             name: 'basic',
