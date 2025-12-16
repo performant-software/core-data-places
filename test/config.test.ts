@@ -75,7 +75,7 @@ describe('custom_components', () => {
   });
 })
 
-describe('detail_pages', () => {
+describe.skipIf(!config.detail_pages)('detail_pages', () => {
   const names = [
     'events',
     'instances',
@@ -87,7 +87,7 @@ describe('detail_pages', () => {
   ];
 
   test('matches allowed values', () => {
-    expect(config.detail_pages).toBeArrayOfValues(names);
+    expect(config.detail_pages.models).toBeArrayOfValues(names);
   });
 });
 
