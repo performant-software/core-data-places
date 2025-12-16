@@ -2,6 +2,9 @@
 import { getTranslations } from '@backend/i18n';
 import Card from '@components/Card.astro';
 import RichText from '@apps/pages/sections/RichText.astro';
+import Spacer from './Spacer.astro';
+import clsx from 'clsx';
+import { toTextClass, toBorderClass } from '@root/src/utils/pageBuilder';
 
 const { item } = Astro.props;
 
@@ -11,6 +14,8 @@ const BlockTypes = {
   basic: 'Basic',
   card: 'Card',
   image: 'Image',
+  imageLink: 'Image_link',
+  quote: 'Quote',
   text: 'Richtext'
 }
 
@@ -54,4 +59,32 @@ const BlockTypes = {
     t={t}
     title={item.title}
   />
+)}
+
+{ item.__typename.endsWith(BlockTypes.quote) && ( 
+  <div class={clsx(
+    'flex flex-col relative h-full p-6 gap-6',
+    toTextClass(item.text_color),
+    toBorderClass(item.border_color)
+  )}>
+    <img src={item.icon} class='absolute top-4 left-4 w-12 h-12 opacity-20' />
+    <p class='font-serif'>
+      { item.quote }
+    </p>
+    <Spacer size='none' color={item.border_color} />
+    <p class='font-semibold -indent-2 pl-2'>
+      { item.attribution }
+    </p>
+  </div>
+)}
+
+{ item.__typename.endsWith(BlockTypes.imageLink) && ( 
+  <a href={item.link} class='relative'>
+    <img src={item.image} class='w-full h-full object-contain'/>
+    { item.overlay && ( 
+      <div class='absolute h-full w-full inset-0 bg-gradient-to-b to-black/60 p-6 flex flex-col justify-end'>
+        <h2 class='text-text-light text-[2.4rem] font-serif'>{ item.overlay }</h2>
+      </div> 
+    )}
+  </a>
 )}
