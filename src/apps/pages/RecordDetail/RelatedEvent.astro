@@ -1,5 +1,5 @@
 ---
-import UserDefinedFieldView from "@components/UserDefinedFieldView";
+import UserDefinedFieldView from '@components/UserDefinedFieldView';
 import { getDisplayFields } from '@utils/detailPages';
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
 
@@ -20,9 +20,9 @@ const buildHeader = () => {
 
   ([event.start_date, event.end_date]).forEach(d => {
     if (d) {
-      dateStrs.push(FuzzyDateUtils.getDateView(d))
+      dateStrs.push(FuzzyDateUtils.getDateView(d));
     }
-  })
+  });
 
   let baseStr = dateStrs.join('-');
 
@@ -33,17 +33,17 @@ const buildHeader = () => {
   }
 }
 ---
-<div class="text-base">
-  <span class="font-semibold">
+<div class='text-base'>
+  <p class='font-semibold'>
     {buildHeader()}
-  </span>
+  </p>
   {(displayFields.length > 0 || event.description) && (
-    <div class="border-l-2 border-black pl-4 ml-[-16px]">
+    <div class='border-l-2 border-black pl-4 ml-[-16px]'>
       {displayFields.length > 0 && (
-        <ul class="flex flex-wrap justify-start gap-4 py-2">
+        <ul class='flex flex-wrap justify-start gap-4 py-2'>
           {displayFields.map(displayField => (
             <li>
-              <span class="text-neutral-700 uppercase font-semibold text-xs border-b border-black">{displayField.label}</span>
+              <p class='text-neutral-700 uppercase font-semibold text-xs border-b border-black'>{displayField.label}</p>
               <UserDefinedFieldView
                 type={displayField.value.type}
                 value={displayField.value.value}
@@ -53,7 +53,7 @@ const buildHeader = () => {
         </ul>
       )}
       {event.description && (
-        <span>{event.description}</span>
+        <p>{event.description}</p>
       )}
     </div>
   )}
