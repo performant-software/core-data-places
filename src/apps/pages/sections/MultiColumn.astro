@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import _ from 'underscore';
 import LinkButton from '@components/LinkButton';
 import Column from '@apps/pages/sections/Column.astro';
+import { toBorderClass } from '@utils/pageBuilder';
 
 const { 
   buttonText,
@@ -34,7 +35,7 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
   { title && (
     <h2
       class={clsx(
-        'text-4xl font-bold py-4',
+        'text-4xl font-bold py-8',
         { 'flex justify-center': textAlignment === 'center' }
       )}
     >
@@ -51,7 +52,12 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
   >
     {
       _.map(content, (col: any) => ( 
-        <Column items={col.content} className={clsx({ [col.width] : total === TOTAL_COLUMNS })} />
+        <Column items={col.content} className={clsx(
+          { [col.width] : total === TOTAL_COLUMNS },
+          toBorderClass(col.border),
+          { 'rounded-md': col.rounded },
+          col.justify
+        )} />
       ))
     }
   </div>

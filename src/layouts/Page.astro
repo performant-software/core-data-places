@@ -10,7 +10,9 @@ import { getTranslations } from '@backend/i18n';
 import { fetchPage } from '@backend/tina';
 import Container from '@components/Container.astro';
 import Layout from '@layouts/Layout.astro';
+import clsx from 'clsx';
 import _ from 'underscore';
+import { toBackgroundClass, toTextClass } from '@utils/pageBuilder';
 
 const { slug } = Astro.props;
 const locale = Astro.currentLocale;

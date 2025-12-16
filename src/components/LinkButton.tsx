@@ -1,9 +1,10 @@
 import clsx from 'clsx';
-import { ColorValues } from '@root/tina/content/pages';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { toBackgroundClass, toBorderClass, toTextClass } from '@utils/pageBuilder';
 
 interface Props {
   arrow?: boolean;
+  border?: string;
   className?: string;
   color?: string;
   content: JSX.Element | string;
@@ -14,15 +15,10 @@ interface Props {
 const LinkButton = ({ className, content, href, ...props }: Props) => (
   <a
     className={clsx(
-      'inline-flex mt-4 rounded-md px-6 py-3 hover:bg-opacity-95 cursor-pointer flex-row gap-4 items-center no-underline mx-6',
-      { 'bg-primary': props.color === ColorValues.primary },
-      { 'bg-secondary': props.color === ColorValues.secondary },
-      { 'bg-white': props.color === ColorValues.white },
-      { 'bg-black': props.color === ColorValues.black },
-      { 'text-primary': props.text === ColorValues.primary },
-      { 'text-secondary': props.text === ColorValues.secondary },
-      { 'text-white': props.text === ColorValues.white },
-      { 'text-black': props.text === ColorValues.black },
+      'link-button inline-flex mt-4 rounded-md px-6 py-3 hover:bg-opacity-95 cursor-pointer flex-row gap-4 items-center no-underline',
+      toBackgroundClass(props.color),
+      toTextClass(props.text),
+      toBorderClass(props.border),
       className
     )}
     href={href}

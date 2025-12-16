@@ -4,6 +4,9 @@ const Fonts = [{
   label: 'Afacad',
   value: 'Afacad'
 }, {
+  label: 'Baskervville',
+  value: 'Baskervville'
+}, {
   label: 'DM Sans',
   value: 'DM Sans'
 }, {
@@ -45,14 +48,49 @@ const Branding: Collection = {
     }
   }, {
     name: 'secondary_color',
-    label: 'Secondary Color',
+    label: 'Secondary Color (accent)',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'tertiary_color',
+    label: 'Tertiary Color (overlay)',
     type: 'string',
     ui: {
       component: 'color'
     }
   }, {
     name: 'background_color',
-    label: 'Background Color',
+    label: 'Main background color',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'background_alternate',
+    label: 'Alternate Background',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_color',
+    label: 'Main Text Color for light background (defaults to black)',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_alternate',
+    label: 'Alternate text color',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_dark_bg',
+    label: 'Text on dark background (defaults to white)',
     type: 'string',
     ui: {
       component: 'color'

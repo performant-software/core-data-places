@@ -13,6 +13,7 @@ const getLabel = (...args) => {
 };
 
 const SpacerValues = {
+  none: 'none',
   small: 'small',
   medium: 'medium',
   large: 'large'
@@ -20,12 +21,19 @@ const SpacerValues = {
 
 export const ColorValues = {
   primary: 'primary',
-  white: 'white',
-  black: 'black',
-  secondary: 'secondary'
+  secondary: 'secondary',
+  tertiary: 'tertiary',
+  layout: 'layout',
+  layoutAlternate: 'layout_alternate',
+  contentLight: 'content_light',
+  contentDark: 'content_dark',
+  contentAlternate: 'content_alternate'
 };
 
 const SpacerSizes = [{
+  label: 'None',
+  value: SpacerValues.none
+}, {
   label: 'Small',
   value: SpacerValues.small
 }, {
@@ -36,18 +44,67 @@ const SpacerSizes = [{
   value: SpacerValues.large
 }];
 
+const ColorOptionsBg = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
+  label: 'Secondary',
+  value: ColorValues.secondary
+}, {
+  label: 'Tertiary',
+  value: ColorValues.tertiary
+}, {
+  label: 'Main Background',
+  value: ColorValues.layout 
+}, {
+  label: 'Alternate Background',
+  value: ColorValues.layoutAlternate
+}];
+
+const ColorOptionsText = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
+  label: 'Secondary',
+  value: ColorValues.secondary
+}, {
+  label: 'Tertiary',
+  value: ColorValues.tertiary
+}, {
+  label: 'Content (light background)',
+  value: ColorValues.contentDark
+}, {
+  label: 'Content (dark background)',
+  value: ColorValues.contentLight
+}, {
+  label: 'Alternate Content',
+  value: ColorValues.contentAlternate
+}];
+
 const ColorOptions = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
-  label: 'Secondary (defaults to off-white)',
+  label: 'Secondary',
   value: ColorValues.secondary
 }, {
-  label: 'White',
-  value: ColorValues.white
+  label: 'Tertiary',
+  value: ColorValues.tertiary
 }, {
-  label: 'Black',
-  value: ColorValues.black
+  label: 'Content (light background)',
+  value: ColorValues.contentDark
+}, {
+  label: 'Content (dark background)',
+  value: ColorValues.contentLight
+}, {
+  label: 'Alternate Content',
+  value: ColorValues.contentAlternate
+}, {
+  label: 'Main Background',
+  value: ColorValues.layout 
+}, {
+  label: 'Alternate Background',
+  value: ColorValues.layoutAlternate
 }];
 
 const richTextTemplates: RichTextTemplate<false>[] = [{
@@ -79,10 +136,15 @@ const richTextTemplates: RichTextTemplate<false>[] = [{
     name: 'color',
     label: 'Color',
     type: 'string',
-    options: ColorOptions
+    options: ColorOptionsBg
   }, {
     name: 'text',
     label: 'Text Color',
+    type: 'string',
+    options: ColorOptionsText
+  }, {
+    name: 'border',
+    label: 'Border Color (leave blank for none)',
     type: 'string',
     options: ColorOptions
   }, {
@@ -124,6 +186,16 @@ const Pages: Collection = {
       name: 'carousel',
       label: 'Carousel',
       fields: [{
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
+      }, {
         name: 'items',
         label: 'Items',
         type: 'object',
@@ -162,6 +234,16 @@ const Pages: Collection = {
       name: 'free_text',
       label: 'Free Text',
       fields: [{
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
+      }, {
         name: 'body',
         label: 'Body',
         type: 'rich-text',
@@ -180,6 +262,16 @@ const Pages: Collection = {
         name: 'title',
         label: 'Title',
         type: 'string'
+      }, {
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
       }, {
         name: 'items',
         label: 'Items',
@@ -234,7 +326,12 @@ const Pages: Collection = {
         name: 'color',
         label: 'Color',
         type: 'string',
-        options: ColorOptions
+        options: ColorOptionsBg
+      }, {
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
       }]
     }, {
       name: 'text_image',
@@ -351,6 +448,16 @@ const Pages: Collection = {
           value: 'small'
         }]
       }, {
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
+      }, {
         name: 'columns',
         label: 'Columns',
         type: 'object',
@@ -364,6 +471,9 @@ const Pages: Collection = {
           label: 'Column width (percent)',
           type: 'string',
           options: [{
+            label: '16.5%',
+            value: 'col-span-2'
+          }, {
             label: '25%',
             value: 'col-span-3'
           }, {
@@ -382,6 +492,29 @@ const Pages: Collection = {
             label: '100%',
             value: 'col-span-12'
           }]
+        }, {
+          name: 'justify',
+          label: 'Vertical Alignment',
+          type: 'string',
+          options: [{
+            label: 'Top (default)',
+            value: 'justify-start'
+          }, {
+            label: 'Center',
+            value: 'justify-center'
+          }, {
+            label: 'Bottom',
+            value: 'justify-end'
+          }]
+        }, {
+          name: 'border',
+          label: 'Border Color (leave blank for none)',
+          type: 'string',
+          options: ColorOptions
+        }, {
+          name: 'rounded',
+          label: 'Rounded Corners?',
+          type: 'boolean'
         }, {
           name: 'content',
           label: 'Content',
@@ -533,15 +666,9 @@ const Pages: Collection = {
         }]
       }, {
         name: 'color',
-        label: 'Text Mode',
+        label: 'Text Color',
         type: 'string',
-        options: [{
-          label: 'Dark Text',
-          value: 'black'
-        }, {
-          label: 'Light Text',
-          value: 'white'
-        }]
+        options: ColorOptionsText
       }, {
         name: 'background_image',
         label: 'Background Image',
@@ -559,7 +686,7 @@ const Pages: Collection = {
         label: 'Background Color',
         description: 'Will display if no image is provided.',
         type: 'string',
-        options: ColorOptions
+        options: ColorOptionsBg
       }, {
         name: 'darken',
         label: 'Darken Background?',
