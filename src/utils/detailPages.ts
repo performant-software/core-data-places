@@ -30,6 +30,20 @@ export const getCoverImage = (mediaContents?: any[]) => {
   return null
 }
 
+export const getDisplayFields = (record: any, fields: { label: string, uuid: string }[]) => {
+  const result = [];
+
+  if (record.user_defined) {
+    for (const field of fields) {
+      if (record.user_defined[field.uuid]) {
+        result.push({ label: field.label, value: record.user_defined[field.uuid] });
+      }
+    }
+  }
+
+  return result;
+}
+
 export const getRelatedGeometry = (places?: any[]) => {
   if (places && places.length > 0) {
     return CoreDataUtils.toFeatureCollection(places)

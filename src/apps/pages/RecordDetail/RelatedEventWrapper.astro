@@ -1,0 +1,20 @@
+---
+interface Props {
+  event: any;
+  resolveDetailUrl: (record: any) => string;
+  showLinks: boolean;
+}
+
+const { event, resolveDetailUrl, showLinks } = Astro.props;
+---
+<li class="text-[22px] ml-2">
+  {showLinks && (
+    <a
+      class="block"
+      href={resolveDetailUrl(event)}
+    >
+      <slot />
+    </a>
+  )}
+  {!showLinks && <slot />}
+</li>

@@ -3,7 +3,7 @@ import ServiceFactory from '@services/coreData/factory';
 import { groupRelationships } from '@utils/detailPages';
 import config from '@config';
 import { getTranslations } from '@backend/i18n';
-import RelatedItem from '@apps/pages/RecordDetail/RelatedItem.astro';
+import RelatedSource from '@apps/pages/RecordDetail/RelatedSource.astro';
 
 interface Props {
   excludes: string[];
@@ -19,22 +19,35 @@ const { items: cdItems } = await service.getRelatedItems(uuid);
 const relationships = groupRelationships(cdItems, excludes);
 const { t } = await getTranslations(lang);
 
-const fields = (config.detail_pages.relationship_fields.items || []).map(f => ({
+const fields = (config.detail_pages.relationship_fields?.items || []).map(f => ({
   label: t(f),
   uuid: f
 }))
+
+const resolveDetailUrl = (item: any) => `/${lang}/items/${item.uuid}`;
+const showLinks = config.detail_pages.models.includes('items');
 ---
 {Object.keys(relationships).map((uuid) => (
   <div class='py-6 w-full'>
     <h2 class='capitalize text-xl font-semibold font-header mb-2'>{t(uuid)}</h2>
     <div class="flex flex-col gap-4">
       {relationships[uuid].map((item) => (
-        <RelatedItem
-          fields={fields}
-          item={item}
-          relationship={uuid}
-          t={t}
-        />
+        <>
+          {showLinks && (
+            <a href={resolveDetailUrl(item)}>
+              <RelatedSource
+                fields={fields}
+                record={item}
+              />
+            </a>
+          )}
+          {!showLinks && (
+            <RelatedSource
+              fields={fields}
+              record={item}
+            />
+          )}
+        </>
       ))}
     </div>
   </div>

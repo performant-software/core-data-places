@@ -1,9 +1,11 @@
 ---
 import ServiceFactory from '@services/coreData/factory';
-import Relations from '@apps/pages/RecordDetail/Relations.astro';
 import { groupRelationships } from '@utils/detailPages';
 import config from '@config';
 import { getTranslations } from '@backend/i18n';
+import RelatedEvent from '@apps/pages/RecordDetail/RelatedEvent.astro';
+import _ from 'underscore';
+import RelatedEventWrapper from '@apps/pages/RecordDetail/RelatedEventWrapper.astro';
 
 interface Props {
   excludes: string[];
@@ -16,17 +18,34 @@ const { excludes, model, uuid } = Astro.props;
 const lang = Astro.currentLocale;
 const service = ServiceFactory.getService(model);
 const { events } = await service.getRelatedEvents(uuid);
-const relationships = groupRelationships(events, excludes);
+const sortedEvents = _.sortBy(events, 'start_date.start_date')
+const relationships = groupRelationships(sortedEvents, excludes);
 const { t } = await getTranslations(lang);
+
+const fields = (config.detail_pages.relationship_fields?.events || []).map(f => ({
+  label: t(f),
+  uuid: f
+}))
+
+const resolveDetailUrl = (event: any) => `/${lang}/events/${event.uuid}`;
+const showLinks = config.detail_pages.models.includes('events');
 ---
 {Object.keys(relationships).map((uuid) => (
-  <Relations
-    data={relationships[uuid]}
-    icon='date'
-    label={t(uuid)}
-    resolveDetailUrl={event => `/${lang}/events/${event.uuid}`}
-    resolveName={event => event.name}
-    showLinks={config.detail_pages.models.includes('events')}
-    uuid={uuid}
-  />
+  <div class='py-6 w-full'>
+    <h2 class='capitalize text-xl font-semibold font-header mb-2'>{t(uuid)}</h2>
+    <ul class="flex flex-col gap-4 list-disc ml-4">
+      {relationships[uuid].map((event) => (
+        <RelatedEventWrapper
+          event={event}
+          resolveDetailUrl={resolveDetailUrl}
+          showLinks={showLinks}
+        >
+          <RelatedEvent
+            fields={fields}
+            event={event}
+          />
+        </RelatedEventWrapper>
+      ))}
+    </ul>
+  </div>
 ))}

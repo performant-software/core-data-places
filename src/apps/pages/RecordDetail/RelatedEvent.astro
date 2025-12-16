@@ -1,0 +1,60 @@
+---
+import UserDefinedFieldView from "@components/UserDefinedFieldView";
+import { getDisplayFields } from '@utils/detailPages';
+import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
+
+interface Props {
+  fields: {
+    label: string;
+    uuid: string;
+  }[];
+  event: any;
+}
+
+const { fields, event } = Astro.props;
+
+const displayFields = getDisplayFields(event, fields);
+
+const buildHeader = () => {
+  const dateStrs: string[] = [];
+
+  ([event.start_date, event.end_date]).forEach(d => {
+    if (d) {
+      dateStrs.push(FuzzyDateUtils.getDateView(d))
+    }
+  })
+
+  let baseStr = dateStrs.join('-');
+
+  if (baseStr.length > 0) {
+    return `${baseStr} - ${event.name}`;
+  } else {
+    return event.name;
+  }
+}
+---
+<div class="text-base">
+  <span class="font-semibold">
+    {buildHeader()}
+  </span>
+  {(displayFields.length > 0 || event.description) && (
+    <div class="border-l-2 border-black pl-4 ml-[-16px]">
+      {displayFields.length > 0 && (
+        <ul class="flex flex-wrap justify-start gap-4 py-2">
+          {displayFields.map(displayField => (
+            <li>
+              <span class="text-neutral-700 uppercase font-semibold text-xs border-b border-black">{displayField.label}</span>
+              <UserDefinedFieldView
+                type={displayField.value.type}
+                value={displayField.value.value}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+      {event.description && (
+        <span>{event.description}</span>
+      )}
+    </div>
+  )}
+</div>

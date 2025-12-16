@@ -1,0 +1,40 @@
+---
+import UserDefinedFieldView from '@components/UserDefinedFieldView';
+import { getDisplayFields } from '@utils/detailPages';
+import clsx from 'clsx';
+
+interface Props {
+  fields: {
+    label: string;
+    uuid: string;
+  }[];
+  record: any;
+}
+
+const { fields, record } = Astro.props;
+
+const displayFields = getDisplayFields(record, fields);
+---
+<div class='w-full bg-white rounded-[5px] p-6'>
+  <p
+    class={clsx(
+      'font-semibold',
+      { 'border-b-1 border-neutral-300 pb-2': displayFields.length > 0 }
+    )}
+  >
+    {record.name}
+  </p>
+  {displayFields.length > 0 && (
+    <ul class='flex flex-wrap gap-[125px]'>
+      {displayFields.map(displayField => (
+        <li class="block">
+          <span class='text-neutral-400 uppercase font-semibold text-xs'>{displayField.label}</span>
+          <UserDefinedFieldView
+            type={displayField.value.type}
+            value={displayField.value.value}
+          />
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
