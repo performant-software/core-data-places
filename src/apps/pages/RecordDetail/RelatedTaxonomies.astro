@@ -26,7 +26,7 @@ const { t } = await getTranslations(lang);
     label={t(uuid)}
     resolveDetailUrl={(taxonomy) => `/${lang}/taxonomies/${taxonomy.uuid}`}
     resolveName={taxonomy => taxonomy.name}
-    showLinks={'config.detail_pages?.models?.includes('taxonomies')}
+    showLinks={config.detail_pages?.models?.includes('taxonomies')}
     uuid={uuid}
   />
 ))}

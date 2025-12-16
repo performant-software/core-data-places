@@ -25,7 +25,7 @@ const Place = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((place) => {
-    if (place && config.detail_pages?.models && config.detail_pages?.models?.includes('places')) {
+    if (place && config.detail_pages?.models?.includes('places')) {
       return `/${lang}/places/${place.uuid}`;
     }
   }, [config, lang]);
