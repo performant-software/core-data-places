@@ -18,22 +18,22 @@ const { excludes, model, uuid } = Astro.props;
 const lang = Astro.currentLocale;
 const service = ServiceFactory.getService(model);
 const { events } = await service.getRelatedEvents(uuid);
-const sortedEvents = _.sortBy(events, 'start_date.start_date')
+const sortedEvents = _.sortBy(events, 'start_date.start_date');
 const relationships = groupRelationships(sortedEvents, excludes);
 const { t } = await getTranslations(lang);
 
 const fields = (config.detail_pages.relationship_fields?.events || []).map(f => ({
   label: t(f),
   uuid: f
-}))
+}));
 
 const resolveDetailUrl = (event: any) => `/${lang}/events/${event.uuid}`;
-const showLinks = config.detail_pages.models.includes('events');
+const showLinks = config.detail_pages?.models?.includes('events');
 ---
 {Object.keys(relationships).map((uuid) => (
   <div class='py-6 w-full'>
     <h2 class='capitalize text-xl font-semibold font-header mb-2'>{t(uuid)}</h2>
-    <ul class="flex flex-col gap-4 list-disc ml-4">
+    <ul class='flex flex-col gap-4 list-disc ml-4'>
       {relationships[uuid].map((event) => (
         <RelatedEventWrapper
           event={event}

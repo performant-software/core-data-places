@@ -15,22 +15,22 @@ const { excludes, model, uuid } = Astro.props;
 
 const lang = Astro.currentLocale;
 const service = ServiceFactory.getService(model);
-const { items: cdItems } = await service.getRelatedItems(uuid);
-const relationships = groupRelationships(cdItems, excludes);
+const { items } = await service.getRelatedItems(uuid);
+const relationships = groupRelationships(items, excludes);
 const { t } = await getTranslations(lang);
 
 const fields = (config.detail_pages.relationship_fields?.items || []).map(f => ({
   label: t(f),
   uuid: f
-}))
+}));
 
 const resolveDetailUrl = (item: any) => `/${lang}/items/${item.uuid}`;
-const showLinks = config.detail_pages.models.includes('items');
+const showLinks = config.detail_pages?.models?.includes('items');
 ---
 {Object.keys(relationships).map((uuid) => (
   <div class='py-6 w-full'>
     <h2 class='capitalize text-xl font-semibold font-header mb-2'>{t(uuid)}</h2>
-    <div class="flex flex-col gap-4">
+    <div class='flex flex-col gap-4'>
       {relationships[uuid].map((item) => (
         <>
           {showLinks && (

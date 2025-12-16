@@ -16,7 +16,7 @@ const Item = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((item) => {
-    if (item && config.detail_pages?.models && config.detail_pages.models.includes('items')) {
+    if (item && config.detail_pages?.models && config.detail_pages?.models?.includes('items')) {
       return `/${lang}/items/${item.uuid}`;
     }
   }, [config, lang]);

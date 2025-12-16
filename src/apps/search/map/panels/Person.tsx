@@ -24,7 +24,7 @@ const Person = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((person) => {
-    if (person && config.detail_pages?.models && config.detail_pages.models.includes('people')) {
+    if (person && config.detail_pages?.models && config.detail_pages?.models?.includes('people')) {
       return `/${lang}/people/${person.uuid}`;
     }
   }, [config, lang]);

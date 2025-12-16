@@ -7,10 +7,10 @@ interface Props {
 
 const { event, resolveDetailUrl, showLinks } = Astro.props;
 ---
-<li class="text-[22px] ml-2">
+<li class='text-[22px] ml-2'>
   {showLinks && (
     <a
-      class="block"
+      class='block'
       href={resolveDetailUrl(event)}
     >
       <slot />

@@ -27,7 +27,7 @@ const displayFields = getDisplayFields(record, fields);
   {displayFields.length > 0 && (
     <ul class='flex flex-wrap gap-[125px]'>
       {displayFields.map(displayField => (
-        <li class="block">
+        <li class='block'>
           <span class='text-neutral-400 uppercase font-semibold text-xs'>{displayField.label}</span>
           <UserDefinedFieldView
             type={displayField.value.type}
