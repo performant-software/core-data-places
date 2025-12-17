@@ -1,7 +1,7 @@
 ---
 import UserDefinedFieldView from '@components/UserDefinedFieldView';
 import { getDisplayFields } from '@utils/detailPages';
-import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
+import RelatedEventHeader from '@apps/pages/RecordDetail/RelatedEventHeader.astro';
 
 interface Props {
   fields: {
@@ -15,28 +15,9 @@ const { fields, event } = Astro.props;
 
 const displayFields = getDisplayFields(event, fields);
 
-const buildHeader = () => {
-  const dateStrs: string[] = [];
-
-  ([event.start_date, event.end_date]).forEach(d => {
-    if (d) {
-      dateStrs.push(FuzzyDateUtils.getDateView(d));
-    }
-  });
-
-  let baseStr = dateStrs.join('-');
-
-  if (baseStr.length > 0) {
-    return `${baseStr} - ${event.name}`;
-  } else {
-    return event.name;
-  }
-}
 ---
 <div class='text-base'>
-  <p class='font-semibold'>
-    {buildHeader()}
-  </p>
+  <RelatedEventHeader event={event} />
   {(displayFields.length > 0 || event.description) && (
     <div class='border-l-2 border-black pl-4 ml-[-16px]'>
       {displayFields.length > 0 && (

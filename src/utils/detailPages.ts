@@ -1,5 +1,6 @@
 import ServiceFactory from '@services/coreData/factory';
 import { CoreData as CoreDataUtils } from '@performant-software/core-data/ssr';
+import config from '@config';
 
 type Models = 'events' | 'instances' | 'items' | 'mediaContents' | 'organizations' | 'people' | 'places' | 'works';
 
@@ -51,6 +52,13 @@ export const getRelatedGeometry = (places?: any[]) => {
 
   return null
 }
+
+export const getRelationshipFields = (uuids: string[], t: any) => (
+  uuids.map(u => ({
+    label: t(u),
+    uuid: u
+  }))
+)
 
 const INVERSE_SUFFIX = '_inverse';
 

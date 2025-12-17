@@ -1,6 +1,6 @@
 ---
 import ServiceFactory from '@services/coreData/factory';
-import { groupRelationships } from '@utils/detailPages';
+import { getRelationshipFields, groupRelationships } from '@utils/detailPages';
 import config from '@config';
 import { getTranslations } from '@backend/i18n';
 import RelatedSource from '@apps/pages/RecordDetail/RelatedSource.astro';
@@ -19,10 +19,7 @@ const { items } = await service.getRelatedItems(uuid);
 const relationships = groupRelationships(items, excludes);
 const { t } = await getTranslations(lang);
 
-const fields = (config.detail_pages.relationship_fields?.items || []).map(f => ({
-  label: t(f),
-  uuid: f
-}));
+const fields = getRelationshipFields(config.detail_pages.relationship_fields?.items || [], t)
 
 const resolveDetailUrl = (item: any) => `/${lang}/items/${item.uuid}`;
 const showLinks = config.detail_pages?.models?.includes('items');
