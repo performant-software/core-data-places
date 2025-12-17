@@ -20,9 +20,13 @@ const SpacerValues = {
 
 export const ColorValues = {
   primary: 'primary',
-  white: 'white',
-  black: 'black',
-  secondary: 'secondary'
+  secondary: 'secondary',
+  tertiary: 'tertiary',
+  layout: 'layout',
+  layoutAlternate: 'layout_alternate',
+  contentLight: 'content_light',
+  contentDark: 'content_dark',
+  contentAlternate: 'content_alternate'
 };
 
 const SpacerSizes = [{
@@ -36,18 +40,67 @@ const SpacerSizes = [{
   value: SpacerValues.large
 }];
 
+const ColorOptionsBg = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
+  label: 'Secondary',
+  value: ColorValues.secondary
+}, {
+  label: 'Tertiary',
+  value: ColorValues.tertiary
+}, {
+  label: 'Main Background',
+  value: ColorValues.layout 
+}, {
+  label: 'Alternate Background',
+  value: ColorValues.layoutAlternate
+}];
+
+const ColorOptionsText = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
+  label: 'Secondary',
+  value: ColorValues.secondary
+}, {
+  label: 'Tertiary',
+  value: ColorValues.tertiary
+}, {
+  label: 'Content (light background)',
+  value: ColorValues.contentDark
+}, {
+  label: 'Content (dark background)',
+  value: ColorValues.contentLight
+}, {
+  label: 'Alternate Content',
+  value: ColorValues.contentAlternate
+}];
+
 const ColorOptions = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
-  label: 'Secondary (defaults to off-white)',
+  label: 'Secondary',
   value: ColorValues.secondary
 }, {
-  label: 'White',
-  value: ColorValues.white
+  label: 'Tertiary',
+  value: ColorValues.tertiary
 }, {
-  label: 'Black',
-  value: ColorValues.black
+  label: 'Content (light background)',
+  value: ColorValues.contentDark
+}, {
+  label: 'Content (dark background)',
+  value: ColorValues.contentLight
+}, {
+  label: 'Alternate Content',
+  value: ColorValues.contentAlternate
+}, {
+  label: 'Main Background',
+  value: ColorValues.layout 
+}, {
+  label: 'Alternate Background',
+  value: ColorValues.layoutAlternate
 }];
 
 const richTextTemplates: RichTextTemplate<false>[] = [{
@@ -453,6 +506,51 @@ const Pages: Collection = {
               ui: {
                 component: 'textarea'
               }
+            }]
+          }, {
+            name: 'image_link',
+            label: 'Image Link',
+            fields: [{
+              name: 'image',
+              label: 'Image',
+              type: 'image'
+            }, {
+              name: 'link',
+              label: 'Link',
+              type: 'string'
+            }, {
+              name: 'overlay',
+              label: 'Overlay Text',
+              type: 'string'
+            }]
+          }, {
+            name: 'quote',
+            label: 'Quotation Card',
+            fields: [{
+              name: 'quote',
+              label: 'Quotation Text',
+              type: 'string',
+              ui: {
+                component: 'textarea'
+              }
+            }, {
+              name: 'attribution',
+              label: 'Attribution',
+              type: 'string'
+            }, {
+              name: 'text_color',
+              label: 'Text Color',
+              type: 'string',
+              options: ColorOptionsText
+            }, {
+              name: 'border_color',
+              label: 'Border Color',
+              type: 'string',
+              options: ColorOptionsBg
+            }, {
+              name: 'icon',
+              label: 'Icon',
+              type: 'image'
             }]
           }]
         }]
