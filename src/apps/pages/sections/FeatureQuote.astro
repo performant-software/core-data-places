@@ -1,0 +1,48 @@
+---
+import clsx from 'clsx';
+import Container from '@components/Container.astro';
+import LinkButton from '@components/LinkButton';
+import SearchBar from '@apps/pages/sections/SearchBar';
+import RichText from '@apps/pages/sections/RichText.astro';
+import { toBackgroundClass, toTextClass } from '@utils/pageBuilder';
+
+const Height = {
+  small: 'small',
+  medium: 'medium',
+  large: 'large'
+};
+
+const {
+  attribution,
+  background,
+  date,
+  icon,
+  quote,
+  text
+} = Astro.props;
+---
+
+<div
+  class={clsx(
+    'w-full relative flex flex-col justify-center items-center font-serif',
+    toBackgroundClass(background),
+    toTextClass(text)
+  )}
+>
+  <Container className={clsx(
+    'flex flex-col justify-center py-12'
+  )} >
+    { icon && (
+      <img src={icon} class='h-12 object-scale-down'/>
+    ) }
+    <p class='text-[20px] p-12 text-center'>
+      { quote }
+    </p>
+    <p class='italic font-serif text-sm text-center'>
+      { attribution }
+    </p>
+    <p class='italic font-serif text-sm text-center'>
+      { date }
+    </p>
+  </Container>
+</div>
