@@ -1,13 +1,46 @@
-import { useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import Viewer from '@samvera/clover-iiif/viewer';
 import { Modal } from '@performant-software/core-data';
+import { fetchJson } from '@utils/galleries';
 
 interface Props {
   items: any[]
 }
 
+interface ManifestState {
+  url: string;
+  loading: boolean;
+  contentWarning: false;
+}
+
 const ManifestGrid: React.FC<Props> = (props) => {
-  const [active, setActive] = useState<string | null>(null);
+  const [selected, setSelected] = useState<ManifestState | null>(null);
+
+  const onSetManifest = useCallback((url: string) => {
+    setSelected({ url, loading: true, contentWarning: false });
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selected?.url && !selected.loading) {
+        const data = await fetchJson(selected.url);
+
+        const contentWarning = data.items.some(i => {
+          return i.metadata.some(m => m.label === 'Content Warning' && m.value === 'true');
+        })
+
+        setSelected(prev => ({
+          ...prev,
+          loading: false,
+          contentWarning
+        }));
+      }
+    }
+
+    fetchData();
+  }, [selected]);
+
+  console.log(selected);
 
   return (
     <>
@@ -15,7 +48,7 @@ const ManifestGrid: React.FC<Props> = (props) => {
         { props.items.map((item) => (
           <button
             className='rounded-md overflow-hidden relative cursor-pointer bg-white'
-            onClick={() => setActive(item.id)}
+            onClick={() => onSetManifest(item.id)}
             type='button'
           >
             <img
@@ -34,12 +67,12 @@ const ManifestGrid: React.FC<Props> = (props) => {
       <Modal
         className='h-[80vh] w-[80vw] relative'
         centered
-        onClose={() => setActive(null)}
-        open={!!active}
+        onClose={() => setSelected(null)}
+        open={!!selected}
       >
-        {active && (
-          <Viewer
-            iiifContent={active}
+        {selected && (
+          <MemoizedViewer
+            iiifContent={selected?.url}
             options={{
               canvasHeight: '50vh'
             }}
@@ -49,5 +82,7 @@ const ManifestGrid: React.FC<Props> = (props) => {
     </>
   );
 };
+
+const MemoizedViewer = memo(Viewer);
 
 export default ManifestGrid;
