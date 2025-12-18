@@ -1,6 +1,7 @@
 import { lazy, memo, Suspense, useCallback, useMemo, useState } from 'react';
 import { Button, Modal } from '@performant-software/core-data';
 import { fetchJson, getManifestLabel } from '@utils/galleries';
+import clsx from 'clsx';
 
 const Viewer = lazy(() => import('@samvera/clover-iiif/viewer'));
 const MemoizedViewer = memo(Viewer);
@@ -70,15 +71,18 @@ const ManifestGrid: React.FC<Props> = (props) => {
         )) }
       </div>
       <Modal
-        className='h-[80vh] w-[80vw] relative px-10'
+        className={clsx(
+          'relative',
+          { 'h-[80vh] w-[80vw] px-10': !showContentWarning }
+        )}
         centered
         onClose={() => setManifest(null)}
         open={!!manifest}
         title={viewerLabel}
       >
         { showContentWarning && (
-          <div className='flex items-center justify-center flex-col max-w-200 m-auto py-6 gap-6'>
-            <p className='text-xl'>{props.labels.contentWarning}</p>
+          <div className='flex items-center justify-center flex-col max-w-200 m-auto gap-6 my-4'>
+            <p className='text-lg'>{props.labels.contentWarning}</p>
             <div className='flex gap-4 items-center justify-end w-full'>
               <Button
                 onClick={() => setManifest(null)}
