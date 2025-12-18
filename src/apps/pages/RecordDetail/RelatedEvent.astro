@@ -1,0 +1,41 @@
+---
+import UserDefinedFieldView from '@components/UserDefinedFieldView';
+import { getDisplayFields } from '@utils/detailPages';
+import RelatedEventHeader from '@apps/pages/RecordDetail/RelatedEventHeader.astro';
+
+interface Props {
+  fields: {
+    label: string;
+    uuid: string;
+  }[];
+  event: any;
+}
+
+const { fields, event } = Astro.props;
+
+const displayFields = getDisplayFields(event, fields);
+
+---
+<div class='text-base'>
+  <RelatedEventHeader event={event} />
+  {(displayFields.length > 0 || event.description) && (
+    <div class='border-l-2 border-black pl-4 ml-[-16px]'>
+      {displayFields.length > 0 && (
+        <ul class='flex flex-wrap justify-start gap-4 py-2'>
+          {displayFields.map(displayField => (
+            <li>
+              <p class='text-neutral-700 uppercase font-semibold text-xs border-b border-black'>{displayField.label}</p>
+              <UserDefinedFieldView
+                type={displayField.value.type}
+                value={displayField.value.value}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+      {event.description && (
+        <p>{event.description}</p>
+      )}
+    </div>
+  )}
+</div>

@@ -18,7 +18,7 @@ const geometry = excludes.includes('place_geometry')
   ? null
   : place?.place_geometry?.geometry_json;
 
-export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.places);
+export const getStaticPaths = async () => await getDetailPagePaths(ModelNames.places);
 ---
 
 <Layout footer t={t} title={place.name}>

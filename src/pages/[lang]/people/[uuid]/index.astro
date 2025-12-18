@@ -15,7 +15,7 @@ const { lang, uuid } = Astro.params;
 const { person } = await PeopleService.getOne(uuid);
 const excludes = config.result_filtering?.people?.exclude || [];
 
-export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.people);
+export const getStaticPaths = async () => await getDetailPagePaths(ModelNames.people);
 ---
 
 <Layout footer t={t} title={getNameView(person)}>

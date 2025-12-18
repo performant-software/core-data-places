@@ -14,7 +14,7 @@ const { lang, uuid } = Astro.params;
 const { instance } = await InstancesService.getOne(uuid);
 const excludes = config.result_filtering?.instances?.exclude || [];
 
-export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.instances);
+export const getStaticPaths = async () => await getDetailPagePaths(ModelNames.instances);
 ---
 
 <Layout footer t={t} title={instance.name}>
