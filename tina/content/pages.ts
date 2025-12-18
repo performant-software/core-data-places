@@ -203,6 +203,10 @@ const Pages: Collection = {
       options: ColorOptionsText
     }]
   }, {
+    name: 'full_width_links',
+    label: 'Full width bar for hero links?',
+    type: 'boolean'
+  }, {
     name: 'sections',
     label: 'Sections',
     type: 'object',
@@ -489,7 +493,7 @@ const Pages: Collection = {
         list: true,
         ui: {
           min: 1,
-          max: 4
+          max: 6
         },
         fields: [{
           name: 'width',

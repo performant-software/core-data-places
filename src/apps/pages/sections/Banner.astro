@@ -20,6 +20,7 @@ const {
   color, 
   content, 
   darken, 
+  fullWidthNavigation,
   height, 
   image,
   imageAlt,
@@ -120,7 +121,7 @@ const {
       )}
     </Container>
     { navigation && ( 
-      <HeroLinks links={navigation} />
+      <HeroLinks links={navigation} fullWidth={fullWidthNavigation} />
     )}
   </div>     
 </div>

@@ -4,21 +4,27 @@ import _ from 'underscore';
 import { toBackgroundClass, toTextClass } from '@utils/pageBuilder';
 import Container from '@components/Container.astro';
 
-const { links } = Astro.props;
+const { fullWidth, links } = Astro.props;
 ---
 <div class='absolute bottom-0 w-full'>
-  <Container className='grid w-full auto-cols-fr grid-flow-col gap-0.5'>
-    {
-      _.map(links, link => ( 
-        <a href={link.link || '#'} class={clsx(
-          'flex items-center justify-center py-8 font-serif italic text-2xl z-50',
-          toBackgroundClass(link.background),
-          toTextClass(link.text),
-          { 'cursor-default': !link.link }
-        )}>
-          <p>{ link.label }</p>
-        </a>
-      ))
-    }
+  <Container>
+    <div class={clsx(
+      'gap-0.5',
+      { 'w-full grid auto-cols-fr grid-flow-col': fullWidth },
+      { 'flex flex-row': !fullWidth }
+    )}>
+      {
+        _.map(links, link => ( 
+          <a href={link.link || '#'} class={clsx(
+            'flex items-center justify-center py-8 px-12 font-serif italic text-2xl z-50',
+            link.background && toBackgroundClass(link.background),
+            toTextClass(link.text),
+            { 'cursor-default': !link.link }
+          )}>
+            <p>{ link.label }</p>
+          </a>
+        ))
+      }
+    </div>
   </Container>
 </div>

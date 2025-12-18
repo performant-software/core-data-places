@@ -8,13 +8,13 @@ const {
 } = Astro.props;
 ---
 
-<div class="border-b border-gray-200">
+<div class="border-b border-gray-400">
   <nav aria-label="Tabs" class="-mb-px flex space-x-8">
     {
       _.map(tabs, (tab, idx) => ( 
         <h2 
           class={clsx(
-            'tab-label whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium',
+            'tab-label whitespace-nowrap border-b-2 px-1 py-4 font-medium uppercase !font-sans',
             { 'border-transparent text-gray-500 hover:border-secondary/60 hover:text-secondary/60 cursor-pointer': idx !== 0 },
             { 'border-secondary text-secondary': idx === 0 }
           )}

@@ -44,6 +44,7 @@
   --color-text-dark: var(--customContentDark, var(--color-black));
 
   --font-header: var(--customFontHeader, Inter);
+  --font-serif: var(--customFontHeader, Inter);
   --font-body: var(--customFontBody, Inter);
   --font-sans: var(--font-body);
 }
@@ -119,8 +120,8 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.125rem;
 }
 
-.page-builder .link-button + .link-button {
-  margin-left: 1.5rem;
+.page-builder .link-button:has(+ .link-button) {
+  margin-right: 1.5rem;
 }
 
 /*
