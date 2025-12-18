@@ -1,59 +1,64 @@
-import { memo, useCallback, useEffect, useState } from 'react';
-import Viewer from '@samvera/clover-iiif/viewer';
-import { Modal } from '@performant-software/core-data';
-import { fetchJson } from '@utils/galleries';
+import { lazy, memo, Suspense, useCallback, useMemo, useState } from 'react';
+import { Button, Modal } from '@performant-software/core-data';
+import { fetchJson, getManifestLabel } from '@utils/galleries';
+
+const Viewer = lazy(() => import('@samvera/clover-iiif/viewer'));
+const MemoizedViewer = memo(Viewer);
 
 interface Props {
-  items: any[]
-}
-
-interface ManifestState {
-  url: string;
-  loading: boolean;
-  contentWarning: false;
+  currentLocale: string;
+  items: any[];
+  labels: {
+    contentWarning: string;
+    yes: string;
+    no: string;
+  }
 }
 
 const ManifestGrid: React.FC<Props> = (props) => {
-  const [selected, setSelected] = useState<ManifestState | null>(null);
+  const [manifest, setManifest] = useState<any | null>(null);
+  const [warningAccepted, setWarningAccepted] = useState(false);
 
-  const onSetManifest = useCallback((url: string) => {
-    setSelected({ url, loading: true, contentWarning: false });
+  const onFetchManifest = useCallback(async (manifestId: string) => {
+    const data = await fetchJson(manifestId);
+
+    setManifest(data);
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (selected?.url && !selected.loading) {
-        const data = await fetchJson(selected.url);
-
-        const contentWarning = data.items.some(i => {
-          return i.metadata.some(m => m.label === 'Content Warning' && m.value === 'true');
-        })
-
-        setSelected(prev => ({
-          ...prev,
-          loading: false,
-          contentWarning
-        }));
-      }
+  const showContentWarning = useMemo(() => {
+    if (manifest && !warningAccepted) {
+      return manifest.items.some(i => {
+        return i.metadata.some(m => m.label === 'Content Warning' && m.value === true);
+      });
     }
 
-    fetchData();
-  }, [selected]);
+    return false;
+  }, [manifest, warningAccepted]);
 
-  console.log(selected);
+  const showViewer = manifest && (warningAccepted || !showContentWarning);
+
+  const viewerLabel = useMemo(() => {
+    if (manifest) {
+      return getManifestLabel(manifest, props.currentLocale);
+    }
+
+    return undefined;
+  }, [manifest, props.currentLocale])
 
   return (
     <>
-      <div className='grid grid-cols-2 xl:grid-cols-3 gap-8 my-10'>
+      <div className='grid grid-cols-2 xl:grid-cols-4 gap-8 my-10 w-full'>
         { props.items.map((item) => (
           <button
-            className='rounded-md overflow-hidden relative cursor-pointer bg-white'
-            onClick={() => onSetManifest(item.id)}
+            className='rounded-md overflow-hidden relative cursor-pointer bg-white w-full block'
+            onClick={() => onFetchManifest(item.id)}
+            key={item.id}
             type='button'
           >
             <img
               alt={item.label}
-              className='h-[460px] object-cover w-full'
+              className='h-[380px] object-cover w-full'
+              loading='lazy'
               src={item.thumbnail}
             />
             <div className='flex items-center justify-center h-[100px]'>
@@ -65,24 +70,51 @@ const ManifestGrid: React.FC<Props> = (props) => {
         )) }
       </div>
       <Modal
-        className='h-[80vh] w-[80vw] relative'
+        className='h-[80vh] w-[80vw] relative px-10'
         centered
-        onClose={() => setSelected(null)}
-        open={!!selected}
+        onClose={() => setManifest(null)}
+        open={!!manifest}
+        title={viewerLabel}
       >
-        {selected && (
-          <MemoizedViewer
-            iiifContent={selected?.url}
-            options={{
-              canvasHeight: '50vh'
-            }}
-          />
-        )}
+        { showContentWarning && (
+          <div className='flex items-center justify-center flex-col max-w-200 m-auto py-6 gap-6'>
+            <p className='text-xl'>{props.labels.contentWarning}</p>
+            <div className='flex gap-4 items-center justify-end w-full'>
+              <Button
+                onClick={() => setManifest(null)}
+                rounded='true'
+              >
+                {props.labels.no}
+              </Button>
+              <Button
+                onClick={() => setWarningAccepted(true)}
+                primary='true'
+                rounded='true'
+              >
+                {props.labels.yes}
+              </Button>
+            </div>
+          </div>
+        ) }
+        { showViewer && (
+          <Suspense>
+              <MemoizedViewer
+                /* todo: upgrading to Clover 3 will allow us to pass the manifest JSON directly
+                          so Clover won't refetch the manifest                                 */
+                iiifContent={manifest.id}
+                options={{
+                  canvasHeight: '50vh',
+                  informationPanel: {
+                    open: false
+                  },
+                  showTitle: false
+                }}
+              />
+          </Suspense>
+        ) }
       </Modal>
     </>
   );
 };
-
-const MemoizedViewer = memo(Viewer);
 
 export default ManifestGrid;

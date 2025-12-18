@@ -3,29 +3,15 @@ import Container from '@components/Container.astro';
 import ManifestGrid from '@apps/gallery/ManifestGrid';
 import { getTranslations } from '@backend/i18n';
 import config from '@config';
-import { fetchJson, getItemLabel } from '@utils/galleries';
+import { fetchJson, getManifestLabel } from '@utils/galleries';
 import { getManifestUrl } from '@services/gallery';
-
-const getItemLabel = (item: any, locale: string) => {
-  const hasMatchingLabel = item.label[locale] && item.label[locale].length > 0;
-  if (hasMatchingLabel) {
-    return item.label[locale][0];
-  }
-
-  const hasEnglishLabel = item.label['en'] && item.label['en'].length > 0;
-  if (hasEnglishLabel) {
-    return item.label['en'][0];
-  }
-
-  return item.id;
-}
 
 const manifest = await fetchJson(config.gallery)
 
 const items = manifest.items.map((item) => ({
   id: getManifestUrl(item.id),
   thumbnail: item.thumbnail[0]?.id,
-  label: getItemLabel(item, Astro.currentLocale)
+  label: getManifestLabel(item, Astro.currentLocale)
 }));
 
 const { t } = await getTranslations(Astro.currentLocale);
@@ -33,7 +19,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 const imageSearchConfig = config.search.find(item => item.type === 'image');
 ---
 <Container className='my-6'>
-  <div class='flex items-center justify-between gap-4'>
+  <div class='flex items-center justify-between gap-4 w-full'>
     <h1 class='text-3xl font-header'>{t('imageGalleries')}</h1>
     {imageSearchConfig && (
       <a
@@ -45,7 +31,13 @@ const imageSearchConfig = config.search.find(item => item.type === 'image');
     )}
   </div>
   <ManifestGrid
+    currentLocale={Astro.currentLocale}
     items={items}
+    labels={{
+      contentWarning: t('sensitiveContentConfirmation'),
+      yes: t('yes'),
+      no: t('no')
+    }}
     client:only='react'
   />
 </Container>
