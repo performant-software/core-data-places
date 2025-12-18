@@ -44,7 +44,7 @@ const SpacerSizes = [{
   value: SpacerValues.large
 }];
 
-const ColorOptionsBg = [{
+export const ColorOptionsBg = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
@@ -61,7 +61,7 @@ const ColorOptionsBg = [{
   value: ColorValues.layoutAlternate
 }];
 
-const ColorOptionsText = [{
+export const ColorOptionsText = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
@@ -81,7 +81,7 @@ const ColorOptionsText = [{
   value: ColorValues.contentAlternate
 }];
 
-const ColorOptions = [{
+export const ColorOptions = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
@@ -107,7 +107,7 @@ const ColorOptions = [{
   value: ColorValues.layoutAlternate
 }];
 
-const richTextTemplates: RichTextTemplate<false>[] = [{
+export const richTextTemplates: RichTextTemplate<false>[] = [{
   name: 'spacer',
   label: 'Spacer',
   fields: [{
