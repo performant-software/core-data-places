@@ -1,5 +1,4 @@
 import config from '@config';
-import { hasContentCollection } from '@root/src/content.config';
 
 const BASE_URL = import.meta.env.PUBLIC_BASE_URL;
 
@@ -46,6 +45,20 @@ export const getManifests = async () => {
 export const getManifest = async (url: string) => {
   return await fetchJson(url);
 };
+
+export const getManifestLabel = (item: any, locale: string) => {
+  const hasMatchingLabel = item.label[locale] && item.label[locale].length > 0;
+  if (hasMatchingLabel) {
+    return item.label[locale][0];
+  }
+
+  const hasEnglishLabel = item.label['en'] && item.label['en'].length > 0;
+  if (hasEnglishLabel) {
+    return item.label['en'][0];
+  }
+
+  return item.id;
+}
 
 /**
  * Generates the URL for a manifest when running in static mode.
