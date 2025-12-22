@@ -1,0 +1,32 @@
+---
+import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
+
+interface Props {
+  event: any
+}
+
+const { event } = Astro.props;
+
+const buildHeader = () => {
+  const dateStrs: string[] = [];
+
+  ([event.start_date, event.end_date]).forEach(d => {
+    if (d) {
+      dateStrs.push(FuzzyDateUtils.getDateView(d));
+    }
+  });
+
+  let baseStr = dateStrs.join('-');
+
+  if (baseStr.length > 0) {
+    return `${baseStr} - ${event.name}`;
+  } else {
+    return event.name;
+  }
+}
+
+const headerText = buildHeader();
+---
+<p class='font-semibold'>
+  {headerText}
+<p>

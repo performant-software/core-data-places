@@ -20,7 +20,7 @@ const { places } = await service.getRelatedPlaces(uuid);
 const relationships = groupRelationships(places, excludes);
 const { t } = await getTranslations(lang);
 
-const showLinks = config.detail_pages.includes('places');
+const showLinks = config.detail_pages?.models.includes('places');
 const resolveDetailUrl = (record: any) => `/${lang}/places/${record.uuid}`;
 ---
 {Object.keys(relationships).map((uuid) => (

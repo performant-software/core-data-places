@@ -1,9 +1,10 @@
 ---
 import ServiceFactory from '@services/coreData/factory';
-import Relations from '@apps/pages/RecordDetail/Relations.astro';
-import { groupRelationships } from '@utils/detailPages';
+import { getRelationshipFields, groupRelationships } from '@utils/detailPages';
 import config from '@config';
 import { getTranslations } from '@backend/i18n';
+import RelatedEvent from '@apps/pages/RecordDetail/RelatedEvent.astro';
+import _ from 'underscore';
 
 interface Props {
   excludes: string[];
@@ -16,17 +17,40 @@ const { excludes, model, uuid } = Astro.props;
 const lang = Astro.currentLocale;
 const service = ServiceFactory.getService(model);
 const { events } = await service.getRelatedEvents(uuid);
-const relationships = groupRelationships(events, excludes);
+const sortedEvents = _.sortBy(events, 'start_date.start_date');
+const relationships = groupRelationships(sortedEvents, excludes);
 const { t } = await getTranslations(lang);
+
+const fields = getRelationshipFields(config.detail_pages.relationship_fields?.events || [], t)
+
+const resolveDetailUrl = (event: any) => `/${lang}/events/${event.uuid}`;
+const showLinks = config.detail_pages?.models?.includes('events');
 ---
 {Object.keys(relationships).map((uuid) => (
-  <Relations
-    data={relationships[uuid]}
-    icon='date'
-    label={t(uuid)}
-    resolveDetailUrl={event => `/${lang}/events/${event.uuid}`}
-    resolveName={event => event.name}
-    showLinks={config.detail_pages.includes('events')}
-    uuid={uuid}
-  />
+  <div class='py-6 w-full'>
+    <h2 class='capitalize text-xl font-semibold font-header mb-2'>{t(uuid)}</h2>
+    <ul class='flex flex-col gap-4 list-disc ml-4'>
+      {relationships[uuid].map((event) => (
+        <li class='text-[22px] ml-2'>
+          {showLinks && (
+            <a
+              class='block'
+              href={resolveDetailUrl(event)}
+            >
+              <RelatedEvent
+                fields={fields}
+                event={event}
+              />
+            </a>
+          )}
+          {!showLinks && (
+            <RelatedEvent
+              fields={fields}
+              event={event}
+            />
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
 ))}

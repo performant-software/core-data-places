@@ -609,6 +609,51 @@ const Pages: Collection = {
                 component: 'textarea'
               }
             }]
+          }, {
+            name: 'image_link',
+            label: 'Image Link',
+            fields: [{
+              name: 'image',
+              label: 'Image',
+              type: 'image'
+            }, {
+              name: 'link',
+              label: 'Link',
+              type: 'string'
+            }, {
+              name: 'overlay',
+              label: 'Overlay Text',
+              type: 'string'
+            }]
+          }, {
+            name: 'quote',
+            label: 'Quotation Card',
+            fields: [{
+              name: 'quote',
+              label: 'Quotation Text',
+              type: 'string',
+              ui: {
+                component: 'textarea'
+              }
+            }, {
+              name: 'attribution',
+              label: 'Attribution',
+              type: 'string'
+            }, {
+              name: 'text_color',
+              label: 'Text Color',
+              type: 'string',
+              options: ColorOptionsText
+            }, {
+              name: 'border_color',
+              label: 'Border Color',
+              type: 'string',
+              options: ColorOptionsBg
+            }, {
+              name: 'icon',
+              label: 'Icon',
+              type: 'image'
+            }]
           }]
         }]
       }]
@@ -709,6 +754,39 @@ const Pages: Collection = {
         name: 'darken',
         label: 'Darken Background?',
         type: 'boolean'
+      }]
+    }, {
+      name: 'feature_quote',
+      label: 'Feature Quote',
+      fields: [{
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
+      }, {
+        name: 'quote',
+        label: 'Quotation Text',
+        type: 'string',
+        ui: {
+          component: 'textarea'
+        }
+      }, {
+        name: 'attribution',
+        label: 'Attribution',
+        type: 'string'
+      }, {
+        name: 'date',
+        label: 'Date',
+        type: 'string'
+      }, {
+        name: 'icon',
+        label: 'Icon',
+        type: 'image'
       }]
     }]
   }]

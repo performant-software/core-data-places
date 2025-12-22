@@ -426,5 +426,17 @@
   "viewAllImages": {
     "tinaLabel": "View All Images",
     "defaultValue": "View All Images"
+  },
+  "sensitiveContentConfirmation": {
+    "tinaLabel": "This gallery contains sensitive content. Are you sure you want to view it?",
+    "defaultValue": "This gallery contains sensitive content. Are you sure you want to view it?"
+  },
+  "yes": {
+    "tinaLabel": "Yes",
+    "defaultValue": "Yes"
+  },
+  "no": {
+    "tinaLabel": "No",
+    "defaultValue": "No"
   }
 }
