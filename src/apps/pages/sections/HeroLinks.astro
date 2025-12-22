@@ -16,9 +16,9 @@ const { fullWidth, links } = Astro.props;
       {
         _.map(links, link => ( 
           <a href={link.link || '#'} class={clsx(
-            'flex items-center justify-center py-8 px-12 font-serif italic text-2xl z-50',
+            'hero-tab flex items-center justify-center py-8 px-12 font-serif italic text-2xl z-50',
             link.background && toBackgroundClass(link.background),
-            toTextClass(link.text),
+            link.text,
             { 'cursor-default': !link.link }
           )}>
             <p>{ link.label }</p>

@@ -27,7 +27,8 @@ export const ColorValues = {
   layoutAlternate: 'layout_alternate',
   contentLight: 'content_light',
   contentDark: 'content_dark',
-  contentAlternate: 'content_alternate'
+  contentAlternate: 'content-alt',
+  contentMain: ''
 };
 
 const SpacerSizes = [{
@@ -48,12 +49,6 @@ export const ColorOptionsBg = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
-  label: 'Secondary',
-  value: ColorValues.secondary
-}, {
-  label: 'Tertiary',
-  value: ColorValues.tertiary
-}, {
   label: 'Main Background',
   value: ColorValues.layout 
 }, {
@@ -62,24 +57,28 @@ export const ColorOptionsBg = [{
 }];
 
 export const ColorOptionsText = [{
+  label: 'Main',
+  value: ColorValues.contentMain
+}, {
+  label: 'Alternate',
+  value: ColorValues.contentAlternate
+}];
+
+export const ColorOptionsBorder = [{
+  label: 'Secondary',
+  value: ColorValues.secondary
+}];
+
+export const ColorOptionsButton = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
   label: 'Secondary',
   value: ColorValues.secondary
 }, {
-  label: 'Tertiary',
-  value: ColorValues.tertiary
-}, {
-  label: 'Content (light background)',
-  value: ColorValues.contentDark
-}, {
-  label: 'Content (dark background)',
-  value: ColorValues.contentLight
-}, {
-  label: 'Alternate Content',
-  value: ColorValues.contentAlternate
-}];
+  label: 'Main Background',
+  value: ColorValues.layout
+}]
 
 export const ColorOptions = [{
   label: 'Primary',
@@ -119,7 +118,7 @@ export const richTextTemplates: RichTextTemplate<false>[] = [{
     name: 'color',
     label: 'Color',
     type: 'string',
-    options: ColorOptions
+    options: ColorOptionsBorder
   }]
 }, {
   name: 'button',
@@ -136,17 +135,18 @@ export const richTextTemplates: RichTextTemplate<false>[] = [{
     name: 'color',
     label: 'Color',
     type: 'string',
-    options: ColorOptionsBg
+    options: ColorOptionsButton
   }, {
     name: 'text',
     label: 'Text Color',
     type: 'string',
-    options: ColorOptionsText
+    description: 'Leave blank for default.',
+    options: ColorOptionsButton
   }, {
     name: 'border',
     label: 'Border Color (leave blank for none)',
     type: 'string',
-    options: ColorOptions
+    options: ColorOptionsButton
   }, {
     name: 'arrow',
     label: 'Include arrow icon?',
@@ -195,12 +195,7 @@ const Pages: Collection = {
       name: 'background',
       label: 'Background Color',
       type: 'string',
-      options: ColorOptionsBg
-    }, {
-      name: 'text',
-      label: 'Text Color',
-      type: 'string',
-      options: ColorOptionsText
+      options: ColorOptionsButton
     }]
   }, {
     name: 'full_width_links',
@@ -219,11 +214,6 @@ const Pages: Collection = {
         label: 'Background Color',
         type: 'string',
         options: ColorOptionsBg
-      }, {
-        name: 'text',
-        label: 'Text Color',
-        type: 'string',
-        options: ColorOptionsText
       }, {
         name: 'items',
         label: 'Items',
@@ -297,11 +287,6 @@ const Pages: Collection = {
         type: 'string',
         options: ColorOptionsBg
       }, {
-        name: 'text',
-        label: 'Text Color',
-        type: 'string',
-        options: ColorOptionsText
-      }, {
         name: 'items',
         label: 'Items',
         type: 'object',
@@ -355,7 +340,7 @@ const Pages: Collection = {
         name: 'color',
         label: 'Color',
         type: 'string',
-        options: ColorOptionsBg
+        options: ColorOptionsBorder
       }, {
         name: 'background',
         label: 'Background Color',
@@ -553,7 +538,7 @@ const Pages: Collection = {
           name: 'border',
           label: 'Border Color (leave blank for none)',
           type: 'string',
-          options: ColorOptions
+          options: ColorOptionsBorder
         }, {
           name: 'rounded',
           label: 'Rounded Corners?',
@@ -677,7 +662,7 @@ const Pages: Collection = {
               name: 'border_color',
               label: 'Border Color',
               type: 'string',
-              options: ColorOptionsBg
+              options: ColorOptionsBorder
             }, {
               name: 'icon',
               label: 'Icon',
@@ -761,10 +746,10 @@ const Pages: Collection = {
           value: 'large'
         }]
       }, {
-        name: 'color',
-        label: 'Text Color',
-        type: 'string',
-        options: ColorOptionsText
+        name: 'dark_text',
+        label: 'Use dark text?',
+        description: 'By default, this template will use light-colored text.',
+        type: 'boolean'
       }, {
         name: 'background_image',
         label: 'Background Image',

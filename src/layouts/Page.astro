@@ -50,7 +50,7 @@ const SectionTypes = {
         'page-builder',
         'relative',
         toBackgroundClass(section.background),
-        toTextClass(section.text),
+        section.text,
         { '-mt-20': page.transparent && idx === 0 }
       )}
     >
@@ -119,9 +119,9 @@ const SectionTypes = {
           background={section.background}
           buttonText={section.button_text}
           clip={section.clip}
-          color={section.color}
           content={section.content}
           darken={section.darken}
+          darkText={section.dark_text}
           fullWidth={section.full_width}
           fullWidthNavigation={page.full_width_links}
           height={section.height}
