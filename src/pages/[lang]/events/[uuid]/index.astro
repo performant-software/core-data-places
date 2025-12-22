@@ -15,7 +15,7 @@ const { lang, uuid } = Astro.params;
 const { event } = await EventsService.getOne(uuid);
 const excludes = config.result_filtering?.events?.exclude || [];
 
-export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.events);
+export const getStaticPaths = async () => await getDetailPagePaths(ModelNames.events);
 ---
 
 <Layout footer t={t} title={event.name}>

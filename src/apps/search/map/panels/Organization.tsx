@@ -16,7 +16,7 @@ const Organization = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((organization) => {
-    if (organization && config.detail_pages && config.detail_pages.includes('organizations')) {
+    if (organization && config.detail_pages?.models?.includes('organizations')) {
       return `/${lang}/organizations/${organization.uuid}`;
     }
   }, [config, lang]);

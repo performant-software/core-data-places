@@ -115,7 +115,7 @@ const Hits = (props: Props) => {
   }, [items, t, searchConfig]);
 
   const isLinkable = useMemo(
-    () => config.detail_pages?.includes(searchConfig.route.slice(1)),
+    () => config.detail_pages?.models.includes(searchConfig.route.slice(1)),
     [searchConfig.route]
   );
 
