@@ -1,5 +1,5 @@
 import { Collection } from '@tinacms/schema-tools';
-import { ColorOptions, ColorOptionsBg, ColorOptionsText, richTextTemplates } from './pages';
+import { ColorOptionsBg, ColorOptionsBorder, ColorOptionsText, richTextTemplates } from './pages';
 
 const Fonts = [{
   label: 'Afacad',
@@ -239,7 +239,7 @@ const Branding: Collection = {
           name: 'border',
           label: 'Border Color (leave blank for none)',
           type: 'string',
-          options: ColorOptions
+          options: ColorOptionsBorder
         }, {
           name: 'rounded',
           label: 'Rounded Corners?',

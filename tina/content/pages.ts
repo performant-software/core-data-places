@@ -80,49 +80,6 @@ export const ColorOptionsButton = [{
   value: ColorValues.layout
 }]
 
-export const ColorOptions = [{
-  label: 'Primary',
-  value: ColorValues.primary
-}, {
-  label: 'Secondary',
-  label: 'Secondary',
-  value: ColorValues.secondary
-}, {
-  label: 'Tertiary',
-  value: ColorValues.tertiary
-}, {
-  label: 'Content (light background)',
-  value: ColorValues.contentDark
-}, {
-  label: 'Content (dark background)',
-  value: ColorValues.contentLight
-}, {
-  label: 'Alternate Content',
-  value: ColorValues.contentAlternate
-  label: 'Tertiary',
-  value: ColorValues.tertiary
-}, {
-  label: 'Content (light background)',
-  value: ColorValues.contentDark
-}, {
-  label: 'Content (dark background)',
-  value: ColorValues.contentLight
-}, {
-  label: 'Alternate Content',
-  value: ColorValues.contentAlternate
-}, {
-  label: 'Main Background',
-  value: ColorValues.layout 
-}, {
-  label: 'Alternate Background',
-  value: ColorValues.layoutAlternate
-  label: 'Main Background',
-  value: ColorValues.layout 
-}, {
-  label: 'Alternate Background',
-  value: ColorValues.layoutAlternate
-}];
-
 export const richTextTemplates: RichTextTemplate<false>[] = [{
   name: 'spacer',
   label: 'Spacer',
