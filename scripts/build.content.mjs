@@ -15,7 +15,7 @@ export const fetchContent = async () => {
 
   // Clone the content repo into the temporary directory
   const url = `https://github.com/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}.git`;
-  child_process.execSync(`git clone ${url} ${TEMP_DIR}`);
+  child_process.execSync(`git clone --branch ${process.env.GITHUB_BRANCH} --single-branch ${url} ${TEMP_DIR}`);
 
   // Copy the "content" folder to the current directory
   fs.cpSync(`${TEMP_DIR}/content`, './content', { recursive: true });
