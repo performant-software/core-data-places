@@ -40,3 +40,13 @@ export const parseSearchParams = (urlString: string): SearchParams => {
 
   return params;
 };
+
+export const convertToNumber = (str) => {
+  const num = Number(str);
+
+  if (!isNaN(num)) {
+    return num;
+  }
+
+  return str;
+};
