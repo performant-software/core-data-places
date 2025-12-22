@@ -27,17 +27,19 @@ const Navbar: Collection = {
       label: 'Navigation Items',
       type: 'object',
       list: true,
-      fields: [...baseFields,
-      {
-        name: 'options',
-        label: 'Dropdown Items',
-        type: 'object',
-        list: true,
-        fields: baseFields,
-        ui: {
-          itemProps,
-        },
-      }],
+      fields: [
+        ...baseFields,
+        {
+          name: 'options',
+          label: 'Dropdown Items',
+          type: 'object',
+          list: true,
+          fields: baseFields,
+          ui: {
+            itemProps,
+          },
+        }
+      ],
       ui: {
         itemProps,
       },
