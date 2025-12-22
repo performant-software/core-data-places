@@ -32,23 +32,27 @@ const { header, footer } = branding;
 const { font_header: fontHeader, font_body: fontBody } = branding;
 
 //dark and light mode default text color
-const textDark = branding.content_color || 'var(--color-black)';
-const textLight = branding.content_dark_bg || 'var(--color-white)';
+const content = branding.content_color || 'var(--color-black)';
+const contentInverse = branding.content_inverse || 'var(--color-white)';
+const contentAlternate = branding.content_alternate || 'var(--color-neutral-dark)';
+const contentInverseAlternate = branding.content_inverse_alternate || 'var(--color-neutral-light)';
 
 const colorPrimary = branding.primary_color;
 const colorSecondary = branding.secondary_color;
 const colorTertiary = branding.tertiary_color || 'var(--color-black)';
 
 //these are for use in layout components like header and footer
-const textPrimary = useBlackText(colorPrimary) ? textDark : textLight;
-const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? textDark : textLight;
+const primaryContent = useBlackText(colorPrimary) ? content : contentInverse;
+const secondaryContent = !colorSecondary || useBlackText(colorSecondary) ? content : contentInverse;
+const tertiaryContent = !colorTertiary || useBlackText(colorTertiary) ? content : contentInverse;
 
 const colorLayout = branding.background_color || 'var(--color-white)';
-const colorLayoutAlternate = branding.background_alternate || 'var(--color-neutral-light)';
+const layoutContent = !branding.background_color || useBlackText(branding.background_color) ? content : contentInverse;
+const layoutContentAlternate = !branding.background_color || useBlackText(branding.background_color) ? contentAlternate : contentInverseAlternate;
 
-//these are for use in the page builder components, where the background will be `colorLayout` by default
-const colorContent = useBlackText(colorLayout) ? textDark : textLight;
-const colorContentAlternate = branding.content_alternate || 'var(--color-neutral-dark)';
+const colorLayoutAlternate = branding.background_alternate || 'var(--color-neutral-light)';
+const layoutAlternateContent = !branding.background_alternate || useBlackText(branding.background_alternate) ? content : contentInverse;
+const layoutAlternateContentAlternate = !branding.background_alternate || useBlackText(branding.background_alternate) ? contentAlternate : contentInverseAlternate; //this naming scheme could be better....
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
@@ -143,17 +147,20 @@ if (config.gallery) {
       define:vars={{
         customFontHeader: fontHeader,
         customFontBody: fontBody,
+        customLayout: colorLayout,
+        customLayoutAlternate: colorLayoutAlternate,
         customColorPrimary: colorPrimary,
         customColorSecondary: colorSecondary,
         customColorTertiary: colorTertiary,
-        customTextPrimary: textPrimary,
-        customTextSecondary: textSecondary,
-        customContent: colorContent,
-        customContentAlternate: colorContentAlternate,
-        customContentLight: textLight,
-        customContentDark: textDark,
-        customColorLayout: colorLayout,
-        customColorLayoutAlternate: colorLayoutAlternate
+        customPrimaryContent: primaryContent,
+        customSecondaryContent: secondaryContent,
+        customTertiaryContent: tertiaryContent,
+        customContent: layoutContent,
+        customContentAlternate: layoutContentAlternate,
+        customAlternateContent: layoutAlternateContent,
+        customAlternateContentAlternate: layoutAlternateContentAlternate,
+        customText: content,
+        customTextInverse: contentInverse
       }}
     >
     </style>

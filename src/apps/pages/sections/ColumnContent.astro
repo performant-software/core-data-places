@@ -67,7 +67,7 @@ const BlockTypes = {
 { item.__typename.endsWith(BlockTypes.quote) && ( 
   <div class={clsx(
     'flex flex-col relative h-full p-6 gap-6',
-    toTextClass(item.text_color),
+    item.text_color,
     toBorderClass(item.border_color)
   )}>
     <img src={item.icon} class='absolute top-4 left-4 w-12 h-12 opacity-20' />
@@ -86,7 +86,7 @@ const BlockTypes = {
     <img src={item.image} class='w-full h-full object-contain'/>
     { item.overlay && ( 
       <div class='absolute h-full w-full inset-0 bg-gradient-to-b to-black/60 p-6 flex flex-col justify-end'>
-        <h2 class='text-text-light text-[2.4rem] font-serif'>{ item.overlay }</h2>
+        <h2 class='text-text-inverse text-[2.4rem] font-serif'>{ item.overlay }</h2>
       </div> 
     )}
   </a>

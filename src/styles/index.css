@@ -33,15 +33,18 @@
 
   --color-primary: var(--customColorPrimary, var(--color-default-primary));
   --color-secondary: var(--customColorSecondary, var(--color-default-secondary));
-  --color-tertiary: var(--customColorTertiary, var(--color-white));
-  --color-text-primary: var(--customTextPrimary, var(--color-white));
-  --color-text-secondary: var(--customTextSecondary, var(--color-black));
-  --color-content: var(--customContent, var(--color-black));
-  --color-content-alt: var(--customContentAlternate, var(--color-neutral-dark));
+  --color-tertiary: var(--customColorTertiary, var(--color-black));
   --color-layout: var(--customColorLayout, var(--color-white));
   --color-layout-alt: var(--customColorLayoutAlternate, var(--color-netural-light));
-  --color-text-light: var(--customContentLight, var(--color-white));
-  --color-text-dark: var(--customContentDark, var(--color-black));
+  --color-text-primary: var(--customPrimaryContent, var(--color-white));
+  --color-text-secondary: var(--customSecondaryContent, var(--color-black));
+  --color-text-tertiary: var(--customTertiaryContent, var(--color-white));
+  --color-content: var(--customContent, var(--color-black));
+  --color-content-alt: var(--customContentAlternate, var(--color-neutral-dark));
+  --color-alt-content: var(--customAlternateContent, var(--color-black));
+  --color-alt-content-alt: var(--customAlternateContentAlternate, var(--color-neutral-dark));
+  --color-text-default: var(--customText, var(--color-black));
+  --color-text-inverse: var(--customTextInverse, var(--color-white));
 
   --font-header: var(--customFontHeader, Inter);
   --font-body: var(--customFontBody, Inter);
@@ -82,6 +85,26 @@ h1, h2, h3, h4, h5, h6 {
 /*
 * Page builder styles
 */
+
+.page-builder .bg-layout-alt, .page-builder .bg-layout-alt div {
+  color: var(--color-alt-content);
+}
+
+.page-builder .bg-layout.content-alt, .page-builder .bg-layout.content-alt div {
+  color: var(--color-content-alt);
+}
+
+.page-builder .bg-layout-alt.content-alt, .page-builder .bg-layout-alt.content-alt div {
+  color: var(--color-alt-content-alt);
+}
+
+.page-builder .text-text-inverse, .page-builder .text-text-inverse div {
+  color: var(--color-text-inverse);
+}
+
+.page-builder .hero-tab.bg-layout {
+  color: var(--color-content)
+}
 
 .page-builder h1, .page-builder h2, .page-builder h3, .page-builder h4 {
   font-weight: 400;

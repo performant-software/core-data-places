@@ -16,9 +16,9 @@ const {
   background, 
   buttonText,
   clip, 
-  color, 
   content, 
   darken, 
+  darkText,
   height, 
   image,
   imageAlt,
@@ -38,7 +38,8 @@ const {
     { 'overflow-hidden': clip },
     { 'min-h-[220px]': height === Height.small },
     { 'min-h-[420px]': height === Height.medium },
-    { 'min-h-[720px]': height === Height.large }
+    { 'min-h-[720px]': height === Height.large },
+    { 'text-text-inverse': !darkText }
   )}
 >
   { image && (
@@ -102,8 +103,8 @@ const {
       { content && content.children?.length ? (
         <div class={clsx(
           'prose max-w-none py-8 lg:py-16 z-10',
-          toTextClass(color),
-          { 'text-center': textAlignment === 'center' }
+          { 'text-center': textAlignment === 'center' },
+          { 'text-text-inverse': !darkText }
         )}>
           <RichText content={content} />
         </div> 

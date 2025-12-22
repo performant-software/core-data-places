@@ -89,8 +89,15 @@ const Branding: Collection = {
       component: 'color'
     }
   }, {
-    name: 'content_dark_bg',
+    name: 'content_inverse',
     label: 'Text on dark background (defaults to white)',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_inverse_alternate',
+    label: 'Text on dark background alternate',
     type: 'string',
     ui: {
       component: 'color'
