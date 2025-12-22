@@ -133,7 +133,7 @@ const year = new Date().getFullYear();
 { custom && ( 
   <div class={clsx(
     toBackgroundClass(customContent.background),
-    toTextClass(customContent.text),
+    customContent.text,
     'flex flex-col gap-12 pt-20 px-16 pb-12'
   )}>
     <MultiColumn content={customContent.columns} gap='large' />
