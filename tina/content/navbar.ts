@@ -1,16 +1,19 @@
 import { Collection, StringField } from '@tinacms/schema-tools';
 
-const baseFields: StringField[] = [{
+const labelField: StringField = {
   name: 'label',
   label: 'Label',
   type: 'string',
   required: true
-}, {
+};
+
+const urlField: StringField = {
   name: 'href',
   label: 'URL',
   type: 'string',
-  description: 'Use a relative URL such as /en/about'
-}];
+  description: 'Use a relative URL such as /en/about',
+  required: true
+};
 
 const itemProps = (item) => {
   return { label: item?.label };
@@ -27,22 +30,40 @@ const Navbar: Collection = {
       label: 'Navigation Items',
       type: 'object',
       list: true,
-      fields: [
-        ...baseFields,
+      templates: [
         {
-          name: 'options',
-          label: 'Dropdown Items',
-          type: 'object',
-          list: true,
-          fields: baseFields,
+          name: 'URL',
+          fields: [
+            labelField,
+            urlField
+          ],
           ui: {
             itemProps,
-          },
+          }
+        },
+        {
+          name: 'Dropdown',
+          fields: [
+            labelField,
+            {
+              name: 'options',
+              label: 'Dropdown Items',
+              type: 'object',
+              list: true,
+              fields: [
+                labelField,
+                urlField
+              ],
+              ui: {
+                itemProps,
+              },
+            }
+          ],
+          ui: {
+            itemProps,
+          }
         }
       ],
-      ui: {
-        itemProps,
-      },
     }
   ]
 };
