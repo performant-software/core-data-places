@@ -18,11 +18,15 @@ const SpacerValues = {
   large: 'large'
 };
 
-const ColorValues = {
+export const ColorValues = {
   primary: 'primary',
-  white: 'white',
-  black: 'black',
-  secondary: 'secondary'
+  secondary: 'secondary',
+  tertiary: 'tertiary',
+  layout: 'layout',
+  layoutAlternate: 'layout_alternate',
+  contentLight: 'content_light',
+  contentDark: 'content_dark',
+  contentAlternate: 'content_alternate'
 };
 
 const SpacerSizes = [{
@@ -36,18 +40,67 @@ const SpacerSizes = [{
   value: SpacerValues.large
 }];
 
+const ColorOptionsBg = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
+  label: 'Secondary',
+  value: ColorValues.secondary
+}, {
+  label: 'Tertiary',
+  value: ColorValues.tertiary
+}, {
+  label: 'Main Background',
+  value: ColorValues.layout 
+}, {
+  label: 'Alternate Background',
+  value: ColorValues.layoutAlternate
+}];
+
+const ColorOptionsText = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
+  label: 'Secondary',
+  value: ColorValues.secondary
+}, {
+  label: 'Tertiary',
+  value: ColorValues.tertiary
+}, {
+  label: 'Content (light background)',
+  value: ColorValues.contentDark
+}, {
+  label: 'Content (dark background)',
+  value: ColorValues.contentLight
+}, {
+  label: 'Alternate Content',
+  value: ColorValues.contentAlternate
+}];
+
 const ColorOptions = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
-  label: 'Secondary (defaults to off-white)',
+  label: 'Secondary',
   value: ColorValues.secondary
 }, {
-  label: 'White',
-  value: ColorValues.white
+  label: 'Tertiary',
+  value: ColorValues.tertiary
 }, {
-  label: 'Black',
-  value: ColorValues.black
+  label: 'Content (light background)',
+  value: ColorValues.contentDark
+}, {
+  label: 'Content (dark background)',
+  value: ColorValues.contentLight
+}, {
+  label: 'Alternate Content',
+  value: ColorValues.contentAlternate
+}, {
+  label: 'Main Background',
+  value: ColorValues.layout 
+}, {
+  label: 'Alternate Background',
+  value: ColorValues.layoutAlternate
 }];
 
 const richTextTemplates: RichTextTemplate<false>[] = [{
@@ -63,6 +116,32 @@ const richTextTemplates: RichTextTemplate<false>[] = [{
     label: 'Color',
     type: 'string',
     options: ColorOptions
+  }]
+}, {
+  name: 'button',
+  label: 'Button Link',
+  fields: [{
+    name: 'content',
+    label: 'Button Text',
+    type: 'string'
+  }, {
+    name: 'href',
+    label: 'Button Link',
+    type: 'string'
+  }, {
+    name: 'color',
+    label: 'Color',
+    type: 'string',
+    options: ColorOptions
+  }, {
+    name: 'text',
+    label: 'Text Color',
+    type: 'string',
+    options: ColorOptions
+  }, {
+    name: 'arrow',
+    label: 'Include arrow icon?',
+    type: 'boolean'
   }]
 }];
 
@@ -363,7 +442,8 @@ const Pages: Collection = {
             fields: [{
               name: 'text',
               label: 'Text',
-              type: 'rich-text'
+              type: 'rich-text',
+              templates: richTextTemplates
             }]
           }, {
             name: 'image',
@@ -427,6 +507,51 @@ const Pages: Collection = {
                 component: 'textarea'
               }
             }]
+          }, {
+            name: 'image_link',
+            label: 'Image Link',
+            fields: [{
+              name: 'image',
+              label: 'Image',
+              type: 'image'
+            }, {
+              name: 'link',
+              label: 'Link',
+              type: 'string'
+            }, {
+              name: 'overlay',
+              label: 'Overlay Text',
+              type: 'string'
+            }]
+          }, {
+            name: 'quote',
+            label: 'Quotation Card',
+            fields: [{
+              name: 'quote',
+              label: 'Quotation Text',
+              type: 'string',
+              ui: {
+                component: 'textarea'
+              }
+            }, {
+              name: 'attribution',
+              label: 'Attribution',
+              type: 'string'
+            }, {
+              name: 'text_color',
+              label: 'Text Color',
+              type: 'string',
+              options: ColorOptionsText
+            }, {
+              name: 'border_color',
+              label: 'Border Color',
+              type: 'string',
+              options: ColorOptionsBg
+            }, {
+              name: 'icon',
+              label: 'Icon',
+              type: 'image'
+            }]
           }]
         }]
       }]
@@ -473,7 +598,8 @@ const Pages: Collection = {
       }, {
         name: 'content',
         label: 'Rich Text Content',
-        type: 'rich-text'
+        type: 'rich-text',
+        templates: richTextTemplates
       }, {
         name: 'text_alignment',
         label: 'Text Alignment',
@@ -532,6 +658,39 @@ const Pages: Collection = {
         name: 'darken',
         label: 'Darken Background?',
         type: 'boolean'
+      }]
+    }, {
+      name: 'feature_quote',
+      label: 'Feature Quote',
+      fields: [{
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
+      }, {
+        name: 'quote',
+        label: 'Quotation Text',
+        type: 'string',
+        ui: {
+          component: 'textarea'
+        }
+      }, {
+        name: 'attribution',
+        label: 'Attribution',
+        type: 'string'
+      }, {
+        name: 'date',
+        label: 'Date',
+        type: 'string'
+      }, {
+        name: 'icon',
+        label: 'Icon',
+        type: 'image'
       }]
     }, {
       name: 'tabs',

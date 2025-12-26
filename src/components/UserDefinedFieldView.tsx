@@ -18,8 +18,8 @@ const UserDefinedFieldView = (props: Props) => {
   // TODO: Replace with our icons
   if (props.type === DataTypes.boolean) {
     return props.value
-      ? <CheckIcon className='h-5 w-5' aria-hidden='true' />
-      : <XMarkIcon className='h-5 w-5' aria-hidden='true' />;
+      ? <CheckIcon className='h-5 w-5 inline' aria-hidden='true' />
+      : <XMarkIcon className='h-5 w-5 inline' aria-hidden='true' />;
   }
 
   if (props.type === DataTypes.date) {

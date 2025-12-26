@@ -14,7 +14,7 @@ const { lang, uuid } = Astro.params;
 const { organization } = await OrganizationsService.getOne(uuid);
 const excludes = config.result_filtering?.organizations?.exclude || [];
 
-export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.organizations);
+export const getStaticPaths = async () => await getDetailPagePaths(ModelNames.organizations);
 ---
 
 <Layout footer t={t} title={organization.name}>

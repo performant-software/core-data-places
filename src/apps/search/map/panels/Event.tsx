@@ -49,7 +49,7 @@ const Event = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((event) => {
-    if (event && config.detail_pages && config.detail_pages.includes('events')) {
+    if (event && config.detail_pages?.models?.includes('events')) {
       return `/${lang}/events/${event.uuid}`;
     }
   }, [config, lang]);

@@ -16,6 +16,11 @@ export const fetchI18ns = async () => {
   return response.data?.i18nConnection?.edges?.map((item) => item?.node);
 };
 
+export const fetchNavbar = async (language: string) => {
+  const response = await client.queries.navbar({ relativePath: `${language}.json` });
+  return response.data?.navbar;
+}
+
 export const fetchPage = async (locale: string, slug: string) => {
   const response = await fetchOne(locale, slug, client.queries.pages);
   return response.data?.pages;

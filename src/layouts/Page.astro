@@ -1,6 +1,7 @@
 ---
 import Banner from '@apps/pages/sections/Banner.astro';
 import Carousel from '@apps/pages/sections/Carousel';
+import FeatureQuote from '@apps/pages/sections/FeatureQuote.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Images from '@apps/pages/sections/Images.astro';
 import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
@@ -26,6 +27,7 @@ const SectionTypes = {
   freeText: 'PagesSectionsFree_text',
   images: 'PagesSectionsImages',
   multiColumn: 'PagesSectionsMulti_column',
+  featureQuote: 'PagesSectionsFeature_quote',
   spacer: 'PagesSectionsSpacer',
   tabs: 'PagesSectionsTabs',
   textImage: 'PagesSectionsText_image',
@@ -128,6 +130,11 @@ const SectionTypes = {
             tabs={section.tabs}
           />
         </Container>
+      )}
+      { section.__typename === SectionTypes.featureQuote && ( 
+        <FeatureQuote
+          {...section}
+        />
       )}
     </section>
   ))}

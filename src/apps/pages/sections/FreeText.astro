@@ -1,18 +1,14 @@
 ---
-import { TinaMarkdown } from 'tinacms/dist/rich-text';
-import Spacer from '@components/Spacer';
+import RichText from '@apps/pages/sections/RichText.astro';
 
 const { content } = Astro.props;
-const components = {
-  spacer: Spacer
-}
+
 ---
 
 <article
   class='prose prose-lg py-8 max-w-none font-light'
 >
-  <TinaMarkdown
+  <RichText
     content={content}
-    components={components}
   />
 </article>

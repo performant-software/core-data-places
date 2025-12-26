@@ -67,7 +67,19 @@ export interface Configuration {
     project_ids: string[]
   };
 
-  detail_pages?: Array<string>;
+  detail_pages?: {
+    models: Array<string>,
+    relationship_fields? : Array<{
+      events?: string[],
+      instances?: string[],
+      items?: string[],
+      organizations?: string[],
+      people?: string[],
+      places?: string[],
+      taxonomies?: string[],
+      works?: string[]
+    }>
+  };
 
   i18n: {
     default_locale: string,
