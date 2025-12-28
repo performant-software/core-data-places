@@ -1,26 +1,23 @@
 ---
 import _ from 'underscore';
-import MultiColumn from './MultiColumn.astro';
 import TabsComponent from './Tabs';
+import PageBody from '@components/PageBody.astro';
 
 const {
-  tabs
+  tabs,
+  raise,
+  activeBg,
+  textStyle,
+  invertText,
+  inactiveBg
 } = Astro.props;
 ---
 
-<TabsComponent tabs={tabs} client:only='react'>
+<TabsComponent tabs={tabs} raise={raise} activeBg={activeBg} textStyle={textStyle} invertText={invertText} inactiveBg={inactiveBg} client:only='react'>
   {
     _.map(tabs, (tab) => (
       <div class='tab-content py-6 flex flex-col' id={`${tab.label}--content`}>
-        {
-          _.map(tab.content, (section) => ( 
-            <MultiColumn
-              textAlignment={section.text_alignment}
-              content={section.columns}
-              gap={section.gap}
-            />
-          ))
-        }
+        <PageBody sections={tab.content} />
       </div>
     ))
   }

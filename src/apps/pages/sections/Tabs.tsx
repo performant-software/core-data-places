@@ -1,16 +1,27 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
-import React, { useMemo } from 'react';
+import React, { Fragment, useMemo } from 'react';
 import _ from 'underscore';
 import parse from 'html-react-parser';
+import clsx from 'clsx';
+import { toBackgroundClass } from '@root/src/utils/pageBuilder';
 
 interface TabsProps {
   tabs: any[];
   children: any[];
+  raise?: boolean;
+  activeBg?: string;
+  textStyle?: string;
+  invertText?: boolean;
+  inactiveBg?: string;
 }
 
 
 const Tabs = (props: TabsProps) => {
-  const { tabs, children } = props;
+  const { tabs, children, raise, activeBg, textStyle, invertText, inactiveBg } = props;
+
+  const activeBgClass = useMemo(() => activeBg && toBackgroundClass(activeBg), [activeBg]);
+
+  const inactiveBgClass = useMemo(() => inactiveBg && toBackgroundClass(inactiveBg), [inactiveBg]);
 
   const parsedChildren = useMemo(() => {
     return React.Children.map(children, (child) => (
@@ -19,16 +30,34 @@ const Tabs = (props: TabsProps) => {
   }, [props.children]);
 
   return (
-    <TabGroup>
-      <div className='border-b border-gray-200'>
-        <TabList aria-label='Tabs' className='-mb-px flex'>
+    <TabGroup className={clsx({ '-mt-[60px]': raise })}>
+      <div className={clsx(
+        'px-6 sm:px-12 md:px-16 lg:px-32 2xl:mx-auto max-w-(--breakpoint-2xl)',
+        { 'border-b border-gray-200': !raise }
+      )}>
+        <TabList aria-label='Tabs' className='-mb-px flex h-[60px]'>
           {
             _.map(tabs, (tab) => ( 
               <Tab
-                className='whitespace-nowrap border-b-2 px-8 py-4 text-sm font-medium border-transparent text-gray-500 data-hover:border-secondary/60 data-hover:text-secondary/60 cursor-pointer data-selected:border-secondary data-selected:text-secondary'
+                as={Fragment}
                 key={tab.label}
               >
-                { tab.label }
+                {({ hover, selected }) => ( 
+                  <button className={clsx(
+                    'whitespace-nowrap px-8 py-4',
+                    { 'border-b-2': !raise },
+                    selected && activeBgClass,
+                    !selected && inactiveBgClass,
+                    (!selected || !activeBgClass) && raise && invertText && 'text-white', //when other open PRs are merged this should be updated to text-text-light or whatever
+                    { 'border-secondary/60 text-secondary/60': hover && !raise },
+                    { 'border-secondary text-secondary': selected && !raise },
+                    { 'cursor-default': selected },
+                    { 'font-serif italic text-xl font-normal': textStyle === 'italic' },
+                    { 'text-sm text-gray-500 uppercase font-medium': textStyle === 'uppercase' }
+                  )}>
+                    { tab.label }
+                  </button>
+                )}
               </Tab>
             ))
           }
