@@ -73,6 +73,19 @@ export const ColorOptionsButton = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
+  label: 'Alternate',
+  value: ColorValues.contentAlternate
+}];
+
+export const ColorOptionsBorder = [{
+  label: 'Secondary',
+  value: ColorValues.secondary
+}];
+
+export const ColorOptionsButton = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
   label: 'Secondary',
   value: ColorValues.secondary
 }, {
