@@ -1,87 +1,24 @@
 ---
-import _ from "underscore";
-import MultiColumn from "./MultiColumn.astro";
-import clsx from "clsx";
+import _ from 'underscore';
+import TabsComponent from './Tabs';
+import PageBody from '@components/PageBody.astro';
 
 const {
-  tabs
+  tabs,
+  raise,
+  activeBg,
+  textStyle,
+  invertText,
+  inactiveBg
 } = Astro.props;
 ---
 
-<div class="border-b border-gray-400">
-  <nav aria-label="Tabs" class="-mb-px flex space-x-8">
-    {
-      _.map(tabs, (tab, idx) => ( 
-        <h2 
-          class={clsx(
-            'tab-label whitespace-nowrap border-b-2 px-1 py-4 font-medium uppercase !font-sans',
-            { 'border-transparent text-gray-500 hover:border-secondary/60 hover:text-secondary/60 cursor-pointer': idx !== 0 },
-            { 'border-secondary text-secondary': idx === 0 }
-          )}
-          id={tab.label}
-        >
-          { tab.label }
-        </h2>
-      ))
-    }
-  </nav>
-</div>
-
-{
-  _.map(tabs, (tab, idx) => ( 
-    <div class={clsx(
-      'tab-content py-6 flex-col',
-      { 'flex': idx === 0 },
-      { 'hidden': idx !== 0 }
-    )} id={`${tab.label}--content`} >
-      {
-        _.map(tab.content, (section) => ( 
-          <MultiColumn
-            textAlignment={section.text_alignment}
-            content={section.columns}
-            gap={section.gap}
-          />
-        ))
-      }
-    </div>
-  ))
-}
-
-<script is:inline>
-  window.document.addEventListener('DOMContentLoaded', () => {
-    const tabLabels = document.querySelectorAll('.tab-label');
-    for (const tab of tabLabels) {
-      console.log(tab);
-      tab.addEventListener('click', () => {
-        const tabContent = document.querySelectorAll('.tab-content');
-        tab.classList.remove('border-transparent');
-        tab.classList.remove('text-gray-500');
-        tab.classList.remove('hover:border-secondary/60');
-        tab.classList.remove('hover:text-secondary/60');
-        tab.classList.remove('cursor-pointer');
-        tab.classList.add('border-secondary');
-        tab.classList.add('text-secondary');
-        for (const otherTab of tabLabels) {
-          if (otherTab.id !== tab.id) {
-            otherTab.classList.add('border-transparent');
-            otherTab.classList.add('text-gray-500');
-            otherTab.classList.add('hover:border-secondary/60');
-            otherTab.classList.add('hover:text-secondary/60');
-            otherTab.classList.add('cursor-pointer');
-            otherTab.classList.remove('border-secondary');
-            otherTab.classList.remove('text-secondary');
-          }
-        }
-        for (const content of tabContent) {
-          if (content.id?.slice(0, -9) === tab.id) {
-            content.classList.remove('hidden');
-            content.classList.add('flex');
-          } else {
-            content.classList.remove('flex');
-            content.classList.add('hidden');
-          }
-        }
-      })
-    }
-  })
-</script>
+<TabsComponent tabs={tabs} raise={raise} activeBg={activeBg} textStyle={textStyle} invertText={invertText} inactiveBg={inactiveBg} client:only='react'>
+  {
+    _.map(tabs, (tab) => (
+      <div class='tab-content py-6 flex flex-col' id={`${tab.label}--content`}>
+        <PageBody sections={tab.content} />
+      </div>
+    ))
+  }
+</TabsComponent>

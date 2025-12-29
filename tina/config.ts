@@ -3,6 +3,7 @@ import _ from 'underscore';
 import config from '../public/config.json';
 import Branding from './content/branding';
 import I18n from './content/i18n';
+import Navbar from './content/navbar';
 import PagesCollection from './content/pages';
 import PathsCollection from './content/paths';
 import PostsCollection from './content/posts';
@@ -47,6 +48,7 @@ export default defineConfig({
         ? PostsCollection
         : undefined,
       I18n,
+      Navbar,
       Settings
     ])
   }

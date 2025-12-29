@@ -1,16 +1,7 @@
 ---
-import Banner from '@apps/pages/sections/Banner.astro';
-import Carousel from '@apps/pages/sections/Carousel';
-import FeatureQuote from '@apps/pages/sections/FeatureQuote.astro';
-import FreeText from '@apps/pages/sections/FreeText.astro';
-import Images from '@apps/pages/sections/Images.astro';
-import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
-import Spacer from '@apps/pages/sections/Spacer.astro';
-import Tabs from '@apps/pages/sections/Tabs.astro';
-import TextImage from '@apps/pages/sections/TextImage';
 import { getTranslations } from '@backend/i18n';
 import { fetchPage } from '@backend/tina';
-import Container from '@components/Container.astro';
+import PageBody from '@components/PageBody.astro';
 import Layout from '@layouts/Layout.astro';
 import clsx from 'clsx';
 import _ from 'underscore';
@@ -23,18 +14,6 @@ const page = await fetchPage(locale, slug);
 
 const { t } = await getTranslations(Astro.currentLocale);
 
-const SectionTypes = {
-  banner: 'PagesSectionsBanner',
-  carousel: 'PagesSectionsCarousel',
-  freeText: 'PagesSectionsFree_text',
-  images: 'PagesSectionsImages',
-  multiColumn: 'PagesSectionsMulti_column',
-  featureQuote: 'PagesSectionsFeature_quote',
-  spacer: 'PagesSectionsSpacer',
-  tabs: 'PagesSectionsTabs',
-  textImage: 'PagesSectionsText_image',
-};
-
 ---
 <Layout
   footer
@@ -44,109 +23,5 @@ const SectionTypes = {
   title={page?.title}
   transparent={page?.transparent}
 >
-  { _.map(page?.sections, (section, idx) => (
-    <section
-      class={clsx(
-        'page-builder',
-        'relative',
-        toBackgroundClass(section.background),
-        section.text,
-        { '-mt-20': page.transparent && idx === 0 }
-      )}
-    >
-      { section.__typename === SectionTypes.carousel && (
-        <Container>
-          <Carousel
-            items={section.items}
-            client:only='react'
-          />
-        </Container>
-      )}
-      { section.__typename === SectionTypes.freeText && (
-        <Container>
-          <FreeText
-            content={section.body}
-          />
-        </Container>
-      )}
-      { section.__typename === SectionTypes.images && (
-        <Container>
-          <Images
-            items={section.items}
-            title={section.title}
-          />
-        </Container>
-      )}
-      { section.__typename === SectionTypes.spacer && (
-        <Container>
-          <Spacer
-            color={section.color}
-            size={section.size}
-          />
-        </Container>
-      )}
-      { section.__typename === SectionTypes.textImage && (
-        <Container>
-          <TextImage
-            backgroundPosition={section.background_position}
-            buttonText={section.button_text}
-            citation={section.citation}
-            citationLink={section.citation_link}
-            description={section.description}
-            image={section.image}
-            imageAlt={section.image_alt}
-            textPosition={section.text_position}
-            title={section.title}
-            url={section.url}
-            client:load
-          />
-        </Container>
-      )}
-      { section.__typename === SectionTypes.multiColumn && (
-        <Container>
-          <MultiColumn
-            buttonText={section.button_text}
-            textAlignment={section.text_alignment}
-            title={section.title}
-            url={section.url}
-            content={section.columns}
-            gap={section.gap}
-          />
-        </Container>
-      )}
-      { section.__typename === SectionTypes.banner && (
-        <Banner
-          background={section.background}
-          buttonText={section.button_text}
-          clip={section.clip}
-          content={section.content}
-          darken={section.darken}
-          darkText={section.dark_text}
-          fullWidth={section.full_width}
-          fullWidthNavigation={page.full_width_links}
-          height={section.height}
-          image={section.background_image}
-          imageAlt={section.background_image_alt}
-          navigation={section.hero && page.hero_links}
-          search={section.search}
-          subtitle={section.subtitle}
-          textAlignment={section.text_alignment}
-          title={section.title}
-          url={section.url}
-        />
-      )}
-      { section.__typename === SectionTypes.tabs && ( 
-        <Container>
-          <Tabs
-            tabs={section.tabs}
-          />
-        </Container>
-      )}
-      { section.__typename === SectionTypes.featureQuote && ( 
-        <FeatureQuote
-          {...section}
-        />
-      )}
-    </section>
-  ))}
+  <PageBody sections={page?.sections} />
 </Layout>
