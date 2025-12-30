@@ -73,19 +73,6 @@ export const ColorOptionsButton = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
-  label: 'Alternate',
-  value: ColorValues.contentAlternate
-}];
-
-export const ColorOptionsBorder = [{
-  label: 'Secondary',
-  value: ColorValues.secondary
-}];
-
-export const ColorOptionsButton = [{
-  label: 'Primary',
-  value: ColorValues.primary
-}, {
   label: 'Secondary',
   value: ColorValues.secondary
 }, {
@@ -217,7 +204,12 @@ const staticSectionTemplates: Template<false>[] = [{
     name: 'color',
     label: 'Color',
     type: 'string',
-    options: ColorOptions
+    options: ColorOptionsBorder
+  }, {
+    name: 'background',
+    label: 'Background Color',
+    type: 'string',
+    options: ColorOptionsBg
   }]
 }, {
   name: 'multi_column',
@@ -262,19 +254,32 @@ const staticSectionTemplates: Template<false>[] = [{
       value: 'small'
     }]
   }, {
+    name: 'background',
+    label: 'Background Color',
+    type: 'string',
+    options: ColorOptionsBg
+  }, {
+    name: 'text',
+    label: 'Text Color',
+    type: 'string',
+    options: ColorOptionsText
+  }, {
     name: 'columns',
     label: 'Columns',
     type: 'object',
     list: true,
     ui: {
       min: 1,
-      max: 4
+      max: 6
     },
     fields: [{
       name: 'width',
       label: 'Column width (percent)',
       type: 'string',
       options: [{
+        label: '16.5%',
+        value: 'col-span-2'
+      }, {
         label: '25%',
         value: 'col-span-3'
       }, {
@@ -293,6 +298,43 @@ const staticSectionTemplates: Template<false>[] = [{
         label: '100%',
         value: 'col-span-12'
       }]
+    }, {
+      name: 'justify',
+      label: 'Vertical Alignment',
+      type: 'string',
+      options: [{
+        label: 'Top (default)',
+        value: 'justify-start'
+      }, {
+        label: 'Center',
+        value: 'justify-center'
+      }, {
+        label: 'Bottom',
+        value: 'justify-end'
+      }]
+    }, {
+      name: 'align',
+      label: 'Horizontal Alignment',
+      type: 'string',
+      options: [{
+        label: 'Left (default)',
+        value: ''
+      }, {
+        label: 'Center',
+        value: 'items-center text-center'
+      }, {
+        label: 'Bottom',
+        value: 'justify-end'
+      }]         
+    }, {
+      name: 'border',
+      label: 'Border Color (leave blank for none)',
+      type: 'string',
+      options: ColorOptionsBorder
+    }, {
+      name: 'rounded',
+      label: 'Rounded Corners?',
+      type: 'boolean'
     }, {
       name: 'content',
       label: 'Content',
@@ -314,6 +356,10 @@ const staticSectionTemplates: Template<false>[] = [{
           name: 'image',
           label: 'Image',
           type: 'image'
+        }, {
+          name: 'rounded',
+          label: 'Rounded Corners?',
+          type: 'boolean'
         }]
       }, {
         name: 'basic',
@@ -408,7 +454,7 @@ const staticSectionTemplates: Template<false>[] = [{
           name: 'border_color',
           label: 'Border Color',
           type: 'string',
-          options: ColorOptionsBg
+          options: ColorOptionsBorder
         }, {
           name: 'icon',
           label: 'Icon',
@@ -515,7 +561,7 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Background Color',
     description: 'Will display if no image is provided.',
     type: 'string',
-    options: ColorOptions
+    options: ColorOptionsBg
   }, {
     name: 'darken',
     label: 'Darken Background?',
@@ -648,6 +694,10 @@ const Pages: Collection = {
     label: 'Navigation Menu',
     type: 'boolean'
   }, {
+    name: 'transparent',
+    label: 'Make top navbar transparent?',
+    type: 'boolean'
+  },{
     name: 'sections',
     label: 'Sections',
     type: 'object',
