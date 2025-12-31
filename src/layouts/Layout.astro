@@ -1,5 +1,5 @@
 ---
-import { fetchBranding } from '@backend/tina';
+import { fetchBranding, fetchNavbar } from '@backend/tina';
 import NotificationPanel from '@components/NotificationPanel';
 import config from '@config';
 import { getLanguageFromUrl } from '@i18n/utils';
@@ -46,76 +46,96 @@ const pages = await getPages(currentLocale);
 
 const { footer: includeFooter, fullscreen, name, title, t, tab } = Astro.props;
 
-const NavKeys = {
-  gallery: 'gallery',
-  search: 'search',
-  pages: 'pages',
-  paths: 'paths',
-  posts: 'posts'
-};
+const getNavItems = async () => {
+  const tinaNavbar = await fetchNavbar(currentLocale);
 
-// Build the list of options for the "Explore" dropdown
-const searchOptions = _.map(config.search, (search) => ({
-  active: Astro.url.pathname.includes(`/${NavKeys.search}/${search.name}`),
-  name: search.name,
-  label: t(`index_${search.name}`),
-  href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.search}/${search.name}`)
-}));
-
-// Add the "Saved Searches" option in "server" mode
-if (!STATIC_BUILD) {
-  searchOptions.push({
-    active: Astro.url.pathname.includes('/sessions/search'),
-    name: 'search_session',
-    label: t('savedSearches'),
-    href: getRelativeLocaleUrl(currentLocale, '/sessions/search')
-  });
-}
-
-const NavConfig = {
-  [NavKeys.search]: {
-    label: t('explore'),
-    options: searchOptions
-  },
-  [NavKeys.pages]: {
-    label: t('pages'),
-    options: _.map(pages, (page) => ({
-      active: Astro.url.pathname.includes(`/${NavKeys.pages}/${page._sys.filename}`),
-      name: page.id,
-      label: page.title,
-      href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.pages}/${page._sys.filename}`)
+  if (tinaNavbar) {
+    return tinaNavbar.items.map(item => ({
+      ...item,
+      active: item.href
+        ? Astro.url.pathname.includes(item.href)
+        : false,
+      options: item.options?.map(child => ({
+          ...child,
+          active: Astro.url.pathname.includes(child.href)
+        }))
     }))
-  },
-  [NavKeys.paths]: {
-    active: tab === NavKeys.paths,
-    label: t('paths'),
-    href: getRelativeLocaleUrl(currentLocale, NavKeys.paths)
-  },
-  [NavKeys.posts]: {
-    active: tab === NavKeys.posts,
-    label: t('posts'),
-    href: getRelativeLocaleUrl(currentLocale, NavKeys.posts)
-  },
-  [NavKeys.gallery]: {
-    active: tab === NavKeys.gallery,
-    label: t('gallery'),
-    href: getRelativeLocaleUrl(currentLocale, NavKeys.gallery)
   }
-};
 
-const NavItems = [
-  NavConfig.search,
-  ..._.map(config.content?.collections, (key) => NavConfig[key?.toLowerCase()]),
-];
+  const NavKeys = {
+    gallery: 'gallery',
+    search: 'search',
+    pages: 'pages',
+    paths: 'paths',
+    posts: 'posts'
+  };
 
-if (!_.isEmpty(NavConfig.pages.options)) {
-  NavItems.push(NavConfig.pages);
+  // Build the list of options for the "Explore" dropdown
+  const searchOptions = _.map(config.search, (search) => ({
+    active: Astro.url.pathname.includes(`/${NavKeys.search}/${search.name}`),
+    name: search.name,
+    label: t(`index_${search.name}`),
+    href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.search}/${search.name}`)
+  }));
+
+  // Add the "Saved Searches" option in "server" mode
+  if (!STATIC_BUILD) {
+    searchOptions.push({
+      active: Astro.url.pathname.includes('/sessions/search'),
+      name: 'search_session',
+      label: t('savedSearches'),
+      href: getRelativeLocaleUrl(currentLocale, '/sessions/search')
+    });
+  }
+
+  const NavConfig = {
+    [NavKeys.search]: {
+      label: t('explore'),
+      options: searchOptions
+    },
+    [NavKeys.pages]: {
+      label: t('pages'),
+      options: _.map(pages, (page) => ({
+        active: Astro.url.pathname.includes(`/${NavKeys.pages}/${page._sys.filename}`),
+        name: page.id,
+        label: page.title,
+        href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.pages}/${page._sys.filename}`)
+      }))
+    },
+    [NavKeys.paths]: {
+      active: tab === NavKeys.paths,
+      label: t('paths'),
+      href: getRelativeLocaleUrl(currentLocale, NavKeys.paths)
+    },
+    [NavKeys.posts]: {
+      active: tab === NavKeys.posts,
+      label: t('posts'),
+      href: getRelativeLocaleUrl(currentLocale, NavKeys.posts)
+    },
+    [NavKeys.gallery]: {
+      active: tab === NavKeys.gallery,
+      label: t('gallery'),
+      href: getRelativeLocaleUrl(currentLocale, NavKeys.gallery)
+    }
+  };
+
+  const result = [
+    NavConfig.search,
+    ..._.map(config.content?.collections, (key) => NavConfig[key?.toLowerCase()]),
+  ];
+
+  if (!_.isEmpty(NavConfig.pages.options)) {
+    result.push(NavConfig.pages);
+  }
+
+  if (config.gallery) {
+    result.push(NavConfig.gallery);
+  }
+
+  return result;
 }
 
-if (config.gallery) {
-  NavItems.push(NavConfig.gallery);
-}
-
+const navItems = await getNavItems();
 ---
 
 <!DOCTYPE html>
@@ -150,7 +170,7 @@ if (config.gallery) {
       fullscreen={fullscreen}
       image={header?.logo}
       imageAlt={branding.title}
-      items={NavItems}
+      items={navItems}
       pages={pages}
       title={header?.hide_title ? undefined : branding.title}
     />
@@ -165,7 +185,7 @@ if (config.gallery) {
     { includeFooter && (
       <Footer
         accessibilityUrl={footer?.accessibility_url}
-        items={NavItems}
+        items={navItems}
         login={footer?.allow_login && !STATIC_BUILD}
         logos={footer?.logos}
         privacyUrl={footer?.privacy_url}

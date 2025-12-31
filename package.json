@@ -54,6 +54,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "html-react-parser": "^5.2.11",
     "js-base64": "^3.7.7",
     "module-error": "^1.0.2",
     "mongodb": "^6.9.0",
