@@ -74,6 +74,7 @@ const Header = (props: Props) => {
           value={query}
         />
         <Button
+          aria-label={t('filters')}
           className='relative'
           disabled={!allowSearchChange}
           icon

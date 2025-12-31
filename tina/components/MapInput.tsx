@@ -1,4 +1,4 @@
-import config from '@config';
+import config from '@config' with { type: 'json' };
 import { buildMapData } from '@utils/visualization';
 import { useCallback } from 'react';
 import { wrapFieldsWithMeta } from 'tinacms';

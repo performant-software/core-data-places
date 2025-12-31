@@ -1,4 +1,4 @@
-import config from '@config';
+import config from '@config' with { type: 'json' };
 
 const BASE_URL = import.meta.env.PUBLIC_BASE_URL;
 
@@ -19,8 +19,7 @@ export const truncateManifestId = (manifestId: string) => {
   const url = new URL(manifestId);
   url.search = ''
   return url.href;
-}
-
+};
 
 /**
  * Gets the list of manifests for the gallery.
@@ -58,7 +57,7 @@ export const getManifestLabel = (item: any, locale: string) => {
   }
 
   return item.id;
-}
+};
 
 /**
  * Generates the URL for a manifest when running in static mode.

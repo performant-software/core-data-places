@@ -6,7 +6,7 @@ import {
 } from 'react';
 import _ from 'underscore';
 import type { SearchConfig } from '@types';
-import config from '@config';
+import config from '@config' with { type: 'json' };
 
 interface SearchContextType {
   searchConfig: SearchConfig;

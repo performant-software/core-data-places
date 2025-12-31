@@ -1,5 +1,4 @@
-import config from '@config';
-import { FuzzyDate as FuzzyDateUtils, ObjectJs as ObjectUtils } from '@performant-software/shared-components';
+import config from '@config' with { type: 'json' };
 import { includeTimeline } from '@root/tina/utils/visualizations';
 import { buildTimelineData } from '@utils/visualization';
 import { useCallback, useState } from 'react';

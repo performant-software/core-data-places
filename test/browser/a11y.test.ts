@@ -4,7 +4,6 @@ import _config from '@config' with { type: 'json' };
 import { expect, Page, test } from '@playwright/test';
 import { getService } from './helpers';
 
-const baseUrl = process.env.A11Y_HOST;
 const isStaticBuild = process.env.STATIC_BUILD === 'true';
 
 const locale = _config.i18n.default_locale;
@@ -12,26 +11,34 @@ const locale = _config.i18n.default_locale;
 const includePosts = _config.content?.collections?.includes('posts');
 const includePaths = _config.content?.collections?.includes('paths');
 
+const SEARCH_TYPE_MAP = 'map';
+
 // We'll check only a few records for detail page accessibility
 const DETAIL_PAGE_LIMIT = 1;
+const DEFAULT_SEARCH_TYPE = SEARCH_TYPE_MAP;
 
 test.describe('Accessibility testing', () => {
-  test.skip(!baseUrl);
-
   // Home page
-  test('Home page should have no violations', async ({ page }) => checkPage(page));
+  test('Home page should have no violations', async ({ page }) => {
+    await page.goto('');
+    await checkPage(page);
+  });
 
   // Posts
   test.describe('Posts', () => {
     test.skip(!includePosts, 'Posts content not included in this site');
 
-    test('Posts page should have no violations', async ({ page }) => checkPage(page, 'posts'));
+    test('Posts page should have no violations', async ({ page }) => {
+      await page.goto('posts');
+      await checkPage(page);
+    });
 
     test('Post detail pages should have no violations', async ({ page }) => {
       const posts = await fetchPosts();
 
       for (const post of posts) {
-        await checkPage(page, `posts/${post._sys.filename}`);
+        await page.goto(`posts/${post._sys.filename}`);
+        await checkPage(page);
       }
     });
   });
@@ -40,13 +47,17 @@ test.describe('Accessibility testing', () => {
   test.describe('Paths', () => {
     test.skip(!includePaths, 'Path content not included in this site');
 
-    test('Paths page should have no violations', async ({ page }) => checkPage(page, 'paths'));
+    test('Paths page should have no violations', async ({ page }) => {
+      await page.goto('paths');
+      await checkPage(page);
+    });
 
     test('Path detail pages should have no violations', async ({ page }) => {
       const paths = await fetchPaths();
 
       for (const path of paths) {
-        await checkPage(page, `posts/${path._sys.filename}`);
+        await page.goto(`posts/${path._sys.filename}`);
+        await checkPage(page);
       }
     });
   });
@@ -58,7 +69,8 @@ test.describe('Accessibility testing', () => {
 
       for (const page of pages) {
         if (!page.home_page) {
-          await checkPage(p, `pages/${page._sys.filename}`);
+          await p.goto(`pages/${page._sys.filename}`);
+          await checkPage(p);
         }
       }
     });
@@ -69,9 +81,57 @@ test.describe('Accessibility testing', () => {
     const searches = _config.search || [];
 
     searches.forEach((search) => {
-      test.describe(`${search.name} should have no violations`, () => {
-        test('initial page load', async ({ page }) => checkPage(page, `search/${search.name}`));
-        // TODO: Add more tests here for detail panels, filters, etc
+      const { name, type = DEFAULT_SEARCH_TYPE } = search;
+
+      test.describe(`${name} search`, () => {
+        // Initial page load
+        test('initial page load should have no violations', async ({ page }) => {
+          await page.goto(`search/${name}`);
+          await checkPage(page);
+        });
+
+        const isMapSearch = type === SEARCH_TYPE_MAP;
+
+        // Table view
+        test('table view should have no violations', async ({ page }) => {
+          test.skip(!isMapSearch, 'Table view only in map search.');
+
+          await page.goto(`search/${name}`);
+
+          await page
+            .getByRole('button', { name: 'Table' })
+            .click();
+
+          await checkPage(page);
+        });
+
+        // Filters panel
+        test('filters panel should have no violations', async ({ page }) => {
+          test.skip(!isMapSearch, 'Filters only in map search.');
+
+          await page.goto(`search/${name}`);
+
+          await page
+            .getByRole('button', { name: 'Filters' })
+            .click();
+
+          await checkPage(page);
+        });
+
+        // Detail panel
+        test('detail panel should have no violations', async ({ page }) => {
+          test.skip(!isMapSearch, 'Detail panel only in map search.');
+
+          await page.goto(`search/${name}`);
+
+          await page
+            .getByRole('button')
+            .filter({ has: page.locator('.ais-Highlight') })
+            .first()
+            .click();
+
+          await checkPage(page);
+        });
       });
     });
   });
@@ -80,18 +140,32 @@ test.describe('Accessibility testing', () => {
   test.describe('Sessions', () => {
     test.skip(isStaticBuild, 'Sessions not available in static mode');
 
-    test('Sessions should have no violations', async ({ page }) => checkPage(page, 'sessions/search'));
-
-    // TODO: Add more tests
+    test('Sessions should have no violations', async ({ page }) => {
+      await page.goto('sessions/search');
+      await checkPage(page);
+    });
   });
 
   // Gallery
   test.describe('Gallery', () => {
     test.skip(!_config.gallery, 'Gallery URL not provided.');
 
-    test('Gallery should have no violations', async ({ page }) => checkPage(page, 'gallery'));
+    test('Gallery should have no violations', async ({ page }) => {
+      await page.goto('gallery');
+      await checkPage(page);
+    });
 
-    // TODO: Add more tests
+    test('Gallery item should have no violations', async ({ page }) => {
+      await page.goto('gallery');
+
+      await page
+        .getByRole('button')
+        .filter({ has: page.locator('img') })
+        .first()
+        .click();
+
+      await checkPage(page);
+    });
   });
 
   // Detail pages
@@ -109,7 +183,8 @@ test.describe('Accessibility testing', () => {
         const records = response[name];
 
         for (const record of records) {
-          await checkPage(page, `${name}/${record.uuid}`);
+          await page.goto(`${name}/${record.uuid}`);
+          await  checkPage(page);
         }
       });
     });
@@ -120,12 +195,9 @@ test.describe('Accessibility testing', () => {
  * Checks the passed path for accessibility violations.
  *
  * @param page
- * @param path
+ * @param message
  */
-const checkPage = async (page: Page, path: string = '') => {
-  const url = `${baseUrl}/${locale}/${path}`;
-  await page.goto(url);
-
+const checkPage = async (page: Page, message: string = '') => {
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-  expect(accessibilityScanResults.violations, path).toEqual([]);
+  expect(accessibilityScanResults.violations, message || page.url()).toEqual([]);
 };
