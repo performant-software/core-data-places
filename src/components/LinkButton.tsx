@@ -16,6 +16,8 @@ const LinkButton = ({ className, content, href, ...props }: Props) => (
   <a
     className={clsx(
       'link-button inline-flex mt-4 rounded-md px-6 py-3 hover:bg-opacity-95 cursor-pointer flex-row gap-4 items-center no-underline',
+      'hover:bg-[linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15))] transition duration-300',
+      { 'hover:underline hover:underline-offset-[6px] hover:decoration-2': !props.color && !props.border },
       toBackgroundClass(props.color),
       toTextClass(props.text),
       toBorderClass(props.border),
