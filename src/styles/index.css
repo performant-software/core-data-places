@@ -114,7 +114,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-content) !important;
 }
 
-.bg-layout h1, .bg-layout h2, .bg-layout h3, .bg-layout h4, .bg-layout h6 {
+.bg-layout .multicolumn h1, .bg-layout .multicolumn h2, .bg-layout .multicolumn h3, .bg-layout .multicolumn h4, .bg-layout .multicolumn h6 {
   color: var(--color-content) !important;
 }
 
