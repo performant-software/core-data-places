@@ -31,6 +31,10 @@ const { header, footer } = branding;
 
 const { font_header: fontHeader, font_body: fontBody } = branding;
 
+const heroHeaderSize = branding.header_size || '52px';
+const pageHeaderSize = branding.page_header_size || '48px';
+const headerFontWeight = branding.header_font_weight || '400';
+
 //dark and light mode default text color
 const content = branding.content_color || 'var(--color-black)';
 const contentInverse = branding.content_inverse || 'var(--color-white)';
@@ -167,6 +171,9 @@ const navItems = await getNavItems();
       define:vars={{
         customFontHeader: fontHeader,
         customFontBody: fontBody,
+        customHeroHeaderSize: heroHeaderSize,
+        customPageHeaderSize: pageHeaderSize,
+        customHeaderFontWeight: headerFontWeight,
         customLayout: colorLayout,
         customLayoutAlternate: colorLayoutAlternate,
         customColorPrimary: colorPrimary,

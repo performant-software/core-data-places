@@ -8,6 +8,9 @@ const Fonts = [{
   label: 'Baskervville',
   value: 'Baskervville'
 }, {
+  label: 'Crimson Text SemiBold',
+  value: 'Crimson Text SemiBold'
+}, {
   label: 'DM Sans',
   value: 'DM Sans'
 }, {
@@ -20,6 +23,36 @@ const Fonts = [{
   label: 'Open Sans',
   value: 'Open Sans'
 }];
+
+const HomeHeaderSizeOptions = [{
+  label: 'Default (52px)',
+  value: '52px'
+}, {
+  label: 'Large (64px)',
+  value: '64px'
+}, {
+  label: 'Extra Large (74px)',
+  value: '74px'
+}];
+
+const PageHeaderSizeOptions = [{
+  label: 'Default(48px)',
+  value: '48px'
+}, {
+  label: 'Large (64px)',
+  value: '64px'
+}];
+
+const HeaderFontWeightOptions = [{
+  label: 'Default (normal)',
+  value: '400'
+}, {
+  label: 'Semi-bold',
+  value: '600'
+}, {
+  label: 'Bold',
+  value: '700'
+}]
 
 const Branding: Collection = {
   name: 'branding',
@@ -35,6 +68,21 @@ const Branding: Collection = {
     label: 'Header Font',
     type: 'string',
     options: Fonts
+  }, {
+    name: 'header_size',
+    label: 'Home Page Hero Header Size',
+    type: 'string',
+    options: HomeHeaderSizeOptions
+  }, {
+    name: 'page_header_size',
+    label: 'Content Page Hero Header Size',
+    type: 'string',
+    options: PageHeaderSizeOptions
+  }, {
+    name: 'header_font_weight',
+    label: 'Header Font Weight',
+    type: 'string',
+    options: HeaderFontWeightOptions
   }, {
     name: 'font_body',
     label: 'Body Font',

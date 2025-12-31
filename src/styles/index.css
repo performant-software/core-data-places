@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Baskervville+SC:wght@400..700&family=Baskervville:ital,wght@0,400..700;1,400..700&display=swap&family=Afacad:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baskervville+SC:wght@400..700&family=Baskervville:ital,wght@0,400..700;1,400..700&display=swap&family=Afacad:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Crimson+Text+SemiBold:ital,wght@0,600&display=swap');
 
 @import 'tailwindcss';
 @import '@performant-software/core-data/tailwind.css';
@@ -34,8 +34,8 @@
   --color-primary: var(--customColorPrimary, var(--color-default-primary));
   --color-secondary: var(--customColorSecondary, var(--color-default-secondary));
   --color-tertiary: var(--customColorTertiary, var(--color-black));
-  --color-layout: var(--customColorLayout, var(--color-white));
-  --color-layout-alt: var(--customColorLayoutAlternate, var(--color-netural-light));
+  --color-layout: var(--customLayout, var(--color-white));
+  --color-layout-alt: var(--customLayoutAlternate, var(--color-netural-light));
   --color-text-primary: var(--customPrimaryContent, var(--color-white));
   --color-text-secondary: var(--customSecondaryContent, var(--color-black));
   --color-text-tertiary: var(--customTertiaryContent, var(--color-white));
@@ -50,6 +50,29 @@
   --font-serif: var(--customFontHeader, Inter);
   --font-body: var(--customFontBody, Inter);
   --font-sans: var(--font-body);
+
+  --Font-Sizes-hero-header-default: 52px;
+  --Font-Sizes-page-header-default: 48px;
+
+  --Font-Sizes-h1: 48px;
+  --Font-Sizes-h2: 36px;
+  --Font-Sizes-h3: 30px;
+  --Font-Sizes-h4: 24px;
+  --Font-Sizes-h5: 24px;
+  --Font-Sizes-h6: 18px;
+  --Font-Sizes-paragraph: 16px;
+  --Font-Sizes-quote-text: 20px;
+  --Font-Sizes-description: 14px;
+  --Font-Sizes-header-tab-text: 20px;
+  --Font-Sizes-CTA-header: 42px;
+  --Font-Sizes-hero-header: var(--customHeroHeaderSize, var(--Font-Sizes-hero-header-default));
+  --Font-Sizes-FairData-xs: 12px;
+  --Font-Sizes-page-header: var(--customPageHeaderSize, var(--Font-Sizes-page-header-default));
+  --Font-Sizes-FairData-sm: 14px;
+  --Font-Sizes-FairData-base: 16px;
+  --Font-Sizes-FairData-lg: 20px;
+
+  --font-weight-header: var(--customHeaderFontWeight, 400);
 }
 
 /*
@@ -72,6 +95,7 @@
  */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-header);
+  font-weight: var(--font-weight-header);
 }
 
 .bg-primary, .fill-primary, .bg-primary div {
@@ -82,69 +106,69 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-secondary);
 }
 
-
-/*
-* Page builder styles
-*/
-
-.page-builder .bg-layout-alt, .page-builder .bg-layout-alt div {
+.bg-layout-alt, .bg-layout-alt div {
   color: var(--color-alt-content);
 }
 
-.page-builder .bg-layout.content-alt, .page-builder .bg-layout.content-alt div {
+.bg-layout-alt h1, .bg-layout-alt h2, .bg-layout-alt h3, .bg-layout-alt h4, .bg-layout-alt h6 {
+  color: var(--color-content) !important;
+}
+
+.bg-layout h1, .bg-layout h2, .bg-layout h3, .bg-layout h4, .bg-layout h6 {
+  color: var(--color-content) !important;
+}
+
+.bg-layout.content-alt, .bg-layout.content-alt div {
   color: var(--color-content-alt);
 }
 
-.page-builder .bg-layout-alt.content-alt, .page-builder .bg-layout-alt.content-alt div {
+.bg-layout-alt.content-alt, .bg-layout-alt.content-alt div {
   color: var(--color-alt-content-alt);
 }
 
-.page-builder .text-text-inverse, .page-builder .text-text-inverse div {
+.text-text-inverse, .text-text-inverse div {
   color: var(--color-text-inverse);
 }
 
-.page-builder .hero-tab.bg-layout {
+.hero-tab.bg-layout {
   color: var(--color-content)
 }
 
-.page-builder h1, .page-builder h2, .page-builder h3, .page-builder h4 {
-  font-weight: 400;
+.prose h1 {
+  font-size: var(--Font-Sizes-h1);
 }
 
-.page-builder .prose h1 {
-  font-variant: small-caps;
-  font-size: 3rem;
-}
-
-.page-builder .prose h1:has(+ h1) {
+.prose h1:has(+ h1) {
   margin-bottom: 0;
 }
 
-.page-builder .prose h2 {
-  font-size: 1.875rem;
+.prose h2 {
+  font-size: var(--Font-Sizes-h2);
 }
 
-.page-builder .prose h3, .page-builder .prose h4 {
-  font-style: italic;
-  font-size: 1.5rem;
+.prose h3 {
+  font-size: var(--Font-Sizes-h3);
 }
 
-.page-builder .prose h4 {
-  color: var(--color-secondary);
-  margin-bottom: 0;
+.prose h4 {
+  font-size: var(--Font-Sizes-h4)
 }
 
-.page-builder .prose h5 {
-  font-size: 1.5rem;
+.prose h5 {
+  font-size: var(--Font-Sizes-h5);
+  color: var(--color-secondary) !important;
 }
 
-.page-builder .prose h6 {
-  font-style: italic;
-  font-size: 1.125rem;
+.prose h6 {
+  font-size: var(--Font-Sizes-h6);
 }
 
-.page-builder .link-button:has(+ .link-button) {
+.link-button:has(+ .link-button) {
   margin-right: 1.5rem;
+}
+
+.link-button.bg-secondary, .link-button.bg-secondary div {
+  color: var(--color-text-secondary) !important;
 }
 
 /*
@@ -159,4 +183,5 @@ h1, h2, h3, h4, h5, h6 {
 */
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
   color: inherit;
+  font-weight: var(--font-weight-header);
 }

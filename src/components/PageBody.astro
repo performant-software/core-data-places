@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import _ from 'underscore';
 import { toBackgroundClass } from '@utils/pageBuilder';
 
-const { sections, transparent } = Astro.props;
+const { sections, transparent, home } = Astro.props;
 
 const SectionTypes = {
   banner: 'Banner',
@@ -107,6 +107,8 @@ const SectionTypes = {
         darken={section.darken}
         fullWidth={section.full_width}
         height={section.height}
+        hero={section.hero}
+        home={home}
         image={section.background_image}
         imageAlt={section.background_image_alt}
         search={section.search}

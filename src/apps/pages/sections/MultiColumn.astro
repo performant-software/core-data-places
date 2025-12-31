@@ -35,7 +35,7 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
   { title && (
     <h2
       class={clsx(
-        'text-4xl font-bold py-8',
+        'py-8',
         { 'flex justify-center': textAlignment === 'center' }
       )}
     >
@@ -70,7 +70,7 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
       )}
     >
       <LinkButton
-        className='bg-primary'
+        color='secondary'
         content={buttonText}
         href={url}
       />
