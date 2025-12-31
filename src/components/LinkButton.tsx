@@ -20,8 +20,9 @@ const LinkButton = ({ className, content, href, ...props }: Props) => (
       'focus:outline-none',
       props.color && 'focus:shadow-[0_1px_2px_0_rgba(0,0,0,0.05),0_0_0_2px_var(--color-layout),0_0_0_4px_var(--color-secondary)]',
       { 'hover:underline hover:underline-offset-[6px] hover:decoration-2': !props.color && !props.border },
+      { 'hover:no-underline': props.color || props.border },
       toBackgroundClass(props.color),
-      toTextClass(props.text),
+      props.text && toTextClass(props.text),
       toBorderClass(props.border),
       className
     )}
