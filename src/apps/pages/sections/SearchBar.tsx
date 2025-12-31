@@ -36,11 +36,11 @@ const SearchBar = (props: SearchBarProps) => {
           value={query}
           onChange={(e: any) => { setQuery(e.target.value); }}
         />
-        <Icon name='search' size={20} className='absolute left-4' />
+        <Icon name='search' size={20} className='absolute left-4 text-gray-400' />
         <button
           type='submit'
           name='submit'
-          className='w-30 h-full bg-secondary rounded-r-md py-4 px-6 flex justify-center items-center font-semibold text-inherit'
+          className='w-30 h-full bg-secondary rounded-r-md py-4 px-6 flex justify-center items-center font-semibold text-inherit hover:bg-[linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15))] transition duration-300'
         >
           {buttonText}
         </button>
