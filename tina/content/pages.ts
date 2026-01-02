@@ -630,6 +630,34 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Button Text',
     type: 'string'
   }]
+}, {
+  name: 'link_banner',
+  label: 'Links Banner',
+  fields: [{
+    name: 'background',
+    label: 'Link Background Color',
+    type: 'string',
+    options: ColorOptionsButton
+  }, {
+    name: 'overlap',
+    label: 'Overlap previous section?',
+    description: 'If selected, the links banner will be positioned at the bottom of the previous section, rather than below it',
+    type: 'boolean'
+  }, {
+    name: 'links',
+    label: 'Links',
+    list: true,
+    type: 'object',
+    fields: [{
+      name: 'label',
+      label: 'Label',
+      type: 'string'
+    }, {
+      name: 'url',
+      label: 'URL',
+      type: 'string'
+    }]
+  }]
 }];
 
 const Pages: Collection = {
