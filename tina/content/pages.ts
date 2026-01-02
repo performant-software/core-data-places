@@ -327,6 +327,11 @@ const staticSectionTemplates: Template<false>[] = [{
         value: 'justify-end'
       }]         
     }, {
+      name: 'background',
+      label: 'Background Color',
+      type: 'string',
+      options: ColorOptionsBg
+    }, {
       name: 'border',
       label: 'Border Color (leave blank for none)',
       type: 'string',
@@ -335,6 +340,11 @@ const staticSectionTemplates: Template<false>[] = [{
       name: 'rounded',
       label: 'Rounded Corners?',
       type: 'boolean'
+    }, {
+      name: 'url',
+      label: 'URL',
+      description: 'If provided, the entire column will be a link to the given URL.',
+      type: 'string'
     }, {
       name: 'content',
       label: 'Content',
