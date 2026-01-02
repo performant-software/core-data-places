@@ -29,7 +29,10 @@ const BlockTypes = {
 )}
 
 { item.__typename.endsWith(BlockTypes.text) && ( 
-  <div class='prose max-w-none px-6 py-4 text-inherit'>
+  <div class={clsx(
+    'prose max-w-none px-6 py-4 text-inherit',
+    item.size
+  )}>
     <RichText content={item.text} />
   </div>
 )}
