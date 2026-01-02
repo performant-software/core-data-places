@@ -418,6 +418,22 @@ const staticSectionTemplates: Template<false>[] = [{
           label: 'Icon',
           type: 'image'
         }]
+      }, {
+        name: 'counter',
+        label: 'Record Counter',
+        fields: [{
+          name: 'count',
+          label: 'Record Count',
+          type: 'number'
+        }, {
+          name: 'type',
+          label: 'Type (defaults to "records")',
+          type: 'string'
+        }, {
+          name: 'description',
+          label: 'Description',
+          type: 'string'
+        }]
       }]
     }]
   }]
