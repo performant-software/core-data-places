@@ -77,6 +77,17 @@ const ColorOptionsText = [{
   value: ColorValues.contentAlternate
 }];
 
+const ColorOptionsButton = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
+  label: 'Secondary',
+  value: ColorValues.secondary
+}, {
+  label: 'Main Background',
+  value: ColorValues.layout
+}]
+
 const ColorOptions = [{
   label: 'Primary',
   value: ColorValues.primary
