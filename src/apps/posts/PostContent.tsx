@@ -36,7 +36,7 @@ const PostContent = (props: PostContentProps) => {
             className='w-full'
           >
             <h1
-              className='text-3xl py-6'
+              className='!text-3xl py-6'
             >
               { props.title }
             </h1>

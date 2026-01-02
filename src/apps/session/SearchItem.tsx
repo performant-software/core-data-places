@@ -50,7 +50,7 @@ const SearchItem = (props: Props) => {
             >
               <div>
                 <h1
-                  className='text-2xl font-bold m-0'
+                  className='!text-2xl font-bold m-0'
                 >
                   { item.name }
                 </h1>
