@@ -3,10 +3,15 @@ import Container from '@components/Container.astro';
 import LinkButton from '@components/LinkButton';
 import config from '@config';
 import NavBar from '@layouts/NavBar.astro';
+import clsx from 'clsx';
 import _ from 'underscore';
+import { toBackgroundClass, toTextClass } from '@utils/pageBuilder';
+import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
 
 const {
   accessibilityUrl,
+  custom,
+  customContent,
   items,
   login,
   logos,
@@ -20,105 +25,161 @@ const year = new Date().getFullYear();
 
 ---
 
-<div
-  class='bg-primary w-full'
->
-  <Container
-    className='flex flex-col pt-8 items-center'
+{ !custom && (
+  <div
+    class='bg-primary w-full'
   >
-    { logos && (
-      <div
-        class={`
-          flex 
-          flex-col 
-          lg:flex-row 
-          gap-12
-          items-center 
-          justify-center 
-          w-full 
-          border-b 
-          border-neutral-500 
-          py-8
-        `}
-      >
-        { _.map(logos, (logo) => (
-          <a
-            href={logo.url || '#'}
-          >
-            <img
-              alt={logo.alt}
-              class='w-full h-[200px] lg:w-[200px] lg:h-[100px] object-contain'
-              src={logo.image}
-            />
-          </a>
-        ))}
-      </div>
-    )}
-    <div
-      class='flex flex-col items-center justify-center w-full'
+    <Container
+      className='flex flex-col pt-8 items-center'
     >
-      <h1
-        class='w-full text-3xl text-center font-medium pt-4'
+      { logos && (
+        <div
+          class={`
+            flex 
+            flex-col 
+            lg:flex-row 
+            gap-12
+            items-center 
+            justify-center 
+            w-full 
+            border-b 
+            border-neutral-500 
+            py-8
+          `}
+        >
+          { _.map(logos, (logo) => (
+            <a
+              href={logo.url || '#'}
+            >
+              <img
+                alt={logo.alt}
+                class='w-full h-[200px] lg:w-[200px] lg:h-[100px] object-contain'
+                src={logo.image}
+              />
+            </a>
+          ))}
+        </div>
+      )}
+      <div
+        class='flex flex-col items-center justify-center w-full'
       >
-        { title }
-      </h1>
-      <NavBar
-        className='flex w-full items-center justify-center gap-y-4 gap-x-12 py-8'
-        items={items}
+        <h1
+          class='w-full !text-3xl text-center font-medium pt-4'
+        >
+          { title }
+        </h1>
+        <NavBar
+          className='flex w-full items-center justify-center gap-y-4 gap-x-12 py-8'
+          items={items}
+        />
+      </div>
+      { login && (
+        <div
+          class='flex flex-col lg:flex-row lg:w-full lg:justify-center gap-y-4 pb-12'
+        >
+          <LinkButton
+            className='bg-secondary w-[200px] text-center'
+            content={t('coreDataLogin')}
+            href={config.core_data.url}
+            target='_blank'
+          />
+          <LinkButton
+            className='bg-secondary w-[200px] text-center'
+            content={t('tinaLogin')}
+            href='/admin/index.html'
+            target='_blank'
+          />
+        </div>
+      )}
+      <div
+        class='flex border-t border-neutral-500 py-4 w-full font-light'
+      >
+        <div
+          class='flex flex-col lg:flex-row items-center lg:justify-between gap-y-4 w-full text-sm px-8 lg:px-0'
+        >
+          <div
+            class='flex flex-col lg:flex-row items-center gap-y-4 lg:divide-x-1'
+          >
+            <a
+              class='lg:pe-6'
+              href={termsUrl || '#'}
+            >
+              { t('termsConditions') }
+            </a>
+            <a
+              class='lg:px-6'
+              href={privacyUrl || '#'}
+            >
+              { t('privacyPolicy') }
+            </a>
+            <a
+              class='lg:px-6'
+              href={accessibilityUrl || '#'}
+            >
+              { t('accessibility') }
+            </a>
+          </div>
+          <div
+            class='text-center'
+          >
+            { t('copyright', { year, name: title })}
+          </div>
+        </div>
+      </div>
+    </Container>
+  </div>
+) }
+
+{ custom && ( 
+  <div class={clsx(
+    toBackgroundClass(customContent.background),
+    customContent.text,
+    'flex flex-col gap-12 pt-20 px-16 pb-12 relative overflow-hidden'
+  )}>
+  { customContent.image && (
+      <img 
+        src={customContent.image} 
+        class='w-full h-full object-cover absolute inset-0'
+      /> 
+      <div
+        class='absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply'
       />
-    </div>
-    { login && (
-      <div
-        class='flex flex-col lg:flex-row lg:w-full lg:justify-center gap-y-4 pb-12'
-      >
-        <LinkButton
-          className='bg-secondary w-[200px] text-center'
-          content={t('coreDataLogin')}
-          href={config.core_data.url}
-          target='_blank'
-        />
-        <LinkButton
-          className='bg-secondary w-[200px] text-center'
-          content={t('tinaLogin')}
-          href='/admin/index.html'
-          target='_blank'
-        />
-      </div>
-    )}
-    <div
-      class='flex border-t border-neutral-500 py-4 w-full font-light'
-    >
-      <div
-        class='flex flex-col lg:flex-row items-center lg:justify-between gap-y-4 w-full text-sm px-8 lg:px-0'
+  ) }
+    <MultiColumn content={customContent.columns} gap='large' />
+          <div
+        class='flex border-t border-neutral-500 py-4 w-full font-light'
       >
         <div
-          class='flex flex-col lg:flex-row items-center gap-y-4 lg:divide-x-1'
+          class='flex flex-col lg:flex-row items-center lg:justify-between gap-y-4 w-full text-sm px-8 lg:px-0'
         >
-          <a
-            class='lg:pe-6'
-            href={termsUrl || '#'}
+          <div
+            class='flex flex-col lg:flex-row items-center gap-y-4 lg:divide-x-1'
           >
-            { t('termsConditions') }
-          </a>
-          <a
-            class='lg:px-6'
-            href={privacyUrl || '#'}
+            <a
+              class='lg:pe-6'
+              href={termsUrl || '#'}
+            >
+              { t('termsConditions') }
+            </a>
+            <a
+              class='lg:px-6'
+              href={privacyUrl || '#'}
+            >
+              { t('privacyPolicy') }
+            </a>
+            <a
+              class='lg:px-6'
+              href={accessibilityUrl || '#'}
+            >
+              { t('accessibility') }
+            </a>
+          </div>
+          <div
+            class='text-center'
           >
-            { t('privacyPolicy') }
-          </a>
-          <a
-            class='lg:px-6'
-            href={accessibilityUrl || '#'}
-          >
-            { t('accessibility') }
-          </a>
-        </div>
-        <div
-          class='text-center'
-        >
-          { t('copyright', { year, name: title })}
+            { t('copyright', { year, name: title })}
+          </div>
         </div>
       </div>
-    </div>
-  </Container>
-</div>
+  </div>
+)}
