@@ -134,8 +134,17 @@ const year = new Date().getFullYear();
   <div class={clsx(
     toBackgroundClass(customContent.background),
     customContent.text,
-    'flex flex-col gap-12 pt-20 px-16 pb-12'
+    'flex flex-col gap-12 pt-20 px-16 pb-12 relative overflow-hidden'
   )}>
+  { customContent.image && (
+      <img 
+        src={customContent.image} 
+        class='w-full h-full object-cover absolute inset-0'
+      /> 
+      <div
+        class='absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply'
+      />
+  ) }
     <MultiColumn content={customContent.columns} gap='large' />
           <div
         class='flex border-t border-neutral-500 py-4 w-full font-light'
