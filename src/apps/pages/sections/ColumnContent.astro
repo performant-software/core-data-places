@@ -25,14 +25,14 @@ const BlockTypes = {
 ---
 { item.__typename.endsWith(BlockTypes.image) && ( 
   <img src={item.image} class={clsx(
-    'w-full object-cover',
+    'w-full lg:h-full object-cover',
     { 'rounded-md': item.rounded }
   )} />
 )}
 
 { item.__typename.endsWith(BlockTypes.text) && ( 
   <div class={clsx(
-    'prose max-w-none px-6 py-4 text-inherit',
+    'prose max-w-none py-8 lg:py-4 text-inherit',
     item.size
   )}>
     <RichText content={item.text} />
@@ -104,7 +104,7 @@ const BlockTypes = {
 )}
 
 { item.__typename.endsWith(BlockTypes.counter) && ( 
-  <div class='flex flex-col py-4 px-2 xl:px-4 gap-3 font-serif font-semibold bg-layout-alt items-center h-full'>
+  <div class='flex flex-col py-4 px-2 xl:px-4 gap-3 font-serif font-semibold bg-layout-alt items-center w-full h-full'>
     <div class='flex flex-col'>
       <p class='text-secondary text-5xl'>{ item.count }</p>
       <p class='italic'>{ item.type || 'records' }</p>
