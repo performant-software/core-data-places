@@ -104,12 +104,12 @@ const BlockTypes = {
 )}
 
 { item.__typename.endsWith(BlockTypes.counter) && ( 
-  <div class='flex flex-col p-4 gap-3 font-serif font-semibold bg-layout-alt items-center h-full'>
+  <div class='flex flex-col py-4 px-2 xl:px-4 gap-3 font-serif font-semibold bg-layout-alt items-center h-full'>
     <div class='flex flex-col'>
       <p class='text-secondary text-5xl'>{ item.count }</p>
       <p class='italic'>{ item.type || 'records' }</p>
     </div>
-    <div>{ item.description }</div>
+    <div class='text-lg'>{ item.description }</div>
   </div>
 )}
 
