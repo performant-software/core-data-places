@@ -1,5 +1,6 @@
 import { Collection } from '@tinacms/schema-tools';
-import { ColorOptionsBg, ColorOptionsBorder, ColorOptionsText, richTextTemplates } from './pages';
+import { ColorOptionsBg, ColorOptionsBorder, ColorOptionsText, getLabel, richTextTemplates } from './pages';
+import _ from 'underscore';
 
 const Fonts = [{
   label: 'Afacad',
@@ -216,6 +217,10 @@ const Branding: Collection = {
         type: 'string',
         options: ColorOptionsBg
       }, {
+        name: 'image',
+        label: 'Background Image',
+        type: 'image'
+      }, {
         name: 'text',
         label: 'Text Color',
         type: 'string',
@@ -227,7 +232,11 @@ const Branding: Collection = {
         list: true,
         ui: {
           min: 1,
-          max: 6
+          max: 6,
+          itemProps: (item) => {
+            const types = item?.content?.length && _.map(item.content, (block) => (block._template)).join(', ')
+            return ({ label: getLabel('Column', types) });
+          }
         },
         fields: [{
           name: 'width',
@@ -317,6 +326,27 @@ const Branding: Collection = {
               name: 'rounded',
               label: 'Rounded Corners?',
               type: 'boolean'
+            }]
+          }, {
+            name: 'link_row',
+            label: 'Navigation Row',
+            fields: [{
+              name: 'links',
+              label: 'Links',
+              type: 'object',
+              list: true,
+              ui: {
+                itemProps: (item) => ({ label: getLabel('Nav link', item?.label)})
+              },
+              fields: [{
+                name: 'url',
+                label: 'URL',
+                type: 'string',
+              }, {
+                name: 'label',
+                label: 'Label',
+                type: 'string'
+              }]
             }]
           }, {
             name: 'basic',
