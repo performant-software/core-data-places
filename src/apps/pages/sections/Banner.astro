@@ -111,7 +111,8 @@ const {
       )}      
       { content && content.children?.length ? (
         <div class={clsx(
-          'prose max-w-none py-8 lg:py-16 z-10 w-full',
+          'prose max-w-none pb-8 lg:pb-16 z-10 w-full',
+          { 'pt-8 lg:pt-16': !(title || subtitle || url) }, //in this case this is the first block in the column so should have some top padding
           { 'text-center': textAlignment === 'center' },
           { 'text-text-inverse': !darkText }
         )}>
