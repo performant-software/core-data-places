@@ -22,14 +22,14 @@ const SearchBar = (props: SearchBarProps) => {
   }, [searchName, query, language]);
 
   return (
-    <div className='not-prose w-[840px] border rounded-md border-black text-sm'>
+    <div className='not-prose w-full lg:w-[840px] border rounded-md border-black text-sm mb-4'>
       <form
         id='search-bar'
         className='relative flex flex-row items-center'
         onSubmit={onSubmit}
       >
         <input
-          className='py-4 pe-4 ps-13 w-[720px] h-full rounded-l-md bg-white text-black'
+          className='py-4 pe-4 ps-13 w-full lg:w-[720px] h-full rounded-l-md bg-white text-black'
           type='text'
           name='query'
           placeholder={placeholder}

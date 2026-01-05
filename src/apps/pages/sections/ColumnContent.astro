@@ -4,7 +4,8 @@ import Card from '@components/Card.astro';
 import RichText from '@apps/pages/sections/RichText.astro';
 import Spacer from './Spacer.astro';
 import clsx from 'clsx';
-import { toTextClass, toBorderClass } from '@root/src/utils/pageBuilder';
+import { toBorderClass } from '@root/src/utils/pageBuilder';
+import _ from 'underscore';
 
 const { item } = Astro.props;
 
@@ -16,6 +17,7 @@ const BlockTypes = {
   counter: 'Counter',
   image: 'Image',
   imageLink: 'Image_link',
+  linkRow: 'Link_row',
   quote: 'Quote',
   text: 'Richtext'
 }
@@ -23,7 +25,7 @@ const BlockTypes = {
 ---
 { item.__typename.endsWith(BlockTypes.image) && ( 
   <img src={item.image} class={clsx(
-    'w-full lg:h-full object-cover',
+    'w-full h-full object-cover',
     { 'rounded-md': item.rounded }
   )} />
 )}
@@ -103,5 +105,17 @@ const BlockTypes = {
       <p class='italic'>{ item.type || 'records' }</p>
     </div>
     <div class='text-lg'>{ item.description }</div>
+  </div>
+)}
+
+{ item.__typename.endsWith(BlockTypes.linkRow) && ( 
+  <div class='flex flex-row flex-wrap font-semibold font-sans gap-5 py-1.5 justify-center'>
+    {
+      _.map(item.links, (link) => (
+        <a href={link.url} class='no-underline hover:underline underline-offset-4 decoration-2'>
+          { link.label }
+        </a>
+      ))
+    }
   </div>
 )}
