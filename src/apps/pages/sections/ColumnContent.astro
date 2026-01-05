@@ -25,7 +25,7 @@ const BlockTypes = {
 ---
 { item.__typename.endsWith(BlockTypes.image) && ( 
   <img src={item.image} class={clsx(
-    'w-full lg:h-full object-cover',
+    'w-full h-full object-cover',
     { 'rounded-md': item.rounded }
   )} />
 )}
@@ -114,7 +114,7 @@ const BlockTypes = {
 )}
 
 { item.__typename.endsWith(BlockTypes.linkRow) && ( 
-  <div class='flex flex-row font-semibold font-sans gap-5 py-1.5'>
+  <div class='flex flex-row flex-wrap font-semibold font-sans gap-5 py-1.5 justify-center'>
     {
       _.map(item.links, (link) => (
         <a href={link.url} class='no-underline hover:underline underline-offset-4 decoration-2'>

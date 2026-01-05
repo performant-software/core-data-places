@@ -1,6 +1,7 @@
 import { Disclosure, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from '@i18n/useTranslations';
+import clsx from 'clsx';
 import { ReactNode } from 'react';
 import _ from 'underscore';
 
@@ -17,6 +18,7 @@ interface Props {
   children?: ReactNode;
   items: NavItem[];
   title: string;
+  transparent?: boolean;
 }
 
 const MobileHeader = (props: Props) => {
@@ -25,7 +27,10 @@ const MobileHeader = (props: Props) => {
   return (
     <Disclosure 
       as='div' 
-      className='block lg:hidden w-full bg-primary shadow-md z-10'
+      className={clsx(
+        'block lg:hidden w-full shadow-md z-10',
+        { 'bg-primary': !props.transparent }
+      )}
     >
       {({ open }) => (
         <>

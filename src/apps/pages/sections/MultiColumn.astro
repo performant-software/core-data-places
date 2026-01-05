@@ -44,7 +44,8 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
   )}
   <div
     class={clsx(
-      'w-full grid grid-cols-1 sm:grid-cols-2',
+      'w-full grid grid-cols-1',
+      { 'sm:grid-cols-2': content?.length > 1 },
       gridCols,   
       { 'gap-8 xl:gap-16': gap === 'large' },
       { 'gap-4 xl:gap-8': gap === 'small' || !gap }
