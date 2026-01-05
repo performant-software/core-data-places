@@ -30,12 +30,12 @@ const Tabs = (props: TabsProps) => {
   }, [props.children]);
 
   return (
-    <TabGroup className={clsx({ '-mt-[60px]': raise })}>
+    <TabGroup>
       <div className={clsx(
         'px-6 sm:px-12 md:px-16 lg:px-32 2xl:mx-auto max-w-(--breakpoint-2xl)',
         { 'border-b border-gray-200': !raise }
       )}>
-        <TabList aria-label='Tabs' className='-mb-px flex h-[60px]'>
+        <TabList aria-label='Tabs' className='-mb-px flex h-[64px]'>
           {
             _.map(tabs, (tab) => ( 
               <Tab
