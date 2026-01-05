@@ -1,4 +1,4 @@
-import { Collection, RichTextTemplate, Template } from '@tinacms/schema-tools';
+import { Collection, RichTextTemplate, Template, TinaField } from '@tinacms/schema-tools';
 import _ from 'underscore';
 
 const LABEL_SEPARATOR = ': ';
@@ -8,7 +8,7 @@ const LABEL_SEPARATOR = ': ';
  *
  * @param args
  */
-const getLabel = (...args) => {
+export const getLabel = (...args) => {
   return _.compact(args).join(LABEL_SEPARATOR);
 };
 
@@ -128,10 +128,83 @@ export const richTextTemplates: RichTextTemplate<false>[] = [{
   }]
 }];
 
+const commonSectionFields: TinaField<false>[] = [{
+  name: 'id',
+  label: 'Section Identifier',
+  type: 'string',
+  description: 'This identifier does not appear on the published page; it is just for your convenience to distinguish this section in the section list.'
+}, {
+  name: 'background',
+  label: 'Background Color',
+  type: 'string',
+  options: ColorOptionsBg
+}, {
+  name: 'top_margin',
+  label: 'Top Margin',
+  description: 'Note: Negative margin will raise the section to overlap with the previous section. Leave blank for none.',
+  type: 'string',
+  options: [{
+    label: 'Negative XXL (-192px)',
+    value: '-mt-[192px]'
+  }, {
+    label: 'Negative XL (-96px)',
+    value: '-mt-[96px]'
+  }, {
+    label: 'Negative Large (-80px)',
+    value: '-mt-[80px]'
+  }, {
+    label: 'Negative Medium (-64px)',
+    value: '-mt-[64px]'
+  }, {
+    label: 'Negative Small (-32px)',
+    value: '-mt-[32px]'
+  }, {
+    label: 'Small (32px)',
+    value: 'mt-[32px]'
+  }, {
+    label: 'Medium (64px)',
+    value: 'mt-[64px]'
+  }, {
+    label: 'Large (80px)',
+    value: 'mt-[80px]'
+  }, {
+    label: 'XL (96px)',
+    value: 'mt-[96px]'
+  }, {
+    label: 'XXL (192px)',
+    value: 'mt-[192px]'
+  }]
+}, {
+  name: 'bottom_margin',
+  label: 'Bottom Margin',
+  type: 'string',
+  options: [{
+    label: 'Small (32px)',
+    value: 'mb-[32px]'
+  }, {
+    label: 'Medium (64px)',
+    value: 'mb-[64px]'
+  }, {
+    label: 'Large (80px)',
+    value: 'mb-[80px]'
+  }, {
+    label: 'XL (96px)',
+    value: 'mb-[96px]'
+  }, {
+    label: 'XXL (192px)',
+    value: 'mb-[192px]'
+  }]
+}]
+
 const staticSectionTemplates: Template<false>[] = [{
   name: 'free_text',
   label: 'Free Text',
-  fields: [{
+  ui: {
+    itemProps: (item) => {
+      return { label: getLabel('Free Text', item?.id) };
+    }
+  },
+  fields: [...commonSectionFields, {
     name: 'body',
     label: 'Body',
     type: 'rich-text',
@@ -146,7 +219,7 @@ const staticSectionTemplates: Template<false>[] = [{
       return { label: getLabel('Images', item?.title) };
     }
   },
-  fields: [{
+  fields: [...commonSectionFields, {
     name: 'title',
     label: 'Title',
     type: 'string'
@@ -194,7 +267,7 @@ const staticSectionTemplates: Template<false>[] = [{
       size: SpacerValues.small
     }
   },
-  fields: [{
+  fields: [...commonSectionFields, {
     name: 'size',
     label: 'Size',
     type: 'string',
@@ -205,21 +278,16 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Color',
     type: 'string',
     options: ColorOptionsBorder
-  }, {
-    name: 'background',
-    label: 'Background Color',
-    type: 'string',
-    options: ColorOptionsBg
   }]
 }, {
   name: 'multi_column',
   label: 'Multi Columns',
   ui: {
     itemProps: (item) => {
-      return { label: getLabel('Multi-column', item?.title) };
+      return { label: getLabel('Multi-column', item?.id || item?.title) };
     }
   },
-  fields: [{
+  fields: [...commonSectionFields, {
     name: 'title',
     label: 'Title',
     type: 'string'
@@ -254,11 +322,6 @@ const staticSectionTemplates: Template<false>[] = [{
       value: 'small'
     }]
   }, {
-    name: 'background',
-    label: 'Background Color',
-    type: 'string',
-    options: ColorOptionsBg
-  }, {
     name: 'text',
     label: 'Text Color',
     type: 'string',
@@ -270,7 +333,11 @@ const staticSectionTemplates: Template<false>[] = [{
     list: true,
     ui: {
       min: 1,
-      max: 6
+      max: 6,
+      itemProps: (item) => {
+        const types = item?.content?.length && _.map(item.content, (block) => (block._template)).join(', ')
+        return ({ label: getLabel('Column', types) });
+      }
     },
     fields: [{
       name: 'width',
@@ -526,7 +593,12 @@ const staticSectionTemplates: Template<false>[] = [{
 }, {
   name: 'banner',
   label: 'Full Width Banner',
-  fields:  [{
+  ui: {
+    itemProps: (item) => {
+      return { label: getLabel('Full Width Banner', item?.id || item?.title) };
+    }
+  },
+  fields:  [...commonSectionFields, {
     name: 'hero',
     label: 'Is hero?',
     type: 'boolean'
@@ -622,12 +694,6 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Clip image to content height?',
     type: 'boolean'
   }, {
-    name: 'background',
-    label: 'Background Color',
-    description: 'Will display if no image is provided.',
-    type: 'string',
-    options: ColorOptionsBg
-  }, {
     name: 'darken',
     label: 'Darken Background?',
     type: 'boolean'
@@ -635,12 +701,12 @@ const staticSectionTemplates: Template<false>[] = [{
 }, {
   name: 'feature_quote',
   label: 'Feature Quote',
-  fields: [{
-    name: 'background',
-    label: 'Background Color',
-    type: 'string',
-    options: ColorOptionsBg
-  }, {
+  ui: {
+    itemProps: (item) => {
+      return { label: getLabel('Free Text', item?.id || item?.attribution) };
+    }
+  },
+  fields: [...commonSectionFields, {
     name: 'text',
     label: 'Text Color',
     type: 'string',
@@ -670,10 +736,10 @@ const staticSectionTemplates: Template<false>[] = [{
   label: 'Text Image Block',
   ui: {
     itemProps: (item) => {
-      return { label: getLabel('Text Image Block', item?.title) };
+      return { label: getLabel('Text Image Block', item?.id || item?.title) };
     }
   },
-  fields: [{
+  fields: [...commonSectionFields, {
     name: 'title',
     label: 'Title',
     type: 'string'
@@ -740,16 +806,16 @@ const staticSectionTemplates: Template<false>[] = [{
 }, {
   name: 'link_banner',
   label: 'Links Banner',
-  fields: [{
-    name: 'background',
+  ui: {
+    itemProps: (item) => {
+      return { label: getLabel('Links Banner', item?.id) };
+    }
+  },
+  fields: [...commonSectionFields, {
+    name: 'link_background',
     label: 'Link Background Color',
     type: 'string',
     options: ColorOptionsButton
-  }, {
-    name: 'overlap',
-    label: 'Overlap previous section?',
-    description: 'If selected, the links banner will be positioned at the bottom of the previous section, rather than below it',
-    type: 'boolean'
   }, {
     name: 'links',
     label: 'Links',
@@ -805,7 +871,7 @@ const Pages: Collection = {
         list: true,
         ui: {
           itemProps: (item) => {
-            return { label: getLabel(item?.title) };
+            return { label: getLabel('Carousel', item?.id || item?.title) };
           }
         },
         fields: [{
@@ -836,6 +902,11 @@ const Pages: Collection = {
     }, {
       name: 'tabs',
       label: 'Tabbed Content',
+      ui: {
+        itemProps: (item) => {
+          return { label: getLabel('Tabbed Content', item?.id) };
+        }
+      },
       fields: [{
         name: 'raise',
         label: 'Overlap with section above?',
