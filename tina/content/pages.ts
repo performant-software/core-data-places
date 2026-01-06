@@ -304,6 +304,53 @@ const staticSectionTemplates: Template<false>[] = [{
         value: 'col-span-12'
       }]
     }, {
+      name: 'justify',
+      label: 'Vertical Alignment',
+      type: 'string',
+      options: [{
+        label: 'Top (default)',
+        value: 'justify-start'
+      }, {
+        label: 'Center',
+        value: 'justify-center'
+      }, {
+        label: 'Bottom',
+        value: 'justify-end'
+      }]
+    }, {
+      name: 'align',
+      label: 'Horizontal Alignment',
+      type: 'string',
+      options: [{
+        label: 'Left (default)',
+        value: ''
+      }, {
+        label: 'Center',
+        value: 'items-center text-center'
+      }, {
+        label: 'Bottom',
+        value: 'justify-end'
+      }]         
+    }, {
+      name: 'background',
+      label: 'Background Color',
+      type: 'string',
+      options: ColorOptionsBg
+    }, {
+      name: 'border',
+      label: 'Border Color (leave blank for none)',
+      type: 'string',
+      options: ColorOptionsBorder
+    }, {
+      name: 'rounded',
+      label: 'Rounded Corners?',
+      type: 'boolean'
+    }, {
+      name: 'url',
+      label: 'URL',
+      description: 'If provided, the entire column will be a link to the given URL.',
+      type: 'string'
+    }, {
       name: 'content',
       label: 'Content',
       type: 'object',
