@@ -13,6 +13,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 const BlockTypes = {
   basic: 'Basic',
   card: 'Card',
+  counter: 'Counter',
   image: 'Image',
   imageLink: 'Image_link',
   quote: 'Quote',
@@ -90,4 +91,14 @@ const BlockTypes = {
       </div> 
     )}
   </a>
+)}
+
+{ item.__typename.endsWith(BlockTypes.counter) && ( 
+  <div class='flex flex-col p-4 gap-3 font-serif font-semibold bg-layout-alt items-center h-full'>
+    <div class='flex flex-col'>
+      <p class='text-secondary text-5xl'>{ item.count }</p>
+      <p class='italic'>{ item.type || 'records' }</p>
+    </div>
+    <div>{ item.description }</div>
+  </div>
 )}
