@@ -10,7 +10,7 @@ const manifest = await fetchJson(config.gallery)
 
 const items = manifest.items.map((item) => ({
   id: getManifestUrl(item.id),
-  thumbnail: item.thumbnail[0]?.id,
+  thumbnail: item.thumbnail?.length && item.thumbnail[0].id,
   label: getManifestLabel(item, Astro.currentLocale)
 }));
 

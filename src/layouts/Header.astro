@@ -14,13 +14,17 @@ const {
   image,
   imageAlt,
   items,
-  title
+  title,
+  transparent
 } = Astro.props;
 
 ---
 
 <div
-  class='flex flex-row justify-center w-full bg-primary'
+  class={clsx(
+    'flex flex-row justify-center w-full z-20 text-text-primary',
+    { 'bg-primary': !transparent }
+  )}
 >
   <div
     class={clsx(

@@ -1,11 +1,18 @@
 ---
-const { alt, date, dateOptions = {}, category, title, author, slug, imageUrl, blurb, t } = Astro.props;
+import clsx from 'clsx';
+import { toBorderClass } from '@utils/pageBuilder';
+
+const { alt, border, date, dateOptions = {}, category, title, author, slug, imageUrl, blurb, t, rounded } = Astro.props;
 
 const dateString = date ? new Date(date).toLocaleDateString(undefined, dateOptions) : null;
 ---
 
 <article
-  class='flex max-w-xl flex-col items-start justify-between bg-neutral-light'
+  class={clsx(
+    'flex max-w-xl flex-col items-start justify-between bg-neutral-light',
+    { 'rounded-md': rounded },
+    toBorderClass(border)
+  )}
 >
   <div
     class='relative w-full'

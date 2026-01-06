@@ -27,6 +27,22 @@ npm install && netlify dev
 
 **Note:** Changes to `config.json` will require a re-build of the site.
 
+## Testing
+
+#### Unit tests
+
+```
+npm run vitest
+```
+
+#### E2E tests
+
+```
+npm run playwright
+```
+
+*Includes accessibility tests
+
 ## Deploy to Production
 
 #### Create a content repository
