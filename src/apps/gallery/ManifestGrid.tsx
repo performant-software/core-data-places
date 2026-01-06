@@ -28,8 +28,8 @@ const ManifestGrid: React.FC<Props> = (props) => {
 
   const showContentWarning = useMemo(() => {
     if (manifest && !warningAccepted) {
-      return manifest.items.some(i => {
-        return i.metadata.some(m => m.label === 'Content Warning' && m.value === true);
+      return manifest.items.some((i) => {
+        return i.metadata?.some((m) => m.label === 'Content Warning' && m.value === true);
       });
     }
 

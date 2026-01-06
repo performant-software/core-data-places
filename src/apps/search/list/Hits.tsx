@@ -7,7 +7,7 @@ import { Highlight } from 'react-instantsearch';
 import { useCallback, useContext, useMemo, useRef } from 'react';
 import { getAttributes, getFacetLabel, getHitValue, getRelationshipLabel, isInverse } from '@utils/search';
 import clsx from 'clsx';
-import config from '@config';
+import config from '@config' with { type: 'json' };
 import TranslationContext from '@contexts/TranslationContext';
 
 interface Props {

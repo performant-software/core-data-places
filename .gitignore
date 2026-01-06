@@ -45,3 +45,10 @@ tmp/
 *.code-workspace
 
 /src/components/custom/project/*
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

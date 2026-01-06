@@ -1,51 +1,156 @@
 {
+  "detail_pages": {
+    "models": [
+      "people",
+      "places",
+      "items"
+    ]
+  },
   "content": {
     "collections": [
-      "paths",
       "posts"
     ]
   },
   "core_data": {
-    "url": "https://staging.coredata.cloud",
+    "url": "https://app.coredata.cloud",
     "project_ids": [
-      "1",
-      "2",
-      "3"
+      "92"
     ]
   },
   "i18n": {
     "default_locale": "en",
-    "locales": ["en"]
+    "locales": [
+      "en"
+    ]
   },
-  "layers": [{
-    "name": "Maptiler DataViz Style",
-    "layer_type": "vector",
-    "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
-  }],
-  "search": [{
-    "name": "places",
-    "route": "/places",
-    "geosearch": true,
-    "map": {
-      "clusterRadius": 6,
-      "geometry": "geometry",
-      "max_zoom": 14,
-      "zoom_to_place": true
+  "layers": [
+    {
+      "name": "Johnson's map of New York and the adjacent cities",
+      "layer_type": "georeference",
+      "url": "https://core-data-map-library.s3.us-east-1.amazonaws.com/01.json",
+      "overlay": true,
+      "default": true
     },
-    "result_card": {
-      "title": "name"
+    {
+      "name": "Maptiler DataViz Style",
+      "layer_type": "vector",
+      "url": "https://api.maptiler.com/maps/dataviz/style.json?key=DICl11L0kocVzMWdoynh"
     },
-    "typesense": {
-      "host": "example.typesense.com",
-      "port": 443,
-      "protocol": "https",
-      "api_key": "abcdefg",
-      "index_name": "core_data_places",
-      "query_by": "name",
-      "default_sort": "name",
-      "overrides": {
-        "geoLocationField": "coordinates"
+    {
+      "name": "USGS Imagery Topo (MapServer)",
+      "layer_type": "raster",
+      "url": "https://basemap.nationalmap.gov/arcgis/services/USGSImageryTopo/MapServer/WMSServer?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0&styles=default"
+    },
+    {
+      "name": "USGS Topo (MapServer)",
+      "layer_type": "raster",
+      "url": "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0&styles=default"
+    },
+    {
+      "name": "New Jersey Natural Earth (WMS)",
+      "layer_type": "raster",
+      "url": "https://img.nj.gov/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015",
+      "overlay": true
+    },
+    {
+      "name": "US States",
+      "layer_type": "geojson",
+      "url": "gz_2010_us_040_00_20m.json",
+      "overlay": true
+    }
+  ],
+  "search": [
+    {
+      "name": "places",
+      "route": "/places",
+      "geosearch": true,
+      "type": "map",
+      "map": {
+        "geometry": "geometry",
+        "max_zoom": 14,
+        "zoom_to_place": true
+      },
+      "result_card": {
+        "title": "name"
+      },
+      "timeline": false,
+      "typesense": {
+        "host": "rs8fzgh714n6bmvyp-1.a1.typesense.net",
+        "port": 443,
+        "protocol": "https",
+        "api_key": "il1F8rZjIq81FQablSXra1XYOMMnJ4Hu",
+        "index_name": "places",
+        "query_by": "name"
+      }
+    },
+    {
+      "name": "people",
+      "route": "/people",
+      "type": "grid",
+      "geosearch": true,
+      "facets": [
+        {
+          "name": "2d5e2c31-8513-4c39-9862-e139199e54bf.names_facet",
+          "type": "select"
+        }
+      ],
+      "map": {
+        "geometry": "e64a2d43-7c36-44db-a09a-3e01c2289793.geometry",
+        "max_zoom": 14,
+        "zoom_to_place": true
+      },
+      "result_card": {
+        "title": "name"
+      },
+      "timeline": false,
+      "typesense": {
+        "host": "rs8fzgh714n6bmvyp-1.a1.typesense.net",
+        "port": 443,
+        "protocol": "https",
+        "api_key": "il1F8rZjIq81FQablSXra1XYOMMnJ4Hu",
+        "index_name": "people",
+        "query_by": "name"
+      }
+    },
+    {
+      "name": "items",
+      "route": "/items",
+      "type": "list",
+      "geosearch": true,
+      "map": {
+        "geometry": "f05615a6-588e-472f-aead-ea19edd8d905.geometry",
+        "max_zoom": 14,
+        "zoom_to_place": true
+      },
+      "result_card": {
+        "title": "name"
+      },
+      "timeline": false,
+      "typesense": {
+        "host": "rs8fzgh714n6bmvyp-1.a1.typesense.net",
+        "port": 443,
+        "protocol": "https",
+        "api_key": "il1F8rZjIq81FQablSXra1XYOMMnJ4Hu",
+        "index_name": "documents",
+        "query_by": "name"
+      }
+    },
+    {
+      "name": "images",
+      "route": "/media",
+      "type": "grid",
+      "result_card": {
+        "title": "name"
+      },
+      "timeline": false,
+      "typesense": {
+        "host": "rs8fzgh714n6bmvyp-1.a1.typesense.net",
+        "port": 443,
+        "protocol": "https",
+        "api_key": "il1F8rZjIq81FQablSXra1XYOMMnJ4Hu",
+        "index_name": "media",
+        "query_by": "name"
       }
     }
-  }]
+  ]
 }

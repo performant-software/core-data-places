@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { toBackgroundClass } from '../utils/pageBuilder';
 
 interface SpacerProps {
   size: string;
@@ -13,10 +14,7 @@ const Spacer = (props: SpacerProps) => (
       { 'my-4 lg:my-8': props.size === 'small' },
       { 'my-8 lg:my-16': props.size === 'medium' },
       { 'my-16 lg:my-32': props.size === 'large' },
-      { 'bg-primary': props.color === 'primary' },
-      { 'bg-secondary': props.color === 'secondary' },
-      { 'bg-white': props.color === 'white' },
-      { 'bg-black': props.color === 'black' }
+      toBackgroundClass(props.color)
     )}
   />
 );

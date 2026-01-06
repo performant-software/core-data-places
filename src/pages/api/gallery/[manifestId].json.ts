@@ -2,7 +2,7 @@ import { buildResponse } from '@utils/api';
 import { APIRoute } from 'astro';
 import { getOne } from '@services/gallery';
 import { fetchJson, truncateManifestId } from '@utils/galleries';
-import config from '@config';
+import config from '@config' with { type: 'json' };
 
 export const GET: APIRoute = async ({ params }) => {
   const { manifestId } = params;

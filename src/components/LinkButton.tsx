@@ -1,9 +1,10 @@
 import clsx from 'clsx';
-import { ColorValues } from '@root/tina/content/pages';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { toBackgroundClass, toBorderClass, toTextClass } from '@utils/pageBuilder';
 
 interface Props {
   arrow?: boolean;
+  border?: string;
   className?: string;
   color?: string;
   content: JSX.Element | string;
@@ -14,15 +15,15 @@ interface Props {
 const LinkButton = ({ className, content, href, ...props }: Props) => (
   <a
     className={clsx(
-      'inline-flex mt-4 rounded-md px-6 py-3 hover:bg-opacity-95 cursor-pointer flex-row gap-4 items-center no-underline mx-6',
-      { 'bg-primary': props.color === ColorValues.primary },
-      { 'bg-secondary': props.color === ColorValues.secondary },
-      { 'bg-white': props.color === ColorValues.white },
-      { 'bg-black': props.color === ColorValues.black },
-      { 'text-primary': props.text === ColorValues.primary },
-      { 'text-secondary': props.text === ColorValues.secondary },
-      { 'text-white': props.text === ColorValues.white },
-      { 'text-black': props.text === ColorValues.black },
+      'link-button inline-flex mt-4 rounded-md px-6 py-3 hover:bg-opacity-95 cursor-pointer flex-row gap-4 items-center no-underline',
+      'hover:bg-[linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15))] transition duration-300',
+      'focus:outline-none',
+      props.color && 'focus:shadow-[0_1px_2px_0_rgba(0,0,0,0.05),0_0_0_2px_var(--color-layout),0_0_0_4px_var(--color-secondary)]',
+      { 'hover:underline hover:underline-offset-[6px] hover:decoration-2': !props.color && !props.border },
+      { 'hover:no-underline': props.color || props.border },
+      toBackgroundClass(props.color),
+      props.text && toTextClass(props.text),
+      toBorderClass(props.border),
       className
     )}
     href={href}

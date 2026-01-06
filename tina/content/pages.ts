@@ -13,6 +13,7 @@ const getLabel = (...args) => {
 };
 
 const SpacerValues = {
+  none: 'none',
   small: 'small',
   medium: 'medium',
   large: 'large'
@@ -26,10 +27,14 @@ export const ColorValues = {
   layoutAlternate: 'layout_alternate',
   contentLight: 'content_light',
   contentDark: 'content_dark',
-  contentAlternate: 'content_alternate'
+  contentAlternate: 'content-alt',
+  contentMain: ''
 };
 
 const SpacerSizes = [{
+  label: 'None',
+  value: SpacerValues.none
+}, {
   label: 'Small',
   value: SpacerValues.small
 }, {
@@ -44,12 +49,6 @@ const ColorOptionsBg = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
-  label: 'Secondary',
-  value: ColorValues.secondary
-}, {
-  label: 'Tertiary',
-  value: ColorValues.tertiary
-}, {
   label: 'Main Background',
   value: ColorValues.layout 
 }, {
@@ -57,23 +56,11 @@ const ColorOptionsBg = [{
   value: ColorValues.layoutAlternate
 }];
 
-const ColorOptionsText = [{
-  label: 'Primary',
-  value: ColorValues.primary
+export const ColorOptionsText = [{
+  label: 'Main',
+  value: ColorValues.contentMain
 }, {
-  label: 'Secondary',
-  value: ColorValues.secondary
-}, {
-  label: 'Tertiary',
-  value: ColorValues.tertiary
-}, {
-  label: 'Content (light background)',
-  value: ColorValues.contentDark
-}, {
-  label: 'Content (dark background)',
-  value: ColorValues.contentLight
-}, {
-  label: 'Alternate Content',
+  label: 'Alternate',
   value: ColorValues.contentAlternate
 }];
 
@@ -82,7 +69,15 @@ export const ColorOptionsBorder = [{
   value: ColorValues.secondary
 }];
 
-const ColorOptions = [{
+export const ColorOptionsButton = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
+  label: 'Secondary',
+  value: ColorValues.secondary
+}];
+
+export const ColorOptions = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
@@ -120,7 +115,7 @@ const richTextTemplates: RichTextTemplate<false>[] = [{
     name: 'color',
     label: 'Color',
     type: 'string',
-    options: ColorOptions
+    options: ColorOptionsBorder
   }]
 }, {
   name: 'button',
@@ -137,12 +132,18 @@ const richTextTemplates: RichTextTemplate<false>[] = [{
     name: 'color',
     label: 'Color',
     type: 'string',
-    options: ColorOptions
+    options: ColorOptionsButton
   }, {
     name: 'text',
     label: 'Text Color',
     type: 'string',
-    options: ColorOptions
+    description: 'Leave blank for default.',
+    options: ColorOptionsButton
+  }, {
+    name: 'border',
+    label: 'Border Color (leave blank for none)',
+    type: 'string',
+    options: ColorOptionsButton
   }, {
     name: 'arrow',
     label: 'Include arrow icon?',
@@ -469,6 +470,22 @@ const staticSectionTemplates: Template<false>[] = [{
           name: 'icon',
           label: 'Icon',
           type: 'image'
+        }]
+      }, {
+        name: 'counter',
+        label: 'Record Counter',
+        fields: [{
+          name: 'count',
+          label: 'Record Count',
+          type: 'number'
+        }, {
+          name: 'type',
+          label: 'Type (defaults to "records")',
+          type: 'string'
+        }, {
+          name: 'description',
+          label: 'Description',
+          type: 'string'
         }]
       }]
     }]
