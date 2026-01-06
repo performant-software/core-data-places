@@ -184,3 +184,11 @@ h1, h2, h3, h4, h5, h6 {
   color: inherit;
   font-weight: var(--font-weight-header);
 }
+
+.prose :where(strong) {
+  color: inherit;
+}
+
+.prose :where(h5 + *):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 0;
+}
