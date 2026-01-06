@@ -954,12 +954,7 @@ const Pages: Collection = {
           return { label: getLabel('Tabbed Content', item?.id) };
         }
       },
-      fields: [{
-        name: 'raise',
-        label: 'Overlap with section above?',
-        description: 'Select this option to create the visual effect of tabs jutting up into the previous section, e.g. a hero.',
-        type: 'boolean'
-      }, {
+      fields: [...commonSectionFields, {
         name: 'invert_text',
         label: 'Default to light text color for tabs with no specified background color?',
         description: 'For tabs that overlap with the section above, select this option if the section above has a dark background.',
