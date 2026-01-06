@@ -73,7 +73,8 @@ const BlockTypes = {
 
 { item.__typename.endsWith(BlockTypes.quote) && ( 
   <div class={clsx(
-    'flex flex-col relative h-full p-8 gap-8',
+    'flex flex-col relative p-8 gap-8',
+    item.bg_color && 'h-full',
     item.text_color,
     toBorderClass(item.border_color),
     toBackgroundClass(item.bg_color),
@@ -87,7 +88,7 @@ const BlockTypes = {
       { item.quote }
     </p>
     { item.border_color && <Spacer size='none' color={item.border_color} /> }
-    <p class='font-semibold -indent-2 pl-2 italic text-sm lg:max-w-3/4'>
+    <p class='font-semibold -indent-2 pl-2 italic text-sm lg:max-w-[80%]'>
       { item.attribution }
     </p>
   </div>

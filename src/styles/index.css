@@ -189,3 +189,7 @@ h6 {
 .prose :where(strong) {
   color: inherit;
 }
+
+.prose :where(h5 + *):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 0;
+}
