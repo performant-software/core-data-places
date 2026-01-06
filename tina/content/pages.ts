@@ -14,6 +14,7 @@ export const getLabel = (...args) => {
 
 const SpacerValues = {
   none: 'none',
+  xsmall: 'xs',
   small: 'small',
   medium: 'medium',
   large: 'large'
@@ -35,13 +36,16 @@ const SpacerSizes = [{
   label: 'None',
   value: SpacerValues.none
 }, {
-  label: 'Small',
+  label: 'Extra Small (20px)',
+  value: SpacerValues.xsmall
+}, {
+  label: 'Small (32px)',
   value: SpacerValues.small
 }, {
-  label: 'Medium',
+  label: 'Medium (64px)',
   value: SpacerValues.medium
 }, {
-  label: 'Large',
+  label: 'Large (96px)',
   value: SpacerValues.large
 }];
 
