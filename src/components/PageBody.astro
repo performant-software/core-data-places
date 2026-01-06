@@ -34,6 +34,8 @@ const SectionTypes = {
       'relative',
       toBackgroundClass(section.background),
       section.text,
+      section.top_margin,
+      section.bottom_margin,
       { '-mt-20': transparent && idx === 0 }
     )}
   >
@@ -131,6 +133,12 @@ const SectionTypes = {
     { section?.__typename?.endsWith(SectionTypes.featureQuote) && ( 
       <FeatureQuote
         {...section}
+      />
+    )}
+    { section?.__typename?.endsWith(SectionTypes.linkBanner) && ( 
+      <LinksBanner
+        {...section}
+        linkBackground={section.link_background}
       />
     )}
   </section>
