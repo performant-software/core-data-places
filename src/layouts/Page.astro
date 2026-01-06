@@ -19,6 +19,7 @@ const { t } = await getTranslations(Astro.currentLocale);
   t={t}
   tab={page?._sys?.filename}
   title={page?.title}
+  transparent={page?.transparent}
 >
   <PageBody sections={page?.sections} />
 </Layout>

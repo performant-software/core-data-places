@@ -4,6 +4,12 @@ const Fonts = [{
   label: 'Afacad',
   value: 'Afacad'
 }, {
+  label: 'Baskervville',
+  value: 'Baskervville'
+}, {
+  label: 'Crimson Text SemiBold',
+  value: 'Crimson Text SemiBold'
+}, {
   label: 'DM Sans',
   value: 'DM Sans'
 }, {
@@ -16,6 +22,36 @@ const Fonts = [{
   label: 'Open Sans',
   value: 'Open Sans'
 }];
+
+const HomeHeaderSizeOptions = [{
+  label: 'Default (52px)',
+  value: '52px'
+}, {
+  label: 'Large (64px)',
+  value: '64px'
+}, {
+  label: 'Extra Large (74px)',
+  value: '74px'
+}];
+
+const PageHeaderSizeOptions = [{
+  label: 'Default(48px)',
+  value: '48px'
+}, {
+  label: 'Large (64px)',
+  value: '64px'
+}];
+
+const HeaderFontWeightOptions = [{
+  label: 'Default (normal)',
+  value: '400'
+}, {
+  label: 'Semi-bold',
+  value: '600'
+}, {
+  label: 'Bold',
+  value: '700'
+}]
 
 const Branding: Collection = {
   name: 'branding',
@@ -32,6 +68,21 @@ const Branding: Collection = {
     type: 'string',
     options: Fonts
   }, {
+    name: 'header_size',
+    label: 'Home Page Hero Header Size',
+    type: 'string',
+    options: HomeHeaderSizeOptions
+  }, {
+    name: 'page_header_size',
+    label: 'Content Page Hero Header Size',
+    type: 'string',
+    options: PageHeaderSizeOptions
+  }, {
+    name: 'header_font_weight',
+    label: 'Header Font Weight',
+    type: 'string',
+    options: HeaderFontWeightOptions
+  }, {
     name: 'font_body',
     label: 'Body Font',
     type: 'string',
@@ -45,14 +96,56 @@ const Branding: Collection = {
     }
   }, {
     name: 'secondary_color',
-    label: 'Secondary Color',
+    label: 'Secondary Color (accent)',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'tertiary_color',
+    label: 'Tertiary Color (overlay)',
     type: 'string',
     ui: {
       component: 'color'
     }
   }, {
     name: 'background_color',
-    label: 'Background Color',
+    label: 'Main background color',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'background_alternate',
+    label: 'Alternate Background',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_color',
+    label: 'Main Text Color for light background (defaults to black)',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_alternate',
+    label: 'Alternate text color',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_inverse',
+    label: 'Text on dark background (defaults to white)',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_inverse_alternate',
+    label: 'Text on dark background alternate',
     type: 'string',
     ui: {
       component: 'color'
