@@ -272,8 +272,11 @@ const staticSectionTemplates: Template<false>[] = [{
       label: 'Large',
       value: 'large'
     }, {
-      label: 'Small',
+      label: 'Small (default)',
       value: 'small'
+    }, {
+      label: 'None',
+      value: 'none'
     }]
   }, {
     name: 'columns',
