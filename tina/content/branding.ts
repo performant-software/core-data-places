@@ -86,6 +86,10 @@ const Branding: Collection = {
     type: 'string',
     options: HeaderFontWeightOptions
   }, {
+    name: 'small_caps',
+    label: 'Small Caps for hero and banner headers?',
+    type: 'boolean'
+  }, {
     name: 'font_body',
     label: 'Body Font',
     type: 'string',
