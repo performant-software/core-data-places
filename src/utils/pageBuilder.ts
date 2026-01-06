@@ -21,6 +21,8 @@ export const toBackgroundClass = (color: string) => {
       return 'bg-tertiary';
     case 'layout_alternate':
       return 'bg-layout-alt';
+    case 'layout':
+      return 'bg-layout';
     default:
       return '';
   } 

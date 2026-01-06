@@ -27,8 +27,8 @@ export const ColorValues = {
   layoutAlternate: 'layout_alternate',
   contentLight: 'content_light',
   contentDark: 'content_dark',
-  contentAlternate: 'content-alt',
-  contentMain: ''
+  contentAlternate: 'text-content-alt',
+  contentMain: 'text-content'
 };
 
 const SpacerSizes = [{
@@ -443,10 +443,19 @@ const staticSectionTemplates: Template<false>[] = [{
       }, {
         name: 'image',
         label: 'Image',
+        ui: {
+          defaultItem: {
+            'full_height': true
+          }
+        },
         fields: [{
           name: 'image',
           label: 'Image',
           type: 'image'
+        }, {
+          name: 'full_height',
+          label: 'Full height?',
+          type: 'boolean'
         }, {
           name: 'rounded',
           label: 'Rounded Corners?',
@@ -864,7 +873,7 @@ const Pages: Collection = {
     templates: [...staticSectionTemplates, {
       name: 'carousel',
       label: 'Carousel',
-      fields: [{
+      fields: [...commonSectionFields, {
         name: 'items',
         label: 'Items',
         type: 'object',
@@ -907,12 +916,7 @@ const Pages: Collection = {
           return { label: getLabel('Tabbed Content', item?.id) };
         }
       },
-      fields: [{
-        name: 'raise',
-        label: 'Overlap with section above?',
-        description: 'Select this option to create the visual effect of tabs jutting up into the previous section, e.g. a hero.',
-        type: 'boolean'
-      }, {
+      fields: [...commonSectionFields, {
         name: 'invert_text',
         label: 'Default to light text color for tabs with no specified background color?',
         description: 'For tabs that overlap with the section above, select this option if the section above has a dark background.',
@@ -943,6 +947,9 @@ const Pages: Collection = {
         label: 'Tabs',
         type: 'object',
         list: true,
+        ui: {
+          itemProps: (item) => ({ label: getLabel('Tab Item', item?.label)})
+        },
         fields: [{
           name: 'label',
           label: 'Tab Label',
