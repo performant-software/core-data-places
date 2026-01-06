@@ -27,8 +27,8 @@ export const ColorValues = {
   layoutAlternate: 'layout_alternate',
   contentLight: 'content_light',
   contentDark: 'content_dark',
-  contentAlternate: 'content-alt',
-  contentMain: ''
+  contentAlternate: 'text-content-alt',
+  contentMain: 'text-content'
 };
 
 const SpacerSizes = [{
@@ -367,10 +367,23 @@ const staticSectionTemplates: Template<false>[] = [{
       }, {
         name: 'image',
         label: 'Image',
+        ui: {
+          defaultItem: {
+            'full_height': true
+          }
+        },
         fields: [{
           name: 'image',
           label: 'Image',
           type: 'image'
+        }, {
+          name: 'full_height',
+          label: 'Full height?',
+          type: 'boolean'
+        }, {
+          name: 'rounded',
+          label: 'Rounded Corners?',
+          type: 'boolean'
         }]
       }, {
         name: 'basic',
@@ -728,7 +741,7 @@ const Pages: Collection = {
     templates: [...staticSectionTemplates, {
       name: 'carousel',
       label: 'Carousel',
-      fields: [{
+      fields: [...commonSectionFields, {
         name: 'items',
         label: 'Items',
         type: 'object',
@@ -802,6 +815,9 @@ const Pages: Collection = {
         label: 'Tabs',
         type: 'object',
         list: true,
+        ui: {
+          itemProps: (item) => ({ label: getLabel('Tab Item', item?.label)})
+        },
         fields: [{
           name: 'label',
           label: 'Tab Label',
