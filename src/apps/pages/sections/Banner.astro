@@ -78,7 +78,8 @@ const {
           { title && (
             <h1
               class={clsx(
-                'm-0',
+                'banner-header m-0',
+                { 'mt-12 xl:mt-0': hero },
                 { '!text-(length:--Font-Sizes-hero-header)': hero && home },
                 { '!text-(length:--Font-Sizes-page-header)': hero && !home },
                 { '!text-(length:--Font-Sizes-CTA-header)': !hero }

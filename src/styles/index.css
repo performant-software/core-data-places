@@ -44,6 +44,8 @@
   --Font-Sizes-FairData-sm: 14px;
   --Font-Sizes-FairData-base: 16px;
   --Font-Sizes-FairData-lg: 20px;
+
+  --Font-Variant-banner-header: var(--customBannerHeaderVariant, normal);
 }
 
 @media (min-width: 640px) {
@@ -186,6 +188,10 @@ h6 {
 
 .link-button.bg-secondary, .link-button.bg-secondary div {
   color: var(--color-text-secondary) !important;
+}
+
+.banner-header {
+  font-variant: var(--Font-Variant-banner-header);
 }
 
 /*
