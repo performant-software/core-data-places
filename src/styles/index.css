@@ -25,7 +25,45 @@
   }
 }
 
-@theme {
+:root {
+  --Font-Sizes-page-header: 48px;
+  --Font-Sizes-hero-header: 36px;
+  --Font-Sizes-CTA-header: 36px;
+  
+  --Font-Sizes-h1: 48px;
+  --Font-Sizes-h2: 36px;
+  --Font-Sizes-h3: 24px;
+  --Font-Sizes-h4: 18px;
+  --Font-Sizes-h5: 18px;
+  --Font-Sizes-h6: 16px;
+  --Font-Sizes-paragraph: 16px;
+  --Font-Sizes-quote-text: 20px;
+  --Font-Sizes-description: 14px;
+  --Font-Sizes-header-tab-text: 20px;
+  --Font-Sizes-FairData-xs: 12px;
+  --Font-Sizes-FairData-sm: 14px;
+  --Font-Sizes-FairData-base: 16px;
+  --Font-Sizes-FairData-lg: 20px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --Font-Sizes-hero-header: 48px;
+    --Font-Sizes-h3: 30px;
+    --Font-Sizes-h4: 24px;
+    --Font-Sizes-h5: 24px;
+    --Font-Sizes-h6: 18px;
+    --Font-Sizes-CTA-header: 42px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --Font-Sizes-hero-header: var(--customHeroHeaderSize, 52px);
+  }
+}
+
+@theme inline {
   --color-neutral-dark: #111928;
   --color-neutral-light: #F5F5F5;
   --color-default-primary: #073B4C;
@@ -50,27 +88,6 @@
   --font-serif: var(--customFontHeader, Inter);
   --font-body: var(--customFontBody, Inter);
   --font-sans: var(--font-body);
-
-  --Font-Sizes-hero-header-default: 52px;
-  --Font-Sizes-page-header-default: 48px;
-
-  --Font-Sizes-h1: 48px;
-  --Font-Sizes-h2: 36px;
-  --Font-Sizes-h3: 30px;
-  --Font-Sizes-h4: 24px;
-  --Font-Sizes-h5: 24px;
-  --Font-Sizes-h6: 18px;
-  --Font-Sizes-paragraph: 16px;
-  --Font-Sizes-quote-text: 20px;
-  --Font-Sizes-description: 14px;
-  --Font-Sizes-header-tab-text: 20px;
-  --Font-Sizes-CTA-header: 42px;
-  --Font-Sizes-hero-header: var(--customHeroHeaderSize, var(--Font-Sizes-hero-header-default));
-  --Font-Sizes-FairData-xs: 12px;
-  --Font-Sizes-page-header: var(--customPageHeaderSize, var(--Font-Sizes-page-header-default));
-  --Font-Sizes-FairData-sm: 14px;
-  --Font-Sizes-FairData-base: 16px;
-  --Font-Sizes-FairData-lg: 20px;
 
   --font-weight-header: var(--customHeaderFontWeight, 400);
 }
