@@ -27,10 +27,9 @@ const MapSearchContext = createContext<SearchContextType>(null);
 interface Props {
   allowSave?: boolean;
   children: ReactNode;
-  name: string;
 }
 
-export const MapSearchContextProvider = ({ allowSave, children, name }: Props) => {
+export const MapSearchContextProvider = ({ allowSave, children }: Props) => {
   const [boundingBoxOptions, setBoundingBoxOptions] = useState<BoundingBoxOptions>();
   const [controlsClass, setControlsClass] = useState<string>();
 

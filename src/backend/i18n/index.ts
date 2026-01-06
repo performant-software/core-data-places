@@ -1,6 +1,6 @@
 import { getI18n } from '@services/i18n';
 import { buildTranslations, getTranslation } from '@i18n/utils';
-import config from '@config';
+import config from '@config' with { type: 'json' };
 
 /**
  * Returns the list of translations from the TinaCMS for the passed language.
