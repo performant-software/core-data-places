@@ -28,8 +28,8 @@ export const ColorValues = {
   layoutAlternate: 'layout_alternate',
   contentLight: 'content_light',
   contentDark: 'content_dark',
-  contentAlternate: 'text-content-alt',
-  contentMain: 'text-content'
+  contentAlternate: 'content-alt',
+  contentMain: ''
 };
 
 const SpacerSizes = [{

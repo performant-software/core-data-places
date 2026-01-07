@@ -16,9 +16,9 @@ const {
   background, 
   buttonText,
   clip, 
-  content, 
+  content,
+  color, 
   darken, 
-  darkText,
   height,
   hero,
   home, 
@@ -42,7 +42,7 @@ const {
     { 'min-h-[220px]': height === Height.small },
     { 'min-h-[420px]': height === Height.medium },
     { 'min-h-[720px]': height === Height.large },
-    { 'text-text-inverse': !darkText }
+    { 'text-text-inverse': color !== 'black' }
   )}
 >
   { image && (
@@ -113,7 +113,7 @@ const {
           'prose max-w-none pb-8 lg:pb-16 z-10 w-full',
           { 'pt-8 lg:pt-16': !(title || subtitle || url) }, //in this case this is the first block in the column so should have some top padding
           { 'text-center': textAlignment === 'center' },
-          { 'text-text-inverse': !darkText }
+          { 'text-text-inverse': color !== 'black' }
         )}>
           <RichText content={content} />
         </div> 
