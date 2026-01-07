@@ -1,4 +1,5 @@
 import { MapSearchContextProvider } from '@apps/search/map/MapSearchContext';
+import { SearchConfigContextProvider } from '@apps/search/SearchConfigContext';
 import SearchVisualizations, { ItemViews } from '@apps/session/SearchVisualizations';
 import { fetchSessionItem } from '@backend/api/session';
 import TranslationContext from '@contexts/TranslationContext';
@@ -42,51 +43,53 @@ const SearchItem = (props: Props) => {
         <TranslationContext.Provider
           value={{ lang, t }}
         >
-          <MapSearchContextProvider
+          <SearchConfigContextProvider
             name={item?.searchName}
           >
-            <div
-              className='flex justify-between items-center'
-            >
-              <div>
-                <h1
-                  className='!text-2xl font-bold m-0'
-                >
-                  { item.name }
-                </h1>
-                <div className='mt-1 flex items-center gap-x-1 text-gray-500'>
-                  { t(`index_${item.searchName}`) }
-                </div>
-              </div>
-              <ButtonGroup
-                className='py-4 text-sm'
-                rounded
+            <MapSearchContextProvider>
+              <div
+                className='flex justify-between items-center'
               >
-                <Button
-                  onClick={() => setView(ItemViews.map)}
-                  secondary={view === ItemViews.map}
+                <div>
+                  <h1
+                    className='!text-2xl font-bold m-0'
+                  >
+                    { item.name }
+                  </h1>
+                  <div className='mt-1 flex items-center gap-x-1 text-gray-500'>
+                    { t(`index_${item.searchName}`) }
+                  </div>
+                </div>
+                <ButtonGroup
+                  className='py-4 text-sm'
+                  rounded
                 >
-                  { t('map') }
-                </Button>
-                <Button
-                  onClick={() => setView(ItemViews.table)}
-                  secondary={view === ItemViews.table}
-                >
-                  { t('table') }
-                </Button>
-                <Button
-                  onClick={() => setView(ItemViews.timeline)}
-                  secondary={view === ItemViews.timeline}
-                >
-                  { t('timeline') }
-                </Button>
-              </ButtonGroup>
-            </div>
-            <SearchVisualizations
-              data={item.data}
-              view={view}
-            />
-          </MapSearchContextProvider>
+                  <Button
+                    onClick={() => setView(ItemViews.map)}
+                    secondary={view === ItemViews.map}
+                  >
+                    { t('map') }
+                  </Button>
+                  <Button
+                    onClick={() => setView(ItemViews.table)}
+                    secondary={view === ItemViews.table}
+                  >
+                    { t('table') }
+                  </Button>
+                  <Button
+                    onClick={() => setView(ItemViews.timeline)}
+                    secondary={view === ItemViews.timeline}
+                  >
+                    { t('timeline') }
+                  </Button>
+                </ButtonGroup>
+              </div>
+              <SearchVisualizations
+                data={item.data}
+                view={view}
+              />
+            </MapSearchContextProvider>
+          </SearchConfigContextProvider>
         </TranslationContext.Provider>
       </Peripleo>
     </RuntimeConfig>

@@ -29,7 +29,6 @@ const MapSearch = ({allowSave, lang, name}: Props) => {
           <Peripleo>
             <MapSearchContextProvider
               allowSave={allowSave}
-              name={name}
             >
               <TypesenseSearch>
                 <MapSearchProvider>

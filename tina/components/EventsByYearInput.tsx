@@ -1,4 +1,4 @@
-import config from '@config';
+import config from '@config' with { type: 'json' };
 import { ObjectJs as ObjectUtils } from '@performant-software/shared-components';
 import { Visualizations } from '@root/tina/content/visualizations';
 import { useCallback, useState } from 'react';

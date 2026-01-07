@@ -1,4 +1,4 @@
-import config from '@config';
+import config from '@config' with { type: 'json' };
 import type { LoaderContext } from 'astro/loaders';
 import _ from 'underscore';
 import { CONTENT_MODE } from 'astro:env/client';

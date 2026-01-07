@@ -1,4 +1,4 @@
-import config from '@config';
+import config from '@config' with { type: 'json' };
 import EventsByYearInput from '@root/tina/components/EventsByYearInput';
 import MapInput from '@root/tina/components/MapInput';
 import TableInput from '@root/tina/components/TableInput';

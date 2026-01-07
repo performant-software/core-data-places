@@ -1,4 +1,4 @@
-import config from '@config';
+import config from '@config' with { type: 'json' };
 import { hasContentCollection } from '@root/src/content.config';
 import { getCollection, getEntry } from 'astro:content';
 import _ from 'underscore';
