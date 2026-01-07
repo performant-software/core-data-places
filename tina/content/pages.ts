@@ -33,7 +33,7 @@ export const ColorValues = {
 };
 
 const SpacerSizes = [{
-  label: 'None',
+  label: 'None (divider only)',
   value: SpacerValues.none
 }, {
   label: 'Extra Small (20px)',
@@ -265,7 +265,9 @@ const staticSectionTemplates: Template<false>[] = [{
   ui: {
     itemProps: (item) => {
       const size = _.findWhere(SpacerSizes, { value: item.size })?.label;
-      return { label: getLabel('Spacer', size) };
+      const bgcolor = _.findWhere(ColorOptionsBg, { value: item.background })?.label;
+      const color = _.findWhere(ColorOptionsBorder, { value: item.color })?.label;
+      return { label: getLabel('Spacer', size, bgcolor && 'Background', bgcolor, color && 'Line Color', color) };
     },
     defaultItem: {
       size: SpacerValues.small
@@ -446,6 +448,11 @@ const staticSectionTemplates: Template<false>[] = [{
             label: 'Small (14px)',
             value: 'text-sm'
           }]
+        }, {
+          name: 'padding',
+          label: 'Add side padding?',
+          description: 'If selected, will add a small buffer around the left and right of the text; for example if the text will be inside a border.',
+          type: 'boolean'
         }]
       }, {
         name: 'image',
@@ -719,7 +726,7 @@ const staticSectionTemplates: Template<false>[] = [{
   label: 'Feature Quote',
   ui: {
     itemProps: (item) => {
-      return { label: getLabel('Free Text', item?.id || item?.attribution) };
+      return { label: getLabel('Feature Quote', item?.id || item?.attribution) };
     }
   },
   fields: [...commonSectionFields, {
