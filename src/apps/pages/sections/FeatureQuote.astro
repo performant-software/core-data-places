@@ -15,6 +15,8 @@ const Height = {
 const {
   attribution,
   background,
+  backgroundImage,
+  darken,
   date,
   icon,
   quote,
@@ -24,13 +26,24 @@ const {
 
 <div
   class={clsx(
-    'w-full relative flex flex-col justify-center items-center font-serif',
+    'w-full relative flex flex-col justify-center items-center font-serif overflow-hidden',
     toBackgroundClass(background),
     text
   )}
 >
+  { backgroundImage && (
+    <img 
+      src={backgroundImage} 
+      class='w-full h-full object-cover absolute inset-0'
+    /> 
+  ) }
+  { darken && (
+    <div
+      class='absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply'
+    /> 
+  ) }
   <Container className={clsx(
-    'flex flex-col justify-center py-12'
+    'flex flex-col justify-center py-12 z-10'
   )} >
     { icon && (
       <img src={icon} class='h-12 object-scale-down'/>

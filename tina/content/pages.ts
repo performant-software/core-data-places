@@ -1,4 +1,4 @@
-import { Collection, RichTextTemplate, Template } from '@tinacms/schema-tools';
+import { Collection, RichTextTemplate, Template, TinaField } from '@tinacms/schema-tools';
 import _ from 'underscore';
 
 const LABEL_SEPARATOR = ': ';
@@ -151,6 +151,74 @@ const richTextTemplates: RichTextTemplate<false>[] = [{
   }]
 }];
 
+const commonSectionFields: TinaField<false>[] = [{
+  name: 'id',
+  label: 'Section Identifier',
+  type: 'string',
+  description: 'This identifier does not appear on the published page; it is just for your convenience to distinguish this section in the section list.'
+}, {
+  name: 'background',
+  label: 'Background Color',
+  type: 'string',
+  options: ColorOptionsBg
+}, {
+  name: 'top_margin',
+  label: 'Top Margin',
+  description: 'Note: Negative margin will raise the section to overlap with the previous section. Leave blank for none.',
+  type: 'string',
+  options: [{
+    label: 'Negative XXL (-192px)',
+    value: '-mt-[192px]'
+  }, {
+    label: 'Negative XL (-96px)',
+    value: '-mt-[96px]'
+  }, {
+    label: 'Negative Large (-80px)',
+    value: '-mt-[80px]'
+  }, {
+    label: 'Negative Medium (-64px)',
+    value: '-mt-[64px]'
+  }, {
+    label: 'Negative Small (-32px)',
+    value: '-mt-[32px]'
+  }, {
+    label: 'Small (32px)',
+    value: 'mt-[32px]'
+  }, {
+    label: 'Medium (64px)',
+    value: 'mt-[64px]'
+  }, {
+    label: 'Large (80px)',
+    value: 'mt-[80px]'
+  }, {
+    label: 'XL (96px)',
+    value: 'mt-[64px] lg:mt-[96px]'
+  }, {
+    label: 'XXL (192px)',
+    value: 'mt-[128px] lg:mt-[192px]'
+  }]
+}, {
+  name: 'bottom_margin',
+  label: 'Bottom Margin',
+  type: 'string',
+  options: [{
+    label: 'Small (32px)',
+    value: 'mb-[32px]'
+  }, {
+    label: 'Medium (64px)',
+    value: 'mb-[64px]'
+  }, {
+    label: 'Large (80px)',
+    value: 'mb-[80px]'
+  }, {
+    label: 'XL (96px)',
+    value: 'mb-[64px] lg:mb-[96px]'
+  }, {
+    label: 'XXL (192px)',
+    value: 'mb-[128px] lg:mb-[192px]'
+  }]
+}]
+
 const staticSectionTemplates: Template<false>[] = [{
   name: 'free_text',
   label: 'Free Text',
@@ -271,6 +339,19 @@ const staticSectionTemplates: Template<false>[] = [{
       label: 'Small',
       value: 'small'
     }]
+  }, {
+    name: 'text',
+    label: 'Text Color',
+    type: 'string',
+    options: ColorOptionsText
+  }, {
+    name: 'background_image',
+    label: 'Background Image',
+    type: 'image'
+  }, {
+    name: 'darken',
+    label: 'Darken Background Image?',
+    type: 'boolean'
   }, {
     name: 'columns',
     label: 'Columns',
@@ -607,6 +688,14 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Text Color',
     type: 'string',
     options: ColorOptionsText
+  }, {
+    name: 'background_image',
+    label: 'Background Image',
+    type: 'image'
+  }, {
+    name: 'darken',
+    label: 'Darken Background Image?',
+    type: 'boolean'
   }, {
     name: 'quote',
     label: 'Quotation Text',
