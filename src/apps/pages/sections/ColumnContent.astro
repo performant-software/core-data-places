@@ -21,7 +21,6 @@ const BlockTypes = {
   quote: 'Quote',
   text: 'Richtext'
 }
-
 ---
 { item.__typename.endsWith(BlockTypes.image) && ( 
   <img src={item.image} class={clsx(
