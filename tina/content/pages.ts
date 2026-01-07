@@ -33,7 +33,7 @@ export const ColorValues = {
 };
 
 const SpacerSizes = [{
-  label: 'None',
+  label: 'None (divider only)',
   value: SpacerValues.none
 }, {
   label: 'Extra Small (20px)',
@@ -155,6 +155,74 @@ const richTextTemplates: RichTextTemplate<false>[] = [{
   }]
 }];
 
+const commonSectionFields: TinaField<false>[] = [{
+  name: 'id',
+  label: 'Section Identifier',
+  type: 'string',
+  description: 'This identifier does not appear on the published page; it is just for your convenience to distinguish this section in the section list.'
+}, {
+  name: 'background',
+  label: 'Background Color',
+  type: 'string',
+  options: ColorOptionsBg
+}, {
+  name: 'top_margin',
+  label: 'Top Margin',
+  description: 'Note: Negative margin will raise the section to overlap with the previous section. Leave blank for none.',
+  type: 'string',
+  options: [{
+    label: 'Negative XXL (-192px)',
+    value: '-mt-[192px]'
+  }, {
+    label: 'Negative XL (-96px)',
+    value: '-mt-[96px]'
+  }, {
+    label: 'Negative Large (-80px)',
+    value: '-mt-[80px]'
+  }, {
+    label: 'Negative Medium (-64px)',
+    value: '-mt-[64px]'
+  }, {
+    label: 'Negative Small (-32px)',
+    value: '-mt-[32px]'
+  }, {
+    label: 'Small (32px)',
+    value: 'mt-[32px]'
+  }, {
+    label: 'Medium (64px)',
+    value: 'mt-[64px]'
+  }, {
+    label: 'Large (80px)',
+    value: 'mt-[80px]'
+  }, {
+    label: 'XL (96px)',
+    value: 'mt-[96px]'
+  }, {
+    label: 'XXL (192px)',
+    value: 'mt-[192px]'
+  }]
+}, {
+  name: 'bottom_margin',
+  label: 'Bottom Margin',
+  type: 'string',
+  options: [{
+    label: 'Small (32px)',
+    value: 'mb-[32px]'
+  }, {
+    label: 'Medium (64px)',
+    value: 'mb-[64px]'
+  }, {
+    label: 'Large (80px)',
+    value: 'mb-[80px]'
+  }, {
+    label: 'XL (96px)',
+    value: 'mb-[96px]'
+  }, {
+    label: 'XXL (192px)',
+    value: 'mb-[192px]'
+  }]
+}];
+
 const staticSectionTemplates: Template<false>[] = [{
   name: 'free_text',
   label: 'Free Text',
@@ -215,7 +283,9 @@ const staticSectionTemplates: Template<false>[] = [{
   ui: {
     itemProps: (item) => {
       const size = _.findWhere(SpacerSizes, { value: item.size })?.label;
-      return { label: getLabel('Spacer', size) };
+      const bgcolor = _.findWhere(ColorOptionsBg, { value: item.background })?.label;
+      const color = _.findWhere(ColorOptionsBorder, { value: item.color })?.label;
+      return { label: getLabel('Spacer', size, bgcolor && 'Background', bgcolor, color && 'Line Color', color) };
     },
     defaultItem: {
       size: SpacerValues.small
@@ -370,6 +440,25 @@ const staticSectionTemplates: Template<false>[] = [{
           label: 'Text',
           type: 'rich-text',
           templates: richTextTemplates
+        }, {
+          name: 'size',
+          label: 'Paragraph Text Size',
+          type: 'string',
+          options: [{
+            label: 'Default (16px)',
+            value: ''
+          }, {
+            label: 'Large (18px)',
+            value: 'text-lg'
+          }, {
+            label: 'Small (14px)',
+            value: 'text-sm'
+          }]
+        }, {
+          name: 'padding',
+          label: 'Add side padding?',
+          description: 'If selected, will add a small buffer around the left and right of the text; for example if the text will be inside a border.',
+          type: 'boolean'
         }]
       }, {
         name: 'image',
@@ -617,12 +706,12 @@ const staticSectionTemplates: Template<false>[] = [{
 }, {
   name: 'feature_quote',
   label: 'Feature Quote',
-  fields: [{
-    name: 'background',
-    label: 'Background Color',
-    type: 'string',
-    options: ColorOptionsBg
-  }, {
+  ui: {
+    itemProps: (item) => {
+      return { label: getLabel('Feature Quote', item?.id || item?.attribution) };
+    }
+  },
+  fields: [...commonSectionFields, {
     name: 'text',
     label: 'Text Color',
     type: 'string',
