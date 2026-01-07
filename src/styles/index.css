@@ -127,10 +127,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-layout-alt h1, .bg-layout-alt h2, .bg-layout-alt h3, .bg-layout-alt h4, .bg-layout-alt h6 {
-  color: var(--color-content) !important;
+  color: var(--color-alt-content) !important;
 }
 
-.bg-layout h1, .bg-layout h2, .bg-layout h3, .bg-layout h4, .bg-layout h6 {
+.bg-layout .content-alt h1, .bg-layout .content-alt h2, .bg-layout .content-alt h3, .bg-layout .content-alt h4, .bg-layout .content-alt h6 {
   color: var(--color-content) !important;
 }
 
