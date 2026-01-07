@@ -20,10 +20,10 @@ import 'swiper/css/pagination';
 // Tell the browser to always check the freshness of the cache
 Astro.response.headers.set("Cache-Control", "public, max-age=0, must-revalidate");
 
-// Tell Netlify's CDN to treat it as fresh for 5 minutes, then for up to a week return a stale version
+// Tell Netlify's CDN to treat it as fresh for thirty seconds, then for up to a week return a stale version
 // while it revalidates. Use Durable Cache to minimize the need for serverless function calls.
 Astro.response.headers.set(
-  "Netlify-CDN-Cache-Control", "public, durable, s-maxage=300, stale-while-revalidate=604800"
+  "Netlify-CDN-Cache-Control", "public, durable, s-maxage=30, stale-while-revalidate=604800"
 );
 
 const branding = await fetchBranding();
