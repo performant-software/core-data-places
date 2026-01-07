@@ -91,16 +91,29 @@ const SectionTypes = {
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.multiColumn) && (
-      <Container>
-        <MultiColumn
-          buttonText={section.button_text}
-          textAlignment={section.text_alignment}
-          title={section.title}
-          url={section.url}
-          content={section.columns}
-          gap={section.gap}
-        />
-      </Container>
+      <>
+        { section.background_image && (
+          <img 
+            src={section.background_image} 
+            class='w-full h-full object-cover absolute inset-0'
+          /> 
+        ) }
+        { section.darken && (
+          <div
+            class='absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply'
+          /> 
+        ) }
+        <Container>
+          <MultiColumn
+            buttonText={section.button_text}
+            textAlignment={section.text_alignment}
+            title={section.title}
+            url={section.url}
+            content={section.columns}
+            gap={section.gap}
+          />
+        </Container>
+      </>
     )}
     { section?.__typename?.endsWith(SectionTypes.banner) && (
       <Banner
@@ -136,6 +149,7 @@ const SectionTypes = {
     { section?.__typename?.endsWith(SectionTypes.featureQuote) && ( 
       <FeatureQuote
         {...section}
+        backgroundImage={section.background_image}
       />
     )}
     { section?.__typename?.endsWith(SectionTypes.linkBanner) && ( 

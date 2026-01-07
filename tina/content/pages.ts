@@ -173,10 +173,10 @@ const commonSectionFields: TinaField<false>[] = [{
     value: 'mt-[80px]'
   }, {
     label: 'XL (96px)',
-    value: 'mt-[96px]'
+    value: 'mt-[64px] lg:mt-[96px]'
   }, {
     label: 'XXL (192px)',
-    value: 'mt-[192px]'
+    value: 'mt-[128px] lg:mt-[192px]'
   }]
 }, {
   name: 'bottom_margin',
@@ -193,10 +193,10 @@ const commonSectionFields: TinaField<false>[] = [{
     value: 'mb-[80px]'
   }, {
     label: 'XL (96px)',
-    value: 'mb-[96px]'
+    value: 'mb-[64px] lg:mb-[96px]'
   }, {
     label: 'XXL (192px)',
-    value: 'mb-[192px]'
+    value: 'mb-[128px] lg:mb-[192px]'
   }]
 }]
 
@@ -335,6 +335,14 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Text Color',
     type: 'string',
     options: ColorOptionsText
+  }, {
+    name: 'background_image',
+    label: 'Background Image',
+    type: 'image'
+  }, {
+    name: 'darken',
+    label: 'Darken Background Image?',
+    type: 'boolean'
   }, {
     name: 'columns',
     label: 'Columns',
@@ -734,6 +742,14 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Text Color',
     type: 'string',
     options: ColorOptionsText
+  }, {
+    name: 'background_image',
+    label: 'Background Image',
+    type: 'image'
+  }, {
+    name: 'darken',
+    label: 'Darken Background Image?',
+    type: 'boolean'
   }, {
     name: 'quote',
     label: 'Quotation Text',
