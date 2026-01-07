@@ -37,6 +37,9 @@ tmp/
 
 # TinaCMS content
 /content/
+/content-juel-main/
+/content-juel-ancestry/
+/content-juel-life/
 
 # Development config
 /public/config.dev*.json
@@ -45,3 +48,10 @@ tmp/
 *.code-workspace
 
 /src/components/custom/project/*
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
