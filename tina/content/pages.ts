@@ -164,13 +164,13 @@ const commonSectionFields: TinaField<false>[] = [{
     value: '-mt-[32px]'
   }, {
     label: 'Small (32px)',
-    value: 'mt-[32px]'
+    value: 'mt-[16px] lg:mt-[32px]'
   }, {
     label: 'Medium (64px)',
-    value: 'mt-[64px]'
+    value: 'mt-[32px] lg:mt-[64px]'
   }, {
     label: 'Large (80px)',
-    value: 'mt-[80px]'
+    value: 'mt-[48px] lg:mt-[80px]'
   }, {
     label: 'XL (96px)',
     value: 'mt-[64px] lg:mt-[96px]'
@@ -184,13 +184,13 @@ const commonSectionFields: TinaField<false>[] = [{
   type: 'string',
   options: [{
     label: 'Small (32px)',
-    value: 'mb-[32px]'
+    value: 'mb-[16px] lg:mb-[32px]'
   }, {
     label: 'Medium (64px)',
-    value: 'mb-[64px]'
+    value: 'mb-[32px] lg:mb-[64px]'
   }, {
     label: 'Large (80px)',
-    value: 'mb-[80px]'
+    value: 'mb-[48px] lg:mb-[80px]'
   }, {
     label: 'XL (96px)',
     value: 'mb-[64px] lg:mb-[96px]'
