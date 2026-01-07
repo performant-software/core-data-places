@@ -16,7 +16,7 @@ const Spacer = (props: SpacerProps) => (
       { 'my-3 lg:my-5': props.size === 'xs'},
       { 'my-4 lg:my-8': props.size === 'small' },
       { 'my-8 lg:my-16': props.size === 'medium' },
-      { 'my-16 lg:my-32': props.size === 'large' },
+      { 'my-16 lg:my-24': props.size === 'large' },
       toBackgroundClass(props.color)
     )}
   />
