@@ -195,6 +195,10 @@ h6 {
   font-variant: var(--Font-Variant-banner-header);
 }
 
+.detail-panel h1 {
+  font-size: var(--Font-Sizes-h4);
+}
+
 /*
  * Swiper styles
  */
