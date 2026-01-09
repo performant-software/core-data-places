@@ -19,6 +19,9 @@ const Fonts = [{
   label: 'Inter',
   value: 'Inter'
 }, {
+  label: 'Libre Bodoni',
+  value: 'Libre Bodoni'
+}, {
   label: 'Open Sans',
   value: 'Open Sans'
 }];
