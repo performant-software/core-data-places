@@ -232,4 +232,4 @@ An `x-typesense-api-key` header will need to be added to the request.
 
 ## Core Data Fields and Relationships
 
-To find the UUID values for Core Data user-defined fields and relationships, the "Identifier" column can be added to the respective lists within the Core Data application under Project Settings > Configure.
+To find the UUID values for Core Data user-defined fields and relationships, the "Identifier" column can be added to the respective lists within the Core Data application under Project Settings > Configure. 
