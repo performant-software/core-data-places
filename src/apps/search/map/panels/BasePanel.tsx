@@ -412,6 +412,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
   return (
     <aside
       className={clsx(
+        'detail-panel',
         'flex',
         'flex-col',
         'bg-white',
