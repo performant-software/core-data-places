@@ -204,7 +204,8 @@ describe('search', () => {
       test('type matches allowed values', () => {
         const types = [
           'list',
-          'select'
+          'select',
+          'range'
         ];
 
         expect(facet.type).toBeOneOf(types);
