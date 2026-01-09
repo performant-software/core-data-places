@@ -97,28 +97,32 @@ const Facets = (props: Props) => {
   }, [getFacetConfiguration]);
 
   return (
-    <aside
-      className={clsx(
-        { 'flex flex-col grow': props.open },
-        { 'hidden': !props.open },
-        props.className
-      )}
-    >
-      <div
-        className='flex justify-between items-center'
-      >
-        <h4
-          className='py-4 italic'
+    <>
+      { !!(sortedRangeAttributes?.length || sortedAttributes?.length) && (
+          <aside
+          className={clsx(
+            { 'flex flex-col grow': props.open },
+            { 'hidden': !props.open },
+            props.className
+          )}
         >
-          { t('filters') }
-        </h4>
-        <ClearRefinementsButton />
-      </div>
-      <CurrentRefinementsList />
-      { props.children }
-      { _.map(sortedRangeAttributes, (attribute) => renderFacet(attribute, TYPE_RANGE)) }
-      { _.map(sortedAttributes, (attribute) => renderFacet(attribute, TYPE_LIST)) }
-    </aside>
+          <div
+            className='flex justify-between items-center'
+          >
+            <h4
+              className='py-4 italic'
+            >
+              { t('filters') }
+            </h4>
+            <ClearRefinementsButton />
+          </div>
+          <CurrentRefinementsList />
+          { props.children }
+          { _.map(sortedRangeAttributes, (attribute) => renderFacet(attribute, TYPE_RANGE)) }
+          { _.map(sortedAttributes, (attribute) => renderFacet(attribute, TYPE_LIST)) }
+        </aside>
+      )}
+    </>
   );
 };
 
