@@ -66,7 +66,7 @@ const NavDropdown = (props: Props) => {
             ring-1 
             ring-black/5 
             focus:outline-hidden 
-            z-10
+            z-20
             py-3
           `}
           sideOffset={5}
