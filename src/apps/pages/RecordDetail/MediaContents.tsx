@@ -20,7 +20,7 @@ const MediaContents = (props: Props) => {
 
   return (
     <div className="py-6">
-      <h2 className="capitalize text-lg font-semibold mb-2">{t('relatedMedia', { count })}</h2>
+      <h4 className="capitalize italic mb-2">{t('relatedMedia', { count })}</h4>
       <div className='flex gap-6 flex-wrap'>
         {props.data.items && props.data.items.map(media => (
           <TranslationContext.Provider

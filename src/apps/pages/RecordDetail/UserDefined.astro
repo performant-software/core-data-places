@@ -11,7 +11,7 @@ const { t } = await getTranslations(lang);
   <div class="grid grid-cols-2">
     {Object.keys(record.user_defined).map(uuid => (
       !excludes.includes(uuid) && <div class="py-6">
-        <h2 class="capitalize font-semibold font-body">{t(uuid)}</h2>
+        <h4 class="capitalize italic">{t(uuid)}</h4>
         <div class="text-neutral-800 break-words font-body">
           <UserDefinedFieldView
             type={record.user_defined[uuid].type}
