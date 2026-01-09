@@ -31,7 +31,7 @@ export const getStaticPaths = async () => await getDetailPagePaths(ModelNames.ev
       if (event[field] && !excludes.includes(field)) {
         return (
           <div class='py-6'>
-            <h2 class='capitalize text-lg font-semibold'>{t(field)}</h2>
+            <h4 class='capitalize italic'>{t(field)}</h4>
             <div class='text-neutral-800'>
               <p>{FuzzyDateUtils.getDateView(event[field])}</p>
             </div>

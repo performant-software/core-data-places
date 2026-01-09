@@ -28,7 +28,7 @@ const showLinks = config.detail_pages?.models?.includes('events');
 ---
 {Object.keys(relationships).map((uuid) => (
   <div class='py-6 w-full'>
-    <h2 class='capitalize text-xl font-semibold font-header mb-2'>{t(uuid)}</h2>
+    <h4 class='capitalize italic mb-2'>{t(uuid)}</h4>
     <ul class='flex flex-col gap-4 list-disc ml-4'>
       {relationships[uuid].map((event) => (
         <li class='text-[22px] ml-2'>

@@ -22,7 +22,7 @@ const Facet = ({attribute, children, className, icon}: Props) => {
     if (items.length > 0) {
       setLabel(getFacetLabel(attribute, t, isInverse(attribute, items)))
     }
-  }, [items.length]);
+  }, [items, attribute, t]);
 
   return (
     <div
@@ -34,7 +34,7 @@ const Facet = ({attribute, children, className, icon}: Props) => {
       )}
     >
       <h2
-        className='py-3 font-semibold flex items-center gap-1'
+        className='py-3 !font-bold flex items-center gap-1 !text-sm !font-sans uppercase'
       >
         { icon && (
           <Icon
