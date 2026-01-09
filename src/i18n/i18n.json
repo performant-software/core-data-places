@@ -438,5 +438,9 @@
   "no": {
     "tinaLabel": "No",
     "defaultValue": "No"
+  },
+  "filterResultsBy": {
+    "tinaLabel": "Filter Results by",
+    "defaultValue": "Filter Results by"
   }
 }

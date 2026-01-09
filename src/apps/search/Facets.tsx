@@ -110,7 +110,7 @@ const Facets = (props: Props) => {
         <h2
           className='py-4 font-semibold text-lg'
         >
-          { t('filters') }
+          { t('filterResultsBy') }
         </h2>
         <ClearRefinementsButton />
       </div>

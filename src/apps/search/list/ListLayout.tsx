@@ -17,31 +17,36 @@ const ListLayout = (props: Props) => {
   const { t } = useContext(TranslationContext);
 
   return (
-    <div className='flex flex-row bg-neutral-50'>
-      <div className='w-[300px]'>
+    <>
+      <div className='w-full p-4 text-4xl uppercase flex justify-between items-center'>
+        <h1 className='uppercase first-letter:text-5xl text-3xl'>{t(config.name)}</h1>
         <SearchBox
           placeholder={t('search')}
           classNames={{
             root: 'p-4',
             form: 'relative',
-            input: 'block w-full rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500',
+            input: 'rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500',
             submit: 'absolute inset-y-0 right-0 flex items-center pr-3',
             reset: 'absolute inset-y-0 right-8 flex items-center',
             loadingIndicator: 'absolute inset-y-0 right-16 flex items-center'
           }}
         />
-        <Facets
-          className='px-6 py-0'
-          config={config}
-          open
-        />
       </div>
-      <div className='flex-1 p-6'>
-        <SortBy />
-        <Hits lang={props.lang} />
-        <Pagination />
+      <div className='flex'>
+        <div className='w-[300px]'>
+          <Facets
+            className='px-6 py-0'
+            config={config}
+            open
+          />
+        </div>
+        <div className='flex-1 p-6'>
+          <SortBy />
+          <Hits lang={props.lang} />
+          <Pagination />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
