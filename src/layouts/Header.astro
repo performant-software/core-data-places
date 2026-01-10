@@ -28,7 +28,7 @@ const {
 >
   <div
     class={clsx(
-      'hidden lg:flex flex-row justify-between items-center px-6 py-3 h-[72px] w-full',
+      'hidden xl:flex flex-row justify-between items-center px-12 py-3 h-[72px] w-full',
       { '3xl:max-w-(--breakpoint-3xl)': !fullscreen }
     )}
   >
@@ -63,8 +63,9 @@ const {
       />
     </NavBar>
   </div>
-  
+
   <MobileHeader
+    image={image}
     items={items}
     title={title}
     client:load
