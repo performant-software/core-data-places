@@ -199,6 +199,16 @@ h6 {
   font-size: var(--Font-Sizes-h4);
 }
 
+.custom-footer .prose {
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .custom-footer .prose {
+    text-align: inherit;
+  }
+}
+
 /*
  * Swiper styles
  */
