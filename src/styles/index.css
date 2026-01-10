@@ -170,6 +170,24 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-secondary) !important;
 }
 
+.banner-header {
+  font-variant: var(--Font-Variant-banner-header);
+}
+
+.detail-panel h1 {
+  font-size: var(--Font-Sizes-h4);
+}
+
+.custom-footer .prose {
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .custom-footer .prose {
+    text-align: inherit;
+  }
+}
+
 /*
  * Swiper styles
  */
