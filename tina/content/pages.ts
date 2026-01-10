@@ -580,16 +580,6 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Background Image Alt Text',
     type: 'string'
   }, {
-    name: 'clip',
-    label: 'Clip image to content height?',
-    type: 'boolean'
-  }, {
-    name: 'background',
-    label: 'Background Color',
-    description: 'Will display if no image is provided.',
-    type: 'string',
-    options: ColorOptions
-  }, {
     name: 'darken',
     label: 'Darken Background?',
     type: 'boolean'
