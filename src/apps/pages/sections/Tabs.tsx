@@ -35,7 +35,7 @@ const Tabs = (props: TabsProps) => {
         'px-6 sm:px-12 md:px-16 lg:px-32 2xl:mx-auto max-w-(--breakpoint-2xl)',
       )}>
         <TabList aria-label='Tabs' className={clsx(
-          '-mb-px flex h-[65px] overflow-x-auto',       
+          '-mb-px flex h-[65px] overflow-x-auto relative z-30',       
           { 'border-b-2': !raise }
         )}>
           {
