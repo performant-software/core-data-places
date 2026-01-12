@@ -159,6 +159,10 @@
     "tinaLabel": "1 result for <query>",
     "defaultValue": "1 result for {{query}}"
   },
+  "ofResults": {
+    "tinaLabel": "< start >-< end > of < total > result(s)",
+    "defaultValue": "{{start}}-{{end}} of {{total}} result(s)"
+  },
   "filters": {
     "tinaLabel": "Filters",
     "defaultValue": "Filters"
@@ -440,7 +444,7 @@
     "defaultValue": "No"
   },
   "filterResultsBy": {
-    "tinaLabel": "Filter Results by",
-    "defaultValue": "Filter Results by"
+    "tinaLabel": "Filter Results by:",
+    "defaultValue": "Filter Results by:"
   }
 }
