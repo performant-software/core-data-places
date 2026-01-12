@@ -11,6 +11,7 @@ import TextImage from '@apps/pages/sections/TextImage';
 import Container from '@components/Container.astro';
 import clsx from 'clsx';
 import _ from 'underscore';
+import LinksBanner from '@apps/pages/sections/LinksBanner.astro';
 import { toBackgroundClass } from '@utils/pageBuilder';
 
 const { sections, transparent, home } = Astro.props;
@@ -20,6 +21,7 @@ const SectionTypes = {
   carousel: 'Carousel',
   freeText: 'Free_text',
   images: 'Images',
+  linkBanner: 'Link_banner',
   multiColumn: 'Multi_column',
   featureQuote: 'Feature_quote',
   spacer: 'Spacer',
@@ -132,6 +134,11 @@ const SectionTypes = {
     { section?.__typename?.endsWith(SectionTypes.featureQuote) && ( 
       <FeatureQuote
         {...section}
+      />
+    )}
+    { section?.__typename?.endsWith(SectionTypes.linkBanner) && ( 
+      <LinksBanner
+       {...section}
       />
     )}
   </section>
