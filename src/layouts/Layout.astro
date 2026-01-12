@@ -31,20 +31,39 @@ const { header, footer } = branding;
 
 const { font_header: fontHeader, font_body: fontBody } = branding;
 
-const colorPrimary = branding.primary_color;
-const textPrimary = useBlackText(colorPrimary) ? 'var(--color-black)' : 'var(--color-white)';
+const heroHeaderSize = branding.header_size || '52px';
+const pageHeaderSize = branding.page_header_size || '48px';
+const headerFontWeight = branding.header_font_weight || '400';
 
+//dark and light mode default text color
+const content = branding.content_color || 'var(--color-black)';
+const contentInverse = branding.content_inverse || 'var(--color-white)';
+const contentAlternate = branding.content_alternate || 'var(--color-neutral-dark)';
+const contentInverseAlternate = branding.content_inverse_alternate || 'var(--color-neutral-light)';
+
+const colorPrimary = branding.primary_color;
 const colorSecondary = branding.secondary_color;
-const textSecondary = !colorSecondary || useBlackText(colorSecondary) ? 'var(--color-black)' : 'var(--color-white)';
+const colorTertiary = branding.tertiary_color || 'var(--color-black)';
+
+//these are for use in layout components like header and footer
+const primaryContent = useBlackText(colorPrimary) ? content : contentInverse;
+const secondaryContent = !colorSecondary || useBlackText(colorSecondary) ? content : contentInverse;
+const tertiaryContent = !colorTertiary || useBlackText(colorTertiary) ? content : contentInverse;
 
 const colorLayout = branding.background_color || 'var(--color-white)';
+const layoutContent = !branding.background_color || useBlackText(branding.background_color) ? content : contentInverse;
+const layoutContentAlternate = !branding.background_color || useBlackText(branding.background_color) ? contentAlternate : contentInverseAlternate;
+
+const colorLayoutAlternate = branding.background_alternate || 'var(--color-neutral-light)';
+const layoutAlternateContent = !branding.background_alternate || useBlackText(branding.background_alternate) ? content : contentInverse;
+const layoutAlternateContentAlternate = !branding.background_alternate || useBlackText(branding.background_alternate) ? contentAlternate : contentInverseAlternate; //this naming scheme could be better....
 
 const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
 
 const pages = await getPages(currentLocale);
 
-const { footer: includeFooter, fullscreen, name, title, t, tab } = Astro.props;
+const { footer: includeFooter, fullscreen, name, title, t, tab, transparent } = Astro.props;
 
 const getNavItems = async () => {
   const tinaNavbar = await fetchNavbar(currentLocale);
@@ -152,11 +171,23 @@ const navItems = await getNavItems();
       define:vars={{
         customFontHeader: fontHeader,
         customFontBody: fontBody,
+        customHeroHeaderSize: heroHeaderSize,
+        customPageHeaderSize: pageHeaderSize,
+        customHeaderFontWeight: headerFontWeight,
+        customLayout: colorLayout,
+        customLayoutAlternate: colorLayoutAlternate,
         customColorPrimary: colorPrimary,
         customColorSecondary: colorSecondary,
-        customTextPrimary: textPrimary,
-        customTextSecondary: textSecondary,
-        customColorLayout: colorLayout
+        customColorTertiary: colorTertiary,
+        customPrimaryContent: primaryContent,
+        customSecondaryContent: secondaryContent,
+        customTertiaryContent: tertiaryContent,
+        customContent: layoutContent,
+        customContentAlternate: layoutContentAlternate,
+        customAlternateContent: layoutAlternateContent,
+        customAlternateContentAlternate: layoutAlternateContentAlternate,
+        customText: content,
+        customTextInverse: contentInverse
       }}
     >
     </style>
@@ -173,6 +204,7 @@ const navItems = await getNavItems();
       items={navItems}
       pages={pages}
       title={header?.hide_title ? undefined : branding.title}
+      transparent={transparent}
     />
     <NotificationPanel
       client:only='react'

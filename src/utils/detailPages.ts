@@ -1,6 +1,6 @@
 import ServiceFactory from '@services/coreData/factory';
 import { CoreData as CoreDataUtils } from '@performant-software/core-data/ssr';
-import config from '@config';
+import config from '@config' with { type: 'json' };
 
 type Models = 'events' | 'instances' | 'items' | 'mediaContents' | 'organizations' | 'people' | 'places' | 'works';
 

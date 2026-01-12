@@ -13,15 +13,18 @@ import {
   LabelList,
   TooltipContentProps
 } from 'recharts';
-import config from '@config';
-import _ from 'underscore';
+import config from '@config' with { type: 'json' };
 
 const CustomTooltip = ({ active, payload, label }: TooltipContentProps<string | number, string>) => {
   const isVisible = active && payload && payload.length;
   const start = useMemo(() => (new Date(payload[0]?.value[0]*1000).getFullYear()), [payload]);
   const end = useMemo(() => (new Date(payload[0]?.value[1]*1000).getFullYear()), [payload]);
+
   return (
-    <div className="custom-tooltip bg-white rounded-md drop-shadow-xl p-4 flex flex-col gap-2 not-prose border border-primary" style={{ visibility: isVisible ? 'visible' : 'hidden' }}>
+    <div
+      className="custom-tooltip bg-white rounded-md drop-shadow-xl p-4 flex flex-col gap-2 not-prose border border-primary"
+      style={{ visibility: isVisible ? 'visible' : 'hidden' }}
+    >
       {isVisible && (
         <>
           <p className="label">{label}</p>

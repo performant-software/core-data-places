@@ -9,10 +9,12 @@ import Spacer from '@apps/pages/sections/Spacer.astro';
 import Tabs from '@apps/pages/sections/Tabs.astro';
 import TextImage from '@apps/pages/sections/TextImage';
 import Container from '@components/Container.astro';
+import clsx from 'clsx';
 import _ from 'underscore';
 import LinksBanner from '@apps/pages/sections/LinksBanner.astro';
+import { toBackgroundClass } from '@utils/pageBuilder';
 
-const { sections } = Astro.props;
+const { sections, transparent, home } = Astro.props;
 
 const SectionTypes = {
   banner: 'Banner',
@@ -27,9 +29,15 @@ const SectionTypes = {
   textImage: 'Text_image',
 };
 ---
-{ _.map(sections, section => (
+{ _.map(sections, (section, idx) => (
   <section
-    class='relative'
+    class={clsx(
+      'page-builder',
+      'relative',
+      toBackgroundClass(section.background),
+      section.text,
+      { '-mt-20': transparent && idx === 0 }
+    )}
   >
     { section?.__typename?.endsWith(SectionTypes.carousel) && (
       <Container>
@@ -101,6 +109,8 @@ const SectionTypes = {
         darken={section.darken}
         fullWidth={section.full_width}
         height={section.height}
+        hero={section.hero}
+        home={home}
         image={section.background_image}
         imageAlt={section.background_image_alt}
         search={section.search}
