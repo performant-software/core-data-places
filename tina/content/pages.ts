@@ -75,6 +75,9 @@ export const ColorOptionsButton = [{
 }, {
   label: 'Secondary',
   value: ColorValues.secondary
+}, {
+  label: 'Main Background',
+  value: ColorValues.layout
 }];
 
 export const ColorOptions = [{
