@@ -36,7 +36,9 @@ const SectionTypes = {
       'relative',
       toBackgroundClass(section.background),
       section.text,
-      { '-mt-20': transparent && idx === 0 }
+      section.top_margin,
+      section.bottom_margin,
+      { '-mt-[72px]': transparent && idx === 0 }
     )}
   >
     { section?.__typename?.endsWith(SectionTypes.carousel) && (
