@@ -30,10 +30,9 @@ const Tabs = (props: TabsProps) => {
   }, [props.children]);
 
   return (
-    <TabGroup className={clsx({ '-mt-[60px]': raise })}>
+    <TabGroup>
       <div className={clsx(
         'px-6 sm:px-12 md:px-16 lg:px-32 2xl:mx-auto max-w-(--breakpoint-2xl)',
-        { 'border-b border-gray-200': !raise }
       )}>
         <TabList aria-label='Tabs' className={clsx(
           '-mb-px flex h-[65px] overflow-x-auto relative z-30',       
@@ -47,15 +46,15 @@ const Tabs = (props: TabsProps) => {
               >
                 {({ hover, selected }) => ( 
                   <button className={clsx(
-                    'whitespace-nowrap px-8 py-4',
-                    { 'border-b-2': !raise },
+                    'lg:whitespace-nowrap px-3 lg:px-6 xl:px-8 py-4 focus:outline-none',
+                    { '-mb-[2px] border-b-2': !raise },
                     selected && activeBgClass,
                     !selected && inactiveBgClass,
-                    (!selected || !activeBgClass) && raise && invertText && 'text-white', //when other open PRs are merged this should be updated to text-text-light or whatever
-                    { 'border-secondary/60 text-secondary/60': hover && !raise },
-                    { 'border-secondary text-secondary': selected && !raise },
+                    (!selected || !activeBgClass) && raise && invertText && 'text-text-inverse',
+                    { 'border-secondary/60 border-b-2 text-secondary/60': hover && !raise },
+                    { 'border-secondary border-b-2 text-secondary': selected && !raise },
                     { 'cursor-default': selected },
-                    { 'font-serif italic text-xl font-normal': textStyle === 'italic' },
+                    { 'font-serif italic sm:text-lg lg:text-xl font-normal': textStyle === 'italic' },
                     { 'text-sm text-gray-500 uppercase font-medium': textStyle === 'uppercase' }
                   )}>
                     { tab.label }

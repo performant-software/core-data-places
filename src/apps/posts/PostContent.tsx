@@ -1,5 +1,4 @@
 import PlaceInsert from '@apps/posts/PlaceInsert';
-import Byline from '@components/Byline';
 import IframeEmbed from '@components/IframeEmbed';
 import MediaInsert from '@components/MediaInsert'
 import TranslationContext from '@contexts/TranslationContext';
@@ -17,7 +16,6 @@ interface PostContentProps {
   content: TinaMarkdownContent;
   title: string;
   author?: string;
-  date?: string | number | Date;
 }
 
 const PostContent = (props: PostContentProps) => {
@@ -35,12 +33,6 @@ const PostContent = (props: PostContentProps) => {
           <div
             className='w-full'
           >
-            <h1
-              className='text-3xl py-6'
-            >
-              { props.title }
-            </h1>
-            { (props.author || props.date) && <Byline author={props.author} date={props.date} /> }
             <article
               className='prose prose-lg max-w-none w-full'
             >

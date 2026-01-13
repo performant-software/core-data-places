@@ -42,9 +42,22 @@ const MobileHeader = (props: Props) => {
             )}
           >
             <a
+              className='flex flex-row items-center gap-6'
               href='/'
             >
-              { props.title }
+              { props.image && (
+                <img
+                  className='h-12'
+                  src={props.image}
+                />
+              )}
+              { props.title && (
+                <h1
+                  className='!text-2xl font-medium'
+                >
+                  { props.title }
+                </h1>
+              )}
             </a>
             { props.children }
             <Disclosure.Button
@@ -84,21 +97,21 @@ const MobileHeader = (props: Props) => {
               className='xl:hidden bg-primary z-10'
             >
               <div
-                className='flex flex-col items-center space-y-1 pb-3 pt-2'
+                className='flex flex-col items-center space-y-3 pb-4 pt-2'
               >
                 { _.map(props.items, (item) => (
                   <>
                     { item.options && (
                       <Disclosure.Button
-                        className='block bg-primary hover:bg-white hover:text-black py-4 text-base text-center font-thin'
+                        className='block w-full bg-primary pt-3 text-base text-center font-thin'
                       >
                         { item.label }
                         <div
-                          className='flex flex-col gap-y-4 py-3'
+                          className='flex flex-col pt-3'
                         >
                           { _.map(item.options, (option) => (
                             <a
-                              className='font-bold'
+                              className='font-bold w-full py-3 hover:bg-[linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15))] transition duration-300'
                               href={option.href}
                             >
                               { option.label }
@@ -110,7 +123,7 @@ const MobileHeader = (props: Props) => {
                     { item.href && (
                       <Disclosure.Button
                         as='a'
-                        className='block bg-primary hover:bg-white hover:text-black py-4 text-base text-center font-bold'
+                        className='block bg-primary w-full hover:bg-[linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15))] transition duration-300 py-3 text-base text-center font-bold'
                         href={item.href}
                       >
                         { item.label }
