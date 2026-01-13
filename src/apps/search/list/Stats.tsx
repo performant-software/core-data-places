@@ -12,7 +12,7 @@ const Stats = () => {
 
   return (
     <p className='text-nowrap'>
-      {t('ofResults', { start, end, total: formattedTotal })}
+      { t('ofResults', { start, end, total: formattedTotal }) }
     </p>
   );
 };

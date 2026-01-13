@@ -18,15 +18,15 @@ const ListLayout = (props: Props) => {
   const { t } = useContext(TranslationContext);
 
   return (
-    <>
-      <div className='w-full p-4 uppercase flex justify-between items-center flex-wrap'>
+    <div className='md:px-8'>
+      <div className='w-full p-4 uppercase flex justify-between items-center flex-wrap border-b border-neutral-200'>
         <h1 className='uppercase first-letter:text-4xl text-2xl'>{t(config.name)}</h1>
         <SearchBox
           placeholder={t('search')}
           classNames={{
             root: 'p-4 w-full max-w-[720px]',
             form: 'relative',
-            input: 'rounded-lg border border-gray-300 bg-white py-2 pl-12 pr-10 text-md w-full placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500',
+            input: 'rounded-[5px] border border-neutral-200 bg-white py-2 pl-12 pr-10 text-md w-full placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500',
             submit: 'absolute inset-y-4 left-4 flex items-center',
             submitIcon: 'w-4 h-4',
             reset: 'absolute inset-y-0 right-4 flex items-center',
@@ -53,7 +53,7 @@ const ListLayout = (props: Props) => {
           <Pagination />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

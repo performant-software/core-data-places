@@ -21,10 +21,9 @@ const ImageHit = (props: HitComponentProps) => {
         <ul className='px-6 py-3 flex flex-col w-full gap-y-2'>
           {props.attributes.map(att => (
             <li
-              className='flex items-center gap-2 text-sm'
+              className='italic text-sm'
               key={att.name}
             >
-              <span className='uppercase text-black/50 text-xs'>{att.label}</span>
               {props.highlightComponent
                 ? <props.highlightComponent hit={props.hit} attribute={att.name}/>
                 : <span>{att.value}</span>
@@ -39,8 +38,6 @@ const ImageHit = (props: HitComponentProps) => {
 
 ImageHit.propTypes = {
   attributes: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string,
-    icon: PropTypes.string,
     name: PropTypes.string,
     value: PropTypes.string,
   })),
