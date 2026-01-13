@@ -8,7 +8,7 @@ const LABEL_SEPARATOR = ': ';
  *
  * @param args
  */
-const getLabel = (...args) => {
+export const getLabel = (...args) => {
   return _.compact(args).join(LABEL_SEPARATOR);
 };
 
@@ -45,7 +45,7 @@ const SpacerSizes = [{
   value: SpacerValues.large
 }];
 
-const ColorOptionsBg = [{
+export const ColorOptionsBg = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
@@ -106,7 +106,7 @@ export const ColorOptions = [{
   value: ColorValues.layoutAlternate
 }];
 
-const richTextTemplates: RichTextTemplate<false>[] = [{
+export const richTextTemplates: RichTextTemplate<false>[] = [{
   name: 'spacer',
   label: 'Spacer',
   fields: [{
