@@ -18,7 +18,7 @@ const GridHit = (props: HitComponentProps) => {
           src={props.hit.thumbnail}
         />
       )}
-      <div className='px-6 py-3 flex-grow'>
+      <div className='pt-4 pb-3 px-8 flex-shrink'>
         <div>
           {props.tags?.map(tg => (
             <Pill
@@ -36,10 +36,10 @@ const GridHit = (props: HitComponentProps) => {
         }
       </div>
       {props.attributes.length > 0 && (
-        <ul className='px-6 py-3 flex flex-col w-full gap-y-2'>
+        <ul className='py-3 px-8 flex flex-col w-full gap-y-2'>
           {props.attributes.map(att => (
             <li
-              className='flex items-center gap-2 text-sm'
+              className='flex items-center gap-2 text-sm font-semibold'
               key={att.name}
             >
               <span className='uppercase text-black/50 text-xs'>{att.label}</span>
@@ -52,7 +52,7 @@ const GridHit = (props: HitComponentProps) => {
         </ul>
       )}
       {relationshipUuids.length > 0 && (
-        <ul className='px-6 py-3 flex flex-col w-full'>
+        <ul className='pt-3 pb-4 px-8 flex flex-col w-full'>
           {relationshipUuids.map(uuid => (
             <li
               className='flex items-center justify-between gap-2 text-[13px]'

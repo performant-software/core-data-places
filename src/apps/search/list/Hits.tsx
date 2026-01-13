@@ -1,5 +1,5 @@
 import { useHits } from 'react-instantsearch';
-import GridHit from '@components/custom/project/GridHit'
+import GridHit from '@components/custom/default/GridHit'
 import ImageHit from '@components/custom/project/ImageHit'
 import ListHit from '@components/custom/project/ListHit'
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
