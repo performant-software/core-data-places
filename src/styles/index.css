@@ -212,6 +212,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .banner-header {
   font-variant: var(--Font-Variant-banner-header);
+  font-size: var(--Font-Sizes-CTA-header);
+}
+
+.banner-header.banner-hero {
+  font-size: var(--Font-Sizes-page-header);
+}
+
+.banner-header.banner-hero.banner-home {
+  font-size: var(--Font-Sizes-hero-header);
 }
 
 .detail-panel h1 {
