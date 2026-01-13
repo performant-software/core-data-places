@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Baskervville+SC:wght@400..700&family=Baskervville:ital,wght@0,400..700;1,400..700&display=swap&family=Afacad:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Crimson+Text+SemiBold:ital,wght@0,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baskervville+SC:wght@400..700&family=Baskervville:ital,wght@0,400..700;1,400..700&display=swap&family=Afacad:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Crimson+Text+SemiBold:ital,wght@0,600&family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&display=swap');
 
 @import 'tailwindcss';
 @import '@performant-software/core-data/tailwind.css';
@@ -113,7 +113,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-content) !important;
 }
 
-.bg-layout h1, .bg-layout h2, .bg-layout h3, .bg-layout h4, .bg-layout h6 {
+.bg-layout :not(:where(.bg-primary)) .multicolumn h1, .bg-layout :not(:where(.bg-primary)) .multicolumn h2, .bg-layout :not(:where(.bg-primary)) .multicolumn h3, .bg-layout :not(:where(.bg-primary)) .multicolumn h4, .bg-layout :not(:where(.bg-primary)) .multicolumn h6 {
   color: var(--color-content) !important;
 }
 
@@ -170,6 +170,24 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-secondary) !important;
 }
 
+.banner-header {
+  font-variant: var(--Font-Variant-banner-header);
+}
+
+.detail-panel h1 {
+  font-size: var(--Font-Sizes-h4);
+}
+
+.custom-footer .prose {
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .custom-footer .prose {
+    text-align: inherit;
+  }
+}
+
 /*
  * Swiper styles
  */
@@ -183,4 +201,8 @@ h1, h2, h3, h4, h5, h6 {
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
   color: inherit;
   font-weight: var(--font-weight-header);
+}
+
+.prose :where(strong) {
+  color: inherit;
 }

@@ -57,6 +57,7 @@ const NavDropdown = (props: Props) => {
             flex 
             flex-col 
             mt-1
+            min-w-[200px]
             rounded-md 
             bg-white 
             text-base
@@ -65,8 +66,7 @@ const NavDropdown = (props: Props) => {
             ring-1 
             ring-black/5 
             focus:outline-hidden 
-            sm:text-sm 
-            z-10
+            z-20
             py-3
           `}
           sideOffset={5}

@@ -1,10 +1,11 @@
 ---
 import { getTranslations } from '@backend/i18n';
-import Card from '@components/Card.astro';
+import Card from '@components/Card';
 import RichText from '@apps/pages/sections/RichText.astro';
 import Spacer from './Spacer.astro';
 import clsx from 'clsx';
-import { toTextClass, toBorderClass } from '@root/src/utils/pageBuilder';
+import { toBorderClass } from '@root/src/utils/pageBuilder';
+import _ from 'underscore';
 
 const { item } = Astro.props;
 
@@ -16,6 +17,7 @@ const BlockTypes = {
   counter: 'Counter',
   image: 'Image',
   imageLink: 'Image_link',
+  linkRow: 'Link_row',
   quote: 'Quote',
   text: 'Richtext'
 }
@@ -54,13 +56,17 @@ const BlockTypes = {
 { item.__typename.endsWith(BlockTypes.card) && ( 
   <Card
     alt={item.alt}
-    author={item.author}
-    blur={item.blurb}
+    blurb={item.blurb}
     category={item.category}
     date={item.date}
     imageUrl={item.image}
     slug={item.slug}
-    t={t}
+    labels={{
+      byline: item.author
+        ? t('by', { author: item.author })
+        : null,
+      readMore: t('readMore')
+    }}
     title={item.title}
   />
 )}
@@ -100,5 +106,17 @@ const BlockTypes = {
       <p class='italic'>{ item.type || 'records' }</p>
     </div>
     <div>{ item.description }</div>
+  </div>
+)}
+
+{ item.__typename.endsWith(BlockTypes.linkRow) && ( 
+  <div class='flex flex-row font-semibold font-sans gap-5 py-1.5'>
+    {
+      _.map(item.links, (link) => (
+        <a href={link.url} class='no-underline hover:underline underline-offset-4 decoration-2'>
+          { link.label }
+        </a>
+      ))
+    }
   </div>
 )}

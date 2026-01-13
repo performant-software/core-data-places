@@ -22,7 +22,7 @@ export const toBackgroundClass = (color: string) => {
     case 'layout_alternate':
       return 'bg-layout-alt';
     default:
-      return 'bg-layout';
+      return '';
   } 
 };
 
