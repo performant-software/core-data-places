@@ -139,7 +139,8 @@ const SectionTypes = {
     )}
     { section?.__typename?.endsWith(SectionTypes.linkBanner) && ( 
       <LinksBanner
-       {...section}
+        {...section}
+        linkBackground={section.link_background}
       />
     )}
   </section>
