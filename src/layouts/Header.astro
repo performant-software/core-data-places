@@ -22,13 +22,13 @@ const {
 
 <div
   class={clsx(
-    'flex flex-row justify-center w-full z-20 text-text-primary',
+    'flex flex-row justify-center w-full z-10 text-text-primary',
     { 'bg-primary': !transparent }
   )}
 >
   <div
     class={clsx(
-      'hidden lg:flex flex-row justify-between items-center px-6 py-5 h-[80px] w-full',
+      'hidden xl:flex flex-row justify-between items-center px-12 py-3 h-[72px] w-full',
       { '3xl:max-w-(--breakpoint-3xl)': !fullscreen }
     )}
   >
@@ -39,7 +39,7 @@ const {
       { image && (
         <img
           alt={imageAlt}
-          class='h-10'
+          class='h-12'
           src={image}
         />
       )}
@@ -52,7 +52,7 @@ const {
       )}
     </a>
     <NavBar
-      className='flex flex-row gap-x-12 pe-10 align-baseline justify-around'
+      className='flex flex-row gap-x-12 align-baseline justify-around'
       items={items}
     >
       <LanguagePicker
@@ -63,8 +63,9 @@ const {
       />
     </NavBar>
   </div>
-  
+
   <MobileHeader
+    image={image}
     items={items}
     title={title}
     client:load
@@ -72,7 +73,7 @@ const {
     <LanguagePicker
       locales={locales}
       currentLocale={currentLocale}
-      currentUrl={currentUrl}
+      currentUrl={currentUrl.pathname}
     />
   </MobileHeader>
 </div>

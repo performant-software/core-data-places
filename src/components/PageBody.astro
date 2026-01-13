@@ -38,7 +38,7 @@ const SectionTypes = {
       section.text,
       section.top_margin,
       section.bottom_margin,
-      { '-mt-20': transparent && idx === 0 }
+      { '-mt-[72px]': transparent && idx === 0 }
     )}
   >
     { section?.__typename?.endsWith(SectionTypes.carousel) && (
@@ -125,7 +125,7 @@ const SectionTypes = {
     { section?.__typename?.endsWith(SectionTypes.tabs) && ( 
         <Tabs
           tabs={section.tabs}
-          raise={section.raise}
+          raise={section.top_margin && section.top_margin.startsWith('-')}
           activeBg={section.active_bg}
           inactiveBg={section.inactive_bg}
           textStyle={section.text_style}
