@@ -6,6 +6,7 @@ import Pagination from '@apps/search/list/Pagination';
 import { useContext } from 'react';
 import TranslationContext from '@contexts/TranslationContext';
 import SortBy from '@apps/search/list/SortBy';
+import Stats from '@apps/search/list/Stats';
 
 interface Props {
   lang: string;
@@ -17,29 +18,40 @@ const ListLayout = (props: Props) => {
   const { t } = useContext(TranslationContext);
 
   return (
-    <div className='flex flex-row bg-neutral-50'>
-      <div className='w-[300px]'>
+    <div className='md:px-8'>
+      <div className='w-full uppercase flex justify-between items-center flex-wrap border-b border-neutral-200'>
+        <h1 className='uppercase first-letter:text-4xl text-2xl'>{t(config.name)}</h1>
         <SearchBox
           placeholder={t('search')}
           classNames={{
-            root: 'p-4',
+            root: 'p-4 w-full max-w-[720px]',
             form: 'relative',
-            input: 'block w-full rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500',
-            submit: 'absolute inset-y-0 right-0 flex items-center pr-3',
-            reset: 'absolute inset-y-0 right-8 flex items-center',
-            loadingIndicator: 'absolute inset-y-0 right-16 flex items-center'
+            input: 'rounded-[5px] border border-neutral-200 bg-white py-2 pl-12 pr-10 text-md w-full placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500',
+            submit: 'absolute inset-y-4 left-4 flex items-center',
+            submitIcon: 'w-4 h-4',
+            reset: 'absolute inset-y-0 right-4 flex items-center',
+            resetIcon: 'w-3 h-3',
+            loadingIndicator: 'absolute inset-y-7 left-3 flex items-center',
+            loadingIcon: 'w-4 h-4'
           }}
         />
-        <Facets
-          className='px-6 py-0'
-          config={config}
-          open
-        />
       </div>
-      <div className='flex-1 p-6'>
-        <SortBy />
-        <Hits lang={props.lang} />
-        <Pagination />
+      <div className='flex'>
+        <div className='w-[300px]'>
+          <Facets
+            className='py-0'
+            config={config}
+            open
+          />
+        </div>
+        <div className='flex-1 p-6'>
+          <div className='flex justify-between items-center mb-4'>
+            <Stats />
+            <SortBy />
+          </div>
+          <Hits lang={props.lang} />
+          <Pagination />
+        </div>
       </div>
     </div>
   );
