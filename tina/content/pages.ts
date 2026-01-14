@@ -154,7 +154,7 @@ export const richTextTemplates: RichTextTemplate<false>[] = [{
   }]
 }];
 
-const contactForm = {
+const contactForm: Template = {
   name: 'contact_form',
   label: 'Contact Form',
   fields: [{
