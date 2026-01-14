@@ -8,7 +8,7 @@ const LABEL_SEPARATOR = ': ';
  *
  * @param args
  */
-const getLabel = (...args) => {
+export const getLabel = (...args) => {
   return _.compact(args).join(LABEL_SEPARATOR);
 };
 
@@ -45,7 +45,7 @@ const SpacerSizes = [{
   value: SpacerValues.large
 }];
 
-const ColorOptionsBg = [{
+export const ColorOptionsBg = [{
   label: 'Primary',
   value: ColorValues.primary
 }, {
@@ -75,6 +75,9 @@ export const ColorOptionsButton = [{
 }, {
   label: 'Secondary',
   value: ColorValues.secondary
+}, {
+  label: 'Main Background',
+  value: ColorValues.layout
 }];
 
 export const ColorOptions = [{
@@ -103,7 +106,7 @@ export const ColorOptions = [{
   value: ColorValues.layoutAlternate
 }];
 
-const richTextTemplates: RichTextTemplate<false>[] = [{
+export const richTextTemplates: RichTextTemplate<false>[] = [{
   name: 'spacer',
   label: 'Spacer',
   fields: [{
@@ -222,7 +225,12 @@ const commonSectionFields: TinaField<false>[] = [{
 const staticSectionTemplates: Template<false>[] = [{
   name: 'free_text',
   label: 'Free Text',
-  fields: [{
+  ui: {
+    itemProps: (item) => {
+      return { label: getLabel('Free Text', item?.id) };
+    }
+  },
+  fields: [...commonSectionFields, {
     name: 'body',
     label: 'Body',
     type: 'rich-text',
@@ -237,7 +245,7 @@ const staticSectionTemplates: Template<false>[] = [{
       return { label: getLabel('Images', item?.title) };
     }
   },
-  fields: [{
+  fields: [...commonSectionFields, {
     name: 'title',
     label: 'Title',
     type: 'string'
@@ -285,7 +293,7 @@ const staticSectionTemplates: Template<false>[] = [{
       size: SpacerValues.small
     }
   },
-  fields: [{
+  fields: [...commonSectionFields, {
     name: 'size',
     label: 'Size',
     type: 'string',
@@ -295,17 +303,17 @@ const staticSectionTemplates: Template<false>[] = [{
     name: 'color',
     label: 'Color',
     type: 'string',
-    options: ColorOptions
+    options: ColorOptionsBorder
   }]
 }, {
   name: 'multi_column',
   label: 'Multi Columns',
   ui: {
     itemProps: (item) => {
-      return { label: getLabel('Multi-column', item?.title) };
+      return { label: getLabel('Multi-column', item?.id || item?.title) };
     }
   },
-  fields: [{
+  fields: [...commonSectionFields, {
     name: 'title',
     label: 'Title',
     type: 'string'
@@ -359,7 +367,11 @@ const staticSectionTemplates: Template<false>[] = [{
     list: true,
     ui: {
       min: 1,
-      max: 4
+      max: 6,
+      itemProps: (item) => {
+        const types = item?.content?.length && _.map(item.content, (block) => (block._template)).join(', ')
+        return ({ label: getLabel('Column', types) });
+      }
     },
     fields: [{
       name: 'width',
@@ -444,6 +456,20 @@ const staticSectionTemplates: Template<false>[] = [{
           label: 'Text',
           type: 'rich-text',
           templates: richTextTemplates
+        }, {
+          name: 'size',
+          label: 'Paragraph Text Size',
+          type: 'string',
+          options: [{
+            label: 'Default (16px)',
+            value: ''
+          }, {
+            label: 'Large (18px)',
+            value: 'text-lg'
+          }, {
+            label: 'Small (14px)',
+            value: 'text-sm'
+          }]
         }]
       }, {
         name: 'image',
@@ -574,7 +600,16 @@ const staticSectionTemplates: Template<false>[] = [{
 }, {
   name: 'banner',
   label: 'Full Width Banner',
-  fields:  [{
+  ui: {
+    itemProps: (item) => {
+      return { label: getLabel('Full Width Banner', item?.id || item?.title) };
+    }
+  },
+  fields:  [...commonSectionFields, {
+    name: 'hero',
+    label: 'Is hero?',
+    type: 'boolean'
+  }, {
     name: 'title',
     label: 'Title',
     type: 'string'
@@ -665,12 +700,6 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Clip image to content height?',
     type: 'boolean'
   }, {
-    name: 'background',
-    label: 'Background Color',
-    description: 'Will display if no image is provided.',
-    type: 'string',
-    options: ColorOptions
-  }, {
     name: 'darken',
     label: 'Darken Background?',
     type: 'boolean'
@@ -678,12 +707,12 @@ const staticSectionTemplates: Template<false>[] = [{
 }, {
   name: 'feature_quote',
   label: 'Feature Quote',
-  fields: [{
-    name: 'background',
-    label: 'Background Color',
-    type: 'string',
-    options: ColorOptionsBg
-  }, {
+  ui: {
+    itemProps: (item) => {
+      return { label: getLabel('Free Text', item?.id || item?.attribution) };
+    }
+  },
+  fields: [...commonSectionFields, {
     name: 'text',
     label: 'Text Color',
     type: 'string',
@@ -721,10 +750,10 @@ const staticSectionTemplates: Template<false>[] = [{
   label: 'Text Image Block',
   ui: {
     itemProps: (item) => {
-      return { label: getLabel('Text Image Block', item?.title) };
+      return { label: getLabel('Text Image Block', item?.id || item?.title) };
     }
   },
-  fields: [{
+  fields: [...commonSectionFields, {
     name: 'title',
     label: 'Title',
     type: 'string'
@@ -788,6 +817,34 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Button Text',
     type: 'string'
   }]
+}, {
+  name: 'link_banner',
+  label: 'Links Banner',
+  ui: {
+    itemProps: (item) => {
+      return { label: getLabel('Links Banner', item?.id) };
+    }
+  },
+  fields: [...commonSectionFields, {
+    name: 'link_background',
+    label: 'Link Background Color',
+    type: 'string',
+    options: ColorOptionsButton
+  }, {
+    name: 'links',
+    label: 'Links',
+    list: true,
+    type: 'object',
+    fields: [{
+      name: 'label',
+      label: 'Label',
+      type: 'string'
+    }, {
+      name: 'url',
+      label: 'URL',
+      type: 'string'
+    }]
+  }]
 }];
 
 const Pages: Collection = {
@@ -824,7 +881,7 @@ const Pages: Collection = {
         list: true,
         ui: {
           itemProps: (item) => {
-            return { label: getLabel(item?.title) };
+            return { label: getLabel('Carousel', item?.id || item?.title) };
           }
         },
         fields: [{
@@ -855,6 +912,11 @@ const Pages: Collection = {
     }, {
       name: 'tabs',
       label: 'Tabbed Content',
+      ui: {
+        itemProps: (item) => {
+          return { label: getLabel('Tabbed Content', item?.id) };
+        }
+      },
       fields: [{
         name: 'raise',
         label: 'Overlap with section above?',

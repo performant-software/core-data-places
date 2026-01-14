@@ -80,11 +80,16 @@ export const fetchPost = async (slug: string) => {
   return response.data?.post;
 };
 
-export const fetchPosts = async () => {
+export const fetchPosts = async (params = {}) => {
   if (!client.queries.postConnection) {
     return null;
   }
 
-  const response = await client.queries.postConnection();
-  return response.data?.postConnection?.edges?.map((item) => item?.node);
+  const response = await client.queries.postConnection(params);
+
+  return {
+    metadata: response.data?.postConnection?.pageInfo,
+    posts: response.data?.postConnection?.edges?.map((item) => item?.node)
+  }
 };
+

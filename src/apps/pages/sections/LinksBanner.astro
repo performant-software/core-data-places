@@ -1,0 +1,28 @@
+---
+import clsx from 'clsx';
+import _ from 'underscore';
+import { toBackgroundClass } from '@utils/pageBuilder';
+import Container from '@components/Container.astro';
+
+const { linkBackground, links, overlap } = Astro.props;
+---
+<div class={clsx(
+  'w-full',
+  { '-mt-[80px]' : overlap }
+)}>
+  <Container>
+    <div class='gap-2 w-full grid auto-cols-fr grid-flow-col'>
+      {
+        _.map(links, link => ( 
+          <a href={link.url || '#'} class={clsx(
+            'hero-tab flex items-center justify-center py-8 px-12 font-serif italic text-2xl z-50 h-[80px]',
+            'hover:bg-[linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15))] transition duration-300',
+            toBackgroundClass(linkBackground)
+          )}>
+            <p>{ link.label }</p>
+          </a>
+        ))
+      }
+    </div>
+  </Container>
+</div>

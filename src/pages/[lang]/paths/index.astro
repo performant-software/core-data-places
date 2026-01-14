@@ -1,8 +1,8 @@
 ---
 import { getTranslations } from '@backend/i18n';
 import { fetchPaths } from '@backend/tina';
-import Card from '@components/Card.astro';
-import Cards from '@components/Cards.astro';
+import Card from '@components/Card';
+import Cards from '@components/Cards';
 import Container from '@components/Container.astro';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
@@ -43,9 +43,13 @@ export const getStaticPaths = () => {
           imageUrl={path?.image}
           alt={path?.imageAlt}
           slug={getRelativeLocaleUrl(Astro.currentLocale, `/paths/${path?._sys.filename}` || '#')}
-          t={t}
+          labels={{
+            byline: path?.author
+              ? t('by', { author: path.author })
+              : null,
+            readMore: t('readMore')
+          }}
           title={path?.title || t('untitled')}
-          author={path?.author}
           date={path?.date}
         />
       ))}
