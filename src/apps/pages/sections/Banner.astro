@@ -16,9 +16,9 @@ const {
   background, 
   buttonText,
   clip, 
-  content, 
+  content,
+  color, 
   darken, 
-  darkText,
   height,
   hero,
   home, 
@@ -43,7 +43,7 @@ const {
     { 'min-h-[220px]': height === Height.small },
     { 'min-h-[420px]': height === Height.medium },
     { 'min-h-[720px]': height === Height.large },
-    { 'text-text-inverse': !darkText }
+    { 'text-text-inverse': color !== 'black' }
   )}
 >
   { image && (
@@ -81,9 +81,9 @@ const {
             <h1
               class={clsx(
                 'm-0',
-                { 'text-(length:--Font-Sizes-hero-header)': hero && home },
-                { 'text-(length:--Font-Sizes-page-header)': hero && !home },
-                { 'text-(length:--Font-Sizes-CTA-header)': !hero }
+                { 'text-(length:--font-sizes-hero-header)': hero && home },
+                { 'text-(length:--font-sizes-page-header)': hero && !home },
+                { 'text-(length:--font-sizes-CTA-header)': !hero }
               )}
             >
               { title }
@@ -113,7 +113,7 @@ const {
         <div class={clsx(
           'prose max-w-none py-8 lg:py-16 z-10 w-full',
           { 'text-center': textAlignment === 'center' },
-          { 'text-text-inverse': !darkText }
+          { 'text-text-inverse': color !== 'black' }
         )}>
           <RichText content={content} />
         </div> 

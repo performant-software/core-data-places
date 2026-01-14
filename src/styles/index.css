@@ -25,7 +25,45 @@
   }
 }
 
-@theme {
+:root {
+  --font-sizes-page-header: 48px;
+  --font-sizes-hero-header: 36px;
+  --font-sizes-CTA-header: 36px;
+  
+  --font-sizes-h1: 48px;
+  --font-sizes-h2: 36px;
+  --font-sizes-h3: 24px;
+  --font-sizes-h4: 18px;
+  --font-sizes-h5: 18px;
+  --font-sizes-h6: 16px;
+  --font-sizes-paragraph: 16px;
+  --font-sizes-quote-text: 20px;
+  --font-sizes-description: 14px;
+  --font-sizes-header-tab-text: 20px;
+  --font-sizes-FairData-xs: 12px;
+  --font-sizes-FairData-sm: 14px;
+  --font-sizes-FairData-base: 16px;
+  --font-sizes-FairData-lg: 20px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --font-sizes-hero-header: 48px;
+    --font-sizes-h3: 30px;
+    --font-sizes-h4: 24px;
+    --font-sizes-h5: 24px;
+    --font-sizes-h6: 18px;
+    --font-sizes-CTA-header: 42px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --font-sizes-hero-header: var(--customHeroHeaderSize, 52px);
+  }
+}
+
+@theme inline {
   --color-neutral-dark: #111928;
   --color-neutral-light: #F5F5F5;
   --color-default-primary: #073B4C;
@@ -49,27 +87,6 @@
   --font-header: var(--customFontHeader, Inter);
   --font-body: var(--customFontBody, Inter);
   --font-sans: var(--font-body);
-
-  --Font-Sizes-hero-header-default: 52px;
-  --Font-Sizes-page-header-default: 48px;
-
-  --Font-Sizes-h1: 48px;
-  --Font-Sizes-h2: 36px;
-  --Font-Sizes-h3: 30px;
-  --Font-Sizes-h4: 24px;
-  --Font-Sizes-h5: 24px;
-  --Font-Sizes-h6: 18px;
-  --Font-Sizes-paragraph: 16px;
-  --Font-Sizes-quote-text: 20px;
-  --Font-Sizes-description: 14px;
-  --Font-Sizes-header-tab-text: 20px;
-  --Font-Sizes-CTA-header: 42px;
-  --Font-Sizes-hero-header: var(--customHeroHeaderSize, var(--Font-Sizes-hero-header-default));
-  --Font-Sizes-FairData-xs: 12px;
-  --Font-Sizes-page-header: var(--customPageHeaderSize, var(--Font-Sizes-page-header-default));
-  --Font-Sizes-FairData-sm: 14px;
-  --Font-Sizes-FairData-base: 16px;
-  --Font-Sizes-FairData-lg: 20px;
 
   --font-weight-header: var(--customHeaderFontWeight, 400);
 }
@@ -105,19 +122,20 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-secondary);
 }
 
+
 .bg-layout-alt, .bg-layout-alt div {
   color: var(--color-alt-content);
 }
 
 .bg-layout-alt h1, .bg-layout-alt h2, .bg-layout-alt h3, .bg-layout-alt h4, .bg-layout-alt h6 {
+  color: var(--color-alt-content) !important;
+}
+
+.bg-layout .content-alt h1, .bg-layout .content-alt h2, .bg-layout .content-alt h3, .bg-layout .content-alt h4, .bg-layout .content-alt h6 {
   color: var(--color-content) !important;
 }
 
-.bg-layout :not(:where(.bg-primary)) .multicolumn h1, .bg-layout :not(:where(.bg-primary)) .multicolumn h2, .bg-layout :not(:where(.bg-primary)) .multicolumn h3, .bg-layout :not(:where(.bg-primary)) .multicolumn h4, .bg-layout :not(:where(.bg-primary)) .multicolumn h6 {
-  color: var(--color-content) !important;
-}
-
-.bg-layout.content-alt, .bg-layout.content-alt div {
+.content-alt, .bg-layout.content-alt, .bg-layout.content-alt div {
   color: var(--color-content-alt);
 }
 
@@ -134,7 +152,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose h1 {
-  font-size: var(--Font-Sizes-h1);
+  font-size: var(--font-sizes-h1);
 }
 
 .prose h1:has(+ h1) {
@@ -142,24 +160,24 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose h2 {
-  font-size: var(--Font-Sizes-h2);
+  font-size: var(--font-sizes-h2);
 }
 
 .prose h3 {
-  font-size: var(--Font-Sizes-h3);
+  font-size: var(--font-sizes-h3);
 }
 
 .prose h4 {
-  font-size: var(--Font-Sizes-h4)
+  font-size: var(--font-sizes-h4)
 }
 
 .prose h5 {
-  font-size: var(--Font-Sizes-h5);
+  font-size: var(--font-sizes-h5);
   color: var(--color-secondary) !important;
 }
 
 .prose h6 {
-  font-size: var(--Font-Sizes-h6);
+  font-size: var(--font-sizes-h6);
 }
 
 .link-button:has(+ .link-button) {
