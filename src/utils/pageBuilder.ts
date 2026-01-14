@@ -24,7 +24,7 @@ export const toBackgroundClass = (color: string) => {
     case 'layout':
       return 'bg-layout';
     default:
-      return 'bg-layout';
+      return '';
   } 
 };
 
