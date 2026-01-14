@@ -458,6 +458,20 @@ const staticSectionTemplates: Template<false>[] = [{
           label: 'Text',
           type: 'rich-text',
           templates: richTextTemplates
+        }, {
+          name: 'size',
+          label: 'Paragraph Text Size',
+          type: 'string',
+          options: [{
+            label: 'Default (16px)',
+            value: ''
+          }, {
+            label: 'Large (18px)',
+            value: 'text-lg'
+          }, {
+            label: 'Small (14px)',
+            value: 'text-sm'
+          }]
         }]
       }, {
         name: 'image',
