@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import _ from 'underscore';
 import LinksBanner from '@apps/pages/sections/LinksBanner.astro';
 import { toBackgroundClass } from '@utils/pageBuilder';
-import MultiColumnSection from '@apps/pages/sections/MultiColumnSection.astro';
+import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
 
 const { sections, transparent, home } = Astro.props;
 
@@ -90,7 +90,7 @@ const SectionTypes = {
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.multiColumn) && (
-      <MultiColumnSection
+      <MultiColumn
         background={section.background}
         backgroundImage={section.background_image}
         buttonText={section.button_text}
