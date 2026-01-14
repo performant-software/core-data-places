@@ -2,7 +2,6 @@
 import Post from '@components/Post.astro';
 import { getTranslations } from '@backend/i18n';
 import { fetchPosts } from '@backend/tina';
-import Container from '@components/Container.astro';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
 import { hasPostsContent } from '@utils/config';
@@ -20,7 +19,9 @@ export const getStaticPaths = async () => {
   const staticPaths = [];
 
   const locales = config.i18n.locales;
-  const posts = await fetchPosts();
+  const { posts } = await fetchPosts({
+    first: -1
+  });
 
   _.each(locales, (lang) => {
     _.each(posts, (post) => {
@@ -41,12 +42,8 @@ export const getStaticPaths = async () => {
   tab='posts'
   title={slug}
 >
-  <Container
-    className='pb-16 w-full'
-  >
-    <Post
-      slug={slug}
-      server:defer
-    />
-  </Container>
+  <Post
+    slug={slug}
+    server:defer
+  />
 </Layout>

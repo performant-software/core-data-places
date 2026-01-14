@@ -33,8 +33,8 @@ const Facet = ({attribute, children, className, icon}: Props) => {
         className
       )}
     >
-      <h2
-        className='py-3 font-semibold flex items-center gap-1'
+      <p
+        className='py-3 font-semibold flex items-center gap-1 uppercase'
       >
         { icon && (
           <Icon
@@ -43,7 +43,7 @@ const Facet = ({attribute, children, className, icon}: Props) => {
           />
         ) }
         { label }
-      </h2>
+      </p>
       { children }
     </div>
   );

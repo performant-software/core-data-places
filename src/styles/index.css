@@ -188,6 +188,24 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-secondary) !important;
 }
 
+.banner-header {
+  font-variant: var(--Font-Variant-banner-header);
+}
+
+.detail-panel h1 {
+  font-size: var(--Font-Sizes-h4);
+}
+
+.custom-footer .prose {
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .custom-footer .prose {
+    text-align: inherit;
+  }
+}
+
 /*
  * Swiper styles
  */
@@ -201,4 +219,8 @@ h1, h2, h3, h4, h5, h6 {
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
   color: inherit;
   font-weight: var(--font-weight-header);
+}
+
+.prose :where(strong) {
+  color: inherit;
 }

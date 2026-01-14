@@ -28,8 +28,8 @@
     "defaultValue": "Back to {{label}}"
   },
   "by": {
-    "tinaLabel": "By <author>",
-    "defaultValue": "By {{author}}"
+    "tinaLabel": "by <author>",
+    "defaultValue": "by {{author}}"
   },
   "openMainMenu": {
     "tinaLabel": "Open Main Menu",
@@ -158,6 +158,10 @@
   "resultsCountSingular": {
     "tinaLabel": "1 result for <query>",
     "defaultValue": "1 result for {{query}}"
+  },
+  "ofResults": {
+    "tinaLabel": "< start >-< end > of < total > result(s)",
+    "defaultValue": "{{start}}-{{end}} of {{total}} result(s)"
   },
   "filters": {
     "tinaLabel": "Filters",
@@ -438,5 +442,13 @@
   "no": {
     "tinaLabel": "No",
     "defaultValue": "No"
+  },
+  "filterResultsBy": {
+    "tinaLabel": "Filter Results by:",
+    "defaultValue": "Filter Results by:"
+},
+  "allPosts": {
+    "tinaLabel": "All Posts",
+    "defaultValue": "All Posts"
   }
 }

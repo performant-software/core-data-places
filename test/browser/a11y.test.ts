@@ -34,7 +34,7 @@ test.describe('Accessibility testing', () => {
     });
 
     test('Post detail pages should have no violations', async ({ page }) => {
-      const posts = await fetchPosts();
+      const { posts } = await fetchPosts();
 
       for (const post of posts) {
         await page.goto(`posts/${post._sys.filename}`);
