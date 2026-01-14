@@ -450,5 +450,33 @@
   "allPosts": {
     "tinaLabel": "All Posts",
     "defaultValue": "All Posts"
+  },
+  "contactForm.name": {
+    "tinaLabel": "Contact Form > Name",
+    "defaultValue": "Name"
+  },
+  "contactForm.email": {
+    "tinaLabel": "Contact Form > Email",
+    "defaultValue": "Email"
+  },
+  "contactForm.organization": {
+    "tinaLabel": "Contact Form > Affiliated Organization",
+    "defaultValue": "Affiliated Organization"
+  },
+  "contactForm.message": {
+    "tinaLabel": "Contact Form > Message",
+    "defaultValue": "Message"
+  },
+  "contactForm.send": {
+    "tinaLabel": "Contact Form > Send",
+    "defaultValue": "Send"
+  },
+  "contactFormSubmitted.header": {
+    "tinaLabel": "Contact Form Submitted > Header",
+    "defaultValue": "Thank you for getting in touch!"
+  },
+  "contactFormSubmitted.content": {
+    "tinaLabel": "Contact Form Submitted > Content",
+    "defaultValue": "We appreciate you contacting us. One of our colleagues will get back in touch with you soon! Have a great day!"
   }
 }

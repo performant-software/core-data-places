@@ -1,0 +1,25 @@
+---
+import { getTranslations } from '@backend/i18n';
+import Container from '@components/Container.astro';
+import Layout from '@layouts/Layout.astro';
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+---
+
+<Layout
+  footer
+  t={t}
+  title={'Contact Form Submitted'}
+>
+  <Container
+    className='flex flex-col my-4 lg:my-8'
+  >
+    <h3>
+      { t('contactFormSubmitted.header') }
+    </h3>
+    <p>
+      { t('contactFormSubmitted.content') }
+    </p>
+  </Container>
+</Layout>

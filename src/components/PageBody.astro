@@ -1,24 +1,26 @@
 ---
 import Banner from '@apps/pages/sections/Banner.astro';
 import Carousel from '@apps/pages/sections/Carousel';
+import ContactForm from '@apps/pages/sections/ContactForm.astro';
 import FeatureQuote from '@apps/pages/sections/FeatureQuote.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Images from '@apps/pages/sections/Images.astro';
+import LinksBanner from '@apps/pages/sections/LinksBanner.astro';
+import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
 import Spacer from '@apps/pages/sections/Spacer.astro';
 import Tabs from '@apps/pages/sections/Tabs.astro';
 import TextImage from '@apps/pages/sections/TextImage';
 import Container from '@components/Container.astro';
+import { toBackgroundClass } from '@utils/pageBuilder';
 import clsx from 'clsx';
 import _ from 'underscore';
-import LinksBanner from '@apps/pages/sections/LinksBanner.astro';
-import { toBackgroundClass } from '@utils/pageBuilder';
-import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
 
 const { sections, transparent, home } = Astro.props;
 
 const SectionTypes = {
   banner: 'Banner',
   carousel: 'Carousel',
+  contactForm: 'Contact_form',
   freeText: 'Free_text',
   images: 'Images',
   linkBanner: 'Link_banner',
@@ -28,6 +30,7 @@ const SectionTypes = {
   tabs: 'Tabs',
   textImage: 'Text_image',
 };
+
 ---
 { _.map(sections, (section, idx) => (
   <section
@@ -47,6 +50,11 @@ const SectionTypes = {
           items={section.items}
           client:only='react'
         />
+      </Container>
+    )}
+    { section?.__typename?.endsWith(SectionTypes.contactForm) && (
+      <Container>
+        <ContactForm />
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.freeText) && (
