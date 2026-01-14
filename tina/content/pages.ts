@@ -154,6 +154,16 @@ export const richTextTemplates: RichTextTemplate<false>[] = [{
   }]
 }];
 
+const contactForm = {
+  name: 'contact_form',
+  label: 'Contact Form',
+  fields: [{
+    name: 'email',
+    label: 'Email',
+    type: 'string'
+  }]
+};
+
 const staticSectionTemplates: Template<false>[] = [{
   name: 'free_text',
   label: 'Free Text',
@@ -490,7 +500,8 @@ const staticSectionTemplates: Template<false>[] = [{
           label: 'Description',
           type: 'string'
         }]
-      }]
+      },
+      contactForm]
     }]
   }]
 }, {
@@ -730,7 +741,7 @@ const staticSectionTemplates: Template<false>[] = [{
       type: 'string'
     }]
   }]
-}];
+}, contactForm];
 
 const Pages: Collection = {
   name: 'pages',
