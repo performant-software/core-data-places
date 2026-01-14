@@ -108,9 +108,9 @@ const Facets = (props: Props) => {
         className='flex justify-between items-center'
       >
         <h2
-          className='py-4 font-semibold text-lg'
+          className='py-4 font-semibold text-lg italic'
         >
-          { t('filters') }
+          { t('filterResultsBy') }
         </h2>
         <ClearRefinementsButton />
       </div>

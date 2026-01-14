@@ -54,6 +54,7 @@ const SortBy = () => {
               <DropdownMenu.Item
                 className='hover:cursor-pointer hover:bg-neutral-200 px-2 py-1 outline-hidden'
                 onClick={() => refine(field.value)}
+                key={field.value}
               >
                 { field.label }
               </DropdownMenu.Item>
