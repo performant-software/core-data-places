@@ -4,7 +4,6 @@ import Carousel from '@apps/pages/sections/Carousel';
 import FeatureQuote from '@apps/pages/sections/FeatureQuote.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Images from '@apps/pages/sections/Images.astro';
-import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
 import Spacer from '@apps/pages/sections/Spacer.astro';
 import Tabs from '@apps/pages/sections/Tabs.astro';
 import TextImage from '@apps/pages/sections/TextImage';
@@ -13,6 +12,7 @@ import clsx from 'clsx';
 import _ from 'underscore';
 import LinksBanner from '@apps/pages/sections/LinksBanner.astro';
 import { toBackgroundClass } from '@utils/pageBuilder';
+import MultiColumnSection from '@apps/pages/sections/MultiColumnSection.astro';
 
 const { sections, transparent, home } = Astro.props;
 
@@ -90,29 +90,17 @@ const SectionTypes = {
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.multiColumn) && (
-      <>
-        { section.background_image && (
-          <img 
-            src={section.background_image} 
-            class='w-full h-full object-cover absolute inset-0'
-          /> 
-        ) }
-        { section.darken && (
-          <div
-            class='absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply'
-          /> 
-        ) }
-        <Container>
-          <MultiColumn
-            buttonText={section.button_text}
-            textAlignment={section.text_alignment}
-            title={section.title}
-            url={section.url}
-            content={section.columns}
-            gap={section.gap}
-          />
-        </Container>
-      </>
+      <MultiColumnSection
+        background={section.background}
+        backgroundImage={section.background_image}
+        buttonText={section.button_text}
+        darken={section.darken}
+        textAlignment={section.text_alignment}
+        title={section.title}
+        url={section.url}
+        content={section.columns}
+        gap={section.gap}
+      />
     )}
     { section?.__typename?.endsWith(SectionTypes.banner) && (
       <Banner

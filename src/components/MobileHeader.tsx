@@ -3,6 +3,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from '@i18n/useTranslations';
 import { ReactNode } from 'react';
 import _ from 'underscore';
+import clsx from 'clsx';
 
 interface NavItem {
   label: string;
