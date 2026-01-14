@@ -158,6 +158,16 @@ export const richTextTemplates: RichTextTemplate<false>[] = [{
   }]
 }];
 
+const contactForm: Template = {
+  name: 'contact_form',
+  label: 'Contact Form',
+  fields: [{
+    name: 'email',
+    label: 'Email',
+    type: 'string'
+  }]
+};
+
 const commonSectionFields: TinaField<false>[] = [{
   name: 'id',
   label: 'Section Identifier',
@@ -613,7 +623,7 @@ const staticSectionTemplates: Template<false>[] = [{
           label: 'Description',
           type: 'string'
         }]
-      }]
+      }, contactForm]
     }]
   }]
 }, {
@@ -856,7 +866,7 @@ const staticSectionTemplates: Template<false>[] = [{
       type: 'string'
     }]
   }]
-}];
+}, contactForm];
 
 const Pages: Collection = {
   name: 'pages',

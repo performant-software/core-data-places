@@ -2,6 +2,7 @@
 import { getTranslations } from '@backend/i18n';
 import Card from '@components/Card';
 import RichText from '@apps/pages/sections/RichText.astro';
+import ContactForm from './ContactForm.astro';
 import Spacer from './Spacer.astro';
 import clsx from 'clsx';
 import { toBorderClass } from '@root/src/utils/pageBuilder';
@@ -14,6 +15,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 const BlockTypes = {
   basic: 'Basic',
   card: 'Card',
+  contactForm: 'Contact_form',
   counter: 'Counter',
   image: 'Image',
   imageLink: 'Image_link',
@@ -74,6 +76,10 @@ const BlockTypes = {
     }}
     title={item.title}
   />
+)}
+
+{ item.__typename.endsWith(BlockTypes.contactForm) && (
+  <ContactForm />
 )}
 
 { item.__typename.endsWith(BlockTypes.quote) && ( 
