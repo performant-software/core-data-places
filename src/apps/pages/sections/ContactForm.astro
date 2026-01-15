@@ -17,7 +17,24 @@ const { t } = await getTranslations(lang);
     data-netlify='true'
     method='POST'
     name='contact'
+    netlify-honeypot='bot-field'
   >
+    <input
+      name='form-name'
+      type='hidden'
+      value='contact'
+    />
+    <p
+      class='hidden'
+    >
+      <label>
+        Don’t fill this out if you’re human:
+        <input
+          name='bot-field'
+          type='text'
+        />
+      </label>
+    </p>
     <FormInput
       className='py-3'
       name='name'
