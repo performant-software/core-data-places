@@ -53,7 +53,7 @@ const MobileHeader = (props: Props) => {
               )}
               { props.title && (
                 <h1
-                  className='!text-2xl font-medium'
+                  className='text-2xl font-medium'
                 >
                   { props.title }
                 </h1>

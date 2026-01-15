@@ -80,7 +80,7 @@ const SearchList = () => {
         className='flex justify-between w-full'
       >
         <h1
-          className='!text-2xl font-bold m-0'
+          className='text-2xl font-bold m-0'
         >
           { t('savedSearches') }
         </h1>
