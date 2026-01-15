@@ -21,17 +21,19 @@ export const toBackgroundClass = (color: string) => {
       return 'bg-tertiary';
     case 'layout_alternate':
       return 'bg-layout-alt';
+    case 'layout':
+      return 'bg-layout';
     default:
       return '';
   } 
 };
 
-export const toBorderClass = (color: string) => {
+export const toBorderClass = (color: string, thick?: boolean) => {
   switch (color) {
     case 'primary':
-      return 'border-2 border-primary';
+      return thick ? 'border-2 border-primary' : 'border border-primary';
     case 'secondary':
-      return 'border-2 border-secondary';
+      return thick ? 'border-2 border-secondary' : 'border border-secondary';
     default:
       return '';
   } 

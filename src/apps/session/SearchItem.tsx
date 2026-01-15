@@ -51,11 +51,11 @@ const SearchItem = (props: Props) => {
                 className='flex justify-between items-center'
               >
                 <div>
-                  <h1
-                    className='text-2xl font-bold m-0'
+                  <h4
+                    className='font-bold m-0'
                   >
                     { item.name }
-                  </h1>
+                  </h4>
                   <div className='mt-1 flex items-center gap-x-1 text-gray-500'>
                     { t(`index_${item.searchName}`) }
                   </div>

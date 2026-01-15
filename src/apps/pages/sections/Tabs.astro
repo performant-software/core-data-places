@@ -16,7 +16,7 @@ const {
 <TabsComponent tabs={tabs} raise={raise} activeBg={activeBg} textStyle={textStyle} invertText={invertText} inactiveBg={inactiveBg} client:only='react'>
   {
     _.map(tabs, (tab) => (
-      <div class='tab-content py-6 flex flex-col' id={`${tab.label}--content`}>
+      <div class='tab-content flex flex-col' id={`${tab.label}--content`}>
         <PageBody sections={tab.content} />
       </div>
     ))

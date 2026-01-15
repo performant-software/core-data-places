@@ -28,13 +28,15 @@ const BlockTypes = {
 { item.__typename.endsWith(BlockTypes.image) && ( 
   <img src={item.image} class={clsx(
     'w-full object-cover',
+    { 'h-full': item.full_height },
     { 'rounded-md': item.rounded }
   )} />
 )}
 
 { item.__typename.endsWith(BlockTypes.text) && ( 
   <div class={clsx(
-    'prose max-w-none px-6 py-4 text-inherit',
+    'prose max-w-none py-8 lg:py-4 text-inherit',
+    item.padding && 'px-4',
     item.size
   )}>
     <RichText content={item.text} />
@@ -82,7 +84,8 @@ const BlockTypes = {
 
 { item.__typename.endsWith(BlockTypes.quote) && ( 
   <div class={clsx(
-    'flex flex-col relative h-full p-6 gap-6',
+    'flex flex-col relative p-8 gap-8',
+    item.bg_color && 'h-full',
     item.text_color,
     toBorderClass(item.border_color)
   )}>
@@ -90,8 +93,8 @@ const BlockTypes = {
     <p class='font-serif'>
       { item.quote }
     </p>
-    <Spacer size='none' color={item.border_color} />
-    <p class='font-semibold -indent-2 pl-2'>
+    { item.border_color && <Spacer size='none' color={item.border_color} /> }
+    <p class='font-semibold -indent-2 pl-2 italic text-sm lg:max-w-[80%]'>
       { item.attribution }
     </p>
   </div>
@@ -109,17 +112,17 @@ const BlockTypes = {
 )}
 
 { item.__typename.endsWith(BlockTypes.counter) && ( 
-  <div class='flex flex-col p-4 gap-3 font-serif font-semibold bg-layout-alt items-center h-full'>
+  <div class='flex flex-col py-4 px-2 xl:px-4 gap-3 font-serif font-semibold bg-layout-alt items-center w-full h-full'>
     <div class='flex flex-col'>
       <p class='text-secondary text-5xl'>{ item.count }</p>
       <p class='italic'>{ item.type || 'records' }</p>
     </div>
-    <div>{ item.description }</div>
+    <div class='text-lg'>{ item.description }</div>
   </div>
 )}
 
 { item.__typename.endsWith(BlockTypes.linkRow) && ( 
-  <div class='flex flex-row font-semibold font-sans gap-5 py-1.5'>
+  <div class='flex flex-row flex-wrap font-semibold font-sans gap-5 py-1.5 justify-center'>
     {
       _.map(item.links, (link) => (
         <a href={link.url} class='no-underline hover:underline underline-offset-4 decoration-2'>
