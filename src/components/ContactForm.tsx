@@ -48,7 +48,7 @@ const ContactForm = (props: Props) => {
 
     setLoading(true);
 
-    fetch(`/${props.language}`, {
+    fetch(`/forms/contact.html`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
