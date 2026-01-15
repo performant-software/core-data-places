@@ -30,14 +30,17 @@ const MobileHeader = (props: Props) => {
     <Disclosure 
       as='div' 
       className={clsx(
-        'block xl:hidden w-full shadow-md z-10',
-        { 'bg-primary': !props.transparent }
+        'block xl:hidden w-full z-10 bg-primary',
+        { 'shadow-md': !props.transparent }
       )}
     >
       {({ open }) => (
         <>
           <div
-            className='flex flex-row justify-between items-center px-6 mx-0 sm:px-0 sm:mx-12 md:mx-16 lg:mx-32 2xl:mx-auto max-w-(--breakpoint-xl) py-4 z-10 top-0'
+            className={clsx(
+              'flex flex-row justify-between items-center px-6 mx-0 sm:px-0 sm:mx-12 md:mx-16 lg:mx-32 2xl:mx-auto max-w-(--breakpoint-xl) py-3 z-10 top-0',
+              open && 'bg-primary'
+            )}
           >
             <a
               className='flex flex-row items-center gap-6'
@@ -59,7 +62,7 @@ const MobileHeader = (props: Props) => {
             </a>
             { props.children }
             <Disclosure.Button
-              className='xl:hidden relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-[linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15))] transition duration-300 focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-orange-primary'
+              className='xl:hidden relative z-30 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-[linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15))] transition duration-300 focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-orange-primary'
             >
               <span
                 className='absolute -inset-0.5'
@@ -92,7 +95,7 @@ const MobileHeader = (props: Props) => {
             leaveTo='transform scale-95 opacity-0'
           >
             <Disclosure.Panel
-              className='xl:hidden bg-primary'
+              className='xl:hidden bg-primary z-10'
             >
               <div
                 className='flex flex-col items-center space-y-3 pb-4 pt-2'
