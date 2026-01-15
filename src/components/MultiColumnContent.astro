@@ -1,0 +1,82 @@
+---
+import clsx from 'clsx';
+import _ from 'underscore';
+import LinkButton from '@components/LinkButton';
+import Column from '@components/Column.astro';
+import { toBackgroundClass, toBorderClass } from '@utils/pageBuilder';
+
+const { 
+  buttonText,
+  className,
+  content, 
+  gap,   
+  textAlignment,
+  title,
+  url
+} = Astro.props;
+
+const TOTAL_COLUMNS = 12;
+
+//we need to figure out the column ratios
+let total = 0;
+if (content) {
+  for (const col of content) {
+    if (col.width) {
+      total += Number(col.width.split('-').slice(-1))
+    }
+  }
+}
+
+const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr lg:grid-flow-col';
+---
+
+<div
+  class={clsx('flex flex-col gap-10 multicolumn z-10', className)}
+>
+  { title && (
+    <h2
+      class={clsx(
+        'py-8',
+        { 'flex justify-center': textAlignment === 'center' }
+      )}
+    >
+      { title }
+    </h2>
+  )}
+  <div
+    class={clsx(
+      'w-full grid grid-cols-1',
+      { 'sm:grid-cols-2': content?.length > 1 },
+      gridCols,   
+      { 'gap-8 xl:gap-16': gap === 'large' },
+      { 'gap-4 xl:gap-8': gap === 'small' || !gap }
+    )}
+    )}
+  >
+    {
+      _.map(content, (col: any) => ( 
+        <Column items={col.content} url={col.url} className={clsx(
+          { [col.width] : total === TOTAL_COLUMNS },
+          toBorderClass(col.border),
+          col.background && toBackgroundClass(col.background),
+          { 'rounded-md': col.rounded },
+          col.justify,
+          col.align
+        )} />
+      ))
+    }
+  </div>
+  { url && (
+    <div
+      class={clsx(
+        'py-4',
+        { 'flex justify-center': textAlignment === 'center' }
+      )}
+    >
+      <LinkButton
+        color='secondary'
+        content={buttonText}
+        href={url}
+      />
+    </div>
+  )}
