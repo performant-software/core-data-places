@@ -49,6 +49,34 @@
   }
 }
 
+@theme inline {
+  --color-neutral-dark: #111928;
+  --color-neutral-light: #F5F5F5;
+  --color-default-primary: #073B4C;
+  --color-default-secondary: var(--color-neutral-light);
+
+  --color-primary: var(--customColorPrimary, var(--color-default-primary));
+  --color-secondary: var(--customColorSecondary, var(--color-default-secondary));
+  --color-tertiary: var(--customColorTertiary, var(--color-black));
+  --color-layout: var(--customLayout, var(--color-white));
+  --color-layout-alt: var(--customLayoutAlternate, var(--color-netural-light));
+  --color-text-primary: var(--customPrimaryContent, var(--color-white));
+  --color-text-secondary: var(--customSecondaryContent, var(--color-black));
+  --color-text-tertiary: var(--customTertiaryContent, var(--color-white));
+  --color-content: var(--customContent, var(--color-black));
+  --color-content-alt: var(--customContentAlternate, var(--color-neutral-dark));
+  --color-alt-content: var(--customAlternateContent, var(--color-black));
+  --color-alt-content-alt: var(--customAlternateContentAlternate, var(--color-neutral-dark));
+  --color-text-default: var(--customText, var(--color-black));
+  --color-text-inverse: var(--customTextInverse, var(--color-white));
+
+  --font-header: var(--customFontHeader, Inter);
+  --font-body: var(--customFontBody, Inter);
+  --font-sans: var(--font-body);
+
+  --font-weight-header: var(--customHeaderFontWeight, 400);
+}
+
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -90,40 +118,13 @@
   h6 {
     font-size: var(--font-sizes-h6);
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-header);
     font-weight: var(--font-weight-header);
   }
 }
 
-@theme inline {
-  --color-neutral-dark: #111928;
-  --color-neutral-light: #F5F5F5;
-  --color-default-primary: #073B4C;
-  --color-default-secondary: var(--color-neutral-light);
-
-  --color-primary: var(--customColorPrimary, var(--color-default-primary));
-  --color-secondary: var(--customColorSecondary, var(--color-default-secondary));
-  --color-tertiary: var(--customColorTertiary, var(--color-black));
-  --color-layout: var(--customLayout, var(--color-white));
-  --color-layout-alt: var(--customLayoutAlternate, var(--color-netural-light));
-  --color-text-primary: var(--customPrimaryContent, var(--color-white));
-  --color-text-secondary: var(--customSecondaryContent, var(--color-black));
-  --color-text-tertiary: var(--customTertiaryContent, var(--color-white));
-  --color-content: var(--customContent, var(--color-black));
-  --color-content-alt: var(--customContentAlternate, var(--color-neutral-dark));
-  --color-alt-content: var(--customAlternateContent, var(--color-black));
-  --color-alt-content-alt: var(--customAlternateContentAlternate, var(--color-neutral-dark));
-  --color-text-default: var(--customText, var(--color-black));
-  --color-text-inverse: var(--customTextInverse, var(--color-white));
-
-  --font-header: var(--customFontHeader, Inter);
-  --font-body: var(--customFontBody, Inter);
-  --font-sans: var(--font-body);
-
-  --font-weight-header: var(--customHeaderFontWeight, 400);
-}
 
 /*
  * Peripleo styles
