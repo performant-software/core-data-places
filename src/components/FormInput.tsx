@@ -4,7 +4,7 @@ interface Props {
   className?: string;
   label: string;
   name: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   placeholder?: string;
   type: string;
   value: string;
@@ -52,7 +52,9 @@ const FormInput = (props: Props) => {
               <textarea
                 className='block w-full rounded-md bg-white px-3 py-1.5 rounded'
                 name={name}
+                onChange={onChange}
                 rows={3}
+                value={value}
               />
             )}
           </div>

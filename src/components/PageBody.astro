@@ -10,7 +10,6 @@ import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
 import Spacer from '@components/Spacer.astro';
 import Tabs from '@apps/pages/sections/Tabs.astro';
 import TextImage from '@apps/pages/sections/TextImage';
-import { getTranslations } from '@backend/i18n';
 import Container from '@components/Container.astro';
 import { toBackgroundClass } from '@utils/pageBuilder';
 import clsx from 'clsx';
@@ -56,6 +55,7 @@ const SectionTypes = {
     { section?.__typename?.endsWith(SectionTypes.contactForm) && (
       <Container>
         <ContactForm
+          language={Astro.currentLocale}
           client:load
         />
       </Container>

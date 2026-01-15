@@ -5,7 +5,11 @@ import { Button } from '@performant-software/core-data/ssr';
 import NotificationsStore from '@store/notifications';
 import { useCallback, useState } from 'react';
 
-const ContactForm = () => {
+interface Props {
+  language: string;
+}
+
+const ContactForm = (props: Props) => {
   const [email, setEmail] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
@@ -44,7 +48,7 @@ const ContactForm = () => {
 
     setLoading(true);
 
-    fetch('/', {
+    fetch(`/${props.language}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -58,7 +62,7 @@ const ContactForm = () => {
       }).toString()
     })
     .then(afterSubmit);
-  }, [name, email, organization, message]);
+  }, [name, email, organization, message, props.language]);
 
   return (
     <div
