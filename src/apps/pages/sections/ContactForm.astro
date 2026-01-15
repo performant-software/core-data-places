@@ -12,6 +12,7 @@ const { t } = await getTranslations(lang);
   class='bg-tertiary flex flex-col h-full'
 >
   <form
+    action={getRelativeLocaleUrl(lang, 'contact_success')}
     class='flex flex-col mt-8 mb-4 px-8'
     data-netlify='true'
     data-netlify-honeypot='bot-field'
