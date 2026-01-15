@@ -55,7 +55,6 @@ const SectionTypes = {
     { section?.__typename?.endsWith(SectionTypes.contactForm) && (
       <Container>
         <ContactForm
-          language={Astro.currentLocale}
           client:load
         />
       </Container>

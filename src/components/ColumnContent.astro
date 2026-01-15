@@ -10,8 +10,7 @@ import _ from 'underscore';
 
 const { item } = Astro.props;
 
-const language = Astro.currentLocale;
-const { t } = await getTranslations(language);
+const { t } = await getTranslations(Astro.currentLocale);
 
 const BlockTypes = {
   basic: 'Basic',
@@ -81,7 +80,6 @@ const BlockTypes = {
 
 { item.__typename.endsWith(BlockTypes.contactForm) && (
   <ContactForm
-    language={language}
     client:load
   />
 )}
