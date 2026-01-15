@@ -1,7 +1,7 @@
 ---
 import Banner from '@apps/pages/sections/Banner.astro';
 import Carousel from '@apps/pages/sections/Carousel';
-import ContactForm from '@components/ContactForm.astro';
+import ContactForm from '@components/ContactForm';
 import FeatureQuote from '@apps/pages/sections/FeatureQuote.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Images from '@apps/pages/sections/Images.astro';
@@ -10,6 +10,7 @@ import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
 import Spacer from '@components/Spacer.astro';
 import Tabs from '@apps/pages/sections/Tabs.astro';
 import TextImage from '@apps/pages/sections/TextImage';
+import { getTranslations } from '@backend/i18n';
 import Container from '@components/Container.astro';
 import { toBackgroundClass } from '@utils/pageBuilder';
 import clsx from 'clsx';
@@ -30,6 +31,8 @@ const SectionTypes = {
   tabs: 'Tabs',
   textImage: 'Text_image',
 };
+
+const { t } = await getTranslations(Astro.currentLocale);
 
 ---
 { _.map(sections, (section, idx) => (
@@ -54,7 +57,7 @@ const SectionTypes = {
     )}
     { section?.__typename?.endsWith(SectionTypes.contactForm) && (
       <Container>
-        <ContactForm />
+        <ContactForm t={t} />
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.freeText) && (
