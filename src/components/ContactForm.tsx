@@ -14,7 +14,9 @@ const ContactForm = (props: Props) => {
 
   const { t } = props;
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = useCallback((event: any) => {
+    event.preventDefault();
+
     fetch('/', {
       method: 'POST',
       headers: {
