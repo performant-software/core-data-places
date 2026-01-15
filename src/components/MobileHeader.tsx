@@ -4,6 +4,7 @@ import { useTranslations } from '@i18n/useTranslations';
 import clsx from 'clsx';
 import { ReactNode } from 'react';
 import _ from 'underscore';
+import clsx from 'clsx';
 
 interface NavItem {
   label: string;
