@@ -20,12 +20,6 @@ export const buildUrl = (baseUrl: string, params: { [key: string]: string } = {}
   return url.join('?');
 };
 
-export const encode = (data: { [key: string]: any }) => {
-  return Object.keys(data)
-    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-    .join("&");
-};
-
 /**
  * Parses the search parameters from the passed URL string and returns it as an object.
  *

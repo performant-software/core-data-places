@@ -79,7 +79,9 @@ const BlockTypes = {
 )}
 
 { item.__typename.endsWith(BlockTypes.contactForm) && (
-  <ContactForm t={t} />
+  <ContactForm
+    client:load
+  />
 )}
 
 { item.__typename.endsWith(BlockTypes.quote) && ( 

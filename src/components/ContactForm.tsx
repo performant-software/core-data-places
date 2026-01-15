@@ -1,37 +1,63 @@
 import FormInput from '@components/FormInput';
-import { encode } from '@utils/url';
+import Loader from '@components/Loader';
+import { useTranslations } from '@i18n/useTranslations';
+import { Button } from '@performant-software/core-data/ssr';
+import NotificationsStore from '@store/notifications';
 import { useCallback, useState } from 'react';
 
-interface Props {
-  t: (key: string, values?: { [key: string]: string | number }) => string;
-}
-
-const ContactForm = (props: Props) => {
-  const [name, setName] = useState<string>('');
+const ContactForm = () => {
   const [email, setEmail] = useState<string>('');
-  const [organization, setOrganization] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [organization, setOrganization] = useState<string>('');
 
-  const { t } = props;
+  const { t } = useTranslations();
 
+  /**
+   * Resets the loading state, form inputs, and displays the notification panel.
+   */
+  const afterSubmit = useCallback(() => {
+    // Reset the loading state
+    setLoading(false);
+
+    // Reset the form inputs
+    setName('');
+    setEmail('');
+    setOrganization('');
+    setMessage('');
+
+    // Display the notification
+    NotificationsStore.set({
+      content: t('contactFormSubmitted.content'),
+      header: t('contactFormSubmitted.header'),
+      open: true,
+      timeout: 5000
+    });
+  }, [t]);
+
+  /**
+   * Submits the POST request with the form data.
+   */
   const onSubmit = useCallback((event: any) => {
     event.preventDefault();
+
+    setLoading(true);
 
     fetch('/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: encode({
+      body: new URLSearchParams({
         'form-name': 'contact',
         name,
         email,
         organization,
         message
-      })
+      }).toString()
     })
-    .then(() => alert("Success!"))
-    .catch((error) => alert(error));
+    .then(afterSubmit);
   }, [name, email, organization, message]);
 
   return (
@@ -40,7 +66,6 @@ const ContactForm = (props: Props) => {
     >
       <form
         className='flex flex-col mt-8 mb-4 px-8'
-        onSubmit={onSubmit}
       >
         <input
           name='form-name'
@@ -86,12 +111,17 @@ const ContactForm = (props: Props) => {
         <div
           className='flex justify-end mt-4'
         >
-          <button
-            className='bg-secondary rounded-md px-4 py-2 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2'
-            type='submit'
+          <Button
+            disabled={loading}
+            onClick={onSubmit}
+            rounded
+            secondary
           >
             { t('contactForm.send') }
-          </button>
+            <Loader
+              active={loading}
+            />
+          </Button>
         </div>
       </form>
     </div>
