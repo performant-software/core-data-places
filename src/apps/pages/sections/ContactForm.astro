@@ -12,29 +12,21 @@ const { t } = await getTranslations(lang);
   class='bg-tertiary flex flex-col h-full'
 >
   <form
-    action={getRelativeLocaleUrl(lang, 'contact_success')}
     class='flex flex-col mt-8 mb-4 px-8'
     data-netlify='true'
+    data-netlify-honeypot='bot-field'
     method='POST'
     name='contact'
-    netlify-honeypot='bot-field'
   >
     <input
       name='form-name'
       type='hidden'
       value='contact'
     />
-    <p
-      class='hidden'
-    >
-      <label>
-        Don’t fill this out if you’re human:
-        <input
-          name='bot-field'
-          type='text'
-        />
-      </label>
-    </p>
+    <input
+      name='bot-field'
+      type='text'
+    />
     <FormInput
       className='py-3'
       name='name'
