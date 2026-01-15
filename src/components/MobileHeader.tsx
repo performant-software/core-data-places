@@ -4,6 +4,7 @@ import { useTranslations } from '@i18n/useTranslations';
 import clsx from 'clsx';
 import { ReactNode } from 'react';
 import _ from 'underscore';
+import clsx from 'clsx';
 
 interface NavItem {
   label: string;
@@ -53,7 +54,7 @@ const MobileHeader = (props: Props) => {
               )}
               { props.title && (
                 <h1
-                  className='!text-2xl font-medium'
+                  className='text-2xl font-medium'
                 >
                   { props.title }
                 </h1>

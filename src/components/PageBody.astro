@@ -1,13 +1,13 @@
 ---
 import Banner from '@apps/pages/sections/Banner.astro';
 import Carousel from '@apps/pages/sections/Carousel';
-import ContactForm from '@apps/pages/sections/ContactForm.astro';
+import ContactForm from '@components/ContactForm.astro';
 import FeatureQuote from '@apps/pages/sections/FeatureQuote.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Images from '@apps/pages/sections/Images.astro';
 import LinksBanner from '@apps/pages/sections/LinksBanner.astro';
 import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
-import Spacer from '@apps/pages/sections/Spacer.astro';
+import Spacer from '@components/Spacer.astro';
 import Tabs from '@apps/pages/sections/Tabs.astro';
 import TextImage from '@apps/pages/sections/TextImage';
 import Container from '@components/Container.astro';
@@ -77,6 +77,7 @@ const SectionTypes = {
         <Spacer
           color={section.color}
           size={section.size}
+          thick
         />
       </Container>
     )}
@@ -98,16 +99,17 @@ const SectionTypes = {
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.multiColumn) && (
-      <Container>
-        <MultiColumn
-          buttonText={section.button_text}
-          textAlignment={section.text_alignment}
-          title={section.title}
-          url={section.url}
-          content={section.columns}
-          gap={section.gap}
-        />
-      </Container>
+      <MultiColumn
+        background={section.background}
+        backgroundImage={section.background_image}
+        buttonText={section.button_text}
+        darken={section.darken}
+        textAlignment={section.text_alignment}
+        title={section.title}
+        url={section.url}
+        content={section.columns}
+        gap={section.gap}
+      />
     )}
     { section?.__typename?.endsWith(SectionTypes.banner) && (
       <Banner
@@ -142,6 +144,7 @@ const SectionTypes = {
     { section?.__typename?.endsWith(SectionTypes.featureQuote) && ( 
       <FeatureQuote
         {...section}
+        backgroundImage={section.background_image}
       />
     )}
     { section?.__typename?.endsWith(SectionTypes.linkBanner) && ( 

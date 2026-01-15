@@ -14,6 +14,7 @@ export const getLabel = (...args) => {
 
 const SpacerValues = {
   none: 'none',
+  xsmall: 'xs',
   small: 'small',
   medium: 'medium',
   large: 'large'
@@ -27,21 +28,24 @@ export const ColorValues = {
   layoutAlternate: 'layout_alternate',
   contentLight: 'content_light',
   contentDark: 'content_dark',
-  contentAlternate: 'content-alt',
-  contentMain: ''
+  contentAlternate: 'text-content-alt',
+  contentMain: 'text-content'
 };
 
 const SpacerSizes = [{
-  label: 'None',
+  label: 'None (divider only)',
   value: SpacerValues.none
 }, {
-  label: 'Small',
+  label: 'Extra Small (20px)',
+  value: SpacerValues.xsmall
+}, {
+  label: 'Small (32px)',
   value: SpacerValues.small
 }, {
-  label: 'Medium',
+  label: 'Medium (64px)',
   value: SpacerValues.medium
 }, {
-  label: 'Large',
+  label: 'Large (96px)',
   value: SpacerValues.large
 }];
 
@@ -196,19 +200,19 @@ const commonSectionFields: TinaField<false>[] = [{
     value: '-mt-[32px]'
   }, {
     label: 'Small (32px)',
-    value: 'mt-[32px]'
+    value: 'mt-[16px] lg:mt-[32px]'
   }, {
     label: 'Medium (64px)',
-    value: 'mt-[64px]'
+    value: 'mt-[32px] lg:mt-[64px]'
   }, {
     label: 'Large (80px)',
-    value: 'mt-[80px]'
+    value: 'mt-[48px] lg:mt-[80px]'
   }, {
     label: 'XL (96px)',
-    value: 'mt-[96px]'
+    value: 'mt-[64px] lg:mt-[96px]'
   }, {
     label: 'XXL (192px)',
-    value: 'mt-[192px]'
+    value: 'mt-[128px] lg:mt-[192px]'
   }]
 }, {
   name: 'bottom_margin',
@@ -216,19 +220,19 @@ const commonSectionFields: TinaField<false>[] = [{
   type: 'string',
   options: [{
     label: 'Small (32px)',
-    value: 'mb-[32px]'
+    value: 'mb-[16px] lg:mb-[32px]'
   }, {
     label: 'Medium (64px)',
-    value: 'mb-[64px]'
+    value: 'mb-[32px] lg:mb-[64px]'
   }, {
     label: 'Large (80px)',
-    value: 'mb-[80px]'
+    value: 'mb-[48px] lg:mb-[80px]'
   }, {
     label: 'XL (96px)',
-    value: 'mb-[96px]'
+    value: 'mb-[64px] lg:mb-[96px]'
   }, {
     label: 'XXL (192px)',
-    value: 'mb-[192px]'
+    value: 'mb-[128px] lg:mb-[192px]'
   }]
 }];
 
@@ -297,7 +301,9 @@ const staticSectionTemplates: Template<false>[] = [{
   ui: {
     itemProps: (item) => {
       const size = _.findWhere(SpacerSizes, { value: item.size })?.label;
-      return { label: getLabel('Spacer', size) };
+      const bgcolor = _.findWhere(ColorOptionsBg, { value: item.background })?.label;
+      const color = _.findWhere(ColorOptionsBorder, { value: item.color })?.label;
+      return { label: getLabel('Spacer', size, bgcolor && 'Background', bgcolor, color && 'Line Color', color) };
     },
     defaultItem: {
       size: SpacerValues.small
@@ -354,14 +360,25 @@ const staticSectionTemplates: Template<false>[] = [{
       label: 'Large',
       value: 'large'
     }, {
-      label: 'Small',
+      label: 'Small (default)',
       value: 'small'
+    }, {
+      label: 'None',
+      value: 'none'
     }]
   }, {
     name: 'text',
     label: 'Text Color',
     type: 'string',
     options: ColorOptionsText
+  }, {
+    name: 'background_image',
+    label: 'Background Image',
+    type: 'image'
+  }, {
+    name: 'darken',
+    label: 'Darken Background Image?',
+    type: 'boolean'
   }, {
     name: 'columns',
     label: 'Columns',
@@ -472,14 +489,32 @@ const staticSectionTemplates: Template<false>[] = [{
             label: 'Small (14px)',
             value: 'text-sm'
           }]
+        }, {
+          name: 'padding',
+          label: 'Add side padding?',
+          description: 'If selected, will add a small buffer around the left and right of the text; for example if the text will be inside a border.',
+          type: 'boolean'
         }]
       }, {
         name: 'image',
         label: 'Image',
+        ui: {
+          defaultItem: {
+            'full_height': true
+          }
+        },
         fields: [{
           name: 'image',
           label: 'Image',
           type: 'image'
+        }, {
+          name: 'full_height',
+          label: 'Full height?',
+          type: 'boolean'
+        }, {
+          name: 'rounded',
+          label: 'Rounded Corners?',
+          type: 'boolean'
         }]
       }, {
         name: 'basic',
@@ -707,7 +742,7 @@ const staticSectionTemplates: Template<false>[] = [{
   label: 'Feature Quote',
   ui: {
     itemProps: (item) => {
-      return { label: getLabel('Free Text', item?.id || item?.attribution) };
+      return { label: getLabel('Feature Quote', item?.id || item?.attribution) };
     }
   },
   fields: [...commonSectionFields, {
@@ -715,6 +750,14 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Text Color',
     type: 'string',
     options: ColorOptionsText
+  }, {
+    name: 'background_image',
+    label: 'Background Image',
+    type: 'image'
+  }, {
+    name: 'darken',
+    label: 'Darken Background Image?',
+    type: 'boolean'
   }, {
     name: 'quote',
     label: 'Quotation Text',
@@ -864,7 +907,7 @@ const Pages: Collection = {
     templates: [...staticSectionTemplates, {
       name: 'carousel',
       label: 'Carousel',
-      fields: [{
+      fields: [...commonSectionFields, {
         name: 'items',
         label: 'Items',
         type: 'object',
@@ -943,6 +986,9 @@ const Pages: Collection = {
         label: 'Tabs',
         type: 'object',
         list: true,
+        ui: {
+          itemProps: (item) => ({ label: getLabel('Tab Item', item?.label)})
+        },
         fields: [{
           name: 'label',
           label: 'Tab Label',

@@ -6,7 +6,7 @@ import NavBar from '@layouts/NavBar.astro';
 import clsx from 'clsx';
 import _ from 'underscore';
 import { toBackgroundClass, toTextClass } from '@utils/pageBuilder';
-import MultiColumn from '@apps/pages/sections/MultiColumn.astro';
+import MultiColumnContent from '@components/MultiColumnContent.astro';
 
 const {
   accessibilityUrl,
@@ -64,7 +64,7 @@ const year = new Date().getFullYear();
         class='flex flex-col items-center justify-center w-full'
       >
         <h1
-          class='w-full !text-3xl text-center font-medium pt-4'
+          class='w-full text-3xl text-center font-medium pt-4'
         >
           { title }
         </h1>
@@ -142,7 +142,7 @@ const year = new Date().getFullYear();
           class='w-full h-full object-cover absolute inset-0'
         /> 
     ) }
-    <MultiColumn content={customContent.columns} gap='large' className='z-10' />
+    <MultiColumnContent content={customContent.columns} gap='large' className='z-10' />
     <div
       class='flex border-t border-neutral-500 py-6 w-full font-light z-10'
     >

@@ -1,0 +1,66 @@
+---
+import { getTranslations } from '@backend/i18n';
+import FormInput from '@components/FormInput.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+const lang = Astro.currentLocale;
+const { t } = await getTranslations(lang);
+
+---
+
+<div
+  class='bg-tertiary flex flex-col h-full'
+>
+  <form
+    action={getRelativeLocaleUrl(lang, 'contact_success')}
+    class='flex flex-col mt-8 mb-4 px-8'
+    data-netlify='true'
+    data-netlify-honeypot='bot-field'
+    method='POST'
+    name='contact'
+  >
+    <input
+      name='form-name'
+      type='hidden'
+      value='contact'
+    />
+    <input
+      name='bot-field'
+      type='text'
+    />
+    <FormInput
+      className='py-3'
+      name='name'
+      label={t('contactForm.name')}
+      type='text'
+    />
+    <FormInput
+      className='py-3'
+      name='email'
+      label={t('contactForm.email')}
+      type='text'
+    />
+    <FormInput
+      className='py-3'
+      name='organization'
+      label={t('contactForm.organization')}
+      type='text'
+    />
+    <FormInput
+      className='py-3'
+      name='message'
+      label={t('contactForm.message')}
+      type='textarea'
+    />
+    <div
+      class='flex justify-end mt-4'
+    >
+      <button
+        class='bg-secondary rounded-md px-4 py-2 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2'
+        type='submit'
+      >
+        { t('contactForm.send') }
+      </button>
+    </div>
+  </form>
+</div>
