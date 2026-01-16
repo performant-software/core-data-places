@@ -1,12 +1,12 @@
 ---
 import Container from '@components/Container.astro';
 import LinkButton from '@components/LinkButton';
+import MultiColumnContent from '@components/MultiColumnContent.astro';
 import config from '@config';
 import NavBar from '@layouts/NavBar.astro';
+import { toBackgroundClass } from '@utils/pageBuilder';
 import clsx from 'clsx';
 import _ from 'underscore';
-import { toBackgroundClass, toTextClass } from '@utils/pageBuilder';
-import MultiColumnContent from '@components/MultiColumnContent.astro';
 
 const {
   accessibilityUrl,
@@ -78,13 +78,13 @@ const year = new Date().getFullYear();
           class='flex flex-col lg:flex-row lg:w-full lg:justify-center gap-y-4 pb-12'
         >
           <LinkButton
-            className='bg-secondary w-[200px] text-center'
+            className='bg-secondary w-[200px] justify-center'
             content={t('coreDataLogin')}
             href={config.core_data.url}
             target='_blank'
           />
           <LinkButton
-            className='bg-secondary w-[200px] text-center'
+            className='bg-secondary w-[200px] justify-center'
             content={t('tinaLogin')}
             href='/admin/index.html'
             target='_blank'
