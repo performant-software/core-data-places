@@ -22,14 +22,14 @@ const SortBy = () => {
 
   const { currentRefinement, refine } = useSortBy({ items: sortFields });
 
-  const currentSort = useMemo(() => {
-    return sortFields.find(field => field.value === currentRefinement)
-  }, [currentRefinement, sortFields]);
+  const currentSort = useMemo(() => (
+    sortFields.find((field) => field.value === currentRefinement)
+  ), [currentRefinement, sortFields]);
 
   return (
     <div className='flex w-full items-center justify-end gap-4 pr-4'>
       <span className='font-bold'>
-        { `${t('sortBy')}:` }
+        { t('sortBy') }
       </span>
       <DropdownMenu.Root
         modal={false}
