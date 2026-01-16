@@ -63,7 +63,7 @@ const {
       class='absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply'
     /> 
   ) }
-  { (title || subtitle || url || content?.children?.length) && (
+  { !!(title || subtitle || url || content?.children?.length) && (
     <Container className={clsx(
       'flex flex-col w-full overflow-hidden',
       { 'items-center text-center': textAlignment === 'center' },
