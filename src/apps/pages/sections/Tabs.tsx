@@ -31,13 +31,18 @@ const Tabs = (props: TabsProps) => {
 
   return (
     <TabGroup>
-      <div className={clsx(
-        'px-6 sm:px-12 md:px-16 lg:px-32 2xl:mx-auto max-w-(--breakpoint-2xl)',
-      )}>
-        <TabList aria-label='Tabs' className={clsx(
-          '-mb-px flex h-[65px] overflow-x-auto relative z-30',       
-          { 'border-b-2': !raise }
-        )}>
+      <div
+        className={clsx(
+          'px-6 sm:px-12 md:px-16 lg:px-32 2xl:mx-auto max-w-(--breakpoint-2xl)',
+        )}
+      >
+        <TabList
+          aria-label='Tabs'
+          className={clsx(
+            '-mb-px flex h-[65px] relative z-30',
+            { 'border-b-2': !raise }
+          )}
+        >
           {
             _.map(tabs, (tab) => ( 
               <Tab
