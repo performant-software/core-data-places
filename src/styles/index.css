@@ -7,61 +7,45 @@
 
 @source '../../node_modules/@performant-software/core-data';
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-}
 
 :root {
-  --Font-Sizes-page-header: 48px;
-  --Font-Sizes-hero-header: 36px;
-  --Font-Sizes-CTA-header: 36px;
+  --font-sizes-page-header: 48px;
+  --font-sizes-hero-header: 36px;
+  --font-sizes-CTA-header: 36px;
   
-  --Font-Sizes-h1: 48px;
-  --Font-Sizes-h2: 36px;
-  --Font-Sizes-h3: 24px;
-  --Font-Sizes-h4: 18px;
-  --Font-Sizes-h5: 18px;
-  --Font-Sizes-h6: 16px;
-  --Font-Sizes-paragraph: 16px;
-  --Font-Sizes-quote-text: 20px;
-  --Font-Sizes-description: 14px;
-  --Font-Sizes-header-tab-text: 20px;
-  --Font-Sizes-FairData-xs: 12px;
-  --Font-Sizes-FairData-sm: 14px;
-  --Font-Sizes-FairData-base: 16px;
-  --Font-Sizes-FairData-lg: 20px;
+  --font-sizes-h1: 48px;
+  --font-sizes-h2: 36px;
+  --font-sizes-h3: 24px;
+  --font-sizes-h4: 18px;
+  --font-sizes-h5: 18px;
+  --font-sizes-h6: 16px;
+  --font-sizes-paragraph: 16px;
+  --font-sizes-quote-text: 20px;
+  --font-sizes-description: 14px;
+  --font-sizes-header-tab-text: 20px;
+  --font-sizes-FairData-xs: 12px;
+  --font-sizes-FairData-sm: 14px;
+  --font-sizes-FairData-base: 16px;
+  --font-sizes-FairData-lg: 20px;
 
-  --Font-Variant-banner-header: var(--customBannerHeaderVariant, normal);
+  --font-variant-banner-header: var(--customBannerHeaderVariant, normal);
+
 }
 
 @media (min-width: 640px) {
   :root {
-    --Font-Sizes-hero-header: 48px;
-    --Font-Sizes-h3: 30px;
-    --Font-Sizes-h4: 24px;
-    --Font-Sizes-h5: 24px;
-    --Font-Sizes-h6: 18px;
-    --Font-Sizes-CTA-header: 42px;
+    --font-sizes-hero-header: 48px;
+    --font-sizes-h3: 30px;
+    --font-sizes-h4: 24px;
+    --font-sizes-h5: 24px;
+    --font-sizes-h6: 18px;
+    --font-sizes-CTA-header: 42px;
   }
 }
 
 @media (min-width: 1024px) {
   :root {
-    --Font-Sizes-hero-header: var(--customHeroHeaderSize, 52px);
+    --font-sizes-hero-header: var(--customHeroHeaderSize, 52px);
   }
 }
 
@@ -95,6 +79,55 @@
 }
 
 /*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  h1 {
+    font-size: var(--font-sizes-h1);
+  }
+
+  h2 {
+    font-size: var(--font-sizes-h2);
+  }
+
+  h3 {
+    font-size: var(--font-sizes-h3);
+  }
+
+  h4 {
+    font-size: var(--font-sizes-h4)
+  }
+  
+  h5 {
+    font-size: var(--font-sizes-h5);
+    color: var(--color-secondary) !important;
+  }
+  
+  h6 {
+    font-size: var(--font-sizes-h6);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-header);
+    font-weight: var(--font-weight-header);
+  }
+}
+
+
+/*
  * Peripleo styles
  */
 .p6o-map-container {
@@ -112,9 +145,9 @@
 /*
  * Branding styles
  */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-header);
-  font-weight: var(--font-weight-header);
+
+h1:has(+ h1) { 
+  margin-bottom: 0;
 }
 
 .bg-primary, .fill-primary, .bg-primary div {
@@ -154,35 +187,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-content)
 }
 
-h1 {
-  font-size: var(--Font-Sizes-h1);
-}
-
-h1:has(+ h1) {
-  margin-bottom: 0;
-}
-
-h2 {
-  font-size: var(--Font-Sizes-h2);
-}
-
-h3 {
-  font-size: var(--Font-Sizes-h3);
-}
-
-h4 {
-  font-size: var(--Font-Sizes-h4)
-}
-
-h5 {
-  font-size: var(--Font-Sizes-h5);
-  color: var(--color-secondary) !important;
-}
-
-h6 {
-  font-size: var(--Font-Sizes-h6);
-}
-
 .link-button:has(+ .link-button) {
   margin-right: 1.5rem;
 }
@@ -193,10 +197,19 @@ h6 {
 
 .banner-header {
   font-variant: var(--Font-Variant-banner-header);
+  font-size: var(--font-sizes-CTA-header);
+}
+
+.banner-header.banner-hero {
+  font-size: var(--font-sizes-page-header);
+}
+
+.banner-header.banner-hero.banner-home {
+  font-size: var(--font-sizes-hero-header);
 }
 
 .detail-panel h1 {
-  font-size: var(--Font-Sizes-h4);
+  font-size: var(--font-sizes-h4);
 }
 
 .custom-footer .prose {

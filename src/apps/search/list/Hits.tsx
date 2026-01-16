@@ -142,9 +142,9 @@ const Hits = (props: Props) => {
   return (
     <div
       className={clsx(
-        'flex flex-col gap-4 py-6',
-        {'flex-row flex-wrap': isGrid},
-        {'flex-col': !isGrid}
+        'gap-4 py-6',
+        {'w-full grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-4': isGrid},
+        {'flex flex-col': !isGrid}
       )}>
         { hits.map((hit) => renderItem(hit)) }
     </div>

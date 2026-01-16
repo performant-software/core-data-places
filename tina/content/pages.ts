@@ -28,8 +28,8 @@ export const ColorValues = {
   layoutAlternate: 'layout_alternate',
   contentLight: 'content_light',
   contentDark: 'content_dark',
-  contentAlternate: 'content-alt',
-  contentMain: ''
+  contentAlternate: 'text-content-alt',
+  contentMain: 'text-content'
 };
 
 const SpacerSizes = [{
@@ -82,6 +82,29 @@ export const ColorOptionsButton = [{
 }, {
   label: 'Main Background',
   value: ColorValues.layout
+}];
+
+export const ColorOptions = [{
+  label: 'Primary',
+  value: ColorValues.primary
+}, {
+  label: 'Secondary',
+  value: ColorValues.secondary
+}, {
+  label: 'Tertiary',
+  value: ColorValues.tertiary
+}, {
+  label: 'Content (light background)',
+  value: ColorValues.contentDark
+}, {
+  label: 'Content (dark background)',
+  value: ColorValues.contentLight
+}, {
+  label: 'Alternate Content',
+  value: ColorValues.contentAlternate
+}, {
+  label: 'Main Background',
+  value: ColorValues.layout
 }]
 
 export const richTextTemplates: RichTextTemplate<false>[] = [{
@@ -131,6 +154,16 @@ export const richTextTemplates: RichTextTemplate<false>[] = [{
     type: 'boolean'
   }]
 }];
+
+const contactForm: Template = {
+  name: 'contact_form',
+  label: 'Contact Form',
+  fields: [{
+    name: 'email',
+    label: 'Email',
+    type: 'string'
+  }]
+};
 
 const commonSectionFields: TinaField<false>[] = [{
   name: 'id',
@@ -198,7 +231,7 @@ const commonSectionFields: TinaField<false>[] = [{
     label: 'XXL (192px)',
     value: 'mb-[128px] lg:mb-[192px]'
   }]
-}]
+}];
 
 const staticSectionTemplates: Template<false>[] = [{
   name: 'free_text',
@@ -618,7 +651,7 @@ const staticSectionTemplates: Template<false>[] = [{
           label: 'Description',
           type: 'string'
         }]
-      }]
+      }, contactForm]
     }]
   }]
 }, {
@@ -866,7 +899,7 @@ const staticSectionTemplates: Template<false>[] = [{
       type: 'string'
     }]
   }]
-}];
+}, contactForm];
 
 const Pages: Collection = {
   name: 'pages',
