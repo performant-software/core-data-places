@@ -19,8 +19,8 @@ const ListLayout = (props: Props) => {
 
   return (
     <div className='md:px-8'>
-      <div className='w-full uppercase flex justify-between items-center flex-wrap border-b border-neutral-200'>
-        <h1 className='uppercase first-letter:text-4xl text-2xl'>{t(`index_${config.name}`)}</h1>
+      <div className='w-full flex justify-between items-center flex-wrap border-b border-neutral-200'>
+        <h2>{t(`index_${config.name}`)}</h2>
         <SearchBox
           placeholder={t('search')}
           classNames={{
