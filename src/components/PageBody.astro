@@ -1,7 +1,7 @@
 ---
 import Banner from '@apps/pages/sections/Banner.astro';
 import Carousel from '@apps/pages/sections/Carousel';
-import ContactForm from '@components/ContactForm.astro';
+import ContactForm from '@components/ContactForm';
 import FeatureQuote from '@apps/pages/sections/FeatureQuote.astro';
 import FreeText from '@apps/pages/sections/FreeText.astro';
 import Images from '@apps/pages/sections/Images.astro';
@@ -54,7 +54,9 @@ const SectionTypes = {
     )}
     { section?.__typename?.endsWith(SectionTypes.contactForm) && (
       <Container>
-        <ContactForm />
+        <ContactForm
+          client:load
+        />
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.freeText) && (
