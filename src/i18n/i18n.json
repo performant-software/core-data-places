@@ -478,5 +478,9 @@
   "contactFormSubmitted.content": {
     "tinaLabel": "Contact Form Submitted > Content",
     "defaultValue": "We appreciate you contacting us. One of our colleagues will get back in touch with you soon! Have a great day!"
+  },
+  "tags": {
+    "tinaLabel": "Tags",
+    "defaultValue": "Tags"
   }
 }

@@ -3,7 +3,7 @@ import { HitComponentProps } from '@types';
 
 const ImageHit = (props: HitComponentProps) => {
   return (
-    <div className='bg-white rounded-md shadow-md overflow-hidden flex flex-col divide-zinc-200 divide-y h-auto'>
+    <div className='bg-white rounded-md shadow-xs hover:shadow-md overflow-hidden flex flex-col divide-zinc-200 divide-y h-auto'>
       {props.hit.thumbnail && (
         <img
           alt={props.hit.name}
