@@ -44,7 +44,7 @@ const ContactForm = () => {
 
     setLoading(true);
 
-    fetch(`/forms/contact.html`, {
+    fetch('/forms/contact.html', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
