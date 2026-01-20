@@ -177,6 +177,10 @@ const Branding: Collection = {
     label: 'Footer',
     type: 'object',
     fields: [{
+      name: 'custom',
+      label: 'Use custom footer?',
+      type: 'boolean'
+    }, {
       name: 'allow_login',
       label: 'Allow Login',
       type: 'boolean'
