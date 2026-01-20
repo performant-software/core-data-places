@@ -404,8 +404,8 @@
     "defaultValue": "Web Authorities"
   },
   "sortBy": {
-    "tinaLabel": "Sort by",
-    "defaultValue": "Sort by"
+    "tinaLabel": "Sort by:",
+    "defaultValue": "Sort by:"
   },
   "relevance": {
     "tinaLabel": "Relevance",
