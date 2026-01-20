@@ -219,6 +219,8 @@ const navItems = await getNavItems();
     { includeFooter && (
       <Footer
         accessibilityUrl={footer?.accessibility_url}
+        custom={footer?.custom}
+        customContent={footer?.custom_content}
         items={navItems}
         login={footer?.allow_login && !STATIC_BUILD}
         logos={footer?.logos}

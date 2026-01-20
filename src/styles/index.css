@@ -232,6 +232,7 @@ h1:has(+ h1) {
 */
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
   color: inherit;
+  font-family: var(--font-header);
   font-weight: var(--font-weight-header);
 }
 
@@ -241,4 +242,29 @@ h1:has(+ h1) {
 
 .prose :where(h5 + *):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
   margin-top: 0;
+}
+
+.prose h1 {
+  font-size: var(--font-sizes-h1);
+}
+
+.prose h2 {
+  font-size: var(--font-sizes-h2);
+}
+
+.prose h3 {
+  font-size: var(--font-sizes-h3);
+}
+
+.prose h4 {
+  font-size: var(--font-sizes-h4)
+}
+
+.prose h5 {
+  font-size: var(--font-sizes-h5);
+  color: var(--color-secondary) !important;
+}
+
+.prose h6 {
+  font-size: var(--font-sizes-h6);
 }

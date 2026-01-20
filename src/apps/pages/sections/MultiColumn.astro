@@ -17,29 +17,25 @@ const {
 } = Astro.props;
 
 ---
-<div class={clsx(
-  'w-full relative flex',
-  toBackgroundClass(background)
-)}>
-  { backgroundImage && (
-    <img 
-      src={backgroundImage} 
-      class='w-full h-full object-cover absolute inset-0'
-    /> 
-  ) }
-  { darken && (
-    <div
-      class='absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply'
-    /> 
-  ) }
-  <Container>
-    <MultiColumnContent
-      buttonText={buttonText}
-      textAlignment={textAlignment}
-      title={title}
-      url={url}
-      content={content}
-      gap={gap}
-    />
-  </Container>
-</div>
+
+{ backgroundImage && (
+  <img 
+    src={backgroundImage} 
+    class='w-full h-full object-cover absolute inset-0'
+  /> 
+) }
+{ darken && (
+  <div
+    class='absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply'
+  /> 
+) }
+<Container>
+  <MultiColumnContent
+    buttonText={buttonText}
+    textAlignment={textAlignment}
+    title={title}
+    url={url}
+    content={content}
+    gap={gap}
+  />
+</Container>
