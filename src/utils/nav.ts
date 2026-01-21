@@ -1,5 +1,7 @@
 import { fetchPages } from '@backend/tina';
 import _ from 'underscore';
+import config from '@config' with { type: 'json' };
+import { Models } from '@types';
 
 /**
  * Returns the first page flagged as "home_page".

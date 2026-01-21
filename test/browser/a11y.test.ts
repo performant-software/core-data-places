@@ -170,9 +170,9 @@ test.describe('Accessibility testing', () => {
 
   // Detail pages
   test.describe('Detail pages', () => {
-    test.skip(!_config.detail_pages?.models, 'No detail pages configured.');
+    test.skip(!_config.detail_pages, 'No detail pages configured.');
 
-    const { models } = _config.detail_pages;
+    const models = Object.keys(_config.detail_pages.models);
 
     models.forEach((name) => {
       test(`${name} should have no violations`, async ({ page }) => {

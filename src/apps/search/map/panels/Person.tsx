@@ -4,6 +4,7 @@ import TranslationContext from '@contexts/TranslationContext';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import { getNameView } from '@utils/people';
 import { useCallback, useContext } from 'react';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props {
   className?: string;
@@ -24,10 +25,10 @@ const Person = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((person) => {
-    if (person && config.detail_pages?.models?.includes('people')) {
+    if (person && hasDetailPage('people')) {
       return `/${lang}/people/${person.uuid}`;
     }
-  }, [config, lang]);
+  }, [lang]);
 
   return (
     <BasePanel

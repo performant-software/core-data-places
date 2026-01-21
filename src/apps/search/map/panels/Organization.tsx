@@ -3,6 +3,7 @@ import OrganizationsService from '@backend/api/coreData/organizations';
 import TranslationContext from '@contexts/TranslationContext';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useCallback, useContext } from 'react';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props {
   className?: string;
@@ -16,10 +17,10 @@ const Organization = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((organization) => {
-    if (organization && config.detail_pages?.models?.includes('organizations')) {
+    if (organization && hasDetailPage('organizations')) {
       return `/${lang}/organizations/${organization.uuid}`;
     }
-  }, [config, lang]);
+  }, [lang]);
 
   return (
     <BasePanel

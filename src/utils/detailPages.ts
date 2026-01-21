@@ -1,13 +1,13 @@
 import ServiceFactory from '@services/coreData/factory';
 import { CoreData as CoreDataUtils } from '@performant-software/core-data/ssr';
 import config from '@config' with { type: 'json' };
-
-type Models = 'events' | 'instances' | 'items' | 'mediaContents' | 'organizations' | 'people' | 'places' | 'works';
+import type { Models } from '@types';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 export const getDetailPagePaths = async (model: Models) => {
   let routes = [];
 
-  if (!config.detail_pages?.models || !config.detail_pages?.models?.includes(model)) {
+  if (hasDetailPage(model)) {
     return routes;
   }
 
@@ -53,12 +53,16 @@ export const getRelatedGeometry = (places?: any[]) => {
   return null
 }
 
-export const getRelationshipFields = (uuids: string[], t: any) => (
-  uuids.map(u => ({
-    label: t(u),
-    uuid: u
-  }))
-)
+export const getRelationshipFields = (model: Models, t: any) => {
+  if (config.detail_pages?.relationship_fields) {
+    return (config.detail_pages.relationship_fields[model] || []).map(uuid => ({
+      label: t(uuid),
+      uuid: uuid
+    }));
+  }
+
+  return [];
+}
 
 const INVERSE_SUFFIX = '_inverse';
 

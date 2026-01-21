@@ -2,8 +2,8 @@
 import ServiceFactory from '@services/coreData/factory';
 import Relations from '@apps/pages/RecordDetail/Relations.astro';
 import { groupRelationships } from '@utils/detailPages';
-import config from '@config';
 import { getTranslations } from '@backend/i18n';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props {
   excludes: string[];
@@ -26,7 +26,7 @@ const { t } = await getTranslations(lang);
     label={t(uuid)}
     resolveDetailUrl={(taxonomy) => `/${lang}/taxonomies/${taxonomy.uuid}`}
     resolveName={taxonomy => taxonomy.name}
-    showLinks={config.detail_pages?.models?.includes('taxonomies')}
+    showLinks={hasDetailPage('taxonomies')}
     uuid={uuid}
   />
 ))}

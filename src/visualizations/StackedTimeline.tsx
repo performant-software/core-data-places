@@ -110,7 +110,7 @@ const StackedTimeline = (props: Props) => {
             <Bar
               dataKey='date_range'
               fill='var(--color-primary)'
-              onClick={link ? onClickBar : null}  
+              onClick={link ? onClickBar : null}
               minPointSize={1}
             >
               <LabelList dataKey='name' content={renderLabel} />

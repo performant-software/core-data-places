@@ -7,8 +7,9 @@ import { Highlight } from 'react-instantsearch';
 import { useCallback, useContext, useMemo, useRef } from 'react';
 import { getAttributes, getFacetLabel, getHitValue, getRelationshipLabel, isInverse } from '@utils/search';
 import clsx from 'clsx';
-import config from '@config' with { type: 'json' };
 import TranslationContext from '@contexts/TranslationContext';
+import { hasDetailPage } from '@utils/detailPagePaths';
+import { Models } from '@types';
 
 interface Props {
   lang: string;
@@ -115,7 +116,7 @@ const Hits = (props: Props) => {
   }, [items, t, searchConfig]);
 
   const isLinkable = useMemo(
-    () => config.detail_pages?.models.includes(searchConfig.route.slice(1)),
+    () => hasDetailPage(searchConfig.route.slice(1) as Models),
     [searchConfig.route]
   );
 
