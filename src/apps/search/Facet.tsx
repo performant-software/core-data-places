@@ -2,7 +2,7 @@ import TranslationContext from '@contexts/TranslationContext';
 import { Icon } from '@performant-software/core-data';
 import { getFacetLabel, isInverse } from '@utils/search';
 import clsx from 'clsx';
-import { useContext, type ReactNode, useState, useEffect } from 'react';
+import { useContext, useMemo, type ReactNode } from 'react';
 import { useHits } from 'react-instantsearch';
 
 interface Props {
@@ -12,17 +12,12 @@ interface Props {
   icon?: string;
 }
 
-const Facet = ({attribute, children, className, icon}: Props) => {
+const Facet = ({ attribute, children, className, icon }: Props) => {
   const { t } = useContext(TranslationContext);
-  const [label, setLabel] = useState(getFacetLabel(attribute, t));
 
   const { items } = useHits();
 
-  useEffect(() => {
-    if (items.length > 0) {
-      setLabel(getFacetLabel(attribute, t, isInverse(attribute, items)))
-    }
-  }, [items.length]);
+  const label = useMemo(() => getFacetLabel(attribute, t, isInverse(attribute, items)), [attribute, items.length, t]);
 
   return (
     <div
