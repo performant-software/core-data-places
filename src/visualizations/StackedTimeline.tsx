@@ -14,6 +14,7 @@ import {
   TooltipContentProps
 } from 'recharts';
 import config from '@config' with { type: 'json' };
+import _ from 'underscore';
 
 interface Props extends DataVisualizationProps {
   link?: string;
@@ -55,9 +56,9 @@ const StackedTimeline = (props: Props) => {
   if (!link?.length) {
     return;
   }
-  if (link === 'detail' && data.uuid) {
+  if (link === 'detail' && data.uuid && config.detail_pages?.includes('events')) {
     window.location.href = `/${language}/events/${data.uuid}`
-  } else if (link === 'search' && data.name && model && filter) {
+  } else if (link === 'search' && data.name && model && filter && _.find(config.search, (item) => (item.name === model))) {
     window.location.href = `/${language}/search/${model}/?${filter}.name_facet[0]=${data.name}`
   }
  }, [language, link, model, filter]);
@@ -109,7 +110,7 @@ const StackedTimeline = (props: Props) => {
             <Bar
               dataKey='date_range'
               fill='var(--color-primary)'
-              onClick={link ? onClickBar : null}
+              onClick={link ? onClickBar : null}  
               minPointSize={1}
             >
               <LabelList dataKey='name' content={renderLabel} />
