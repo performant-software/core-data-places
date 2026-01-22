@@ -18,13 +18,13 @@ const ListLayout = (props: Props) => {
   const { t } = useContext(TranslationContext);
 
   return (
-    <div className='md:px-8'>
-      <div className='w-full flex justify-between items-center flex-wrap border-b border-neutral-200'>
+    <div className='px-6 md:px-8 lg:px-12'>
+      <div className='w-full py-4 gap-4 flex justify-between items-center flex-wrap border-b border-neutral-200'>
         <h2>{t(`index_${config.name}`)}</h2>
         <SearchBox
           placeholder={t('search')}
           classNames={{
-            root: 'p-4 w-full max-w-[720px]',
+            root: 'w-full max-w-[720px]',
             form: 'relative',
             input: 'rounded-[5px] border border-neutral-200 bg-white py-2 pl-12 pr-10 text-md w-full placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500',
             submit: 'absolute inset-y-4 left-4 flex items-center',
@@ -36,16 +36,16 @@ const ListLayout = (props: Props) => {
           }}
         />
       </div>
-      <div className='flex'>
-        <div className='w-[300px]'>
+      <div className='flex gap-x-8 lg:gap-x-12'>
+        <div className='w-[200px] xl:w-[300px]'>
           <Facets
             className='py-0'
             config={config}
             open
           />
         </div>
-        <div className='flex-1 p-6'>
-          <div className='flex justify-between items-center mb-4'>
+        <div className='flex-1 pb-6'>
+          <div className='flex justify-between items-center py-5'>
             <Stats />
             <SortBy />
           </div>
