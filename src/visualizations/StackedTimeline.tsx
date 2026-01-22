@@ -15,6 +15,7 @@ import {
 } from 'recharts';
 import config from '@config' with { type: 'json' };
 import _ from 'underscore';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props extends DataVisualizationProps {
   link?: string;
@@ -56,7 +57,7 @@ const StackedTimeline = (props: Props) => {
   if (!link?.length) {
     return;
   }
-  if (link === 'detail' && data.uuid && config.detail_pages?.models?.includes('events')) {
+  if (link === 'detail' && data.uuid && hasDetailPage('events')) {
     window.location.href = `/${language}/events/${data.uuid}`
   } else if (link === 'search' && data.name && model && filter && _.find(config.search, (item) => (item.name === model))) {
     window.location.href = `/${language}/search/${model}/?${filter}.name_facet[0]=${data.name}`
