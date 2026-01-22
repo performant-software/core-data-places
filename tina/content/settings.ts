@@ -21,6 +21,34 @@ const Settings: Collection = {
       name: 'localize_pages',
       label: 'Localize Pages',
       type: 'boolean'
+    }, {
+      name: 'posts_config',
+      label: 'Posts configuration',
+      type: 'object',
+      fields: [{
+        name: 'categories',
+        label: 'Categories',
+        type: 'string',
+        list: true
+      }, {
+        name: 'drafts',
+        label: 'Use Draft Workflow?',
+        type: 'boolean'
+      }]
+    }, {
+      name: 'paths_config',
+      label: 'Paths configuration',
+      type: 'object',
+      fields: [{
+        name: 'categories',
+        label: 'Categories',
+        type: 'string',
+        list: true
+      }, {
+        name: 'drafts',
+        label: 'Use Draft Workflow?',
+        type: 'boolean'
+      }]
     }]
   }, {
     name: 'core_data',

@@ -10,7 +10,7 @@ export const getPosts = async (params: any = {}) => {
 
   return {
     ...data,
-    posts: data.posts.map((item) => ({
+    posts: data.posts?.map((item) => ({
       ...item,
       body: null
     })),

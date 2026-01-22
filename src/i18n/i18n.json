@@ -23,6 +23,10 @@
     "tinaLabel": "Posts",
     "defaultValue": "Posts"
   },
+  "all": {
+    "tinaLabel": "All",
+    "defaultValue": "All"
+  },
   "backTo": {
     "tinaLabel": "Back to <label>",
     "defaultValue": "Back to {{label}}"

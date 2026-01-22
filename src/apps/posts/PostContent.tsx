@@ -11,6 +11,7 @@ import Map from '@visualizations/Map';
 import Table from '@visualizations/Table';
 import Timeline from '@visualizations/Timeline';
 import { TinaMarkdown, TinaMarkdownContent } from 'tinacms/dist/rich-text';
+import Byline from '@components/Byline';
 
 interface PostContentProps {
   content: TinaMarkdownContent;

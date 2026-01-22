@@ -4,6 +4,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { fetchPosts } from '@backend/api/posts';
 import { Button } from '@performant-software/core-data';
 import { useTranslations } from '@i18n/useTranslations';
+import config from '@config';
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 interface Props {
   lang: string;
@@ -16,7 +19,9 @@ const PostList = (props: Props) => {
   const { lang } = props;
 
   const [cursor, setCursor] = useState<string | null>(null);
+  const [showMore, setShowMore] = useState<boolean>(false);
   const [posts, setPosts] = useState<any[]>([]);
+  const [category, setCategory] = useState<string | null>(null);
 
   const onLoadPosts = useCallback(async (cursor?: string) => {
     const params = {
@@ -27,24 +32,54 @@ const PostList = (props: Props) => {
       params['after'] = cursor;
     }
 
+    if (category) {
+      params['category'] = category;
+    }
+
     const res = await fetchPosts(params);
 
     setPosts(prev => prev.concat(res.posts));
     setCursor(res.metadata?.endCursor);
-  }, []);
+    setShowMore(res.metadata?.hasNextPage);
+  }, [category]);
 
   useEffect(() => {
+    setPosts([]);
     onLoadPosts();
-  }, []);
+  }, [category]);
 
   return (
     <div className='mx-4'>
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center gap-16'>
         <h1
           className='text-2xl my-8 font-header uppercase first-letter:text-4xl'
         >
           { t('posts') }
         </h1>
+        {
+          config.content?.posts_config?.categories && ( 
+            <div className='flex flex-row gap-4 items-center'>
+              <Listbox value={category} onChange={setCategory}>
+                <ListboxButton className='min-w-[250px] h-12 bg-white rounded-md px-4.5 py-2.5 flex flex-row justify-between items-center'>
+                  <span className='text-sm font-semibold'>
+                    {category || t('all') }
+                  </span>
+                  <ChevronDownIcon height={16} width={16} />
+                </ListboxButton>
+                <ListboxOptions anchor='bottom' className='w-(--button-width) bg-white rounded-md shadow-md p-1 [--anchor-gap:--spacing(1)] focus:outline-none transition duration-100 ease-in data-leave:data-closed:opacity-0'>
+                  <ListboxOption key='all' value={null} className='data-focus:bg-gray-100 px-4 py-2 text-sm'>
+                    { t('all') }
+                  </ListboxOption>
+                  { _.map(config.content.posts_config.categories, (cat) => (
+                    <ListboxOption key={cat} value={cat} className='data-focus:bg-gray-100 px-4 py-2 text-sm'>
+                      {cat}
+                    </ListboxOption>
+                  )) }
+                </ListboxOptions>
+              </Listbox>
+            </div>
+          )
+        }
       </div>
       <div className='flex flex-col italic text-lg divide-y divide-secondary text-[#222222]'>
         { _.map(posts, (post) => (
@@ -59,7 +94,7 @@ const PostList = (props: Props) => {
           </a>
         )) }
       </div>
-      { cursor && (
+      { showMore && (
         <div className='w-full flex justify-center items-center py-6'>
           <Button
             onClick={() => onLoadPosts(cursor)}
