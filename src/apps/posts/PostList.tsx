@@ -67,11 +67,11 @@ const PostList = (props: Props) => {
                   <ChevronDownIcon height={16} width={16} />
                 </ListboxButton>
                 <ListboxOptions anchor='bottom' className='w-(--button-width) bg-white rounded-md shadow-md p-1 [--anchor-gap:--spacing(1)] focus:outline-none transition duration-100 ease-in data-leave:data-closed:opacity-0'>
-                  <ListboxOption key='all' value={null} className='data-focus:bg-gray-100 px-4 py-2 text-sm'>
+                  <ListboxOption key='all' value={null} className='data-focus:bg-gray-100 px-4 py-2 text-sm cursor-pointer'>
                     { t('all') }
                   </ListboxOption>
                   { _.map(config.content.posts_config.categories, (cat) => (
-                    <ListboxOption key={cat} value={cat} className='data-focus:bg-gray-100 px-4 py-2 text-sm'>
+                    <ListboxOption key={cat} value={cat} className='data-focus:bg-gray-100 px-4 py-2 text-sm cursor-pointer'>
                       {cat}
                     </ListboxOption>
                   )) }
