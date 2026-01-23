@@ -1,9 +1,9 @@
 ---
 import ServiceFactory from '@services/coreData/factory';
 import { getRelationshipFields, groupRelationships } from '@utils/detailPages';
-import config from '@config';
 import { getTranslations } from '@backend/i18n';
 import RelatedSource from '@apps/pages/RecordDetail/RelatedSource.astro';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props {
   excludes: string[];
@@ -19,10 +19,10 @@ const { items } = await service.getRelatedItems(uuid);
 const relationships = groupRelationships(items, excludes);
 const { t } = await getTranslations(lang);
 
-const fields = getRelationshipFields(config.detail_pages.relationship_fields?.items || [], t)
+const fields = getRelationshipFields('items', t);
 
 const resolveDetailUrl = (item: any) => `/${lang}/items/${item.uuid}`;
-const showLinks = config.detail_pages?.models?.includes('items');
+const showLinks = hasDetailPage('items');
 ---
 {Object.keys(relationships).map((uuid) => (
   <div class='py-6 w-full'>

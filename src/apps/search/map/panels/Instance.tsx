@@ -3,6 +3,7 @@ import InstancesService from '@backend/api/coreData/instances';
 import TranslationContext from '@contexts/TranslationContext';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useCallback, useContext } from 'react';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props {
   className?: string;
@@ -16,10 +17,10 @@ const Instance = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((instance) => {
-    if (instance && config.detail_pages?.models?.includes('instances')) {
+    if (instance && hasDetailPage('instances')) {
       return `/${lang}/instances/${instance.uuid}`;
     }
-  }, [config, lang]);
+  }, [lang]);
 
   return (
     <BasePanel
