@@ -22,8 +22,10 @@ const PostList = (props: Props) => {
   const [showMore, setShowMore] = useState<boolean>(false);
   const [posts, setPosts] = useState<any[]>([]);
   const [category, setCategory] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onLoadPosts = useCallback(async (cursor?: string) => {
+    setLoading(true);
     const params = {
       first: PER_PAGE,
     };
@@ -41,6 +43,7 @@ const PostList = (props: Props) => {
     setPosts(prev => prev.concat(res.posts));
     setCursor(res.metadata?.endCursor);
     setShowMore(res.metadata?.hasNextPage);
+    setLoading(false);
   }, [category]);
 
   useEffect(() => {
@@ -82,6 +85,7 @@ const PostList = (props: Props) => {
         }
       </div>
       <div className='flex flex-col italic text-lg divide-y divide-secondary text-[#222222]'>
+        { loading && <p className='not-italic text-base'>{t('loading') || 'Loading'}...</p>}
         { _.map(posts, (post) => (
           <a
             className='hover:underline hover:font-semibold py-4 font-header'
@@ -94,7 +98,7 @@ const PostList = (props: Props) => {
           </a>
         )) }
       </div>
-      { showMore && (
+      { showMore && !loading && (
         <div className='w-full flex justify-center items-center py-6'>
           <Button
             onClick={() => onLoadPosts(cursor)}
