@@ -51,7 +51,7 @@ export const MapSearchContextProvider = ({ allowSave, children }: Props) => {
   const [geometryCount, setGeometryCount] = useState<number>(0);
   const [page, setPage] = useState<number | undefined>();
 
-  const isPreloaded = import.meta.env.PUBLIC_PRELOAD_MAP;
+  const isPreloaded = import.meta.env.PUBLIC_PRELOAD_MAP === 'true';
 
   /**
    * Fetches the count of geometry records.
