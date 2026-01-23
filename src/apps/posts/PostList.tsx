@@ -85,8 +85,8 @@ const PostList = (props: Props) => {
         { _.map(posts, (post) => (
           <a
             className='hover:underline hover:font-semibold py-4 font-header'
-            href={getRelativeLocaleUrl(lang, `posts/${post._sys.filename}`)}
-            key={post._sys.filename}
+            href={getRelativeLocaleUrl(lang, `posts/${post._sys?.filename}`)}
+            key={post._sys?.filename}
           >
             <p>
               { post.title }
