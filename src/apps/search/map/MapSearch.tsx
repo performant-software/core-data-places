@@ -14,7 +14,7 @@ interface Props {
   name: string;
 }
 
-const MapSearch = ({allowSave, lang, name}: Props) => {
+const MapSearch = ({ allowSave, lang, name }: Props) => {
   const { t } = useTranslations();
 
   return (

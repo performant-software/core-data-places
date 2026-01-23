@@ -33,8 +33,7 @@ const useHoverable = () => {
    */
   const onPointEnter = useCallback((hit) => {
     if (onHoverChange && hovered?.id !== hit.id) {
-      const { features } = TypesenseUtils.toFeatureCollection([hit], config.map.geometry);
-      onHoverChange(features);
+      onHoverChange(TypesenseUtils.getFeatures([hit]));
     }
   }, [config, hovered, onHoverChange]);
 

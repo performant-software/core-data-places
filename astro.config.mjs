@@ -49,6 +49,12 @@ export default defineConfig({
   },
   env: {
     schema: {
+      PUBLIC_PRELOAD_MAP: envField.boolean({
+        access: 'public',
+        context: 'client',
+        default: false,
+        optional: true
+      }),
       STATIC_BUILD: envField.boolean({
         access: 'public',
         context: 'client',

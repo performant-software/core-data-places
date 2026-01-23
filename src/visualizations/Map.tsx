@@ -23,7 +23,10 @@ const Map = (props: DataVisualizationProps) => {
   /**
    * Memo-izes the data as a feature collection.
    */
-  const data = useMemo(() => TypesenseUtils.toFeatureCollection(parsed.data, config.map.geometry), [config, parsed]);
+  const data = useMemo(() => {
+    const features = TypesenseUtils.getFeatures(parsed.data);
+    return TypesenseUtils.createFeatureCollection(features);
+  }, [config, parsed]);
 
   return (
     <VisualizationContainer

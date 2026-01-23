@@ -1,4 +1,5 @@
 import MapSearchContext from '@apps/search/map/MapSearchContext';
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import Tooltip from '@apps/search/map/Tooltip';
 import Map from '@components/Map';
 import {
@@ -8,14 +9,16 @@ import {
   useGeoSearch,
   useSearching
 } from '@performant-software/core-data';
-import { HoverTooltip, useSelectionValue } from '@peripleo/maplibre';
+import { Map as MapUtils } from '@performant-software/geospatial';
+import { HoverTooltip, useLoadedMap, useSelectionValue } from '@peripleo/maplibre';
 import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
 import { parseFeature } from '@utils/search';
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import _ from 'underscore';
-import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 const MapView = () => {
+  const [features, setFeatures] = useState([]);
+
   const config = useSearchConfig();
   const { isRefinedWithMap } = useGeoSearch();
   const navigate = useNavigate();
@@ -23,24 +26,54 @@ const MapView = () => {
   const route = useCurrentRoute();
   const hits = useCachedHits();
   const searching  = useSearching();
+  const map = useLoadedMap();
 
-  const { boundingBoxOptions, controlsClass } = useContext(MapSearchContext);
-
-  /**
-   * Memo-izes the data to be displayed on the map as a feature collection.
-   */
-  const data = useMemo(() => {
-    const options = config.map.cluster_radius ? { type: 'Point' } : undefined;
-    return TypesenseUtils.toFeatureCollection(hits, config.map.geometry, options);
-  }, [hits]);
+  const {
+    boundingBoxOptions,
+    controlsClass,
+    geometries,
+    isPreloaded
+  } = useContext(MapSearchContext);
 
   /**
    * If we're on the place detail page or refining results by the map view port, we'll suppress the auto-bounding box
    * on the SearchResultsLayer component. Also suppress the auto-bounding box if 'zoom_to_place' is 'false'.
-  */
- const fitBoundingBox = useMemo(() => (
-   !isRefinedWithMap() && route === '/' && config.map.zoom_to_place
+   */
+  const fitBoundingBox = useMemo(() => (
+    !isRefinedWithMap() && route === '/' && config.map.zoom_to_place
   ), [route, isRefinedWithMap()]);
+
+  /**
+   * Sets the bounding box on the data set.
+   */
+  useEffect(() => {
+    if (fitBoundingBox && !_.isEmpty(features) && map && !searching) {
+      // Set the bounding box on the map
+      const data = TypesenseUtils.createFeatureCollection(features);
+      const bbox = MapUtils.getBoundingBox(data);
+
+      if (bbox) {
+        map.fitBounds(bbox, boundingBoxOptions);
+      }
+    }
+  }, [boundingBoxOptions, fitBoundingBox, features, map, searching]);
+
+  /**
+   * Updates the set of features when the geometries or hits are changed.
+   */
+  useEffect(() => {
+    const options = {};
+
+    if (config.map.cluster_radius) {
+      _.extend(options, { type: 'Point' });
+    }
+
+    if (isPreloaded) {
+      _.extend(options, { geometries });
+    }
+
+    setFeatures(TypesenseUtils.getFeatures(features, hits, config.map.geometry, options));
+  }, [geometries, hits]);
 
   /**
    * Navigates to the selected marker.
@@ -77,16 +110,17 @@ const MapView = () => {
         controls: controlsClass
       }}
     >
-      <SearchResultsLayer
-        boundingBoxOptions={boundingBoxOptions}
-        data={data}
-        cluster={!!config.map.cluster_radius}
-        clusterRadius={config.map.cluster_radius}
-        fitBoundingBox={fitBoundingBox}
-        geometry={config.map.geometry}
-        interactive
-        searching={searching}
-      />
+      { _.map(features, (feature) => (
+        <SearchResultsLayer
+          data={feature}
+          cluster={!!config.map.cluster_radius}
+          clusterRadius={config.map.cluster_radius}
+          fitBoundingBox={false}
+          interactive
+          key={feature.properties.uuid}
+          layerId={feature.properties.uuid}
+        />
+      ))}
       <HoverTooltip
         tooltip={({ hovered }) => (
           <Tooltip

@@ -1,0 +1,1 @@
+export const getPages = (count: number, perPage: number) => Math.ceil(count / perPage);
