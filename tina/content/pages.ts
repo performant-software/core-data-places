@@ -120,7 +120,7 @@ export const richTextTemplates: RichTextTemplate<false>[] = [{
     options: SpacerSizes
   }, {
     name: 'color',
-    label: 'Color',
+    label: 'Divider Color',
     type: 'string',
     options: ColorOptionsBorder
   }]
@@ -317,9 +317,13 @@ const staticSectionTemplates: Template<false>[] = [{
     options: SpacerSizes
   }, {
     name: 'color',
-    label: 'Color',
+    label: 'Divider Color',
     type: 'string',
     options: ColorOptionsBorder
+  }, {
+    name: 'thick',
+    label: 'Thick divider? (2px)',
+    type: 'boolean'
   }]
 }, {
   name: 'multi_column',
