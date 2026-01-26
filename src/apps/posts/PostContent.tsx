@@ -11,7 +11,6 @@ import Map from '@visualizations/Map';
 import Table from '@visualizations/Table';
 import Timeline from '@visualizations/Timeline';
 import { TinaMarkdown, TinaMarkdownContent } from 'tinacms/dist/rich-text';
-import Byline from '@components/Byline';
 
 interface PostContentProps {
   content: TinaMarkdownContent;
@@ -34,12 +33,6 @@ const PostContent = (props: PostContentProps) => {
           <div
             className='w-full'
           >
-            <h1
-              className='py-6'
-            >
-              { props.title }
-            </h1>
-            { (props.author || props.date) && <Byline author={props.author} date={props.date} /> }
             <article
               className='prose prose-lg max-w-none w-full'
             >
