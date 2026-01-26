@@ -3,6 +3,7 @@ import WorksService from '@backend/api/coreData/works';
 import TranslationContext from '@contexts/TranslationContext';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useCallback, useContext } from 'react';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props {
   className?: string;
@@ -16,10 +17,10 @@ const Work = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((work) => {
-    if (work &&  config.detail_pages?.models?.includes('works')) {
+    if (work && hasDetailPage('works')) {
       return `/${lang}/works/${work.uuid}`;
     }
-  }, [config, lang]);
+  }, [lang]);
 
   return (
     <BasePanel

@@ -3,8 +3,8 @@ import ServiceFactory from '@services/coreData/factory';
 import Relations from '@apps/pages/RecordDetail/Relations.astro';
 import { getNameView } from '@utils/people';
 import { groupRelationships } from '@utils/detailPages';
-import config from '@config';
 import { getTranslations } from '@backend/i18n';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props {
   excludes: string[];
@@ -27,7 +27,7 @@ const { t } = await getTranslations(lang);
     label={t(uuid)}
     resolveDetailUrl={(person) => `/${lang}/people/${person.uuid}`}
     resolveName={person => getNameView(person)}
-    showLinks={config.detail_pages?.models?.includes('people')}
+    showLinks={hasDetailPage('people')}
     uuid={uuid}
   />
 ))}

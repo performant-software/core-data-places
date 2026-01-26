@@ -75,7 +75,7 @@ describe('custom_components', () => {
   });
 })
 
-describe.skipIf(!config.detail_pages)('detail_pages', () => {
+describe.skipIf(!config.detail_pages?.models)('detail_pages', () => {
   const names = [
     'events',
     'instances',
@@ -87,7 +87,7 @@ describe.skipIf(!config.detail_pages)('detail_pages', () => {
   ];
 
   test('matches allowed values', () => {
-    expect(config.detail_pages.models).toBeArrayOfValues(names);
+    expect(Object.keys(config.detail_pages.models)).toBeArrayOfValues(names);
   });
 });
 

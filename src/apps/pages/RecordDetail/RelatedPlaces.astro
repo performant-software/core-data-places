@@ -1,10 +1,10 @@
 ---
 import { getRelatedGeometry, groupRelationships } from '@utils/detailPages';
-import config from '@config';
 import { getTranslations } from '@backend/i18n';
 import ServiceFactory from '@services/coreData/factory';
 import PlaceMap from '@apps/pages/RecordDetail/PlaceMap';
 import { Icon } from '@performant-software/core-data/ssr';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props {
   excludes: string[];
@@ -20,7 +20,7 @@ const { places } = await service.getRelatedPlaces(uuid);
 const relationships = groupRelationships(places, excludes);
 const { t } = await getTranslations(lang);
 
-const showLinks = config.detail_pages?.models.includes('places');
+const showLinks = hasDetailPage('places');
 const resolveDetailUrl = (record: any) => `/${lang}/places/${record.uuid}`;
 ---
 {Object.keys(relationships).map((uuid) => (
