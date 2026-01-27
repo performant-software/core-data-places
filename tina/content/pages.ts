@@ -606,10 +606,30 @@ const staticSectionTemplates: Template<false>[] = [{
           type: 'string',
           options: ColorOptionsText
         }, {
+          name: 'text_alignment',
+          label: 'Text Alignment',
+          type: 'string',
+          options: [{
+            label: 'Left',
+            value: 'left'
+          }, {
+            label: 'Center',
+            value: 'center'
+          }]
+        }, {
           name: 'border_color',
           label: 'Border Color',
           type: 'string',
+          options: ColorOptionsBorder
+        }, {
+          name: 'bg_color',
+          label: 'Background Color',
+          type: 'string',
           options: ColorOptionsBg
+        }, {
+          name: 'icon_background',
+          label: 'Icon in background?',
+          type: 'boolean'
         }, {
           name: 'icon',
           label: 'Icon',
