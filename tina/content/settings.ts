@@ -213,10 +213,13 @@ const Settings: Collection = {
         name: 'type',
         label: 'Type',
         type: 'string',
-        list: true,
+        description: 'Note that facets of type "Range" must be numerical data or dates.',
         options: [{
           value: 'list',
           label: 'List',
+        }, {
+          value: 'range',
+          label: 'Range'
         }, {
           value: 'select',
           label: 'Select',
