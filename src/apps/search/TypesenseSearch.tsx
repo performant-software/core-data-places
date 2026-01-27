@@ -13,7 +13,10 @@ const TypesenseSearch = (props: { children: ReactNode }) => {
   const { typesense } = config;
 
   const options = typesense.overrides || {};
-  const adapter = useMemo(() => TypesenseUtils.createTypesenseAdapter(typesense, options), []);
+  const adapter = useMemo(() => TypesenseUtils.createTypesenseAdapter({
+    ...typesense,
+    sort_by: `_text_match:desc${typesense.default_sort ? `,${typesense.default_sort}:asc` : ''}`
+  }, options), []);
   const routing = useMemo(() => TypesenseUtils.createRouting(typesense), []);
 
   return (

@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useRef } from 'react';
 import TranslationContext from '@contexts/TranslationContext';
 import { useSortBy } from 'react-instantsearch';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
@@ -9,22 +9,43 @@ const SortBy = () => {
   const { t } = useContext(TranslationContext);
   const config = useSearchConfig();
 
-  const sortFields = useMemo(() => [{
-    label: t('relevance'),
-    value: config.typesense.index_name
-  }, {
-    label: t('A-Z'),
-    value: `${config.typesense.index_name}/sort/name:asc`
-  }, {
-    label: t('Z-A'),
-    value: `${config.typesense.index_name}/sort/name:desc`
-  }], [t, config.typesense.index_name]);
+  const sortFields = useMemo(() => {
+    const base = [{
+      label: t('A-Z'),
+      value: `${config.typesense.index_name}/sort/name:asc`
+    }, {
+      label: t('Z-A'),
+      value: `${config.typesense.index_name}/sort/name:desc`
+    }]
+
+    // only enable relevance sort if no default sort is set
+    if (!config.typesense.default_sort) {
+      base.unshift({
+        label: t('relevance'),
+        value: config.typesense.index_name
+      });
+    }
+
+    return base;
+  }, [t]);
 
   const { currentRefinement, refine } = useSortBy({ items: sortFields });
 
-  const currentSort = useMemo(() => (
-    sortFields.find((field) => field.value === currentRefinement)
-  ), [currentRefinement, sortFields]);
+  const currentSort = useMemo(() => {
+    let result: { label: any; value: string; };
+
+    // When the sort_by option is passed to the Typesense adapter, the InstantSearch UI
+    // state doesn't know about it and will assume that we're sorting by relevance on page
+    // load. This `if` clause handles that situation by treating the relevance sort UI state
+    // as the default sort.
+    if (config.typesense.default_sort && currentRefinement === config.typesense.index_name) {
+      result = sortFields.find((field) => field.value === `${config.typesense.index_name}/sort/${config.typesense.default_sort}:asc`);
+    } else {
+      result = sortFields.find((field) => field.value === currentRefinement);
+    }
+
+    return result;
+  }, [currentRefinement, sortFields]);
 
   return (
     <div className='flex w-full items-center justify-end gap-4 pr-4'>
