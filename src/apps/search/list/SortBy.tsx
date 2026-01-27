@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef } from 'react';
+import { useContext, useMemo } from 'react';
 import TranslationContext from '@contexts/TranslationContext';
 import { useSortBy } from 'react-instantsearch';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
