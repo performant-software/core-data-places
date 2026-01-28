@@ -101,7 +101,6 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
 
     Promise.all(promises)
       .then((data) => {
-
         // Set the fetched data in the geometry cache
         setGeometryCache((prevCache) => ({
           ...prevCache,

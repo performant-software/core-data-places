@@ -46,49 +46,47 @@ const SearchItem = (props: Props) => {
           <SearchConfigContextProvider
             name={item?.searchName}
           >
-            <MapSearchContextProvider>
-              <div
-                className='flex justify-between items-center'
-              >
-                <div>
-                  <h4
-                    className='font-bold m-0'
-                  >
-                    { item.name }
-                  </h4>
-                  <div className='mt-1 flex items-center gap-x-1 text-gray-500'>
-                    { t(`index_${item.searchName}`) }
-                  </div>
-                </div>
-                <ButtonGroup
-                  className='py-4 text-sm'
-                  rounded
+            <div
+              className='flex justify-between items-center'
+            >
+              <div>
+                <h4
+                  className='font-bold m-0'
                 >
-                  <Button
-                    onClick={() => setView(ItemViews.map)}
-                    secondary={view === ItemViews.map}
-                  >
-                    { t('map') }
-                  </Button>
-                  <Button
-                    onClick={() => setView(ItemViews.table)}
-                    secondary={view === ItemViews.table}
-                  >
-                    { t('table') }
-                  </Button>
-                  <Button
-                    onClick={() => setView(ItemViews.timeline)}
-                    secondary={view === ItemViews.timeline}
-                  >
-                    { t('timeline') }
-                  </Button>
-                </ButtonGroup>
+                  { item.name }
+                </h4>
+                <div className='mt-1 flex items-center gap-x-1 text-gray-500'>
+                  { t(`index_${item.searchName}`) }
+                </div>
               </div>
-              <SearchVisualizations
-                data={item.data}
-                view={view}
-              />
-            </MapSearchContextProvider>
+              <ButtonGroup
+                className='py-4 text-sm'
+                rounded
+              >
+                <Button
+                  onClick={() => setView(ItemViews.map)}
+                  secondary={view === ItemViews.map}
+                >
+                  { t('map') }
+                </Button>
+                <Button
+                  onClick={() => setView(ItemViews.table)}
+                  secondary={view === ItemViews.table}
+                >
+                  { t('table') }
+                </Button>
+                <Button
+                  onClick={() => setView(ItemViews.timeline)}
+                  secondary={view === ItemViews.timeline}
+                >
+                  { t('timeline') }
+                </Button>
+              </ButtonGroup>
+            </div>
+            <SearchVisualizations
+              data={item.data}
+              view={view}
+            />
           </SearchConfigContextProvider>
         </TranslationContext.Provider>
       </Peripleo>
