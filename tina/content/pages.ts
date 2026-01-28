@@ -200,19 +200,19 @@ const commonSectionFields: TinaField<false>[] = [{
     value: '-mt-[32px]'
   }, {
     label: 'Small (32px)',
-    value: 'mt-[16px] lg:mt-[32px]'
+    value: 'pt-[16px] lg:pt-[32px]'
   }, {
     label: 'Medium (64px)',
-    value: 'mt-[32px] lg:mt-[64px]'
+    value: 'pt-[32px] lg:pt-[64px]'
   }, {
     label: 'Large (80px)',
-    value: 'mt-[48px] lg:mt-[80px]'
+    value: 'pt-[48px] lg:pt-[80px]'
   }, {
     label: 'XL (96px)',
-    value: 'mt-[64px] lg:mt-[96px]'
+    value: 'pt-[64px] lg:pt-[96px]'
   }, {
     label: 'XXL (192px)',
-    value: 'mt-[128px] lg:mt-[192px]'
+    value: 'pt-[128px] lg:pt-[192px]'
   }]
 }, {
   name: 'bottom_margin',
@@ -220,19 +220,19 @@ const commonSectionFields: TinaField<false>[] = [{
   type: 'string',
   options: [{
     label: 'Small (32px)',
-    value: 'mb-[16px] lg:mb-[32px]'
+    value: 'pb-[16px] lg:pb-[32px]'
   }, {
     label: 'Medium (64px)',
-    value: 'mb-[32px] lg:mb-[64px]'
+    value: 'pb-[32px] lg:pb-[64px]'
   }, {
     label: 'Large (80px)',
-    value: 'mb-[48px] lg:mb-[80px]'
+    value: 'pb-[48px] lg:pb-[80px]'
   }, {
     label: 'XL (96px)',
-    value: 'mb-[64px] lg:mb-[96px]'
+    value: 'pb-[64px] lg:pb-[96px]'
   }, {
     label: 'XXL (192px)',
-    value: 'mb-[128px] lg:mb-[192px]'
+    value: 'pb-[128px] lg:pb-[192px]'
   }]
 }];
 
