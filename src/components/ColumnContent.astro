@@ -108,8 +108,8 @@ const BlockTypes = {
 )}
 
 { item.__typename.endsWith(BlockTypes.imageLink) && ( 
-  <a href={item.link} class='relative'>
-    <img src={item.image} class='w-full h-full object-contain'/>
+  <a href={item.link} class='relative cursor-pointer group overflow-hidden'>
+    <img src={item.image} class='w-full h-full object-contain transition-transform duration-500 ease-in-out transform group-hover:scale-110'/>
     { item.overlay && ( 
       <div class='absolute h-full w-full inset-0 bg-gradient-to-b to-black/60 p-6 flex flex-col justify-end'>
         <h3 class='!text-text-inverse font-serif'>{ item.overlay }</h3>
