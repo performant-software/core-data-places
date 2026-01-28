@@ -11,7 +11,7 @@ const urlField: StringField = {
   name: 'href',
   label: 'URL',
   type: 'string',
-  description: 'Use a relative URL such as /en/about',
+  description: 'If you\'re linking to a page on this website, use a relative URL such as /en/about',
   required: true
 };
 
