@@ -1,8 +1,8 @@
 import Tooltip from '@apps/search/map/Tooltip';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import { SearchResultsLayer } from '@performant-software/core-data';
+import { Map as MapUtils } from '@performant-software/geospatial';
 import { HoverTooltip } from '@peripleo/maplibre';
-import { featureCollection } from '@turf/turf';
 import { useMemo } from 'react';
 import _ from 'underscore';
 
@@ -12,7 +12,7 @@ const SingleLayer = (props) => {
   /**
    * Memo-izes the data to only include features that are visible.
    */
-  const data = useMemo(() => featureCollection(
+  const data = useMemo(() => MapUtils.toFeatureCollection(
     _.filter(props.data, (d) => d.properties.visible)
   ), [props.data]);
 

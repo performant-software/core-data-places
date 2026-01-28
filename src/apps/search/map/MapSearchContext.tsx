@@ -3,7 +3,6 @@ import { fetchGeometries } from '@backend/api/geometry';
 import { Typesense as TypesenseUtils, useCachedHits } from '@performant-software/core-data';
 import { Map as MapUtils } from '@performant-software/geospatial';
 import { useLoadedMap } from '@peripleo/maplibre';
-import { featureCollection } from '@turf/turf';
 import { GeoJSONSource, LngLatBoundsLike } from 'maplibre-gl';
 import {
   createContext,
@@ -110,7 +109,9 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
         }));
 
         // Calculate the bounding box
-        const bbox = MapUtils.getBoundingBox(featureCollection(data));
+        const featureCollection = MapUtils.toFeatureCollection(data);
+        const bbox = MapUtils.getBoundingBox(featureCollection);
+
         resolve(bbox);
       });
   }), [features, geometryCache, map, preload]);

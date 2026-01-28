@@ -1,7 +1,7 @@
 import { getAll, getOne } from '@services/geometry';
+import { feature } from '@turf/helpers';
 import { buildResponse } from '@utils/api';
 import { APIRoute } from 'astro';
-import { feature } from '@turf/turf';
 import _ from 'underscore';
 
 export const GET: APIRoute = async ({ params }) => {

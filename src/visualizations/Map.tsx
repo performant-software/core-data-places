@@ -1,7 +1,7 @@
 import BaseMap from '@components/Map';
 import VisualizationContainer from '@components/VisualizationContainer';
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
-import { LocationMarkers } from '@performant-software/geospatial';
+import { LocationMarkers, Map as MapUtils } from '@performant-software/geospatial';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import type { Configuration, DataVisualizationProps } from '@types';
 import React, { useMemo } from 'react';
@@ -25,7 +25,7 @@ const Map = (props: DataVisualizationProps) => {
    */
   const data = useMemo(() => {
     const features = TypesenseUtils.getFeatures(parsed.data);
-    return TypesenseUtils.createFeatureCollection(features);
+    return MapUtils.toFeatureCollection(features);
   }, [config, parsed]);
 
   return (
