@@ -327,10 +327,10 @@ const staticSectionTemplates: Template<false>[] = [{
   }]
 }, {
   name: 'multi_column',
-  label: 'Multi Columns',
+  label: 'Columns',
   ui: {
     itemProps: (item) => {
-      return { label: getLabel('Multi-column', item?.id || item?.title) };
+      return { label: getLabel('Columns', item?.id || item?.title) };
     }
   },
   fields: [...commonSectionFields, {
