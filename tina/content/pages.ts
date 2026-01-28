@@ -783,6 +783,21 @@ const staticSectionTemplates: Template<false>[] = [{
     label: 'Darken Background Image?',
     type: 'boolean'
   }, {
+    name: 'mode',
+    label: 'Text mode',
+    description: 'If using an image background, specify whether the text should be light or dark. If using a solid color background, leave default.',
+    type: 'string',
+    options: [{
+      label: 'Default',
+      value: ''
+    }, {
+      label: 'Light text',
+      value: 'light'
+    }, {
+      label: 'Dark text',
+      value: 'dark'
+    }]
+  }, {
     name: 'quote',
     label: 'Quotation Text',
     type: 'string',
