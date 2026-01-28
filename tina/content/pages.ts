@@ -120,7 +120,7 @@ export const richTextTemplates: RichTextTemplate<false>[] = [{
     options: SpacerSizes
   }, {
     name: 'color',
-    label: 'Color',
+    label: 'Divider Color',
     type: 'string',
     options: ColorOptionsBorder
   }]
@@ -317,9 +317,13 @@ const staticSectionTemplates: Template<false>[] = [{
     options: SpacerSizes
   }, {
     name: 'color',
-    label: 'Color',
+    label: 'Divider Color',
     type: 'string',
     options: ColorOptionsBorder
+  }, {
+    name: 'thick',
+    label: 'Thick divider? (2px)',
+    type: 'boolean'
   }]
 }, {
   name: 'multi_column',
@@ -606,10 +610,30 @@ const staticSectionTemplates: Template<false>[] = [{
           type: 'string',
           options: ColorOptionsText
         }, {
+          name: 'text_alignment',
+          label: 'Text Alignment',
+          type: 'string',
+          options: [{
+            label: 'Left',
+            value: 'left'
+          }, {
+            label: 'Center',
+            value: 'center'
+          }]
+        }, {
           name: 'border_color',
           label: 'Border Color',
           type: 'string',
+          options: ColorOptionsBorder
+        }, {
+          name: 'bg_color',
+          label: 'Background Color',
+          type: 'string',
           options: ColorOptionsBg
+        }, {
+          name: 'icon_background',
+          label: 'Icon in background?',
+          type: 'boolean'
         }, {
           name: 'icon',
           label: 'Icon',
