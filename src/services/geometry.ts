@@ -1,58 +1,36 @@
 import { hasContentCollection } from '@root/src/content.config';
-import { getCollection } from 'astro:content';
-import _ from 'underscore';
+import { getCollection, getEntry } from 'astro:content';
 
 interface Record {
   data: {
+    uuid: string;
     geometry: any;
+    name?: string;
+    recordId?: number;
   };
 }
-
-const DEFAULT_PAGE = 1;
-export const PER_PAGE = 20;
 
 /**
  * Returns the geometry records for the passed page.
  *
  * @param page
  */
-export const getAll = async (page = DEFAULT_PAGE) => {
+export const getAll = async () => {
   let records: Record[];
 
   if (hasContentCollection('geometry')) {
     records = await getCollection('geometry');
   }
 
-  if (records) {
-    const startIndex = (page - 1) * PER_PAGE;
-    const endIndex = startIndex + PER_PAGE;
-
-    records = records.slice(startIndex, endIndex);
-  }
-
-  return _.map(records, parseRecord);
+  return records;
 };
 
-/**
- * Returns the count of all geometry records.
- */
-export const getCount = async () => {
-  let count = 0;
+export const getOne = async (id: string) => {
+  let record: Record;
 
   if (hasContentCollection('geometry')) {
-    const records = await getCollection('geometry');
-    count = records?.length;
+    record = await getEntry('geometry', id);
   }
 
-  return count;
+  return record;
 };
-
-/**
- * Returns the passed record with the geometry data parsed into JSON.
- *
- * @param record
- */
-const parseRecord = (record: any) => ({
-  ...record.data,
-  geometry: JSON.parse(record.data?.geometry)
-});

@@ -3,7 +3,7 @@ import MapSearch from '@apps/search/map/MapSearch';
 import { getTranslations } from '@backend/i18n';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
-import { STATIC_BUILD } from 'astro:env/client';
+import { PRELOAD_MAP, STATIC_BUILD } from 'astro:env/client';
 import _ from 'underscore';
 import ListSearch from '@apps/search/list/ListSearch';
 import { SearchConfig } from '@types';
@@ -47,6 +47,7 @@ const isListSearch = !!searchConfig.type && searchConfig.type !== 'map';
         allowSave={!STATIC_BUILD}
         lang={lang}
         name={name}
+        preload={PRELOAD_MAP}
         client:only='react'
       />
     )

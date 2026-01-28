@@ -1,5 +1,6 @@
 import config from '@config' with { type: 'json' };
 import { PlacesService } from '@performant-software/core-data/ssr';
+import { truncate } from '@turf/turf';
 import type { LoaderContext } from 'astro/loaders';
 import { defineCollection } from 'astro:content';
 import _ from 'underscore';
@@ -27,7 +28,9 @@ const loader = {
     const startTime = Date.now();
     logger.info('Loading data...');
 
-    let count = 0;
+    // TODO: Update to reduce coordinate precision
+
+    let count = 1;
     let pages = 1;
     let total = 0;
 
@@ -48,10 +51,12 @@ const loader = {
       }
 
       for (const record of listRecords) {
-        const { uuid } = record;
-        const geometry = record.place_geometry?.geometry_json && JSON.stringify(record.place_geometry.geometry_json);
+        const { uuid, name } = record;
 
-        records.push({ uuid, geometry });
+        const transformed = truncate(record.place_geometry?.geometry_json || {}, { precision: 3, coordinates: 2 });
+        const geometry = JSON.stringify(transformed);
+
+        records.push({ uuid, name, recordId: count, geometry });
         count += 1;
       }
     }
@@ -64,7 +69,7 @@ const loader = {
     }
 
     const endTime = Date.now();
-    logger.info(`Datastore updated. ${count} record(s) in ${endTime - startTime}ms`);
+    logger.info(`Datastore updated. ${count - 1} record(s) in ${endTime - startTime}ms`);
   }
 };
 

@@ -9,7 +9,7 @@ declare module '@performant-software/shared-components';
 declare module 'underscore';
 
 declare module "astro:env/client" {
-  export const PUBLIC_PRELOAD_MAP: boolean;
+  export const PRELOAD_MAP: boolean;
   export const STATIC_BUILD: boolean;
   export const USE_CONTENT_CACHE: boolean;
 }

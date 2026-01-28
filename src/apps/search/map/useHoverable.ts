@@ -1,16 +1,23 @@
+import MapSearchContext from '@apps/search/map/MapSearchContext';
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
 import { useHoverState } from '@peripleo/maplibre';
-import { parseFeature } from '@utils/map';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import _ from 'underscore';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 const useHoverable = () => {
   const config = useSearchConfig();
   const { hover, setHover } = useHoverState();
+  const { features } = useContext(MapSearchContext);
 
   const { hovered } = hover || {};
-  const feature = useMemo(() => parseFeature(hovered), [hovered]);
+
+  /**
+   * Memo-izes the feature representing the hovered item.
+   */
+  const feature = useMemo(() => (
+    _.find(features, (feature) => feature.properties.uuid === hovered?.properties?.uuid)
+  ), [features, hovered]);
 
   /**
    * Returns true if the passed hit is currently hovered.
@@ -33,7 +40,7 @@ const useHoverable = () => {
    */
   const onPointEnter = useCallback((hit) => {
     if (onHoverChange && hovered?.id !== hit.id) {
-      onHoverChange(TypesenseUtils.getFeatures([hit]));
+      onHoverChange(TypesenseUtils.getFeatures([], [hit], config.map.geometry, {}));
     }
   }, [config, hovered, onHoverChange]);
 

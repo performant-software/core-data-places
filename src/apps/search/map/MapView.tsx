@@ -1,38 +1,29 @@
-import MapSearchContext from '@apps/search/map/MapSearchContext';
+import MapSearchContext, { LayerTypes } from '@apps/search/map/MapSearchContext';
+import MultiLayer from '@apps/search/map/MultiLayer';
+import SingleLayer from '@apps/search/map/SingleLayer';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
-import Tooltip from '@apps/search/map/Tooltip';
 import Map from '@components/Map';
-import {
-  SearchResultsLayer,
-  Typesense as TypesenseUtils,
-  useCachedHits,
-  useGeoSearch,
-  useSearching
-} from '@performant-software/core-data';
-import { Map as MapUtils } from '@performant-software/geospatial';
-import { HoverTooltip, useLoadedMap, useSelectionValue } from '@peripleo/maplibre';
+import { useGeoSearch, useSearching } from '@performant-software/core-data';
+import { useLoadedMap, useSelectionValue } from '@peripleo/maplibre';
 import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
-import { parseFeature } from '@utils/search';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import _ from 'underscore';
 
 const MapView = () => {
-  const [features, setFeatures] = useState([]);
-
   const config = useSearchConfig();
   const { isRefinedWithMap } = useGeoSearch();
-  const navigate = useNavigate();
-  const { selected } = useSelectionValue() || {};
-  const route = useCurrentRoute();
-  const hits = useCachedHits();
-  const searching  = useSearching();
   const map = useLoadedMap();
+  const navigate = useNavigate();
+  const route = useCurrentRoute();
+  const searching  = useSearching();
+  const { selected } = useSelectionValue() || {};
 
   const {
     boundingBoxOptions,
     controlsClass,
-    geometries,
-    isPreloaded
+    features,
+    getBoundingBox,
+    layerType
   } = useContext(MapSearchContext);
 
   /**
@@ -48,59 +39,16 @@ const MapView = () => {
    */
   useEffect(() => {
     if (fitBoundingBox && !_.isEmpty(features) && map && !searching) {
-      // Set the bounding box on the map
-      const data = TypesenseUtils.createFeatureCollection(features);
-      const bbox = MapUtils.getBoundingBox(data);
-
-      if (bbox) {
-        map.fitBounds(bbox, boundingBoxOptions);
-      }
+      getBoundingBox().then((bbox) => map.fitBounds(bbox, boundingBoxOptions));
     }
   }, [boundingBoxOptions, fitBoundingBox, features, map, searching]);
 
   /**
-   * Updates the set of features when the geometries or hits are changed.
-   */
-  useEffect(() => {
-    const options = {};
-
-    if (config.map.cluster_radius) {
-      _.extend(options, { type: 'Point' });
-    }
-
-    if (isPreloaded) {
-      _.extend(options, { geometries });
-    }
-
-    setFeatures(TypesenseUtils.getFeatures(features, hits, config.map.geometry, options));
-  }, [geometries, hits]);
-
-  /**
-   * Navigates to the selected marker.
+   * Navigate to the `/select` route when feature is selected.
    */
   useEffect(() => {
     if (selected) {
-      let id;
-
-      /**
-       * If the selected item only represents a single search result, navigate directly to the item. Otherwise (for
-       * a cluster or location that represents multiple search results) navigate to the '/select' route to allow
-       * the user to choose which record to view.
-       */
-      if (!_.isArray(selected)) {
-        const { properties = {} }: any = parseFeature(selected);
-
-        if (properties.items.length === 1) {
-          const [item,] = properties.items;
-          id = item?.uuid;
-        }
-      }
-
-      if (id) {
-        navigate(`${config.route}/${id}`);
-      } else {
-        navigate('/select');
-      }
+      navigate('/select');
     }
   }, [selected]);
 
@@ -110,24 +58,16 @@ const MapView = () => {
         controls: controlsClass
       }}
     >
-      { _.map(features, (feature) => (
-        <SearchResultsLayer
-          data={feature}
-          cluster={!!config.map.cluster_radius}
-          clusterRadius={config.map.cluster_radius}
-          fitBoundingBox={false}
-          interactive
-          key={feature.properties.uuid}
-          layerId={feature.properties.uuid}
+      { layerType === LayerTypes.single && (
+        <SingleLayer
+          data={features}
         />
-      ))}
-      <HoverTooltip
-        tooltip={({ hovered }) => (
-          <Tooltip
-            hovered={hovered}
-          />
-        )}
-      />
+      )}
+      { layerType === LayerTypes.multiple && (
+        <MultiLayer
+          data={features}
+        />
+      )}
     </Map>
   );
 };

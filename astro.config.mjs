@@ -49,7 +49,7 @@ export default defineConfig({
   },
   env: {
     schema: {
-      PUBLIC_PRELOAD_MAP: envField.boolean({
+      PRELOAD_MAP: envField.boolean({
         access: 'public',
         context: 'client',
         default: false,

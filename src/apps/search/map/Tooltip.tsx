@@ -1,56 +1,63 @@
+import MapSearchContext from '@apps/search/map/MapSearchContext';
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import SearchHighlight from '@apps/search/map/SearchHighlight';
 import TranslationContext from '@contexts/TranslationContext';
 import Badge from '@components/Badge';
-import { parseFeature } from '@utils/search';
-import { useContext, useMemo } from 'react';
 import { useCachedHits } from '@performant-software/core-data';
+import { useContext, useMemo } from 'react';
 import _ from 'underscore';
-import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 interface Props {
+  feature?: any;
   hovered: any;
 }
 
-const Tooltip = (props: Props) => {
+const Tooltip = ({ feature, hovered }: Props) => {
   const { result_card: config } = useSearchConfig();
   const { t } = useContext(TranslationContext);
   const cachedHits = useCachedHits();
-
-  /**
-   * Memo-izes the passed hovered items by parsing 'properties' attribute of each.
-   */
-  const features = useMemo(() => {
-    let items = props.hovered;
-
-    if (!_.isArray(props.hovered)) {
-      items = [props.hovered];
-    }
-
-    return _.map(items, (item) => parseFeature(item));
-  }, [props.hovered]);
+  const { features } = useContext(MapSearchContext);
 
   /**
    * Memo-izes the hits based on the features.
    */
-  const hits = useMemo(() => (
-    _.chain(features)
-      .map((feature) => feature.properties.items)
-      .flatten()
-      .value()
-  ), [features]);
+  const items = useMemo(() => {
+    if (feature) {
+      return feature.properties.items;
+    }
+
+    if (!hovered) {
+      return [];
+    }
+
+    const value = [];
+
+    let currentHover = hovered;
+
+    if (!_.isArray(hovered)) {
+      currentHover = [hovered];
+    }
+
+    _.each(currentHover, (c) => {
+      const f = _.find(features, (f) => f.properties.uuid === c.properties.uuid);
+      value.push(...f.properties.items)
+    });
+
+    return value;
+  }, [feature, hovered]);
 
   /**
    * Memo-izes the first hit value. This record will be used as the display.
    */
   const hit = useMemo(() => {
-    const first = _.first(hits);
-    return _.find(cachedHits, item => item.id === first.id)
-  }, [hits]);
+    const first = _.first(items);
+    return _.find(cachedHits, item => item.id === first?.id)
+  }, [items]);
 
   /**
    * Memo-izes the count of records.
    */
-  const count = useMemo(() => hits.length - 1, [hits]);
+  const count = useMemo(() => items.length - 1, [items]);
 
   return (
     <div
