@@ -28,8 +28,6 @@ const loader = {
     const startTime = Date.now();
     logger.info('Loading data...');
 
-    // TODO: Update to reduce coordinate precision
-
     let count = 1;
     let pages = 1;
     let total = 0;
