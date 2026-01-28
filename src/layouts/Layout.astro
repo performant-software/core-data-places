@@ -64,7 +64,7 @@ const lang = getLanguageFromUrl(Astro.url.pathname);
 
 const pages = await getPages(currentLocale);
 
-const { footer: includeFooter, fullscreen, name, title, t, tab, transparent } = Astro.props;
+const { footer: includeFooter, fullscreen, title, t, tab, transparent } = Astro.props;
 
 const getNavItems = async () => {
   const tinaNavbar = await fetchNavbar(currentLocale);

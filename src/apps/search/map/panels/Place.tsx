@@ -6,6 +6,7 @@ import { useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
 import { useCallback, useContext } from 'react';
 import _ from 'underscore';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 type Place = {
   place_layers: Array<any>;
@@ -25,10 +26,10 @@ const Place = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((place) => {
-    if (place && config.detail_pages?.models?.includes('places')) {
+    if (place && hasDetailPage('places')) {
       return `/${lang}/places/${place.uuid}`;
     }
-  }, [config, lang]);
+  }, [lang]);
 
   return (
     <BasePanel

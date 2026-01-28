@@ -5,6 +5,7 @@ import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-compone
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useCallback, useContext } from 'react';
 import _ from 'underscore';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props {
   className?: string;
@@ -49,10 +50,10 @@ const Event = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((event) => {
-    if (event && config.detail_pages?.models?.includes('events')) {
+    if (event && hasDetailPage('events')) {
       return `/${lang}/events/${event.uuid}`;
     }
-  }, [config, lang]);
+  }, [lang]);
 
   return (
     <BasePanel

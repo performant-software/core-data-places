@@ -7,8 +7,9 @@ import { Highlight } from 'react-instantsearch';
 import { useCallback, useContext, useMemo, useRef } from 'react';
 import { getAttributes, getFacetLabel, getHitValue, getRelationshipLabel, isInverse } from '@utils/search';
 import clsx from 'clsx';
-import config from '@config' with { type: 'json' };
 import TranslationContext from '@contexts/TranslationContext';
+import { hasDetailPage } from '@utils/detailPagePaths';
+import { Models } from '@types';
 
 interface Props {
   lang: string;
@@ -115,7 +116,7 @@ const Hits = (props: Props) => {
   }, [items, t, searchConfig]);
 
   const isLinkable = useMemo(
-    () => config.detail_pages?.models.includes(searchConfig.route.slice(1)),
+    () => hasDetailPage(searchConfig.route.slice(1) as Models),
     [searchConfig.route]
   );
 
@@ -124,26 +125,32 @@ const Hits = (props: Props) => {
       <HitComponent
         highlightComponent={Highlight}
         key={item.hit.id}
+        labels={{
+          tags: t('tags')
+        }}
         {...item}
       />
     );
 
     if (isLinkable) {
       return (
-        <a href={`/${props.lang}${searchConfig.route}/${item.hit.id}`}>
-          {hitComp}
+        <a
+          href={`/${props.lang}${searchConfig.route}/${item.hit.id}`}
+          key={item.hit.id}
+        >
+          { hitComp }
         </a>
       );
     }
 
     return hitComp
-  }, [isLinkable, searchConfig.route, props.lang]);
+  }, [isLinkable, searchConfig.route, props.lang, t]);
 
   return (
     <div
       className={clsx(
-        'gap-4 py-6',
-        {'w-full grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 py-4': isGrid},
+        'gap-4 pb-6',
+        {'w-full grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4': isGrid},
         {'flex flex-col': !isGrid}
       )}>
         { hits.map((hit) => renderItem(hit)) }

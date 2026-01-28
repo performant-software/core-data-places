@@ -1,3 +1,5 @@
+export type Models = 'events' | 'instances' | 'items' | 'mediaContents' | 'organizations' | 'people' | 'places' | 'taxonomies' | 'works';
+
 export interface SearchConfig {
   name: string,
   route: string,
@@ -68,8 +70,15 @@ export interface Configuration {
   };
 
   detail_pages?: {
-    models: Array<string>,
-    relationship_fields? : Array<{
+    models: {
+      [key in Models]: {
+        related_manifest?: {
+          model: string,
+          relationship: string
+        }
+      }
+    },
+    relationship_fields?: {
       events?: string[],
       instances?: string[],
       items?: string[],
@@ -78,7 +87,7 @@ export interface Configuration {
       places?: string[],
       taxonomies?: string[],
       works?: string[]
-    }>
+    }
   };
 
   i18n: {

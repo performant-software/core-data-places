@@ -1,10 +1,10 @@
 ---
 import ServiceFactory from '@services/coreData/factory';
 import { getRelationshipFields, groupRelationships } from '@utils/detailPages';
-import config from '@config';
 import { getTranslations } from '@backend/i18n';
 import RelatedEvent from '@apps/pages/RecordDetail/RelatedEvent.astro';
 import _ from 'underscore';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props {
   excludes: string[];
@@ -21,10 +21,10 @@ const sortedEvents = _.sortBy(events, 'start_date.start_date');
 const relationships = groupRelationships(sortedEvents, excludes);
 const { t } = await getTranslations(lang);
 
-const fields = getRelationshipFields(config.detail_pages.relationship_fields?.events || [], t)
+const fields = getRelationshipFields('events', t);
 
 const resolveDetailUrl = (event: any) => `/${lang}/events/${event.uuid}`;
-const showLinks = config.detail_pages?.models?.includes('events');
+const showLinks = hasDetailPage('events');
 ---
 {Object.keys(relationships).map((uuid) => (
   <div class='py-6 w-full'>

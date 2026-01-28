@@ -14,6 +14,8 @@ import { getTranslations } from '@backend/i18n';
 import RelatedPlaces from '@apps/pages/RecordDetail/RelatedPlaces.astro';
 import UserDefined from '@apps/pages/RecordDetail/UserDefined.astro';
 import Identifiers from '@apps/pages/RecordDetail/Identifiers.astro';
+import config from '@config';
+import IIIFBanner from '@apps/pages/RecordDetail/IIIFBanner.astro';
 
 interface Props {
   excludes: string[];
@@ -26,6 +28,10 @@ interface Props {
 
 const { excludes, geometry, lang, model, name, record } = Astro.props;
 const { t } = await getTranslations(lang);
+
+const manifest = config.detail_pages?.models[model]
+  ? config.detail_pages?.models[model].related_manifest
+  : null;
 ---
 
 <div class='bg-primary w-full pb-6'>
@@ -48,6 +54,15 @@ const { t } = await getTranslations(lang);
   record={record}
   server:defer
 />
+{ manifest && (
+  <IIIFBanner
+    model={model}
+    relatedModel={manifest.model}
+    relationshipUuid={manifest.relationship}
+    uuid={record.uuid}
+    server:defer
+  />
+) }
 <div class='py-6 divide-y divide-solid divide-[#e5e5e5]'>
   <Container>
     <slot />

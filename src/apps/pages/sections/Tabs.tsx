@@ -32,11 +32,11 @@ const Tabs = (props: TabsProps) => {
   return (
     <TabGroup>
       <div className={clsx(
-        'px-6 sm:px-12 md:px-16 lg:px-32 2xl:mx-auto max-w-(--breakpoint-2xl)',
+        'px-6 sm:px-12 md:px-16 lg:px-32 2xl:mx-auto max-w-(--breakpoint-2xl) overflow-x-auto overflow-y-visible',
       )}>
         <TabList aria-label='Tabs' className={clsx(
-          '-mb-px flex h-[65px] overflow-x-auto relative z-30',       
-          { 'border-b-2': !raise }
+          'flex min-h-[65px] relative z-30',       
+          { 'w-full border-b-4 h-[65px]': !raise }
         )}>
           {
             _.map(tabs, (tab) => ( 
@@ -47,12 +47,12 @@ const Tabs = (props: TabsProps) => {
                 {({ hover, selected }) => ( 
                   <button className={clsx(
                     'lg:whitespace-nowrap px-3 lg:px-6 xl:px-8 py-4 focus:outline-none',
-                    { '-mb-[2px] border-b-2': !raise },
+                    { '-mb-[4px] border-b-4': !raise },
                     selected && activeBgClass,
                     !selected && inactiveBgClass,
                     (!selected || !activeBgClass) && raise && invertText && 'text-text-inverse',
-                    { 'border-secondary/60 border-b-2 text-secondary/60': hover && !raise },
-                    { 'border-secondary border-b-2 text-secondary': selected && !raise },
+                    { 'border-secondary/60 border-b-4 text-secondary/60': hover && !raise },
+                    { 'border-secondary border-b-4 text-secondary': selected && !raise },
                     { 'cursor-default': selected },
                     { 'font-serif italic sm:text-lg lg:text-xl font-normal': textStyle === 'italic' },
                     { 'text-sm text-gray-500 uppercase font-medium': textStyle === 'uppercase' }

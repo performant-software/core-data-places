@@ -61,7 +61,31 @@ if (includeStackedTimeline) {
   schema.push(createDataVisualization({
     name: 'stacked_timeline',
     label: 'Stacked Timeline',
-    component: StackedTimelineInput
+    component: StackedTimelineInput,
+    fields: [{
+      name: 'link',
+      label: 'Event bar link',
+      type: 'string',
+      options: [{
+        label: 'None',
+        value: ''
+      }, {
+        label: 'Event detail page',
+        value: 'detail'
+      }, {
+        label: 'Filtered search',
+        value: 'search'
+      }]
+    }, {
+      name: 'model',
+      label: 'Search Model (for links)',
+      description: 'E.g. "items" or "people".',
+      type: 'string'
+    }, {
+      name: 'filter',
+      label: 'UUID of field to filter on',
+      type: 'string'
+    }]
   }))
 }
 

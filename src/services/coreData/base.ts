@@ -2,6 +2,7 @@ import config from '@config' with { type: 'json' };
 import { hasContentCollection } from '@root/src/content.config';
 import { getCollection, getEntry } from 'astro:content';
 import _ from 'underscore';
+import { Models } from '@types';
 
 const REQUEST_PARAMS = {
   per_page: 0
@@ -265,6 +266,26 @@ class Base {
     }
 
     return { works };
+  }
+
+  /**
+   * Calls the relevant getRelated method for the passed model name.
+   *
+   * @param id
+   * @param model
+   */
+  async getRelatedModel(id: string, model: Models) {
+    switch (model) {
+      case 'events': return await this.getRelatedEvents(id);
+      case 'instances': return await this.getRelatedInstances(id);
+      case 'items': return await this.getRelatedItems(id);
+      case 'mediaContents': return await this.getRelatedMediaContents(id);
+      case 'organizations': return await this.getRelatedOrganizations(id);
+      case 'people': return await this.getRelatedPeople(id);
+      case 'places': return await this.getRelatedPlaces(id);
+      case 'taxonomies': return await this.getRelatedTaxonomies(id);
+      case 'works': return await this.getRelatedWorks(id);
+    }
   }
 
   // private

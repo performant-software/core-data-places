@@ -3,6 +3,7 @@ import ItemsService from '@backend/api/coreData/items';
 import TranslationContext from '@contexts/TranslationContext';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useCallback, useContext } from 'react';
+import { hasDetailPage } from '@utils/detailPagePaths';
 
 interface Props {
   className?: string;
@@ -16,10 +17,10 @@ const Item = (props: Props) => {
    * Resolves the URL for the detail page.
    */
   const resolveDetailPageUrl = useCallback((item) => {
-    if (item && config.detail_pages?.models?.includes('items')) {
+    if (item && hasDetailPage('items')) {
       return `/${lang}/items/${item.uuid}`;
     }
-  }, [config, lang]);
+  }, [lang]);
 
   return (
     <BasePanel
