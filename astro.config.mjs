@@ -21,7 +21,9 @@ export default defineConfig({
     }
   },
   output: STATIC_BUILD === 'true' ? 'static' : 'server',
-  adapter: netlify(),
+  adapter: netlify({
+    cacheOnDemandPages: true
+  }),
   integrations: [mdx(), sitemap(), react(), auth()],
   vite: {
     optimizeDeps: {
