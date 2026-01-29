@@ -35,20 +35,6 @@ const Settings: Collection = {
         label: 'Use Draft Workflow?',
         type: 'boolean'
       }]
-    }, {
-      name: 'paths_config',
-      label: 'Paths configuration',
-      type: 'object',
-      fields: [{
-        name: 'categories',
-        label: 'Categories',
-        type: 'string',
-        list: true
-      }, {
-        name: 'drafts',
-        label: 'Use Draft Workflow?',
-        type: 'boolean'
-      }]
     }]
   }, {
     name: 'core_data',

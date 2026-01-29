@@ -85,7 +85,7 @@ const PostList = (props: Props) => {
         }
       </div>
       <div className='flex flex-col italic text-lg divide-y divide-secondary text-[#222222]'>
-        { loading && <p className='not-italic text-base'>{t('loading') || 'Loading'}...</p>}
+        { loading && <p className='not-italic text-base'>{t('loading')}...</p>}
         { _.map(posts, (post) => (
           <a
             className='hover:underline hover:font-semibold py-4 font-header'
