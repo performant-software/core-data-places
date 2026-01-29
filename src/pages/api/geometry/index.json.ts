@@ -3,6 +3,8 @@ import { buildResponse } from '@utils/api';
 import { APIRoute } from 'astro';
 import _ from 'underscore';
 
+export const prerender = true;
+
 export const GET: APIRoute = async () => {
   const records = await getAll();
 
