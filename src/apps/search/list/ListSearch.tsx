@@ -1,5 +1,5 @@
 import ListLayout from '@apps/search/list/ListLayout';
-import { SearchConfigContextProvider } from '@apps/search/SearchConfigContext';
+import { RuntimeConfigProvider } from '@apps/search/SearchConfigContext';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
 import TypesenseSearch from '@apps/search/TypesenseSearch';
@@ -13,7 +13,7 @@ const ListSearch = (props: Props) => {
   const { t } = useTranslations();
 
   return (
-    <SearchConfigContextProvider
+    <RuntimeConfigProvider
       name={props.name}
     >
       <TypesenseSearch>
@@ -23,7 +23,7 @@ const ListSearch = (props: Props) => {
           <ListLayout lang={props.lang} />
         </TranslationContext.Provider>
       </TypesenseSearch>
-    </SearchConfigContextProvider>
+    </RuntimeConfigProvider>
   );
 };
 

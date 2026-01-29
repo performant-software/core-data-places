@@ -2,10 +2,9 @@ import { MapSearchContextProvider } from '@apps/search/map/MapSearchContext';
 import TypesenseSearch from '@apps/search/TypesenseSearch';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
-import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
-import { Peripleo, Router, RuntimeConfig } from '@peripleo/peripleo';
+import { Peripleo, Router } from '@peripleo/peripleo';
 import MapLayout from '@apps/search/map/MapLayout';
-import { SearchConfigContextProvider } from '@apps/search/SearchConfigContext';
+import { RuntimeConfigProvider } from '@apps/search/SearchConfigContext';
 import MapSearchProvider from '@apps/search/map/MapSearchProvider';
 
 interface Props {
@@ -18,32 +17,27 @@ const MapSearch = ({allowSave, lang, name}: Props) => {
   const { t } = useTranslations();
 
   return (
-    <SearchConfigContextProvider
+    <RuntimeConfigProvider
       name={name}
     >
-      <RuntimeConfig
-        path='/config.json'
-        preprocess={PeripleoUtils.normalize}
-      >
-        <Router>
-          <Peripleo>
-            <MapSearchContextProvider
-              allowSave={allowSave}
-            >
-              <TypesenseSearch>
-                <MapSearchProvider>
-                  <TranslationContext.Provider
-                    value={{lang, t}}
-                  >
-                    <MapLayout />
-                  </TranslationContext.Provider>
-                </MapSearchProvider>
-              </TypesenseSearch>
-            </MapSearchContextProvider>
-          </Peripleo>
-        </Router>
-      </RuntimeConfig>
-    </SearchConfigContextProvider>
+      <Router>
+        <Peripleo>
+          <MapSearchContextProvider
+            allowSave={allowSave}
+          >
+            <TypesenseSearch>
+              <MapSearchProvider>
+                <TranslationContext.Provider
+                  value={{lang, t}}
+                >
+                  <MapLayout />
+                </TranslationContext.Provider>
+              </MapSearchProvider>
+            </TypesenseSearch>
+          </MapSearchContextProvider>
+        </Peripleo>
+      </Router>
+    </RuntimeConfigProvider>
   );
 };
 
