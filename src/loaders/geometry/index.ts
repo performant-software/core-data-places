@@ -51,8 +51,15 @@ const loader = {
       for (const record of listRecords) {
         const { uuid, name } = record;
 
-        const transformed = truncate(record.place_geometry?.geometry_json || {}, { precision: 3, coordinates: 2 });
-        const geometry = JSON.stringify(transformed);
+        let data;
+
+        if (record.place_geometry?.geometry_json) {
+          data = truncate(record.place_geometry?.geometry_json, { precision: 3, coordinates: 2 });
+        } else {
+          data = {};
+        }
+
+        const geometry = JSON.stringify(data);
 
         records.push({ uuid, name, recordId: count, geometry });
         count += 1;

@@ -21,7 +21,11 @@ const MultiLayer = (props) => {
       />
       <HoverTooltip
         key={`hover-${feature.properties.uuid}`}
-        layerId={feature.properties.layerId}
+        layerId={[
+          `layer-${feature.properties.uuid}-fill`,
+          `layer-${feature.properties.uuid}-line`,
+          `layer-${feature.properties.uuid}-point`,
+        ]}
         tooltip={({ hovered }) => (
           <Tooltip
             feature={feature}

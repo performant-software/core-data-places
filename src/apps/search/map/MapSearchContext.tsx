@@ -42,6 +42,7 @@ interface SearchContextType {
   controlsClass?: string;
   features: Feature[];
   getBoundingBox(): Promise<LngLatBoundsLike>;
+  getGeometry(id: string): Feature;
   layerType: typeof LayerTypes.single | typeof LayerTypes.multiple;
   setBoundingBoxOptions(boundingBoxOptions: BoundingBoxOptions): void;
   setControlsClass(controlsClass: string): void;
@@ -116,6 +117,11 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
   }), [features, geometryCache, map, preload]);
 
   /**
+   * Returns the cached geometry record for the item with the passed ID.
+   */
+  const getGeometry = useCallback((id) => geometryCache[id], [geometryCache]);
+
+  /**
    * Memo-izes the layer type based on whether or not the map is preloaded.
    */
   const layerType = useMemo(() => preload ? LayerTypes.multiple : LayerTypes.single, [preload]);
@@ -158,6 +164,7 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
         controlsClass,
         features,
         getBoundingBox,
+        getGeometry,
         layerType,
         setBoundingBoxOptions,
         setControlsClass
