@@ -1,7 +1,12 @@
 import MapSearchContext from '@apps/search/map/MapSearchContext';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import { useHoverState } from '@peripleo/maplibre';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import {
+  useCallback,
+  useContext,
+  useMemo,
+  useState
+} from 'react';
 import _ from 'underscore';
 
 const useHoverable = () => {
