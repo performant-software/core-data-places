@@ -64,7 +64,15 @@ const lang = getLanguageFromUrl(Astro.url.pathname);
 
 const pages = await getPages(currentLocale);
 
-const { footer: includeFooter, fullscreen, name, title, t, tab, transparent } = Astro.props;
+const { footer: includeFooter, fullscreen, title, t, tab, transparent } = Astro.props;
+
+const isActive = (url: string) => {
+  if (url === '/' || url === `/${currentLocale}`) {
+    return Astro.url.pathname === url;
+  }
+
+  return Astro.url.pathname.includes(url);
+}
 
 const getNavItems = async () => {
   const tinaNavbar = await fetchNavbar(currentLocale);
@@ -73,11 +81,11 @@ const getNavItems = async () => {
     return tinaNavbar.items.map(item => ({
       ...item,
       active: item.href
-        ? Astro.url.pathname.includes(item.href)
+        ? isActive(item.href)
         : false,
       options: item.options?.map(child => ({
           ...child,
-          active: Astro.url.pathname.includes(child.href)
+          active: isActive(child.href)
         }))
     }))
   }

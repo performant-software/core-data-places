@@ -15,7 +15,7 @@ const { linkBackground, links, overlap } = Astro.props;
       {
         _.map(links, link => ( 
           <a href={link.url || '#'} class={clsx(
-            'hero-tab flex items-center justify-center py-8 px-12 font-serif italic text-2xl z-50 h-[80px]',
+            'hero-tab flex items-center text-center justify-center py-8 px-2 md:px-4 lg:px-8 font-serif italic text-lg md:text-2xl z-50 h-[80px]',
             'hover:bg-[linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15))] transition duration-300',
             toBackgroundClass(linkBackground)
           )}>
