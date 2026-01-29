@@ -43,27 +43,29 @@ const Hits = (props: Props) => {
       const relationships = {};
 
       // assemble relationships for hit components
-      for (const key of Object.keys(hit)) {
-        const val = hit[key];
+      if (searchConfig.result_card?.relationships) {
+        for (const key of Object.keys(hit)) {
+          const val = hit[key];
 
-        if (Array.isArray(val) && val.length > 0) {
-          for (const item of val) {
-            const isRelationship = item.inverse !== undefined;
+          if (Array.isArray(val) && val.length > 0) {
+            for (const item of val) {
+              const isRelationship = item.inverse !== undefined;
 
-            if (isRelationship) {
-              if (relationships[key]) {
-                relationships[key].items.push({
-                  name: item.name,
-                  uuid: item.uuid
-                });
-              } else {
-                relationships[key] = {
-                  label: getRelationshipLabel(key, t, item.inverse),
-                  items: [{
+              if (isRelationship && searchConfig.result_card.relationships.includes(key)) {
+                if (relationships[key]) {
+                  relationships[key].items.push({
                     name: item.name,
                     uuid: item.uuid
-                  }]
-                };
+                  });
+                } else {
+                  relationships[key] = {
+                    label: getRelationshipLabel(key, t, item.inverse),
+                    items: [{
+                      name: item.name,
+                      uuid: item.uuid
+                    }]
+                  };
+                }
               }
             }
           }

@@ -27,6 +27,7 @@ export interface SearchConfig {
       name: string,
       icon?: string
     }>,
+    relationships?: string[],
     title: string,
     tags?: Array<{
       name: string,
