@@ -1,11 +1,11 @@
 import { MapSearchContextProvider } from '@apps/search/map/MapSearchContext';
-import { SearchConfigContextProvider } from '@apps/search/SearchConfigContext';
+import { RuntimeConfigProvider } from '@apps/search/SearchConfigContext';
 import SearchVisualizations, { ItemViews } from '@apps/session/SearchVisualizations';
 import { fetchSessionItem } from '@backend/api/session';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
-import { Button, ButtonGroup, Peripleo as PeripleoUtils } from '@performant-software/core-data';
-import { Peripleo, RuntimeConfig } from '@peripleo/peripleo';
+import { Button, ButtonGroup } from '@performant-software/core-data';
+import { Peripleo } from '@peripleo/peripleo';
 import type { SearchSession } from '@types';
 import { useEffect, useState } from 'react';
 
@@ -35,17 +35,14 @@ const SearchItem = (props: Props) => {
   }
 
   return (
-    <RuntimeConfig
-      path='/config.json'
-      preprocess={PeripleoUtils.normalize}
+    <RuntimeConfigProvider
+      name={item?.searchName}
     >
       <Peripleo>
         <TranslationContext.Provider
           value={{ lang, t }}
         >
-          <SearchConfigContextProvider
-            name={item?.searchName}
-          >
+          <MapSearchContextProvider>
             <div
               className='flex justify-between items-center'
             >
@@ -87,10 +84,10 @@ const SearchItem = (props: Props) => {
               data={item.data}
               view={view}
             />
-          </SearchConfigContextProvider>
+          </MapSearchContextProvider>
         </TranslationContext.Provider>
       </Peripleo>
-    </RuntimeConfig>
+    </RuntimeConfigProvider>
   );
 };
 

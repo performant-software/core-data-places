@@ -6,7 +6,8 @@ import {
 } from 'react';
 import _ from 'underscore';
 import type { SearchConfig } from '@types';
-import config from '@config' with { type: 'json' };
+import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
+import { RuntimeConfig, useRuntimeConfig } from '@peripleo/peripleo';
 
 interface SearchContextType {
   searchConfig: SearchConfig;
@@ -19,8 +20,22 @@ interface Props {
   name: string;
 }
 
-export const SearchConfigContextProvider = ({ children, name }: Props) => {
-  const searchConfig = useMemo(() => _.findWhere(config.search, { name }), [config, name]);
+export const RuntimeConfigProvider = ({ children, name }: Props) => (
+  <RuntimeConfig
+    path='/config.json'
+    preprocess={PeripleoUtils.normalize}
+  >
+    <SearchConfigContextProvider
+      name={name}
+    >
+      { children }
+    </SearchConfigContextProvider>
+  </RuntimeConfig>
+)
+
+const SearchConfigContextProvider = ({ children, name }: Props) => {
+  const config = useRuntimeConfig();
+  const searchConfig = useMemo(() => _.findWhere(config.search, { name }), [name, config.search]);
 
   return (
     <SearchConfigContext.Provider
