@@ -56,12 +56,16 @@ interface Props {
   preload?: boolean;
 }
 
+interface GeometryCache {
+  [id: string]: any;
+}
+
 export const MapSearchContextProvider = ({ allowSave, children, preload }: Props) => {
   const [boundingBoxOptions, setBoundingBoxOptions] = useState<BoundingBoxOptions>();
   const [controlsClass, setControlsClass] = useState<string>();
-  const [features, setFeatures] = useState([]);
-  const [geometryCache, setGeometryCache] = useState({});
-  const [geometries, setGeometries] = useState({});
+  const [features, setFeatures] = useState<Feature[]>([]);
+  const [geometryCache, setGeometryCache] = useState<GeometryCache>({});
+  const [geometries, setGeometries] = useState<any>({});
 
   const config = useSearchConfig();
   const hits = useCachedHits();
