@@ -187,6 +187,23 @@ const Settings: Collection = {
       type: 'string',
       required: true
     }, {
+      name: 'type',
+      label: 'Type',
+      type: 'string',
+      options: [{
+        label: 'Map',
+        value: 'map'
+      }, {
+        label: 'List',
+        value: 'list'
+      }, {
+        label: 'Grid',
+        value: 'grid'
+      }, {
+        label: 'Image',
+        value: 'image'
+      }]
+    }, {
       name: 'geosearch',
       label: 'Geo-search',
       type: 'boolean'
@@ -213,7 +230,6 @@ const Settings: Collection = {
         name: 'type',
         label: 'Type',
         type: 'string',
-        list: true,
         options: [{
           value: 'list',
           label: 'List',
@@ -267,11 +283,11 @@ const Settings: Collection = {
           label: 'Icon',
           type: 'string'
         }]
-      }, {
-    name: 'table',
-    label: 'Table results view?',
-    type: 'boolean'
-  }]
+      }]
+    }, {
+      name: 'table',
+      label: 'Table results view?',
+      type: 'boolean'
     }, {
       name: 'timeline',
       label: 'Timeline',
