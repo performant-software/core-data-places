@@ -60,19 +60,60 @@ const CustomBackendAuth = () => {
       }
     },
   }
-}
+};
 
-const authProvider = isLocal
-  ? LocalBackendAuthProvider()
-  : useSSO
-    ? CustomBackendAuth()
-    : AuthJsBackendAuthProvider({
-      authOptions: TinaAuthJSOptions({
-        databaseClient,
-        secret: process.env.NEXTAUTH_SECRET!,
-        debug: true
-      })
-    })
+const debug = true;
+const uidProp = 'sub';
+
+const authProvider = AuthJsBackendAuthProvider({
+  authOptions: TinaAuthJSOptions({
+    databaseClient,
+    secret: process.env.NEXTAUTH_SECRET!,
+    debug: true,
+    overrides: {
+      callbacks: {
+        jwt: async ({ token: jwt, account }) => {
+          if (account) {
+            if (debug) {
+              console.table(jwt);
+            }
+            // only set for newly created jwts
+            try {
+              if (jwt?.[uidProp]) {
+                const sub = jwt[uidProp];
+                const result = await databaseClient.authorize({ sub });
+                console.log('***********************************DATA!');
+                console.log(result.data);
+                jwt.role = !!result.data?.authorize ? 'user' : 'guest';
+                jwt.passwordChangeRequired =
+                  result.data?.authorize?._password?.passwordChangeRequired ||
+                  false;
+                jwt.user_role = result.data?.authorize?.user_role;
+                console.log(`*********************SETTING USER ROLE: ${result.data?.authorize?.user_role}`);
+              } else if (debug) {
+                console.log(`jwt missing specified uidProp: ${uidProp}`);
+              }
+            } catch (error) {
+              console.log(error);
+            }
+            if (jwt.role === undefined) {
+              jwt.role = 'guest';
+            }
+          }
+          return jwt;
+        },
+        session: async ({ session, token: jwt }) => {
+          // forward the role to the session
+          (session.user as any).role = jwt.role;
+          (session.user as any).passwordChangeRequired = jwt.passwordChangeRequired;
+          (session.user as any)[uidProp] = jwt[uidProp];
+          (session.user as any).user_role = jwt.user_role;
+          return session;
+        },
+      }
+    }
+  })
+})
 
 const tinaBackend = TinaNodeBackend({
   authProvider,

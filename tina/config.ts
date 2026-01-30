@@ -10,17 +10,47 @@ import PostsCollection from './content/posts';
 import Settings from './content/settings';
 import { CustomAuthProvider } from './auth-provider';
 import { TinaUserCollection, UsernamePasswordAuthJSProvider } from 'tinacms-authjs/dist/tinacms';
+import client from '@tina/client';
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 const localContentPath = process.env.TINA_LOCAL_CONTENT_PATH;
 const useSSO = process.env.TINA_PUBLIC_AUTH_USE_KEYCLOAK === 'true';
 
+console.dir(TinaUserCollection);
+
+const tinaUserFields = _.first(TinaUserCollection.fields);
+const test = {
+  ...tinaUserFields,
+  fields: [
+    ...tinaUserFields.fields,
+    {
+      name: 'user_role',
+      label: 'Role',
+      type: 'string',
+      options: [{
+        label: 'Admin',
+        value: 'Admin',
+      }, {
+        label: 'Student',
+        value: 'Student'
+      }]
+    }
+  ]
+};
+console.log(tinaUserFields);
+
 export default defineConfig({
-  authProvider: isLocal
-    ? new LocalAuthProvider()
-    : useSSO
-      ? new CustomAuthProvider()
-      : new UsernamePasswordAuthJSProvider(),
+  cmsCallback: async (cms) => {
+    const { authProvider } = cms.api.tina;
+    const user = await authProvider.getUser();
+
+    console.log(cms);
+
+    if (user.user_role !== 'Admin') {
+      cms.api.tina.schema.schema.collections = _.filter(cms.api.tina.schema.schema.collections, (c) => c.name !== 'pages');
+    }
+  },
+  authProvider: new UsernamePasswordAuthJSProvider(),
   build: {
     outputFolder: 'admin',
     publicFolder: 'public',
@@ -37,7 +67,12 @@ export default defineConfig({
   schema: {
     collections: _.compact([
       !useSSO
-        ? TinaUserCollection
+        ? {
+          ...TinaUserCollection,
+          fields: [
+            test
+          ]
+        }
         : undefined,
       Branding,
       PagesCollection,
