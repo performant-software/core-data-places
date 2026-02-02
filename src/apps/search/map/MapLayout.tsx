@@ -18,6 +18,7 @@ import {
 import PanelHistoryContext, { PanelHistoryEntryType } from './PanelHistoryContext';
 import GeosearchFilter from '@apps/search/map/GeosearchFilter';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import { MapFeaturesContextProvider } from './MapFeaturesContext';
 
 const DEFAULT_MAX_ZOOM = 14;
 
@@ -111,80 +112,82 @@ const MapLayout = () => {
 
   return (
     <PanelHistoryContext.Provider value={{panelHistory, setPanelHistory}}>
-      <div
-        className='absolute left-0 right-0 bottom-0 top-[64px]'
-      >
-        <MapView />
-      </div>
-      <Header
-        className='h-[64px]'
-        filters={filters}
-        onFiltersChange={setFilters}
-        onTimelineChange={setTimeline}
-        onViewChange={setView}
-        timeline={timeline}
-        view={view}
-        tableView={config.table}
-      />
-      <div
-        className='flex grow h-[calc(100vh-160px)]'
-      >
+      <MapFeaturesContextProvider>
         <div
-          className={clsx('flex', { 'grow': view === Views.list && !timeline })}
+          className='absolute left-0 right-0 bottom-0 top-[64px]'
+        >
+          <MapView />
+        </div>
+        <Header
+          className='h-[64px]'
+          filters={filters}
+          onFiltersChange={setFilters}
+          onTimelineChange={setTimeline}
+          onViewChange={setView}
+          timeline={timeline}
+          view={view}
+          tableView={config.table}
+        />
+        <div
+          className='flex grow h-[calc(100vh-160px)]'
         >
           <div
-            className='flex flex-col'
+            className={clsx('flex', { 'grow': view === Views.list && !timeline })}
           >
-            <Facets
-              className='w-[240px] px-6 bg-neutral-100 backdrop-blur-sm shadow-sm overflow-y-auto'
-              config={config}
-              open={filters}
-            >
-              <GeosearchFilter />
-            </Facets>
-          </div>
-          { view === Views.list && (
             <div
               className='flex flex-col'
             >
-              <ListView
-                className='w-[350px]'
+              <Facets
+                className='w-[240px] px-6 bg-neutral-100 backdrop-blur-sm shadow-sm overflow-y-auto'
+                config={config}
+                open={filters}
+              >
+                <GeosearchFilter />
+              </Facets>
+            </div>
+            { view === Views.list && (
+              <div
+                className='flex flex-col'
+              >
+                <ListView
+                  className='w-[350px]'
+                />
+              </div>
+            )}
+          </div>
+          { view === Views.table && (
+            <div
+              className='flex grow items-end'
+            >
+              <TableView
+                className='h-[350px]'
               />
             </div>
           )}
-        </div>
-        { view === Views.table && (
+          { timeline && (
+            <div
+              className='flex grow shrink max-w-full items-end'
+            >
+              <TimelineView
+                className={clsx(
+                  'h-[360px]',
+                  'flex',
+                  'grow',
+                  'shrink',
+                )}
+                padding={timelinePadding}
+              />
+            </div>
+          )}
           <div
-            className='flex grow items-end'
+            className='flex justify-end'
           >
-            <TableView
-              className='h-[350px]'
+            <SearchRoutes
+              className='w-[350px]'
             />
           </div>
-        )}
-        { timeline && (
-          <div
-            className='flex grow shrink max-w-full items-end'
-          >
-            <TimelineView
-              className={clsx(
-                'h-[360px]',
-                'flex',
-                'grow',
-                'shrink',
-              )}
-              padding={timelinePadding}
-            />
-          </div>
-        )}
-        <div
-          className='flex justify-end'
-        >
-          <SearchRoutes
-            className='w-[350px]'
-          />
         </div>
-      </div>
+      </MapFeaturesContextProvider>
     </PanelHistoryContext.Provider>
   );
 };
