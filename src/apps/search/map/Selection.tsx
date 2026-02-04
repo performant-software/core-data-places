@@ -1,9 +1,10 @@
+import MapSearchContext from '@apps/search/map/MapSearchContext';
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import TranslationContext from '@contexts/TranslationContext';
 import { SelectRecordPanel } from '@performant-software/core-data';
 import { useSelection } from '@peripleo/maplibre';
 import { useNavigate } from '@peripleo/peripleo';
 import { getIcon, getItemLabel } from '@utils/router';
-import { parseFeature } from '@utils/map';
 import clsx from 'clsx';
 import {
   useCallback,
@@ -12,7 +13,6 @@ import {
   useMemo
 } from 'react';
 import _ from 'underscore';
-import { useSearchConfig } from '@apps/search/SearchConfigContext';
 
 interface Props {
   className?: string;
@@ -21,6 +21,8 @@ interface Props {
 const Selection = (props: Props) => {
   const config = useSearchConfig();
   const navigate = useNavigate();
+
+  const { features } = useContext(MapSearchContext);
   const { t } = useContext(TranslationContext);
 
   const { selection: { selected } = {}, setSelected } = useSelection() || {};
@@ -28,32 +30,33 @@ const Selection = (props: Props) => {
   const { route } = config;
 
   /**
-   * Memo-izes an array of selected records.
+   * Memo-izes the selected features.
    */
-  const records = useMemo(() => {
-    let value;
-
-    if (selected) {
-      if (_.isArray(selected)) {
-        value = [...selected];
-      } else {
-        value = [selected];
-      }
+  const selectedFeatures = useMemo(() => {
+    if (!selected) {
+      return [];
     }
 
-    return value;
-  }, [selected]);
+    let selectedItems = selected;
+
+    if (!_.isArray(selected)) {
+      // @ts-ignore
+      selectedItems = [selected];
+    }
+
+    const ids = _.map(selectedItems, (s) => s.properties.uuid);
+    return _.filter(features, (f) => ids.includes(f.properties.uuid));
+  }, [features, selected]);
 
   /**
    * Memo-izes the parsed selected.
    */
   const items = useMemo(() => (
-    _.chain(records)
-      .map((record) => parseFeature(record))
-      .map((record) => record.properties.items)
+    _.chain(selectedFeatures)
+      .map((feature) => feature.properties.items)
       .flatten()
       .value()
-  ), [records]);
+  ), [selected]);
 
   /**
    * Memo-izes the icon name for the route.
@@ -66,12 +69,9 @@ const Selection = (props: Props) => {
   const label = useMemo(() => t('selectRecord', { name: getItemLabel(route, t) }), [t]);
 
   /**
-   * Clears the selection and navigates to the URL for the passed item.
+   * Navigates to the URL for the passed item.
    */
-  const onClick = useCallback((item) => {
-    setSelected(null);
-    navigate(`${route}/${item.uuid}`);
-  }, []);
+  const onClick = useCallback((item) => navigate(`${route}/${item.uuid}`), []);
 
   /**
    * Clears the selection and navigates back to the root URL.
@@ -88,24 +88,35 @@ const Selection = (props: Props) => {
   const title = useMemo(() => {
     let value;
 
-    if (records?.length === 1) {
-      const [record,] = records;
-      value = record.properties?.name;
+    if (selectedFeatures?.length === 1) {
+      const [feature,] = selectedFeatures;
+      value = feature.properties?.name;
     } else {
       value = t('multipleLocations');
     }
 
     return value;
-  }, [records]);
+  }, [selectedFeatures]);
 
   /**
-   * Navigate to the root path if the selection is cleared.
+   * Determines if we can navigate without needing the user to select a record.
    */
   useEffect(() => {
-    if (_.isEmpty(records)) {
+    // Navigate to the root path if the panel is closed.
+    if (_.isEmpty(selectedFeatures)) {
       navigate('/');
     }
-  }, [records]);
+
+    // Navigate directly to the record
+    if (selectedFeatures.length === 1) {
+      const [selectedFeature,] = selectedFeatures;
+
+      if (selectedFeature.properties.items.length === 1) {
+        const [item,] = selectedFeature.properties.items;
+        navigate(`${config.route}/${item.id}`);
+      }
+    }
+  }, [selectedFeatures]);
 
   if (_.isEmpty(items)) {
     return null;

@@ -77,7 +77,7 @@ const isActive = (url: string) => {
 const getNavItems = async () => {
   const tinaNavbar = await fetchNavbar(currentLocale);
 
-  if (tinaNavbar) {
+  if (tinaNavbar && tinaNavbar.items) {
     return tinaNavbar.items.map(item => ({
       ...item,
       active: item.href

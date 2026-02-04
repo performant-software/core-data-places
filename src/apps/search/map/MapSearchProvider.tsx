@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { useGeoSearch, useInfiniteHits, useSearchBox } from 'react-instantsearch';
 import { PersistentSearchStateContextProvider } from '@performant-software/core-data';
 

@@ -110,7 +110,12 @@ const MapLayout = () => {
   }, [left, rightOpen]);
 
   return (
-    <PanelHistoryContext.Provider value={{panelHistory, setPanelHistory}}>
+    <PanelHistoryContext.Provider
+      value={{
+        panelHistory,
+        setPanelHistory
+      }}
+    >
       <div
         className='absolute left-0 right-0 bottom-0 top-[64px]'
       >
