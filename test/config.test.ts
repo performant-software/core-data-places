@@ -264,6 +264,10 @@ describe('search', () => {
         });
       });
 
+      test.skipIf(!search.result_card.relationships)('relationships match allowed values', () => {
+        expect(search.result_card.relationships).toBeArrayOf(String);
+      })
+
       describe.each(search.result_card?.tags || [])('tags', (tag) => {
         test('name is not empty', () => {
           expect(tag.name).toBeString();
