@@ -19,7 +19,6 @@ const PostList = (props: Props) => {
   const { lang } = props;
 
   const [cursor, setCursor] = useState<string | null>(null);
-  const [showMore, setShowMore] = useState<boolean>(false);
   const [posts, setPosts] = useState<any[]>([]);
   const [category, setCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,8 +40,7 @@ const PostList = (props: Props) => {
     const res = await fetchPosts(params);
 
     setPosts(prev => prev.concat(res.posts));
-    setCursor(res.metadata?.endCursor);
-    setShowMore(res.metadata?.hasNextPage);
+    setCursor(res.metadata?.hasNextPage ? res.metadata?.cursor : null);
     setLoading(false);
   }, [category]);
 
@@ -98,7 +96,7 @@ const PostList = (props: Props) => {
           </a>
         )) }
       </div>
-      { showMore && !loading && (
+      { cursor && !loading && (
         <div className='w-full flex justify-center items-center py-6'>
           <Button
             onClick={() => onLoadPosts(cursor)}

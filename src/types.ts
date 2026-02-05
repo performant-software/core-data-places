@@ -61,7 +61,11 @@ export interface SearchConfig {
 export interface Configuration {
   content?: {
     collections?: Array<String>,
-    localize_pages?: boolean
+    localize_pages?: boolean,
+    posts_config?: {
+      categories?: Array<String>,
+      drafts?: boolean
+    }
   };
 
   core_data: {

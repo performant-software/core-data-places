@@ -53,6 +53,14 @@ describe('content', () => {
   test('localize_pages matches allowed values', () => {
     expect(config.content?.localize_pages).toBeBoolean();
   });
+
+  test('posts_config.categories matches allowed values', () => {
+    expect(config.content?.posts_config?.categories).toBeArrayOf(String);
+  });
+
+  test('posts_config.drafts matches allowed values', () => {
+    expect(config.content?.posts_config?.drafts).toBeBoolean();
+  });
 });
 
 describe('core_data', () => {
