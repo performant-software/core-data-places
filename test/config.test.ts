@@ -204,7 +204,6 @@ describe('search', () => {
       test('type matches allowed values', () => {
         const types = [
           'list',
-          'range',
           'select'
         ];
 
