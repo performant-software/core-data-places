@@ -1,0 +1,27 @@
+---
+
+import Container from '@components/Container.astro';
+import EditionCrafter from '@cu-mkp/editioncrafter';
+
+const { faircopyId, transcriptionTypes, baseURL, projectId } = Astro.props;
+
+const manifestURL = `${baseURL}/public/${projectId}/tei_documents/_${faircopyId}/iiif`;
+
+const validManifest = await fetch(manifestURL).then((res) => (res.status === 200));
+
+---
+{ validManifest && ( 
+  <div class='w-full pb-6 relative h-[800px]'>
+    <div class='bg-primary h-[80px] w-full' />
+    <div class='absolute gap-6 w-full top-0 h-full'>
+      <Container className='h-full'>
+        <EditionCrafter
+          documentName="Test"
+          iiifManifest={manifestURL}
+          transcriptionTypes={transcriptionTypes}
+          client:only="react"
+        />
+      </Container>
+    </div>
+  </div>
+)}
