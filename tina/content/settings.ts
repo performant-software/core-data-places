@@ -51,6 +51,186 @@ const Settings: Collection = {
       list: true
     }]
   }, {
+    name: 'detail_pages',
+    label: 'Detail Pages',
+    type: 'object',
+    fields: [{
+      name: 'models',
+      label: 'Models',
+      type: 'object',
+      fields: [{
+        name: 'events',
+        label: 'Events',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }]
+      }, {
+        name: 'instances',
+        label: 'Instances',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }]
+      }, {
+        name: 'items',
+        label: 'Items',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }]
+      }, {
+        name: 'organizations',
+        label: 'Organizations',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }]
+      }, {
+        name: 'people',
+        label: 'People',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }]
+      }, {
+        name: 'places',
+        label: 'Places',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }]
+      }, {
+        name: 'taxonomies',
+        label: 'Taxonomies',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }]
+      }, {
+        name: 'works',
+        label: 'Works',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }]
+      }]
+    }, {
+      name: 'relationship_fields',
+      label: 'Relationship Fields',
+      type: 'object',
+      fields: [{
+        name: 'events',
+        label: 'Events',
+        type: 'string',
+        list: true
+      }, {
+        name: 'instances',
+        label: 'Instances',
+        type: 'string',
+        list: true
+      }, {
+        name: 'items',
+        label: 'Items',
+        type: 'string',
+        list: true
+      }, {
+        name: 'works',
+        label: 'Works',
+        type: 'string',
+        list: true
+      }]
+    }]
+  },
+  {
     name: 'i18n',
     label: 'Internationalization',
     type: 'object',
@@ -64,6 +244,10 @@ const Settings: Collection = {
       type: 'string',
       list: true
     }]
+  }, {
+    name: 'gallery',
+    label: 'Gallery',
+    type: 'string'
   }, {
     name: 'layers',
     label: 'Layers',
@@ -132,6 +316,16 @@ const Settings: Collection = {
     }, {
       name: 'instances',
       label: 'Instances',
+      type: 'object',
+      fields: [{
+        name: 'exclude',
+        label: 'Exclude',
+        type: 'string',
+        list: true,
+      }]
+    }, {
+      name: 'items',
+      label: 'Items',
       type: 'object',
       fields: [{
         name: 'exclude',
@@ -287,6 +481,11 @@ const Settings: Collection = {
         label: 'Attributes',
         type: 'object',
         list: true,
+        ui: {
+          itemProps: (item) => {
+            return { label: item?.name }
+          }
+        },
         fields: [{
           name: 'name',
           label: 'Name',
@@ -296,6 +495,29 @@ const Settings: Collection = {
           name: 'icon',
           label: 'Icon',
           type: 'string'
+        }]
+      }, {
+        name: 'relationships',
+        label: 'Relationships',
+        type: 'string',
+        list: true
+      }, {
+        name: 'tags',
+        label: 'Tags',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'name',
+          label: 'Name',
+          type: 'string'
+        }, {
+          name: 'primary',
+          label: 'Primary',
+          type: 'boolean'
+        }, {
+          name: 'secondary',
+          label: 'Secondary',
+          type: 'boolean'
         }]
       }]
     }, {
