@@ -5,15 +5,6 @@ import _ from 'underscore';
 const INDEX_START_DATE = 0;
 const INDEX_END_DATE = 1;
 
-const MAP_ATTRIBUTES = [
-  'id',
-  'name',
-  'names',
-  'record_id',
-  'type',
-  'uuid'
-];
-
 const MAX_ATTRIBUTES = 4;
 
 const SECOND_TO_MILLISECONDS = 1000;
@@ -22,16 +13,16 @@ const SECOND_TO_MILLISECONDS = 1000;
  * Returns the data for the map visualization.
  *
  * @param config
- * @param records
+ * @param data
  */
-export const buildMapData = (config: SearchConfig, records: any) => {
-  const geometryAttribute = _.first(config.map.geometry.split('.'));
-  const attributes = _.compact([...MAP_ATTRIBUTES, geometryAttribute]);
-
-  const data = _.map(records, (record: any) => _.pick(record, ...attributes));
+export const buildMapData = (config: SearchConfig, data: any) => {
+  const { features, hits } = data;
 
   return {
-    data,
+    data: {
+      features,
+      hits
+    },
     name: config.name
   };
 };
@@ -40,9 +31,11 @@ export const buildMapData = (config: SearchConfig, records: any) => {
  * Returns the data for the table visualization.
  *
  * @param config
- * @param records
+ * @param data
  */
-export const buildTableData = (config:SearchConfig, records: any) => {
+export const buildTableData = (config:SearchConfig, data: any) => {
+  const { hits: records } = data;
+
   const columns = [
     config.result_card.title,
     ..._.pluck(config.result_card.attributes?.slice(0, MAX_ATTRIBUTES), 'name')
@@ -71,9 +64,11 @@ export const buildTableData = (config:SearchConfig, records: any) => {
  * Returns the data for the timeline visualization.
  *
  * @param config
- * @param records
+ * @param data
  */
-export const buildTimelineData = (config: SearchConfig, records: any) => {
+export const buildTimelineData = (config: SearchConfig, data: any) => {
+  const { hits: records } = data;
+
   const events = [];
 
   let min: number;
@@ -114,12 +109,14 @@ export const buildTimelineData = (config: SearchConfig, records: any) => {
 };
 
 /**
- * Returns the data for the stacked timeline visualization
+ * Returns the data for the stacked timeline visualization.
+ *
  * @param config
- * @param records
+ * @param data
  */
+export const buildStackedTimelineData = (config: SearchConfig, data: any) => {
+  const { hits: records } = data;
 
-export const buildStackedTimelineData = (config: SearchConfig, records: any) => {
   const events = [];
 
   let eventData = records;

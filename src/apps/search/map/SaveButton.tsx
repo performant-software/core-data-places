@@ -1,3 +1,5 @@
+import MapSearchContext from '@apps/search/map/MapSearchContext';
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import { saveSession } from '@backend/api/session';
 import TranslationContext from '@contexts/TranslationContext';
 import {
@@ -8,7 +10,7 @@ import {
 } from '@performant-software/core-data';
 import NotificationsStore from '@store/notifications';
 import { useCallback, useContext, useState } from 'react';
-import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import _ from 'underscore';
 
 const SaveButton = () => {
   const [name, setName] = useState<string>();
@@ -18,6 +20,7 @@ const SaveButton = () => {
   const { name: searchName } = useSearchConfig();
   const hits = useCachedHits();
 
+  const { features } = useContext(MapSearchContext);
   const { t } = useContext(TranslationContext);
 
   /**
@@ -44,7 +47,10 @@ const SaveButton = () => {
     setSaving(true);
 
     const data = {
-      data: hits,
+      data: {
+        hits,
+        features: _.filter(features, (f) => f.properties.visible)
+      },
       name,
       searchName
     };

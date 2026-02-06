@@ -21,6 +21,20 @@ const Settings: Collection = {
       name: 'localize_pages',
       label: 'Localize Pages',
       type: 'boolean'
+    }, {
+      name: 'posts_config',
+      label: 'Posts configuration',
+      type: 'object',
+      fields: [{
+        name: 'categories',
+        label: 'Categories',
+        type: 'string',
+        list: true
+      }, {
+        name: 'drafts',
+        label: 'Use Draft Workflow?',
+        type: 'boolean'
+      }]
     }]
   }, {
     name: 'core_data',
@@ -187,6 +201,23 @@ const Settings: Collection = {
       type: 'string',
       required: true
     }, {
+      name: 'type',
+      label: 'Type',
+      type: 'string',
+      options: [{
+        label: 'Map',
+        value: 'map'
+      }, {
+        label: 'List',
+        value: 'list'
+      }, {
+        label: 'Grid',
+        value: 'grid'
+      }, {
+        label: 'Image',
+        value: 'image'
+      }]
+    }, {
       name: 'geosearch',
       label: 'Geo-search',
       type: 'boolean'
@@ -266,11 +297,11 @@ const Settings: Collection = {
           label: 'Icon',
           type: 'string'
         }]
-      }, {
-    name: 'table',
-    label: 'Table results view?',
-    type: 'boolean'
-  }]
+      }]
+    }, {
+      name: 'table',
+      label: 'Table results view?',
+      type: 'boolean'
     }, {
       name: 'timeline',
       label: 'Timeline',

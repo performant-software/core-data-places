@@ -71,14 +71,14 @@ const {
     )} >
       <div
         class={clsx(
-          'relative flex flex-col z-10 text-white py-16 w-full 2xl:w-[75%] gap-y-8',
+          'relative flex flex-col z-10 text-white py-16 w-full 2xl:w-[80%] gap-y-8',
           { 'items-center text-center lg:max-w-full': textAlignment === 'center' }
         )}
       >
         { title && (
           <h1
             class={clsx(
-              'banner-header m-0',
+              'banner-header leading-[1.3] m-0',
               hero && 'banner-hero',
               home && 'banner-home'
             )}
@@ -106,7 +106,7 @@ const {
         )}
         { content && content.children?.length ? (
           <div class={clsx(
-            'prose max-w-none pb-8 lg:pb-16 z-10 w-full',
+            'prose max-w-none z-10 w-full',
             { 'text-center': textAlignment === 'center' },
             { 'text-text-inverse': color !== 'black' }
           )}>
