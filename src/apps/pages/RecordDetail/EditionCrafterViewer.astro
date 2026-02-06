@@ -5,7 +5,8 @@ import EditionCrafter from '@cu-mkp/editioncrafter';
 
 const { faircopyId, transcriptionTypes, baseURL, projectId } = Astro.props;
 
-const manifestURL = `${baseURL}/public/${projectId}/tei_documents/_${faircopyId}/iiif`;
+//for now, we'll hard code a fix to the possiblity of IDs in fairdata that begin with a number (these are not valid xml IDs)
+const manifestURL = `${baseURL}/public/${projectId}/tei_documents/${/^\d$/.test(faircopyId.slice(0,1)) ? '_' : ''}${faircopyId}/iiif`;
 
 const validManifest = await fetch(manifestURL).then((res) => (res.status === 200));
 
