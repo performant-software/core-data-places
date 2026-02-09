@@ -336,7 +336,7 @@ const Branding: Collection = {
             }]
           }, {
             name: 'link_row',
-            label: 'Navigation Row',
+            label: 'Navigation Links',
             fields: [{
               name: 'links',
               label: 'Links',
@@ -353,6 +353,17 @@ const Branding: Collection = {
                 name: 'label',
                 label: 'Label',
                 type: 'string'
+              }]
+            }, {
+              name: 'orientation',
+              label: 'Orientation',
+              type: 'string',
+              options: [{
+                label: 'Row',
+                value: 'row'
+              }, {
+                label: 'Column',
+                value: 'column'
               }]
             }]
           }, {

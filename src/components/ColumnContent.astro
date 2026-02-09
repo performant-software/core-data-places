@@ -129,7 +129,11 @@ const BlockTypes = {
 )}
 
 { item.__typename.endsWith(BlockTypes.linkRow) && ( 
-  <div class='flex flex-row flex-wrap font-semibold font-sans gap-5 py-1.5 justify-center'>
+  <div class={clsx(
+    'flex flex-wrap font-semibold font-sans py-1.5 justify-center',
+    { 'flex-row gap-5': item.orientation === 'row' || !item.orientation },
+    { 'flex-col gap-2 text-left': item.orientation === 'column' }
+  )}>
     {
       _.map(item.links, (link) => (
         <a href={link.url} class='no-underline hover:underline underline-offset-4 decoration-2'>
