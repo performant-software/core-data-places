@@ -1,7 +1,8 @@
 ---
 import { fetchPages } from '@backend/tina';
+import Page from '@components/Page.astro';
 import config from '@config';
-import Page from '@layouts/Page.astro';
+import Layout from '@layouts/Layout.astro';
 
 const { slug } = Astro.params;
 
@@ -21,6 +22,13 @@ export const getStaticPaths = async () => {
 
 ---
 
-<Page
-  slug={slug}
-/>
+<Layout
+  footer
+  fullscreen
+  title={slug}
+>
+  <Page
+    slug={slug}
+    server:defer
+  />
+</Layout>

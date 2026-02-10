@@ -1,0 +1,14 @@
+---
+import PageBody from '@components/PageBody.astro';
+import { getHomepage } from '@utils/nav';
+
+const locale = Astro.currentLocale;
+const page = await getHomepage(locale);
+
+---
+
+<PageBody
+  sections={page?.sections}
+  transparent={page?.transparent}
+  home={page?.home_page}
+/>

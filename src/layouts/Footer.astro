@@ -1,27 +1,34 @@
 ---
+import { getTranslations } from '@backend/i18n';
 import Container from '@components/Container.astro';
 import LinkButton from '@components/LinkButton';
+import MultiColumnContent from '@components/MultiColumnContent.astro';
 import config from '@config';
 import NavBar from '@layouts/NavBar.astro';
+import { getNavbar } from '@utils/nav';
+import { toBackgroundClass } from '@utils/pageBuilder';
+import { getCurrentURL } from '@utils/url';
 import clsx from 'clsx';
 import _ from 'underscore';
-import { toBackgroundClass, toTextClass } from '@utils/pageBuilder';
-import MultiColumnContent from '@components/MultiColumnContent.astro';
 
 const {
   accessibilityUrl,
   custom,
   customContent,
-  items,
   login,
   logos,
   privacyUrl,
-  t,
   termsUrl,
   title
 } = Astro.props;
 
 const year = new Date().getFullYear();
+
+const currentLocale = Astro.currentLocale;
+const currentUrl = getCurrentURL(Astro.request.headers);
+
+const { t } = await getTranslations(currentLocale);
+const items = await getNavbar(currentLocale, currentUrl.pathname, t);
 
 ---
 

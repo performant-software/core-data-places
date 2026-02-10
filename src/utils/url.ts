@@ -4,6 +4,8 @@ interface SearchParams {
   [key: string]: string;
 }
 
+const HEADER_REFERER = 'Referer';
+
 /**
  * Returns the fully formed URL and search parameters for the passed arguments.
  *
@@ -18,6 +20,16 @@ export const buildUrl = (baseUrl: string, params: { [key: string]: string } = {}
   }
 
   return url.join('?');
+};
+
+/**
+ * Returns the referer URL on the passed headers.
+ *
+ * @param headers
+ */
+export const getCurrentURL = (headers: Headers): URL => {
+  const referer = headers.get(HEADER_REFERER);
+  return new URL(referer);
 };
 
 /**

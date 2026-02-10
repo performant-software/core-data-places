@@ -1,22 +1,27 @@
 ---
+import { getTranslations } from '@backend/i18n';
 import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
 import NavBar from '@layouts/NavBar.astro';
+import { getNavbar } from '@utils/nav';
+import { getCurrentURL } from '@utils/url';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
 
 const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
-const currentUrl = Astro.url;
+const currentUrl = getCurrentURL(Astro.request.headers);
 
 const {
   fullscreen,
   image,
   imageAlt,
-  items,
   title,
   transparent
 } = Astro.props;
+
+const { t } = await getTranslations(currentLocale);
+const items = await getNavbar(currentLocale, currentUrl.pathname, t);
 
 ---
 
