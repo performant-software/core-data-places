@@ -49,6 +49,18 @@ export default defineConfig({
   },
   env: {
     schema: {
+      DISABLE_CACHE: envField.string({
+        access: 'public',
+        context: 'client',
+        default: false,
+        optional: true
+      }),
+      CONTENT_MODE: envField.string({
+        access: 'public',
+        context: 'client',
+        default: 'update',
+        optional: true
+      }),
       PRELOAD_MAP: envField.boolean({
         access: 'public',
         context: 'client',
@@ -65,12 +77,6 @@ export default defineConfig({
         access: 'public',
         context: 'client',
         default: false,
-        optional: true
-      }),
-      CONTENT_MODE: envField.string({
-        access: 'public',
-        context: 'client',
-        default: 'update',
         optional: true
       })
     }
