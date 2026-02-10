@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type Models = 'events' | 'instances' | 'items' | 'mediaContents' | 'organizations' | 'people' | 'places' | 'taxonomies' | 'works';
 
 export interface SearchConfig {
@@ -38,7 +40,7 @@ export interface SearchConfig {
 
   table?: boolean;
 
-  type?: 'grid' | 'list' | 'map';
+  type?: 'grid' | 'image' | 'list' | 'map';
 
   typesense: {
     host: string,
@@ -162,6 +164,7 @@ export interface HitComponentProps {
   }
   highlightComponent?: React.FC<any>;
   hit: any;
+  setManifestUrl?: Dispatch<SetStateAction<string>>
   tags?: {
     name: string;
     primary?: boolean;

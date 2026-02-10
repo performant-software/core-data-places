@@ -1,13 +1,21 @@
 import PropTypes from 'prop-types';
 import { HitComponentProps } from '@types';
+import clsx from 'clsx';
 
 const ImageHit = (props: HitComponentProps) => {
   return (
-    <div className='bg-white rounded-md shadow-xs hover:shadow-md overflow-hidden flex flex-col divide-zinc-200 divide-y h-auto'>
+    <div className={clsx(
+      'bg-white rounded-md shadow-xs hover:shadow-md overflow-hidden flex flex-col divide-zinc-200 divide-y h-auto',
+      { 'cursor-pointer': props.hit.thumbnail }
+    )} onClick={() => {
+      if (props.hit.thumbnail) {
+        props.setManifestUrl(props.hit.thumbnail?.replace('/thumbnail', '/manifest')); //this is a hack since it looks like we're not storing the manifest URL in typesense? 
+      }
+    }}>
       {props.hit.thumbnail && (
         <img
           alt={props.hit.name}
-          className='object-cover w-full'
+          className='object-cover w-full h-[350px]'
           src={props.hit.thumbnail}
         />
       )}
