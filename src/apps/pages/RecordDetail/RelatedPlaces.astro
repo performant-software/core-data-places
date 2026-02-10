@@ -24,15 +24,15 @@ const showLinks = hasDetailPage('places');
 const resolveDetailUrl = (record: any) => `/${lang}/places/${record.uuid}`;
 ---
 {Object.keys(relationships).map((uuid) => (
-  <div class='py-6 w-full'>
-    <h2 class='capitalize text-xl font-semibold font-header mb-2'>{t(uuid)}</h2>
+  <div class='py-8 w-full'>
+    <h4 class='capitalize font-header mb-4'>{t(uuid)}</h4>
     <div class='grid grid-cols-[1fr_2fr] h-[300px] bg-white w-full gap-6'>
       <ul class='items-start justify-start font-body divide-y divide-neutral-200'>
         {relationships[uuid].map((place) =>
           showLinks && resolveDetailUrl ? (
-            <li class='pb-2'>
+            <li>
               <a
-                class='flex gap-2 my-2 text-wrap items-center font-semibold'
+                class='flex py-4 pl-4 text-wrap items-center font-semibold'
                 href={resolveDetailUrl(place)}
               >
                 <Icon name='location' size={16} />
