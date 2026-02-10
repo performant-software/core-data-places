@@ -49,7 +49,7 @@ export default defineConfig({
   },
   env: {
     schema: {
-      DISABLE_CACHE: envField.string({
+      DISABLE_CACHE: envField.boolean({
         access: 'public',
         context: 'client',
         default: false,
