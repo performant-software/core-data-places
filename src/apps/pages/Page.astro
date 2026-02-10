@@ -1,6 +1,7 @@
 ---
 import { fetchPage } from '@backend/tina';
 import PageBody from '@components/PageBody.astro';
+import PageStoreProvider from '@components/PageStoreProvider';
 
 const { slug } = Astro.props;
 const locale = Astro.currentLocale;
@@ -13,4 +14,9 @@ const page = await fetchPage(locale, slug);
   sections={page?.sections}
   transparent={page?.transparent}
   home={page?.home_page}
+/>
+
+<PageStoreProvider
+  title={page.title}
+  client:load
 />

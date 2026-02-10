@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react';
-import { useTranslations } from '@i18n/useTranslations';
-import { MediaGallery } from '@performant-software/core-data';
-import _ from 'underscore';
 import ManifestThumbnail from '@apps/search/ManifestThumbnail';
 import TranslationContext from '@contexts/TranslationContext';
+import { MediaGallery } from '@performant-software/core-data';
+import { useTranslations } from '@i18n/useTranslations';
+import { useMemo, useState } from 'react';
+import _ from 'underscore';
 
 interface Props {
   data: any;

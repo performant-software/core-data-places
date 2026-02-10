@@ -1,18 +1,16 @@
 ---
-import Layout from '@layouts/Layout.astro';
-import { getTranslations } from '@backend/i18n';
 import Gallery from '@apps/gallery/index.astro';
-import _ from 'underscore';
 import config from '@config';
+import Layout from '@layouts/Layout.astro';
+import _ from 'underscore';
 
-const { t } = await getTranslations(Astro.currentLocale);
+export const getStaticPaths = () => _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}));
 
-export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
 ---
+
 <Layout
   footer
-  t={t}
-  title={t('gallery')}
+  titleKey='gallery'
 >
   <Gallery
     server:defer

@@ -1,15 +1,16 @@
 ---
+import ListSearch from '@apps/search/list/ListSearch';
 import MapSearch from '@apps/search/map/MapSearch';
-import { getTranslations } from '@backend/i18n';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
+import { SearchConfig } from '@types';
 import { PRELOAD_MAP, STATIC_BUILD } from 'astro:env/client';
 import _ from 'underscore';
-import ListSearch from '@apps/search/list/ListSearch';
-import { SearchConfig } from '@types';
 
-const { t } = await getTranslations(Astro.currentLocale);
 const { lang, name } = Astro.params;
+
+const searchConfig = config.search.find((s) => s.name === name) as SearchConfig;
+const isListSearch = !!searchConfig.type && searchConfig.type !== 'map';
 
 export const getStaticPaths = () => {
   const paths = [];
@@ -23,16 +24,11 @@ export const getStaticPaths = () => {
   return paths;
 };
 
-const searchConfig = config.search.find((s) => s.name === name) as SearchConfig;
-
-const isListSearch = !!searchConfig.type && searchConfig.type !== 'map';
 ---
 
 <Layout
   fullscreen
-  t={t}
-  title={t('explore')}
-  tab='search'
+  titleKey='explore'
 >
   {isListSearch
     ? (

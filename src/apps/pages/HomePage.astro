@@ -1,5 +1,6 @@
 ---
 import PageBody from '@components/PageBody.astro';
+import PageStoreProvider from '@components/PageStoreProvider';
 import { getHomepage } from '@utils/nav';
 
 const locale = Astro.currentLocale;
@@ -11,4 +12,9 @@ const page = await getHomepage(locale);
   sections={page?.sections}
   transparent={page?.transparent}
   home={page?.home_page}
+/>
+
+<PageStoreProvider
+  title={page.title}
+  client:load
 />

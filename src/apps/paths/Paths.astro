@@ -1,0 +1,42 @@
+---
+import { getTranslations } from '@backend/i18n';
+import { fetchPaths } from '@backend/tina';
+import Card from '@components/Card';
+import Cards from '@components/Cards';
+import Container from '@components/Container.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import _ from 'underscore';
+
+const { lang } = Astro.props;
+
+const { t } = await getTranslations(lang);
+const paths = await fetchPaths();
+
+---
+
+<Container
+  className='pb-16 w-full'
+>
+  <h1
+    class='text-3xl my-12'
+  >
+    { t('paths') }
+  </h1>
+  <Cards>
+    { _.map(paths, (path) => (
+      <Card
+        imageUrl={path?.image}
+        alt={path?.imageAlt}
+        slug={getRelativeLocaleUrl(Astro.currentLocale, `/paths/${path?._sys.filename}` || '#')}
+        labels={{
+          byline: path?.author
+            ? t('by', { author: path.author })
+            : null,
+          readMore: t('readMore')
+        }}
+        title={path?.title || t('untitled')}
+        date={path?.date}
+      />
+    ))}
+  </Cards>
+</Container>

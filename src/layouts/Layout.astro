@@ -1,6 +1,7 @@
 ---
 import { fetchBranding } from '@backend/tina';
 import NotificationPanel from '@components/NotificationPanel';
+import Title from '@components/Title';
 import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
@@ -61,7 +62,7 @@ const lang = getLanguageFromUrl(Astro.url.pathname);
 const {
   footer: includeFooter,
   fullscreen,
-  title,
+  titleKey,
   transparent
 } = Astro.props;
 
@@ -75,7 +76,11 @@ const {
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-    <title>{ (title || branding.title) }</title>
+    <Title
+      defaultTitle={branding.title}
+      titleKey={titleKey}
+      client:load
+    />
     <style
       is:global
       define:vars={{

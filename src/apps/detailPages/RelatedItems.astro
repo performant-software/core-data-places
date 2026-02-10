@@ -1,9 +1,9 @@
 ---
-import ServiceFactory from '@services/coreData/factory';
-import { getRelationshipFields, groupRelationships } from '@utils/detailPages';
+import RelatedSource from '@apps/detailPages/RelatedSource.astro';
 import { getTranslations } from '@backend/i18n';
-import RelatedSource from '@apps/pages/RecordDetail/RelatedSource.astro';
+import ServiceFactory from '@services/coreData/factory';
 import { hasDetailPage } from '@utils/detailPagePaths';
+import { getRelationshipFields, groupRelationships } from '@utils/detailPages';
 
 interface Props {
   excludes: string[];
@@ -15,33 +15,33 @@ const { excludes, model, uuid } = Astro.props;
 
 const lang = Astro.currentLocale;
 const service = ServiceFactory.getService(model);
-const { instances } = await service.getRelatedInstances(uuid);
-const relationships = groupRelationships(instances, excludes);
+const { items } = await service.getRelatedItems(uuid);
+const relationships = groupRelationships(items, excludes);
 const { t } = await getTranslations(lang);
 
-const fields = getRelationshipFields('instances', t);
+const fields = getRelationshipFields('items', t);
 
-const resolveDetailUrl = (instance: any) => `/${lang}/instances/${instance.uuid}`;
-const showLinks = hasDetailPage('instances');
+const resolveDetailUrl = (item: any) => `/${lang}/items/${item.uuid}`;
+const showLinks = hasDetailPage('items');
 ---
 {Object.keys(relationships).map((uuid) => (
   <div class='py-6 w-full'>
     <h2 class='capitalize text-xl font-semibold font-header mb-2'>{t(uuid)}</h2>
     <div class='flex flex-col gap-4'>
-      {relationships[uuid].map((instance) => (
+      {relationships[uuid].map((item) => (
         <>
           {showLinks && (
-            <a href={resolveDetailUrl(instance)}>
+            <a href={resolveDetailUrl(item)}>
               <RelatedSource
                 fields={fields}
-                record={instance}
+                record={item}
               />
             </a>
           )}
           {!showLinks && (
             <RelatedSource
               fields={fields}
-              record={instance}
+              record={item}
             />
           )}
         </>
