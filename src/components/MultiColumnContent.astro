@@ -37,7 +37,7 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
     <h2
       class={clsx(
         'py-8',
-        { 'flex justify-center': textAlignment === 'center' }
+        { 'flex justify-center text-center': textAlignment === 'center' }
       )}
     >
       { title }
@@ -50,7 +50,6 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
       gridCols,   
       { 'gap-8 xl:gap-16': gap === 'large' },
       { 'gap-4 xl:gap-8': gap === 'small' || !gap }
-    )}
     )}
   >
     {
