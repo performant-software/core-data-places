@@ -27,7 +27,7 @@ const resolveDetailUrl = (record: any) => `/${lang}/places/${record.uuid}`;
   <div class='py-8 w-full'>
     <h4 class='capitalize font-header mb-4'>{t(uuid)}</h4>
     <div class='grid grid-cols-[1fr_2fr] h-[300px] bg-white w-full gap-6'>
-      <ul class='items-start justify-start font-body divide-y divide-neutral-200'>
+      <ul class='items-start justify-start font-body divide-y divide-neutral-200 overflow-y-auto'>
         {relationships[uuid].map((place) =>
           showLinks && resolveDetailUrl ? (
             <li>
@@ -50,7 +50,7 @@ const resolveDetailUrl = (record: any) => `/${lang}/places/${record.uuid}`;
       <PlaceMap
         client:only='react'
         classNames={{
-          root: 'h-full!'
+          root: '!h-full'
         }}
         geometry={getRelatedGeometry(relationships[uuid])}
         lang={lang}
