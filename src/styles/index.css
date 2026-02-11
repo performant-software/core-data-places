@@ -244,6 +244,10 @@ h1:has(+ h1) {
   margin-top: 0;
 }
 
+.prose :where(h4 + *):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 0;
+}
+
 .prose h1 {
   font-size: var(--font-sizes-h1);
 }

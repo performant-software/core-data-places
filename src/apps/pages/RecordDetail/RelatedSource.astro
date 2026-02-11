@@ -25,7 +25,7 @@ const displayFields = getDisplayFields(record, fields);
     {record.name}
   </p>
   {displayFields.length > 0 && (
-    <ul class='flex flex-wrap gap-[125px]'>
+    <ul class='flex flex-wrap gap-[125px] max-h-[500px] overflow-y-auto'>
       {displayFields.map(displayField => (
         <li class='block'>
           <span class='text-neutral-400 uppercase font-semibold text-xs'>{displayField.label}</span>

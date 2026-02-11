@@ -62,7 +62,7 @@ const ContactForm = () => {
 
   return (
     <div
-      className='bg-tertiary flex flex-col h-full'
+      className='bg-layout-alt flex flex-col h-full'
     >
       <form
         className='flex flex-col mt-8 mb-4 px-8'
