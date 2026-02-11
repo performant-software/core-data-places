@@ -1,5 +1,7 @@
+import { getTranslations } from '@backend/i18n';
 import { fetchNavbar, fetchPages } from '@backend/tina';
 import config from '@config';
+import { Navbar, NavbarItem } from '@types';
 import { STATIC_BUILD } from 'astro:env/client';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';
@@ -25,26 +27,32 @@ export const getPages = async (locale: string) => {
 };
 
 /**
- * Returns the navbar items.
+ * Transforms the custom navbar into an array of nav items.
  *
+ * @param navbar
+ * @param locale
+ * @param pathname
+ */
+export const getCustomNavbar = async (navbar: Navbar, locale: string, pathname: string) => {
+  return _.map(navbar.items, (item: NavbarItem) => ({
+    ...item,
+    active: isActive(item.href, pathname, locale),
+    options: item.options && _.map(item.options, (option: NavbarItem) => ({
+      ...option,
+      active: isActive(option.href, pathname, locale)
+    }))
+  }));
+};
+
+/**
+ * Returns the default navbar items.
+ *
+ * @param pages
  * @param locale
  * @param pathname
  * @param t
  */
-export const getNavbar = async (locale: string, pathname: string, t: any) => {
-  const navbar = await fetchNavbar(locale);
-
-  if (navbar && navbar.items) {
-    return _.map(navbar.items, (item) => ({
-      ...item,
-      active: isActive(item.href, pathname, locale),
-      options: item.options && _.map(item.options, (option) => ({
-        ...option,
-        active: isActive(option.href, pathname, locale)
-      }))
-    }));
-  }
-
+export const getDefaultNavbar = async (pages: any, locale: string, pathname: string, t: any) => {
   const NavKeys = {
     gallery: 'gallery',
     search: 'search',
@@ -52,8 +60,6 @@ export const getNavbar = async (locale: string, pathname: string, t: any) => {
     paths: 'paths',
     posts: 'posts'
   };
-
-  const pages = await getPages(locale);
 
   // Build the list of options for the "Explore" dropdown
   const searchOptions = _.map(config.search, (search) => ({

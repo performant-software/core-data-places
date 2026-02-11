@@ -180,3 +180,12 @@ export interface HitComponentProps {
     value: string;
   }[]
 }
+
+export interface NavbarItem {
+  href?: string;
+  options?: NavbarItem[];
+}
+
+export interface Navbar {
+  items: NavbarItem[];
+}

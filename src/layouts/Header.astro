@@ -1,9 +1,10 @@
 ---
 import { getTranslations } from '@backend/i18n';
+import { fetchNavbar } from '@backend/tina';
 import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
 import NavBar from '@layouts/NavBar.astro';
-import { getNavbar } from '@utils/nav';
+import { getCustomNavbar, getDefaultNavbar, getPages } from '@utils/nav';
 import { getCurrentURL } from '@utils/url';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
@@ -20,8 +21,19 @@ const {
   transparent
 } = Astro.props;
 
-const { t } = await getTranslations(currentLocale);
-const items = await getNavbar(currentLocale, currentUrl.pathname, t);
+const [{ t }, navbar, pages] = await Promise.all([
+  getTranslations(currentLocale),
+  fetchNavbar(currentLocale),
+  getPages(currentLocale)
+]);
+
+let items;
+
+if (navbar) {
+  items = getCustomNavbar(navbar, currentLocale, currentUrl.pathname);
+} else {
+  items = getDefaultNavbar(pages, currentLocale, currentUrl.pathname, t);
+}
 
 ---
 
