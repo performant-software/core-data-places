@@ -7,6 +7,7 @@ import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
 import { useBlackText } from '@utils/layout';
 import { DISABLE_CACHE, STATIC_BUILD } from 'astro:env/client';
+import clsx from 'clsx';
 import _ from 'underscore';
 
 import '@performant-software/core-data/style.css';
@@ -112,14 +113,21 @@ const {
     class='flex h-full sm:min-h-screen flex-col bg-layout text-neutral-dark mx-auto font-sans'
     transition:animate='initial'
   >
-    <Header
-      fullscreen={fullscreen}
-      image={header?.logo}
-      imageAlt={branding.title}
-      title={header?.hide_title ? undefined : branding.title}
-      transparent={transparent}
-      server:defer
-    />
+    <div
+      class={clsx(
+        'flex flex-row justify-center w-full z-10 text-text-primary',
+        { 'bg-primary': !transparent }
+      )}
+    >
+      <Header
+        fullscreen={fullscreen}
+        image={header?.logo}
+        imageAlt={branding.title}
+        title={header?.hide_title ? undefined : branding.title}
+        transparent={transparent}
+        server:defer
+      />
+    </div>
     <NotificationPanel
       client:only='react'
     />

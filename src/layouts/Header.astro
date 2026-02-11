@@ -39,59 +39,52 @@ if (navbar && navbar.items) {
 
 <div
   class={clsx(
-    'flex flex-row justify-center w-full z-10 text-text-primary',
-    { 'bg-primary': !transparent }
+    'hidden xl:flex flex-row justify-between items-center px-12 py-3 h-[72px] w-full',
+    { '3xl:max-w-(--breakpoint-3xl)': !fullscreen }
   )}
 >
-  <div
-    class={clsx(
-      'hidden xl:flex flex-row justify-between items-center px-12 py-3 h-[72px] w-full',
-      { '3xl:max-w-(--breakpoint-3xl)': !fullscreen }
-    )}
+  <a
+    class='flex flex-row items-center gap-6'
+    href={getRelativeLocaleUrl(currentLocale)}
   >
-    <a
-      class='flex flex-row items-center gap-6'
-      href={getRelativeLocaleUrl(currentLocale)}
-    >
-      { image && (
-        <img
-          alt={imageAlt}
-          class='h-12'
-          src={image}
-        />
-      )}
-      { title && (
-        <h1
-          class='text-2xl font-medium'
-        >
-          { title }
-        </h1>
-      )}
-    </a>
-    <NavBar
-      className='flex flex-row gap-x-12 align-baseline justify-around'
-      items={items}
-    >
-      <LanguagePicker
-        locales={locales}
-        currentLocale={currentLocale}
-        currentUrl={currentUrl.pathname}
-        client:only='react'
+    { image && (
+      <img
+        alt={imageAlt}
+        class='h-12'
+        src={image}
       />
-    </NavBar>
-  </div>
-
-  <MobileHeader
-    image={image}
+    )}
+    { title && (
+      <h1
+        class='text-2xl font-medium'
+      >
+        { title }
+      </h1>
+    )}
+  </a>
+  <NavBar
+    className='flex flex-row gap-x-12 align-baseline justify-around'
     items={items}
-    title={title}
-    transparent={transparent}
-    client:load
   >
     <LanguagePicker
       locales={locales}
       currentLocale={currentLocale}
       currentUrl={currentUrl.pathname}
+      client:only='react'
     />
-  </MobileHeader>
+  </NavBar>
 </div>
+
+<MobileHeader
+  image={image}
+  items={items}
+  title={title}
+  transparent={transparent}
+  client:load
+>
+  <LanguagePicker
+    locales={locales}
+    currentLocale={currentLocale}
+    currentUrl={currentUrl.pathname}
+  />
+</MobileHeader>
