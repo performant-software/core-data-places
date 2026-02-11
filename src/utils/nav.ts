@@ -33,7 +33,7 @@ export const getPages = async (locale: string) => {
  * @param locale
  * @param pathname
  */
-export const getCustomNavbar = async (navbar: Navbar, locale: string, pathname: string) => {
+export const getCustomNavbar = (navbar: Navbar, locale: string, pathname: string) => {
   return _.map(navbar.items, (item: NavbarItem) => ({
     ...item,
     active: isActive(item.href, pathname, locale),
@@ -52,7 +52,7 @@ export const getCustomNavbar = async (navbar: Navbar, locale: string, pathname: 
  * @param pathname
  * @param t
  */
-export const getDefaultNavbar = async (pages: any, locale: string, pathname: string, t: any) => {
+export const getDefaultNavbar = (pages: any, locale: string, pathname: string, t: any) => {
   const NavKeys = {
     gallery: 'gallery',
     search: 'search',

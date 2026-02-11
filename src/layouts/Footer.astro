@@ -36,7 +36,7 @@ const [{ t }, navbar, pages] = await Promise.all([
 
 let items;
 
-if (navbar) {
+if (navbar && navbar.items) {
   items = getCustomNavbar(navbar, currentLocale, currentUrl.pathname);
 } else {
   items = getDefaultNavbar(pages, currentLocale, currentUrl.pathname, t);
