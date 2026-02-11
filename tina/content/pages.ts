@@ -442,10 +442,10 @@ const staticSectionTemplates: Template<false>[] = [{
         value: ''
       }, {
         label: 'Center',
-        value: 'items-center text-center'
+        value: 'justify-self-center'
       }, {
         label: 'Bottom',
-        value: 'justify-end'
+        value: 'justify-self-end'
       }]         
     }, {
       name: 'background',
