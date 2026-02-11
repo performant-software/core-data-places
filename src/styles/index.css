@@ -193,6 +193,10 @@ h1:has(+ h1) {
   color: var(--color-text-secondary) !important;
 }
 
+.link-button div {
+  color: inherit;
+}
+
 .banner-header {
   font-variant: var(--Font-Variant-banner-header);
   font-size: var(--font-sizes-CTA-header);
