@@ -18,7 +18,9 @@ const Title = ({ defaultTitle, titleKey }: Props) => {
    * Sets the title on the state based on the page store.
    */
   useEffect(() => {
-    setTitle(pageStore.title);
+    if (pageStore.title) {
+      setTitle(pageStore.title);
+    }
   }, [pageStore.title]);
 
   /**
@@ -26,7 +28,9 @@ const Title = ({ defaultTitle, titleKey }: Props) => {
    */
   useEffect(() => {
     if (titleKey) {
-      setTitle(t(titleKey));
+      if (t(titleKey)) {
+        setTitle(t(titleKey));
+      }
     }
   }, [t, titleKey]);
 
