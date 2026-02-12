@@ -11,10 +11,12 @@ interface Props {
   slug: string;
 }
 
-const { t } = await getTranslations(Astro.currentLocale);
-
 const { slug } = Astro.props;
-const post = await fetchPost(slug);
+
+const [{ t }, post] = await Promise.all([
+  getTranslations(Astro.currentLocale),
+  fetchPost(slug)
+]);
 
 ---
 
