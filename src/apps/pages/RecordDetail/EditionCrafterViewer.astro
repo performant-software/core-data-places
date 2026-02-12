@@ -3,7 +3,7 @@
 import Container from '@components/Container.astro';
 import EditionCrafter from '@cu-mkp/editioncrafter';
 
-const { faircopyId, transcriptionTypes, baseURL, projectId } = Astro.props;
+const { faircopyId, transcriptionTypes, baseURL, projectId, name } = Astro.props;
 
 //for now, we'll hard code a fix to the possiblity of IDs in fairdata that begin with a number (these are not valid xml IDs)
 const manifestURL = `${baseURL}/public/${projectId}/tei_documents/${/^\d$/.test(faircopyId.slice(0,1)) ? '_' : ''}${faircopyId}/iiif`;
@@ -17,10 +17,10 @@ const validManifest = await fetch(manifestURL).then((res) => (res.status === 200
     <div class='absolute gap-6 w-full top-0 h-full'>
       <Container className='h-full'>
         <EditionCrafter
-          documentName="Test"
+          documentName={name}
           iiifManifest={manifestURL}
           transcriptionTypes={transcriptionTypes}
-          client:only="react"
+          client:only='react'
         />
       </Container>
     </div>

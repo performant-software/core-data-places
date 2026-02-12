@@ -38,6 +38,14 @@ const ecViewer = config.detail_pages?.models[model]
   ? config.detail_pages?.models[model].editioncrafter_config
   : null;
 
+let transcriptionTypes = {};
+
+if (ecViewer) {
+  for (const ttype of ecViewer.transcription_types) {
+    transcriptionTypes[ttype.key] = ttype.label;
+  }
+}
+
 const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewer.xml_id_field]?.value : null;
 ---
 
@@ -56,9 +64,10 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
 { faircopyId && ( 
   <EditionCrafterViewer
     faircopyId={faircopyId}
-    transcriptionTypes={ecViewer.transcription_types}
+    transcriptionTypes={transcriptionTypes}
     baseURL={ecViewer.faircopy_base_url}
     projectId={ecViewer.faircopy_project_id}
+    name={name}
   />
 )}
 { !faircopyId && geometry && ( 
