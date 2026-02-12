@@ -28,13 +28,11 @@ const year = new Date().getFullYear();
 const currentLocale = Astro.currentLocale;
 const currentUrl = getCurrentURL(Astro.request.headers);
 
-console.time('Fetching footer');
 const [{ t }, navbar, pages] = await Promise.all([
   getTranslations(currentLocale),
   fetchNavbar(currentLocale),
   getPages(currentLocale)
 ]);
-console.timeEnd('Fetching footer');
 
 let items;
 

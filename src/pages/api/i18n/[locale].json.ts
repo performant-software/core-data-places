@@ -7,9 +7,7 @@ import _ from 'underscore';
 export const GET: APIRoute = async ({ params }) => {
   const { locale } = params;
 
-  console.time('Fetching i18n data...');
   const data = await getI18n(locale);
-  console.timeEnd('Fetching i18n data...');
 
   return buildResponse(data);
 };
