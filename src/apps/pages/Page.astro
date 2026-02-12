@@ -6,7 +6,9 @@ import PageStoreProvider from '@components/PageStoreProvider';
 const { slug } = Astro.props;
 const locale = Astro.currentLocale;
 
+console.time(`Fetching page: ${slug}...`);
 const page = await fetchPage(locale, slug);
+console.timeEnd(`Fetching page: ${slug}...`);
 
 ---
 

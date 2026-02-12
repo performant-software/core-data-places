@@ -3,8 +3,10 @@ import PageBody from '@components/PageBody.astro';
 import PageStoreProvider from '@components/PageStoreProvider';
 import { getHomepage } from '@utils/nav';
 
+console.time('Fetching home page...');
 const locale = Astro.currentLocale;
 const page = await getHomepage(locale);
+console.timeEnd('Fetching home page...');
 
 ---
 

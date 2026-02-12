@@ -38,13 +38,7 @@ export const fetchPage = async (locale: string, slug: string) => {
     return null;
   }
 
-  let start, end;
-
-  start = Date.now();
   const response = await fetchOne(locale, slug, client.queries.pages);
-  end = Date.now();
-
-  console.log(`**********************************FETCHED PAGE DATA IN ${end - start}ms...`);
 
   return response.data?.pages;
 };
