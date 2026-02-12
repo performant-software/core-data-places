@@ -50,10 +50,10 @@ const PostList = (props: Props) => {
   }, [category]);
 
   return (
-    <div className='mx-4'>
-      <div className='flex items-center gap-16'>
+    <div>
+      <div className='flex items-center justify-between'>
         <h1
-          className='text-2xl my-8 font-header uppercase first-letter:text-4xl'
+          className='text-4xl my-8 font-header'
         >
           { t('posts') }
         </h1>

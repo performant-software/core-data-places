@@ -4,8 +4,9 @@ import ImageHit from '@components/custom/project/ImageHit'
 import ListHit from '@components/custom/project/ListHit'
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import { Highlight } from 'react-instantsearch';
-import { useCallback, useContext, useMemo, useRef } from 'react';
+import { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { getAttributes, getFacetLabel, getHitValue, getRelationshipLabel, isInverse } from '@utils/search';
+import { MediaGallery } from '@performant-software/core-data';
 import clsx from 'clsx';
 import TranslationContext from '@contexts/TranslationContext';
 import { hasDetailPage } from '@utils/detailPagePaths';
@@ -25,6 +26,7 @@ const Hits = (props: Props) => {
   const searchConfig = useSearchConfig();
   const { items } = useHits();
   const { t } = useContext(TranslationContext);
+  const [manifestUrl, setManifestUrl] = useState<string | null>(null);
 
   const isGrid = useMemo(() => searchConfig.type !== 'list', [searchConfig.type]);
 
@@ -130,6 +132,7 @@ const Hits = (props: Props) => {
         labels={{
           tags: t('tags')
         }}
+        setManifestUrl={setManifestUrl}
         {...item}
       />
     );
@@ -149,14 +152,22 @@ const Hits = (props: Props) => {
   }, [isLinkable, searchConfig.route, props.lang, t]);
 
   return (
-    <div
-      className={clsx(
-        'gap-4 pb-6',
-        {'w-full grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4': isGrid},
-        {'flex flex-col': !isGrid}
-      )}>
-        { hits.map((hit) => renderItem(hit)) }
-    </div>
+    <>
+      <div
+        className={clsx(
+          'gap-4 pb-6',
+          {'w-full grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4': isGrid},
+          {'flex flex-col': !isGrid}
+        )}>
+          { hits.map((hit) => renderItem(hit)) }
+      </div>
+      { manifestUrl && (
+        <MediaGallery
+          manifestUrl={manifestUrl}
+          onClose={() => setManifestUrl(null)}
+        />
+      )}
+    </>
   );
 };
 

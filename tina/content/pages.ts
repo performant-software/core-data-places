@@ -405,13 +405,13 @@ const staticSectionTemplates: Template<false>[] = [{
         value: 'col-span-3'
       }, {
         label: '33%',
-        value: 'col-span-4'
+        value: 'col-span-1 sm:col-span-2 lg:col-span-4'
       }, {
         label: '50%',
         value: 'col-span-6'
       }, {
         label: '67%',
-        value: 'col-span-8'
+        value: 'col-span-1 sm:col-span-2 lg:col-span-8'
       }, {
         label: '75%',
         value: 'col-span-9'
@@ -442,10 +442,10 @@ const staticSectionTemplates: Template<false>[] = [{
         value: ''
       }, {
         label: 'Center',
-        value: 'items-center text-center'
+        value: 'justify-self-center'
       }, {
         label: 'Bottom',
-        value: 'justify-end'
+        value: 'justify-self-end'
       }]         
     }, {
       name: 'background',
