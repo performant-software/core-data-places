@@ -16,6 +16,7 @@ import UserDefined from '@apps/pages/RecordDetail/UserDefined.astro';
 import Identifiers from '@apps/pages/RecordDetail/Identifiers.astro';
 import config from '@config';
 import IIIFBanner from '@apps/pages/RecordDetail/IIIFBanner.astro';
+import EditionCrafterViewer from '@apps/pages/RecordDetail/EditionCrafterViewer.astro';
 
 interface Props {
   excludes: string[];
@@ -32,6 +33,20 @@ const { t } = await getTranslations(lang);
 const manifest = config.detail_pages?.models[model]
   ? config.detail_pages?.models[model].related_manifest
   : null;
+
+const ecViewer = config.detail_pages?.models[model]
+  ? config.detail_pages?.models[model].editioncrafter_config
+  : null;
+
+let transcriptionTypes = {};
+
+if (ecViewer) {
+  for (const ttype of ecViewer.transcription_types) {
+    transcriptionTypes[ttype.key] = ttype.label;
+  }
+}
+
+const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewer.xml_id_field]?.value : null;
 ---
 
 <div class='bg-primary w-full pb-8 pt-6'>
@@ -46,14 +61,25 @@ const manifest = config.detail_pages?.models[model]
     <h1 class='text-5xl font-header'>{name}</h1>
   </Container>
 </div>
-<GeoHeader
-  geometry={geometry}
-  lang={lang}
-  model={model}
-  name={name}
-  record={record}
-  server:defer
-/>
+{ faircopyId && ( 
+  <EditionCrafterViewer
+    faircopyId={faircopyId}
+    transcriptionTypes={transcriptionTypes}
+    baseURL={ecViewer.faircopy_base_url}
+    projectId={ecViewer.faircopy_project_id}
+    name={name}
+  />
+)}
+{ !faircopyId && geometry && ( 
+  <GeoHeader
+    geometry={geometry}
+    lang={lang}
+    model={model}
+    name={name}
+    record={record}
+    server:defer
+  />
+)}
 { manifest && (
   <IIIFBanner
     model={model}
@@ -131,6 +157,9 @@ const manifest = config.detail_pages?.models[model]
 </div>
 
 <script>
-  const backButton = document.querySelector('#backButton')
-  backButton.addEventListener('click', () => history.back())
+  window.document.addEventListener('DOMContentLoaded', () => {
+    const backButton = document.querySelector('#backButton');
+    const prevURL = document.referrer;
+    backButton.addEventListener('click', () => window.location.href = prevURL)
+  })
 </script>
