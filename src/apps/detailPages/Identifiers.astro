@@ -1,12 +1,9 @@
 ---
-import { getTranslations } from "@backend/i18n";
 import { getAuthorityURL } from "@utils/webAuthorities";
 import _ from 'underscore';
 
-const { record } = Astro.props
+const { record, t } = Astro.props
 
-const lang = Astro.currentLocale;
-const { t } = await getTranslations(lang);
 ---
 {record.web_identifiers && !_.isEmpty(record.web_identifiers) && (
   <>
