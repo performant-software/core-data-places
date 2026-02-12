@@ -28,11 +28,13 @@ const year = new Date().getFullYear();
 const currentLocale = Astro.currentLocale;
 const currentUrl = getCurrentURL(Astro.request.headers);
 
+console.time('Fetching footer');
 const [{ t }, navbar, pages] = await Promise.all([
   getTranslations(currentLocale),
   fetchNavbar(currentLocale),
   getPages(currentLocale)
 ]);
+console.timeEnd('Fetching footer');
 
 let items;
 
@@ -149,19 +151,24 @@ if (navbar && navbar.items) {
   </div>
 ) }
 
-{ custom && ( 
+{ custom && (
   <div class={clsx(
     toBackgroundClass(customContent.background),
     customContent.text,
     'custom-footer flex flex-col gap-8 pt-12 px-16 relative overflow-hidden items-center'
   )}>
     { customContent.image && (
-        <img 
-          src={customContent.image} 
+        <img
+          src={customContent.image}
           class='w-full h-full object-cover absolute inset-0'
-        /> 
+        />
     ) }
-    <MultiColumnContent content={customContent.columns} gap='large' className='z-10' />
+    <MultiColumnContent
+      className='z-10'
+      content={customContent.columns}
+      gap='large'
+      t={t}
+    />
     <div
       class='flex border-t border-neutral-500 py-6 w-full font-light z-10'
     >

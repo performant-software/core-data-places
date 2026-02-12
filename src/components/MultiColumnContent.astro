@@ -9,7 +9,8 @@ const {
   buttonText,
   className,
   content, 
-  gap,   
+  gap,
+  t,
   textAlignment,
   title,
   url
@@ -52,18 +53,21 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
       { 'gap-4 xl:gap-8': gap === 'small' || !gap }
     )}
   >
-    {
-      _.map(content, (col: any) => ( 
-        <Column items={col.content} url={col.url} className={clsx(
-          { [col.width] : total === TOTAL_COLUMNS },
-          toBorderClass(col.border),
-          col.background && toBackgroundClass(col.background),
-          { 'rounded-md': col.rounded },
-          col.justify,
-          col.align
-        )} />
-      ))
-    }
+    { _.map(content, (col: any) => (
+        <Column
+          className={clsx(
+            { [col.width] : total === TOTAL_COLUMNS },
+            toBorderClass(col.border),
+            col.background && toBackgroundClass(col.background),
+            { 'rounded-md': col.rounded },
+            col.justify,
+            col.align
+          )}
+          items={col.content}
+          t={t}
+          url={col.url}
+        />
+    )) }
   </div>
   { url && (
     <div
@@ -79,3 +83,4 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
       />
     </div>
   )}
+</div>

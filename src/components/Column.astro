@@ -3,7 +3,7 @@ import clsx from "clsx";
 import _ from "underscore";
 import ColumnContent from "@components/ColumnContent.astro";
 
-const { items, className, url } = Astro.props;
+const { items, className, url, t } = Astro.props;
 ---
 
 { url && ( 
@@ -15,7 +15,10 @@ const { items, className, url } = Astro.props;
     )}
   >
     { _.map(items, (item) => ( 
-      <ColumnContent item={item} />
+      <ColumnContent
+        item={item}
+        t={t}
+      />
     ))}
   </a>
 ) }
