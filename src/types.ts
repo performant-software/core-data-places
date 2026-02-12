@@ -27,14 +27,16 @@ export interface SearchConfig {
   result_card: {
     attributes?: Array<{
       name: string,
-      icon?: string
+      icon?: string,
+      fuzzy_date?: boolean
     }>,
     relationships?: string[],
     title: string,
     tags?: Array<{
       name: string,
       primary?: boolean,
-      secondary?: boolean
+      secondary?: boolean,
+      fuzzy_date?: boolean
     }>
   };
 
@@ -153,6 +155,7 @@ export interface SearchSession {
 
 export interface HitComponentProps {
   attributes: {
+    fuzzyDate?: boolean;
     label: string;
     icon: string;
     name: string;

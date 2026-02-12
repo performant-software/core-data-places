@@ -29,7 +29,7 @@ const TableView = (props: Props) => {
    * List of columns to display in the search table
    */
   const columns = useMemo(() => _.map(getAttributes(config), (attr) => ({
-    render: (hit) => getHitValue(hit, attr.name),
+    render: (hit) => getHitValue(hit, attr.name, attr.fuzzy_date),
     label: getColumnLabel(attr.name, t),
     ...attr
   })), [config]);

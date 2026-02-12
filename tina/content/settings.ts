@@ -495,6 +495,10 @@ const Settings: Collection = {
           name: 'icon',
           label: 'Icon',
           type: 'string'
+        }, {
+          name: 'fuzzy_date',
+          label: 'Is fuzzy date field?',
+          type: 'boolean'
         }]
       }, {
         name: 'relationships',
@@ -517,6 +521,10 @@ const Settings: Collection = {
         }, {
           name: 'secondary',
           label: 'Secondary',
+          type: 'boolean'
+        }, {
+          name: 'fuzzy_date',
+          label: 'Is fuzzy date field?',
           type: 'boolean'
         }]
       }]
