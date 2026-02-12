@@ -9,8 +9,10 @@ import _ from 'underscore';
 
 const { lang } = Astro.props;
 
-const { t } = await getTranslations(lang);
-const paths = await fetchPaths();
+const [{ t }, paths] = await Promise.all([
+  getTranslations(lang),
+  fetchPaths()
+]);
 
 ---
 
