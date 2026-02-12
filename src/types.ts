@@ -11,6 +11,8 @@ export type Models =
   typeof ModelNames.taxonomies |
   typeof ModelNames.works;
 
+import { Dispatch, SetStateAction } from "react";
+
 export interface SearchConfig {
   name: string,
   route: string,
@@ -49,7 +51,7 @@ export interface SearchConfig {
 
   table?: boolean;
 
-  type?: 'grid' | 'list' | 'map';
+  type?: 'grid' | 'image' | 'list' | 'map';
 
   typesense: {
     host: string,
@@ -173,6 +175,7 @@ export interface HitComponentProps {
   }
   highlightComponent?: React.FC<any>;
   hit: any;
+  setManifestUrl?: Dispatch<SetStateAction<string>>
   tags?: {
     name: string;
     primary?: boolean;

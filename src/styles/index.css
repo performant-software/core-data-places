@@ -193,6 +193,10 @@ h1:has(+ h1) {
   color: var(--color-text-secondary) !important;
 }
 
+.link-button div {
+  color: inherit;
+}
+
 .banner-header {
   font-variant: var(--Font-Variant-banner-header);
   font-size: var(--font-sizes-CTA-header);
@@ -241,6 +245,10 @@ h1:has(+ h1) {
 }
 
 .prose :where(h5 + *):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 0;
+}
+
+.prose :where(h4 + *):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
   margin-top: 0;
 }
 

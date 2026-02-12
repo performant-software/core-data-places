@@ -8,10 +8,10 @@ const lang = Astro.currentLocale;
 const { t } = await getTranslations(lang);
 ---
 {record.user_defined && Object.keys(record.user_defined).length > 0 && (
-  <div class="grid grid-cols-2">
+  <div class="flex flex-col">
     {Object.keys(record.user_defined).map(uuid => (
-      !excludes.includes(uuid) && <div class="py-6">
-        <h2 class="capitalize font-semibold font-body">{t(uuid)}</h2>
+      !excludes.includes(uuid) && <div class="py-3">
+        <p class="capitalize font-semibold font-body">{t(uuid)}</p>
         <div class="text-neutral-800 break-words font-body">
           <UserDefinedFieldView
             type={record.user_defined[uuid].type}

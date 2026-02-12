@@ -48,7 +48,7 @@ const ManifestGrid: React.FC<Props> = (props) => {
 
   return (
     <>
-      <div className='grid grid-cols-2 xl:grid-cols-4 gap-8 my-10 w-full'>
+      <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 my-8 w-full'>
         { props.items.map((item) => (
           <button
             className='rounded-md overflow-hidden relative cursor-pointer bg-white w-full block'
@@ -62,8 +62,8 @@ const ManifestGrid: React.FC<Props> = (props) => {
               loading='lazy'
               src={item.thumbnail}
             />
-            <div className='flex items-center justify-center h-[100px]'>
-              <p className='text-xl font-semibold'>
+            <div className='flex items-center justify-center h-[100px] px-6'>
+              <p className='text-lg font-semibold'>
                 {item.label}
               </p>
             </div>

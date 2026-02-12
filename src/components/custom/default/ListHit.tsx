@@ -20,14 +20,14 @@ const ListHit = (props: Props) => {
       <div className='flex flex-col grow divide-y divide-zinc-900/20'>
         <div className='pb-2'>
           {props.highlightComponent
-            ? <props.highlightComponent hit={props.hit} className='font-bold text-neutral-950' attribute='name'/>
+            ? <props.highlightComponent hit={props.hit} className='font-bold text-neutral-950 break-all' attribute='name'/>
             : <p className='font-bold text-neutral-950'>{props.hit.name}</p>
           }
         </div>
         {(props.attributes.length > 0 || props.tags.length > 0) && (
           <div className='py-2'>
             {props.attributes.length > 0 && (
-              <ul className='grid grid-cols-4 w-full'>
+              <ul className='w-full flex flex-row flex-wrap gap-x-16 gap-y-2'>
                 {props.attributes.map(att => (
                   <li
                     className='flex gap-2 items-center'

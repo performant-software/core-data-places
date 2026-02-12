@@ -34,6 +34,8 @@ export const toBorderClass = (color: string, thick?: boolean) => {
       return thick ? 'border-2 border-primary' : 'border border-primary';
     case 'secondary':
       return thick ? 'border-2 border-secondary' : 'border border-secondary';
+    case 'layout':
+      return thick ? 'border-2 border-layout' : 'border border-layout';
     default:
       return '';
   } 
