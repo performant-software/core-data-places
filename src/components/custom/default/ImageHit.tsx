@@ -32,7 +32,7 @@ const ImageHit = (props: HitComponentProps) => {
               className='italic text-sm'
               key={att.name}
             >
-              {(props.highlightComponent && !att.fuzzyDate)
+              {(props.highlightComponent && !att.parser)
                 ? <props.highlightComponent hit={props.hit} attribute={att.name}/>
                 : <span>{att.value}</span>
               }

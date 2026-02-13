@@ -28,7 +28,7 @@ export interface SearchConfig {
     attributes?: Array<{
       name: string,
       icon?: string,
-      fuzzy_date?: boolean
+      parser?: string
     }>,
     relationships?: string[],
     title: string,
@@ -36,7 +36,7 @@ export interface SearchConfig {
       name: string,
       primary?: boolean,
       secondary?: boolean,
-      fuzzy_date?: boolean
+      parser?: string
     }>
   };
 
@@ -155,10 +155,10 @@ export interface SearchSession {
 
 export interface HitComponentProps {
   attributes: {
-    fuzzyDate?: boolean;
     label: string;
     icon: string;
     name: string;
+    parser?: string;
     value: string;
   }[]
   relationships: {

@@ -34,7 +34,7 @@ const ListHit = (props: Props) => {
                     key={att.name}
                   >
                     <p className='uppercase text-black/50 text-xs font-semibold'>{att.label}</p>
-                    {(props.highlightComponent && !att.fuzzyDate)
+                    {(props.highlightComponent && !att.parser)
                       ? <props.highlightComponent className='font-semibold text-sm' hit={props.hit} attribute={att.name}/>
                       : <span className='font-semibold text-sm'>{att.value}</span>
                     }

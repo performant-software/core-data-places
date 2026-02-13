@@ -31,6 +31,11 @@ const editioncrafterConfigFields: TinaField<false>[] = [{
   }]
 }]
 
+const attributeParserOptions = [{
+  label: 'fuzzyDate',
+  value: 'fuzzyDate'
+}];
+
 const Settings: Collection = {
   name: 'settings',
   label: 'Settings',
@@ -564,9 +569,10 @@ const Settings: Collection = {
           label: 'Icon',
           type: 'string'
         }, {
-          name: 'fuzzy_date',
-          label: 'Is fuzzy date field?',
-          type: 'boolean'
+          name: 'parser',
+          label: 'Parser to use for formatting',
+          type: 'string',
+          options: attributeParserOptions
         }]
       }, {
         name: 'relationships',
@@ -591,9 +597,10 @@ const Settings: Collection = {
           label: 'Secondary',
           type: 'boolean'
         }, {
-          name: 'fuzzy_date',
-          label: 'Is fuzzy date field?',
-          type: 'boolean'
+          name: 'parser',
+          label: 'Parser to use for formatting',
+          type: 'string',
+          options: attributeParserOptions
         }]
       }]
     }, {

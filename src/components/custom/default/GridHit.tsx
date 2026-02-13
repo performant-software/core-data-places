@@ -43,7 +43,7 @@ const GridHit = (props: HitComponentProps) => {
               key={att.name}
             >
               <span className='uppercase text-black/50 text-xs'>{att.label}</span>
-              {(props.highlightComponent && !att.fuzzyDate)
+              {(props.highlightComponent && !att.parser)
                 ? <props.highlightComponent hit={props.hit} attribute={att.name}/>
                 : <span>{att.value}</span>
               }

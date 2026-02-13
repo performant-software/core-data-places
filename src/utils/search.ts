@@ -125,12 +125,15 @@ export const getColumnLabel = (flattenedAtt, t) => {
  * @param path
  * @param fuzzyDate
  */
-export const getHitValue = (hit, path, fuzzyDate = false) => {
-  const rawValue = _.get(hit, path.split('.'));
-  if (!fuzzyDate) {
-    return rawValue;
+export const getHitValue = (hit, attr) => {
+  const { name, parser } = attr;
+  const rawValue = _.get(hit, name.split('.'));
+  switch (parser) {
+    case 'fuzzyDate':
+      return FuzzyDateUtils.getDateView(rawValue);
+    default:
+      return rawValue;
   }
-  return FuzzyDateUtils.getDateView(rawValue);
 };
 
 /**
