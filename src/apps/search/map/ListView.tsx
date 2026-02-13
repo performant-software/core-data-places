@@ -25,7 +25,7 @@ const ListView = (props: Props) => {
    * List of attributes to display in the search list
    */
   const attributes = useMemo(() => _.map(getAttributes(config), (attr) => ({
-    render: (hit) => getHitValue(hit, attr.name),
+    render: (hit) => getHitValue(hit, attr),
     ...attr
   })), [config]);
 
