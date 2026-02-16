@@ -7,6 +7,8 @@ interface Props {
   uuid: string;
 }
 
+const base = Astro.url.origin;
+
 const { model, uuid } = Astro.props;
 
 const service = ServiceFactory.getService(model);
@@ -15,6 +17,9 @@ const manifests = await service.getRelatedManifests(uuid);
 {manifests && manifests?.items?.length > 0 && (
   <MediaContents
     client:only='react'
+    base={base}
     data={manifests}
+    model={model}
+    uuid={uuid}
   />
 )}
