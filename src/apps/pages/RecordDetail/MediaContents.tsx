@@ -4,7 +4,6 @@ import _ from 'underscore';
 import Viewer from '@samvera/clover-iiif/viewer';
 
 interface Props {
-  base: string;
   model: string;
   uuid: string;
   data: any;
@@ -18,8 +17,8 @@ const MediaContents = (props: Props) => {
   [props.data])
 
   const iiifURL = useMemo(() => (
-    `${props.base}/api/${props.model}/${props.uuid}/manifests.json`
-  ), [props]);
+    `${window.location.origin}/api/${props.model}/${props.uuid}/manifests.json`
+  ), [props, window.location.origin]);
 
   return (
     <div className='py-6'>
