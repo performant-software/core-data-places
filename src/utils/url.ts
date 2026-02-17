@@ -1,3 +1,4 @@
+import { DISABLE_CACHE } from 'astro:env/client';
 import _ from 'underscore';
 
 interface SearchParams {
@@ -20,6 +21,16 @@ export const buildUrl = (baseUrl: string, params: { [key: string]: string } = {}
   }
 
   return url.join('?');
+};
+
+export const convertToNumber = (str) => {
+  const num = Number(str);
+
+  if (!isNaN(num)) {
+    return num;
+  }
+
+  return str;
 };
 
 /**
@@ -53,12 +64,20 @@ export const parseSearchParams = (urlString: string): SearchParams => {
   return params;
 };
 
-export const convertToNumber = (str) => {
-  const num = Number(str);
-
-  if (!isNaN(num)) {
-    return num;
+/**
+ * Sets the cache control on the passed headers.
+ *
+ * @param headers
+ */
+export const setCacheControl = (headers: Headers): void => {
+  if (DISABLE_CACHE) {
+    return;
   }
 
-  return str;
+  // Tell the browser to always check the freshness of the cache
+  headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
+
+  // Tell Netlify's CDN to treat it as fresh for 5 minutes, then for up to a week return a stale version
+  // while it revalidates. Use Durable Cache to minimize the need for serverless function calls.
+  headers.set('Netlify-CDN-Cache-Control', 'public, durable, s-maxage=300, stale-while-revalidate=604800');
 };
