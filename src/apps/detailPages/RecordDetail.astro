@@ -159,9 +159,6 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
 </div>
 
 <script>
-  window.document.addEventListener('DOMContentLoaded', () => {
-    const backButton = document.querySelector('#backButton');
-    const prevURL = document.referrer;
-    backButton.addEventListener('click', () => window.location.href = prevURL)
-  })
+  const backButton = document.querySelector('#backButton');
+  backButton.addEventListener('click', () => history.back());
 </script>
