@@ -41,7 +41,7 @@ const PostList = (props: Props) => {
     const res = await fetchPosts(params);
 
     setPosts(prev => prev.concat(res.posts));
-    setCursor(res.metadata?.hasNextPage ? res.metadata?.cursor : null);
+    setCursor(res.metadata?.hasNextPage ? res.metadata?.endCursor : null);
     setLoading(false);
   }, [category]);
 
