@@ -1,14 +1,13 @@
 ---
-import { fetchBranding, fetchNavbar } from '@backend/tina';
+import { fetchBranding } from '@backend/tina';
 import NotificationPanel from '@components/NotificationPanel';
-import config from '@config';
+import Title from '@components/Title';
 import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
 import { useBlackText } from '@utils/layout';
-import { getPages } from '@utils/nav';
-import { STATIC_BUILD } from 'astro:env/client';
-import { getRelativeLocaleUrl } from 'astro:i18n';
+import { DISABLE_CACHE, STATIC_BUILD } from 'astro:env/client';
+import clsx from 'clsx';
 import _ from 'underscore';
 
 import '@performant-software/core-data/style.css';
@@ -17,14 +16,14 @@ import '@styles/index.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-// Tell the browser to always check the freshness of the cache
-Astro.response.headers.set("Cache-Control", "public, max-age=0, must-revalidate");
+if (!DISABLE_CACHE) {
+  // Tell the browser to always check the freshness of the cache
+  Astro.response.headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
 
-// Tell Netlify's CDN to treat it as fresh for 5 minutes, then for up to a week return a stale version
-// while it revalidates. Use Durable Cache to minimize the need for serverless function calls.
-Astro.response.headers.set(
-  "Netlify-CDN-Cache-Control", "public, durable, s-maxage=300, stale-while-revalidate=604800"
-);
+  // Tell Netlify's CDN to treat it as fresh for 5 minutes, then for up to a week return a stale version
+  // while it revalidates. Use Durable Cache to minimize the need for serverless function calls.
+  Astro.response.headers.set('Netlify-CDN-Cache-Control', 'public, durable, s-maxage=300, stale-while-revalidate=604800');
+}
 
 const branding = await fetchBranding();
 const { header, footer } = branding;
@@ -59,111 +58,15 @@ const colorLayoutAlternate = branding.background_alternate || 'var(--color-neutr
 const layoutAlternateContent = !branding.background_alternate || useBlackText(branding.background_alternate) ? content : contentInverse;
 const layoutAlternateContentAlternate = !branding.background_alternate || useBlackText(branding.background_alternate) ? contentAlternate : contentInverseAlternate; //this naming scheme could be better....
 
-const currentLocale = Astro.currentLocale;
 const lang = getLanguageFromUrl(Astro.url.pathname);
 
-const pages = await getPages(currentLocale);
+const {
+  footer: includeFooter,
+  fullscreen,
+  titleKey,
+  transparent
+} = Astro.props;
 
-const { footer: includeFooter, fullscreen, title, t, tab, transparent } = Astro.props;
-
-const isActive = (url: string) => {
-  if (url === '/' || url === `/${currentLocale}`) {
-    return Astro.url.pathname === url;
-  }
-
-  return Astro.url.pathname.includes(url);
-}
-
-const getNavItems = async () => {
-  const tinaNavbar = await fetchNavbar(currentLocale);
-
-  if (tinaNavbar && tinaNavbar.items) {
-    return tinaNavbar.items.map(item => ({
-      ...item,
-      active: item.href
-        ? isActive(item.href)
-        : false,
-      options: item.options?.map(child => ({
-          ...child,
-          active: isActive(child.href)
-        }))
-    }))
-  }
-
-  const NavKeys = {
-    gallery: 'gallery',
-    search: 'search',
-    pages: 'pages',
-    paths: 'paths',
-    posts: 'posts'
-  };
-
-  // Build the list of options for the "Explore" dropdown
-  const searchOptions = _.map(config.search, (search) => ({
-    active: Astro.url.pathname.includes(`/${NavKeys.search}/${search.name}`),
-    name: search.name,
-    label: t(`index_${search.name}`),
-    href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.search}/${search.name}`)
-  }));
-
-  // Add the "Saved Searches" option in "server" mode
-  if (!STATIC_BUILD) {
-    searchOptions.push({
-      active: Astro.url.pathname.includes('/sessions/search'),
-      name: 'search_session',
-      label: t('savedSearches'),
-      href: getRelativeLocaleUrl(currentLocale, '/sessions/search')
-    });
-  }
-
-  const NavConfig = {
-    [NavKeys.search]: {
-      label: t('explore'),
-      options: searchOptions
-    },
-    [NavKeys.pages]: {
-      label: t('pages'),
-      options: _.map(pages, (page) => ({
-        active: Astro.url.pathname.includes(`/${NavKeys.pages}/${page._sys.filename}`),
-        name: page.id,
-        label: page.title,
-        href: getRelativeLocaleUrl(currentLocale, `/${NavKeys.pages}/${page._sys.filename}`)
-      }))
-    },
-    [NavKeys.paths]: {
-      active: tab === NavKeys.paths,
-      label: t('paths'),
-      href: getRelativeLocaleUrl(currentLocale, NavKeys.paths)
-    },
-    [NavKeys.posts]: {
-      active: tab === NavKeys.posts,
-      label: t('posts'),
-      href: getRelativeLocaleUrl(currentLocale, NavKeys.posts)
-    },
-    [NavKeys.gallery]: {
-      active: tab === NavKeys.gallery,
-      label: t('gallery'),
-      href: getRelativeLocaleUrl(currentLocale, NavKeys.gallery)
-    }
-  };
-
-  const result = [
-    NavConfig.search,
-    ..._.map(config.content?.collections, (key) => NavConfig[key?.toLowerCase()]),
-  ];
-
-  if (!_.isEmpty(NavConfig.pages.options)) {
-    result.push(NavConfig.pages);
-  }
-
-  if (config.gallery) {
-    result.push(NavConfig.gallery);
-  }
-
-  return result;
-}
-
-const navItems = await getNavItems();
 ---
 
 <!DOCTYPE html>
@@ -174,7 +77,11 @@ const navItems = await getNavItems();
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-    <title>{title}</title>
+    <Title
+      defaultTitle={branding.title}
+      titleKey={titleKey}
+      client:load
+    />
     <style
       is:global
       define:vars={{
@@ -206,16 +113,21 @@ const navItems = await getNavItems();
     class='flex h-full sm:min-h-screen flex-col bg-layout text-neutral-dark mx-auto font-sans'
     transition:animate='initial'
   >
-    <Header
-      currentTab={tab}
-      fullscreen={fullscreen}
-      image={header?.logo}
-      imageAlt={branding.title}
-      items={navItems}
-      pages={pages}
-      title={header?.hide_title ? undefined : branding.title}
-      transparent={transparent}
-    />
+    <div
+      class={clsx(
+        'flex flex-row justify-center w-full z-10 text-text-primary h-[72px]',
+        { 'bg-primary': !transparent }
+      )}
+    >
+      <Header
+        fullscreen={fullscreen}
+        image={header?.logo}
+        imageAlt={branding.title}
+        title={header?.hide_title ? undefined : branding.title}
+        transparent={transparent}
+        server:defer
+      />
+    </div>
     <NotificationPanel
       client:only='react'
     />
@@ -229,13 +141,12 @@ const navItems = await getNavItems();
         accessibilityUrl={footer?.accessibility_url}
         custom={footer?.custom}
         customContent={footer?.custom_content}
-        items={navItems}
         login={footer?.allow_login && !STATIC_BUILD}
         logos={footer?.logos}
         privacyUrl={footer?.privacy_url}
-        t={t}
         termsUrl={footer?.terms_url}
         title={branding?.title}
+        server:defer
       />
     )}
   </body>

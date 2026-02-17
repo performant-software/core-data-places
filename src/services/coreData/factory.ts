@@ -16,6 +16,7 @@ export const ModelNames = {
   organizations: 'organizations',
   people: 'people',
   places: 'places',
+  taxonomies: 'taxonomies',
   works: 'works'
 };
 
