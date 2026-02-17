@@ -16,5 +16,7 @@ const manifests = await service.getRelatedManifests(uuid);
   <MediaContents
     client:only='react'
     data={manifests}
+    model={model}
+    uuid={uuid}
   />
 )}
