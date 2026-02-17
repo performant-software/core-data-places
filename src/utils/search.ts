@@ -1,4 +1,5 @@
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
+import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
 import _ from 'underscore';
 
 const DEFAULT_JSON_FILENAME = 'search-results.json';
@@ -122,8 +123,18 @@ export const getColumnLabel = (flattenedAtt, t) => {
  *
  * @param hit
  * @param path
+ * @param fuzzyDate
  */
-export const getHitValue = (hit, path) => _.get(hit, path.split('.'));
+export const getHitValue = (hit, attr) => {
+  const { name, parser } = attr;
+  const rawValue = _.get(hit, name.split('.'));
+  switch (parser) {
+    case 'fuzzyDate':
+      return FuzzyDateUtils.getDateView(rawValue);
+    default:
+      return rawValue;
+  }
+};
 
 /**
  * Tests whether a string contains only integers.

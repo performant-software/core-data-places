@@ -38,14 +38,16 @@ export interface SearchConfig {
   result_card: {
     attributes?: Array<{
       name: string,
-      icon?: string
+      icon?: string,
+      parser?: string
     }>,
     relationships?: string[],
     title: string,
     tags?: Array<{
       name: string,
       primary?: boolean,
-      secondary?: boolean
+      secondary?: boolean,
+      parser?: string
     }>
   };
 
@@ -167,6 +169,7 @@ export interface HitComponentProps {
     label: string;
     icon: string;
     name: string;
+    parser?: string;
     value: string;
   }[]
   relationships: {

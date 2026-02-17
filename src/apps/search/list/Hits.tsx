@@ -77,7 +77,7 @@ const Hits = (props: Props) => {
       const attributes = [];
 
       for (const att of getAttributes(searchConfig)) {
-        const value = getHitValue(hit, att.name);
+        const value = getHitValue(hit, att);
 
         const trimmedName = att.name.replace(/\.\d+/g, '')
         let label = facetLabels.current[trimmedName];
@@ -92,6 +92,7 @@ const Hits = (props: Props) => {
             icon: att.icon,
             label,
             name: att.name,
+            parser: att.parser,
             value
           });
         }
@@ -100,7 +101,7 @@ const Hits = (props: Props) => {
       const tags = [];
 
       for (const tag of searchConfig.result_card?.tags || []) {
-        const value = getHitValue(hit, tag.name);
+        const value = getHitValue(hit, tag);
 
         if (value) {
           tags.push({

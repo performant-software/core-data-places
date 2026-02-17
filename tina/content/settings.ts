@@ -1,7 +1,40 @@
-import { Collection } from '@tinacms/schema-tools';
+import { Collection, TinaField } from '@tinacms/schema-tools';
 import TinaMapLayerDefaultSwitch from '../components/TinaMapLayerDefaultSwitch';
 import TinaMapLayerOverlaySwitch from '../components/TinaMapLayerOverlaySwitch';
 import TinaMapLayerURLField from '../components/TinaMapLayerURLField';
+
+const editioncrafterConfigFields: TinaField<false>[] = [{
+  name: 'xml_id_field',
+  label: 'XML ID field identifier',
+  type: 'string'
+}, {
+  name: 'faircopy_base_url',
+  label: 'FairCopy base URL',
+  type: 'string'
+}, {
+  name: 'faircopy_project_id',
+  label: 'FairCopy project ID',
+  type: 'string'
+}, {
+  name: 'transcription_types',
+  label: 'Transcription Types',
+  type: 'object',
+  list: true,
+  fields: [{
+    name: 'key',
+    label: 'XML ID of text resource',
+    type: 'string'
+  }, {
+    name: 'label',
+    label: 'Label',
+    type: 'string'
+  }]
+}]
+
+const attributeParserOptions = [{
+  label: 'fuzzyDate',
+  value: 'fuzzyDate'
+}];
 
 const Settings: Collection = {
   name: 'settings',
@@ -75,6 +108,11 @@ const Settings: Collection = {
             label: 'Relationship',
             type: 'string'
           }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
         }]
       }, {
         name: 'instances',
@@ -93,6 +131,11 @@ const Settings: Collection = {
             label: 'Relationship',
             type: 'string'
           }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
         }]
       }, {
         name: 'items',
@@ -111,6 +154,11 @@ const Settings: Collection = {
             label: 'Relationship',
             type: 'string'
           }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
         }]
       }, {
         name: 'organizations',
@@ -129,6 +177,11 @@ const Settings: Collection = {
             label: 'Relationship',
             type: 'string'
           }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
         }]
       }, {
         name: 'people',
@@ -147,6 +200,11 @@ const Settings: Collection = {
             label: 'Relationship',
             type: 'string'
           }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
         }]
       }, {
         name: 'places',
@@ -165,6 +223,11 @@ const Settings: Collection = {
             label: 'Relationship',
             type: 'string'
           }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
         }]
       }, {
         name: 'taxonomies',
@@ -183,6 +246,11 @@ const Settings: Collection = {
             label: 'Relationship',
             type: 'string'
           }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
         }]
       }, {
         name: 'works',
@@ -201,6 +269,11 @@ const Settings: Collection = {
             label: 'Relationship',
             type: 'string'
           }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
         }]
       }]
     }, {
@@ -495,6 +568,11 @@ const Settings: Collection = {
           name: 'icon',
           label: 'Icon',
           type: 'string'
+        }, {
+          name: 'parser',
+          label: 'Parser to use for formatting',
+          type: 'string',
+          options: attributeParserOptions
         }]
       }, {
         name: 'relationships',
@@ -518,6 +596,11 @@ const Settings: Collection = {
           name: 'secondary',
           label: 'Secondary',
           type: 'boolean'
+        }, {
+          name: 'parser',
+          label: 'Parser to use for formatting',
+          type: 'string',
+          options: attributeParserOptions
         }]
       }]
     }, {
