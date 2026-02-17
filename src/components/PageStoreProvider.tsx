@@ -1,14 +1,12 @@
 import PagesStore from '@store/pages';
 import { useEffect } from 'react';
 
-const PageStoreProvider = ({ title }) => {
+const PageStoreProvider = ({ title, transparent }) => {
   /**
    * Sets the passed title into the page store.
    */
   useEffect(() => {
-    if (title) {
-      PagesStore.set({ title });
-    }
+    PagesStore.set({ title, transparent });
   }, []);
 
   return null;
