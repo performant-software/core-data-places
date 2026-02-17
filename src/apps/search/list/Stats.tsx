@@ -1,8 +1,9 @@
+import TranslationContext from '@contexts/TranslationContext';
+import { useContext } from 'react';
 import { useStats } from 'react-instantsearch';
-import { useTranslations } from '@i18n/useTranslations';
 
 const Stats = () => {
-  const { t } = useTranslations();
+  const { t } = useContext(TranslationContext);
 
   const { nbHits, nbPages, page, hitsPerPage } = useStats();
 

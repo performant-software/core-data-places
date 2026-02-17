@@ -1,7 +1,6 @@
-import { useMemo } from 'react';
 import { useTranslations } from '@i18n/useTranslations';
-import _ from 'underscore';
 import Viewer from '@samvera/clover-iiif/viewer';
+import { useMemo } from 'react';
 
 interface Props {
   model: string;

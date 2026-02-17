@@ -1,9 +1,9 @@
 ---
-import ServiceFactory from '@services/coreData/factory';
-import { getRelationshipFields, groupRelationships } from '@utils/detailPages';
+import RelatedSource from '@apps/detailPages/RelatedSource.astro';
 import { getTranslations } from '@backend/i18n';
-import RelatedSource from '@apps/pages/RecordDetail/RelatedSource.astro';
+import ServiceFactory from '@services/coreData/factory';
 import { hasDetailPage } from '@utils/detailPagePaths';
+import { getRelationshipFields, groupRelationships } from '@utils/detailPages';
 
 interface Props {
   excludes: string[];

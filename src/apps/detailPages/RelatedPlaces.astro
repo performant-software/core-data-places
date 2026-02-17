@@ -1,10 +1,10 @@
 ---
-import { getRelatedGeometry, groupRelationships } from '@utils/detailPages';
+import PlaceMap from '@apps/detailPages/PlaceMap';
 import { getTranslations } from '@backend/i18n';
-import ServiceFactory from '@services/coreData/factory';
-import PlaceMap from '@apps/pages/RecordDetail/PlaceMap';
 import { Icon } from '@performant-software/core-data/ssr';
+import ServiceFactory from '@services/coreData/factory';
 import { hasDetailPage } from '@utils/detailPagePaths';
+import { getRelatedGeometry, groupRelationships } from '@utils/detailPages';
 
 interface Props {
   excludes: string[];

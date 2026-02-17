@@ -1,9 +1,9 @@
 ---
-import ServiceFactory from '@services/coreData/factory';
-import { getRelationshipFields, groupRelationships } from '@utils/detailPages';
+import RelatedSource from '@apps/detailPages/RelatedSource.astro';
 import { getTranslations } from '@backend/i18n';
-import RelatedSource from '@apps/pages/RecordDetail/RelatedSource.astro';
+import ServiceFactory from '@services/coreData/factory';
 import { hasDetailPage } from '@utils/detailPagePaths';
+import { getRelationshipFields, groupRelationships } from '@utils/detailPages';
 
 interface Props {
   excludes: string[];
@@ -15,33 +15,33 @@ const { excludes, model, uuid } = Astro.props;
 
 const lang = Astro.currentLocale;
 const service = ServiceFactory.getService(model);
-const { works } = await service.getRelatedWorks(uuid);
-const relationships = groupRelationships(works, excludes);
+const { instances } = await service.getRelatedInstances(uuid);
+const relationships = groupRelationships(instances, excludes);
 const { t } = await getTranslations(lang);
 
-const fields = getRelationshipFields('works', t)
+const fields = getRelationshipFields('instances', t);
 
-const resolveDetailUrl = (work: any) => `/${lang}/works/${work.uuid}`;
-const showLinks = hasDetailPage('works');
+const resolveDetailUrl = (instance: any) => `/${lang}/instances/${instance.uuid}`;
+const showLinks = hasDetailPage('instances');
 ---
 {Object.keys(relationships).map((uuid) => (
   <div class='py-8 w-full'>
     <h4 class='capitalize font-header mb-4'>{t(uuid)}</h4>
     <div class='flex flex-col gap-4 max-h-[500px] overflow-y-auto'>
-      {relationships[uuid].map((work) => (
+      {relationships[uuid].map((instance) => (
         <>
           {showLinks && (
-            <a href={resolveDetailUrl(work)}>
+            <a href={resolveDetailUrl(instance)}>
               <RelatedSource
                 fields={fields}
-                record={work}
+                record={instance}
               />
             </a>
           )}
           {!showLinks && (
             <RelatedSource
               fields={fields}
-              record={work}
+              record={instance}
             />
           )}
         </>

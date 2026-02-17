@@ -1,0 +1,25 @@
+---
+import RecordDetail from '@apps/detailPages/RecordDetail.astro';
+import PageStoreProvider from '@components/PageStoreProvider';
+import config from '@config';
+import ItemsService from '@services/coreData/items';
+
+const { lang, uuid } = Astro.props;
+
+const { item } = await ItemsService.getOne(uuid);
+const excludes = config.result_filtering?.items?.exclude || [];
+
+---
+
+<RecordDetail
+  excludes={excludes}
+  lang={lang}
+  model='items'
+  name={item.name}
+  record={item}
+/>
+
+<PageStoreProvider
+  title={item.name}
+  client:load
+/>

@@ -1,29 +1,24 @@
 ---
-import { getTranslations } from '@backend/i18n';
+import Posts from '@apps/posts/Posts';
 import Container from '@components/Container.astro';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
 import { hasPostsContent } from '@utils/config';
 import _ from 'underscore';
-import Posts from '@apps/posts/Posts';
-
-const { t } = await getTranslations(Astro.currentLocale);
 
 export const getStaticPaths = () => {
   if (!hasPostsContent(config)) {
     return [];
   }
 
-  return _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
+  return _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}));
 }
 
 ---
 
 <Layout
   footer
-  t={t}
-  tab='posts'
-  title={t('posts')}
+  titleKey='posts'
 >
   <Container
     className='pb-16 w-full'

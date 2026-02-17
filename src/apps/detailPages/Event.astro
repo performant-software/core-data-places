@@ -1,0 +1,45 @@
+---
+import RecordDetail from '@apps/detailPages/RecordDetail.astro';
+import { getTranslations } from '@backend/i18n';
+import PageStoreProvider from '@components/PageStoreProvider';
+import config from '@config';
+import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
+import EventsService from '@services/coreData/events';
+
+const { lang, uuid } = Astro.props;
+
+const { event } = await EventsService.getOne(uuid);
+const excludes = config.result_filtering?.events?.exclude || [];
+
+const { t } = await getTranslations(lang);
+
+---
+
+<RecordDetail
+  excludes={excludes}
+  model='events'
+  lang={lang}
+  name={event.name}
+  record={event}
+>
+  { event.description && (
+    <p class='text-neutral-800 py-6 break-words'>{event.description}</p>
+  )}
+  {['start_date', 'end_date'].map((field) => {
+    if (event[field] && !excludes.includes(field)) {
+      return (
+        <div class='py-6'>
+          <h2 class='capitalize text-lg font-semibold'>{t(field)}</h2>
+          <div class='text-neutral-800'>
+            <p>{FuzzyDateUtils.getDateView(event[field])}</p>
+          </div>
+        </div>
+      )
+    }
+  })}
+</RecordDetail>
+
+<PageStoreProvider
+  title={event.name}
+  client:load
+/>

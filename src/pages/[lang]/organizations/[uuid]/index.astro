@@ -1,32 +1,21 @@
 ---
+import Organization from '@apps/detailPages/Organization.astro';
 import Layout from '@layouts/Layout.astro';
-import config from '@config';
-import RecordDetail from '@apps/pages/RecordDetail/index.astro';
-import { getTranslations } from '@backend/i18n';
 import { ModelNames } from '@services/coreData/factory';
-import OrganizationsService from '@services/coreData/organizations';
 import { getDetailPagePaths } from '@utils/detailPages';
-
-const { t } = await getTranslations(Astro.currentLocale);
 
 const { lang, uuid } = Astro.params;
 
-const { organization } = await OrganizationsService.getOne(uuid);
-const excludes = config.result_filtering?.organizations?.exclude || [];
-
 export const getStaticPaths = async () => await getDetailPagePaths(ModelNames.organizations);
+
 ---
 
-<Layout footer t={t} title={organization.name}>
-  <RecordDetail
-    excludes={excludes}
+<Layout
+  footer
+>
+  <Organization
     lang={lang}
-    model='organizations'
-    name={organization.name}
-    record={organization}
-  >
-    {organization.description && !excludes.includes('description')
-      ? <p class='text-neutral-800 py-6 break-words'>{organization.description}</p>
-      : null}
-  </RecordDetail>
+    uuid={uuid}
+    server:defer
+  />
 </Layout>

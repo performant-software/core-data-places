@@ -1,11 +1,9 @@
 ---
 import Search from '@apps/session/Search';
-import { getTranslations } from '@backend/i18n';
 import Container from '@components/Container.astro';
 import Layout from '@layouts/Layout.astro';
 
 const { lang } = Astro.params;
-const { t } = await getTranslations(Astro.currentLocale);
 
 export const getStaticPaths = () => [];
 
@@ -13,8 +11,7 @@ export const getStaticPaths = () => [];
 
 <Layout
   footer
-  t={t}
-  title={t('savedSearches')}
+  titleKey='savedSearches'
 >
   <Container
     className='py-6 w-full'
