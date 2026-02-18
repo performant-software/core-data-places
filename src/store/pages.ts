@@ -2,10 +2,12 @@ import { atom } from 'nanostores';
 
 interface PageStoreType {
   title?: string;
+  transparent?: boolean;
 }
 
 const pages = atom<PageStoreType>({
-  title: undefined
+  title: undefined,
+  transparent: false
 });
 
 export default pages;
