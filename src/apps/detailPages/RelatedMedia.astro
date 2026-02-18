@@ -1,6 +1,6 @@
 ---
+import MediaContents from '@apps/detailPages/MediaContents';
 import ServiceFactory from '@services/coreData/factory';
-import MediaContents from '@apps/pages/RecordDetail/MediaContents';
 
 interface Props {
   model: string;
@@ -16,5 +16,7 @@ const manifests = await service.getRelatedManifests(uuid);
   <MediaContents
     client:only='react'
     data={manifests}
+    model={model}
+    uuid={uuid}
   />
 )}

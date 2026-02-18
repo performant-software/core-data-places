@@ -1,6 +1,5 @@
 ---
-import Post from '@components/Post.astro';
-import { getTranslations } from '@backend/i18n';
+import Post from '@apps/posts/Post.astro';
 import { fetchPosts } from '@backend/tina';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
@@ -8,8 +7,6 @@ import { hasPostsContent } from '@utils/config';
 import _ from 'underscore';
 
 const { slug } = Astro.params;
-
-const { t } = await getTranslations(Astro.currentLocale);
 
 export const getStaticPaths = async () => {
   if (!hasPostsContent(config)) {
@@ -38,9 +35,6 @@ export const getStaticPaths = async () => {
 
 <Layout
   footer
-  t={t}
-  tab='posts'
-  title={slug}
 >
   <Post
     slug={slug}

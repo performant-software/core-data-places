@@ -1,13 +1,12 @@
 ---
 import SearchItem from '@apps/session/SearchItem';
-import { getTranslations } from '@backend/i18n';
 import BackButton from '@components/BackButton';
 import Container from '@components/Container.astro';
+import PageStoreProvider from '@components/PageStoreProvider';
 import Layout from '@layouts/Layout.astro';
 import { getSessionItem } from '@services/session';
 
 const { id, lang } = Astro.params;
-const { t } = await getTranslations(Astro.currentLocale);
 
 const item = await getSessionItem(Astro.session, 'search', id);
 const sessionId = Astro.url.searchParams.get('sessionId');
@@ -18,8 +17,6 @@ export const getStaticPaths = () => [];
 
 <Layout
   footer
-  t={t}
-  title={item?.name}
 >
   <Container
     className='py-6 relative w-full'
@@ -40,6 +37,11 @@ export const getStaticPaths = () => [];
     </div>
   </Container>
 </Layout>
+
+<PageStoreProvider
+  title={item?.name}
+  client:load
+/>
 
 <script>
   const backButton = document.querySelector('#backButton')

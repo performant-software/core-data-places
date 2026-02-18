@@ -1,13 +1,10 @@
 ---
-import { getTranslations } from "@backend/i18n";
-import UserDefinedFieldView from "@components/UserDefinedFieldView";
+import UserDefinedFieldView from '@components/UserDefinedFieldView';
 import clsx from "clsx";
 import _ from "underscore";
 
-const { record, excludes } = Astro.props
+const { record, excludes, t } = Astro.props
 
-const lang = Astro.currentLocale;
-const { t } = await getTranslations(lang);
 
 ---
 {record.user_defined && Object.keys(record.user_defined).length > 0 && (

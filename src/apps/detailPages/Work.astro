@@ -1,0 +1,25 @@
+---
+import RecordDetail from '@apps/detailPages/RecordDetail.astro';
+import PageStoreProvider from '@components/PageStoreProvider';
+import config from '@config';
+import WorksService from '@services/coreData/works';
+
+const { lang, uuid } = Astro.props;
+
+const { work } = await WorksService.getOne(uuid);
+const excludes = config.result_filtering?.works?.exclude || [];
+
+---
+
+<RecordDetail
+  excludes={excludes}
+  lang={lang}
+  model='works'
+  name={work.name}
+  record={work}
+/>
+
+<PageStoreProvider
+  title={work.name}
+  client:load
+/>

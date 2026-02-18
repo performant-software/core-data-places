@@ -1,22 +1,22 @@
 ---
+import EditionCrafterViewer from '@apps/detailPages/EditionCrafterViewer.astro';
 import BackButton from '@components/BackButton';
 import Container from '@components/Container.astro';
-import RelatedEvents from '@apps/pages/RecordDetail/RelatedEvents.astro';
-import RelatedItems from '@apps/pages/RecordDetail/RelatedItems.astro';
-import RelatedInstances from '@apps/pages/RecordDetail/RelatedInstances.astro';
-import RelatedOrganizations from '@apps/pages/RecordDetail/RelatedOrganizations.astro';
-import RelatedPeople from '@apps/pages/RecordDetail/RelatedPeople.astro';
-import RelatedWorks from '@apps/pages/RecordDetail/RelatedWorks.astro';
-import RelatedTaxonomies from '@apps/pages/RecordDetail/RelatedTaxonomies.astro';
-import RelatedMedia from '@apps/pages/RecordDetail/RelatedMedia.astro';
-import GeoHeader from '@apps/pages/RecordDetail/GeoHeader.astro';
+import GeoHeader from '@apps/detailPages/GeoHeader.astro';
+import Identifiers from '@apps/detailPages/Identifiers.astro';
+import IIIFBanner from '@apps/detailPages/IIIFBanner.astro';
+import RelatedEvents from '@apps/detailPages/RelatedEvents.astro';
+import RelatedInstances from '@apps/detailPages/RelatedInstances.astro';
+import RelatedItems from '@apps/detailPages/RelatedItems.astro';
+import RelatedMedia from '@apps/detailPages/RelatedMedia.astro';
+import RelatedOrganizations from '@apps/detailPages/RelatedOrganizations.astro';
+import RelatedPeople from '@apps/detailPages/RelatedPeople.astro';
+import RelatedPlaces from '@apps/detailPages/RelatedPlaces.astro';
+import RelatedTaxonomies from '@apps/detailPages/RelatedTaxonomies.astro';
+import RelatedWorks from '@apps/detailPages/RelatedWorks.astro';
+import UserDefined from '@apps/detailPages/UserDefined.astro';
 import { getTranslations } from '@backend/i18n';
-import RelatedPlaces from '@apps/pages/RecordDetail/RelatedPlaces.astro';
-import UserDefined from '@apps/pages/RecordDetail/UserDefined.astro';
-import Identifiers from '@apps/pages/RecordDetail/Identifiers.astro';
 import config from '@config';
-import IIIFBanner from '@apps/pages/RecordDetail/IIIFBanner.astro';
-import EditionCrafterViewer from '@apps/pages/RecordDetail/EditionCrafterViewer.astro';
 
 interface Props {
   excludes: string[];
@@ -95,9 +95,11 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
     <UserDefined
       record={record}
       excludes={excludes}
+      t={t}
     />
     <Identifiers
       record={record}
+      t={t}
     />
     <RelatedMedia
       lang={lang}

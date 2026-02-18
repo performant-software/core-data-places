@@ -1,3 +1,4 @@
+import LabelPlaceholder from '@components/LabelPlaceholder';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';
 import { useCallback, useEffect, useState } from 'react';
@@ -55,7 +56,9 @@ const PostList = (props: Props) => {
         <h1
           className='text-4xl my-8 font-header'
         >
-          { t('posts') }
+          { t('posts') || (
+            <LabelPlaceholder />
+          )}
         </h1>
         {
           config.content?.posts_config?.categories && ( 
