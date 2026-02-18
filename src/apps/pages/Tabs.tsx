@@ -3,7 +3,7 @@ import React, { Fragment, useMemo } from 'react';
 import _ from 'underscore';
 import parse from 'html-react-parser';
 import clsx from 'clsx';
-import { toBackgroundClass } from '@root/src/utils/pageBuilder';
+import { toBackgroundClass } from '@utils/pageBuilder';
 
 interface TabsProps {
   tabs: any[];

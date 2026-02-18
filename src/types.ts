@@ -1,6 +1,17 @@
-import { Dispatch, SetStateAction } from "react";
+import { ModelNames } from '@services/coreData/factory';
 
-export type Models = 'events' | 'instances' | 'items' | 'mediaContents' | 'organizations' | 'people' | 'places' | 'taxonomies' | 'works';
+export type Models =
+  typeof ModelNames.events |
+  typeof ModelNames.instances |
+  typeof ModelNames.items |
+  typeof ModelNames.mediaContents |
+  typeof ModelNames.organizations |
+  typeof ModelNames.people |
+  typeof ModelNames.places |
+  typeof ModelNames.taxonomies |
+  typeof ModelNames.works;
+
+import { Dispatch, SetStateAction } from "react";
 
 export interface SearchConfig {
   name: string,
@@ -174,4 +185,13 @@ export interface HitComponentProps {
     secondary?: boolean;
     value: string;
   }[]
+}
+
+export interface NavbarItem {
+  href?: string;
+  options?: NavbarItem[];
+}
+
+export interface Navbar {
+  items: NavbarItem[];
 }

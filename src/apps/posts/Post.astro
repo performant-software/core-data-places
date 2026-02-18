@@ -1,8 +1,9 @@
 ---
 import PostContent from '@apps/posts/PostContent';
-import { fetchPost } from '@backend/tina';
-import Container from './Container.astro';
 import { getTranslations } from '@backend/i18n';
+import { fetchPost } from '@backend/tina';
+import Container from '@components/Container.astro';
+import PageStoreProvider from '@components/PageStoreProvider';
 import { Icon } from '@performant-software/core-data/ssr';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
@@ -12,10 +13,13 @@ interface Props {
 
 const { slug } = Astro.props;
 
-const { t } = await getTranslations(Astro.currentLocale);
+const [{ t }, post] = await Promise.all([
+  getTranslations(Astro.currentLocale),
+  fetchPost(slug)
+]);
 
-const post = await fetchPost(slug);
 ---
+
 <div class='bg-primary w-full pb-6'>
   <Container>
     <a
@@ -42,3 +46,8 @@ const post = await fetchPost(slug);
     client:only='react'
   />
 </Container>
+
+<PageStoreProvider
+  title={post.title}
+  client:load
+/>

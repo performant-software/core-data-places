@@ -1,28 +1,21 @@
 ---
+import Instance from '@apps/detailPages/Instance.astro';
 import Layout from '@layouts/Layout.astro';
-import config from '@config';
-import RecordDetail from '@apps/pages/RecordDetail/index.astro';
-import { getTranslations } from '@backend/i18n';
 import { ModelNames } from '@services/coreData/factory';
-import InstancesService from '@services/coreData/instances';
 import { getDetailPagePaths } from '@utils/detailPages';
-
-const { t } = await getTranslations(Astro.currentLocale);
 
 const { lang, uuid } = Astro.params;
 
-const { instance } = await InstancesService.getOne(uuid);
-const excludes = config.result_filtering?.instances?.exclude || [];
-
 export const getStaticPaths = async () => await getDetailPagePaths(ModelNames.instances);
+
 ---
 
-<Layout footer t={t} title={instance.name}>
-  <RecordDetail
-    excludes={excludes}
+<Layout
+  footer
+>
+  <Instance
     lang={lang}
-    model='instances'
-    name={instance.name}
-    record={instance}
+    uuid={uuid}
+    server:defer
   />
 </Layout>

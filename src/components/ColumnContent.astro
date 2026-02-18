@@ -1,16 +1,13 @@
 ---
-import { getTranslations } from '@backend/i18n';
 import Card from '@components/Card';
-import RichText from '@components/RichText.astro';
 import ContactForm from '@components/ContactForm';
+import RichText from '@components/RichText.astro';
 import Spacer from '@components/Spacer.astro';
-import clsx from 'clsx';
 import { toBorderClass, toBackgroundClass } from '@root/src/utils/pageBuilder';
+import clsx from 'clsx';
 import _ from 'underscore';
 
-const { item } = Astro.props;
-
-const { t } = await getTranslations(Astro.currentLocale);
+const { item, t } = Astro.props;
 
 const BlockTypes = {
   basic: 'Basic',
