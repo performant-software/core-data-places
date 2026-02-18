@@ -109,6 +109,11 @@ const Settings: Collection = {
             type: 'string'
           }]
         }, {
+          name: 'resources_field',
+          label: 'Resources Field',
+          description: 'Should be of the form `<relationship uuid>.<field uuid>` and point to a field in an Items model whose values are full URLs.',
+          type: 'string'
+        }, {
           name: 'editioncrafter_config',
           label: 'EditionCrafter config',
           type: 'object',
