@@ -272,7 +272,7 @@ describe('search', () => {
         });
       });
 
-      test.skipIf(!search.result_card.relationships)('relationships match allowed values', () => {
+      test.skipIf(!search.result_card?.relationships)('relationships match allowed values', () => {
         expect(search.result_card.relationships).toBeArrayOf(String);
       })
 
