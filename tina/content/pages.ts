@@ -1,5 +1,6 @@
 import { Collection, RichTextTemplate, Template, TinaField } from '@tinacms/schema-tools';
 import _ from 'underscore';
+import { media } from './common';
 
 const LABEL_SEPARATOR = ': ';
 
@@ -917,7 +918,7 @@ const staticSectionTemplates: Template<false>[] = [{
       type: 'string'
     }]
   }]
-}, contactForm];
+}, contactForm, media];
 
 const Pages: Collection = {
   name: 'pages',
