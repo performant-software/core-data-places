@@ -35,6 +35,16 @@ npm install && netlify dev
 npm run vitest
 ```
 
+#### Accessibility tests
+
+The accessibility tests must be run against an actual site (either host or local). Set the `A11Y_HOST` environment variable in the `.env` file and then run the following.
+
+```
+npm run playwright
+```
+
+The results will be output to `playwright-report/index.html`.
+
 #### E2E tests
 
 ```
