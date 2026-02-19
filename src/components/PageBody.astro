@@ -14,6 +14,7 @@ import Container from '@components/Container.astro';
 import { toBackgroundClass } from '@utils/pageBuilder';
 import clsx from 'clsx';
 import _ from 'underscore';
+import MediaInsert from '@components/MediaInsert';
 
 const { sections, transparent, home } = Astro.props;
 
@@ -29,6 +30,7 @@ const SectionTypes = {
   spacer: 'Spacer',
   tabs: 'Tabs',
   textImage: 'Text_image',
+  media: 'Media'
 };
 
 ---
@@ -154,6 +156,14 @@ const SectionTypes = {
         {...section}
         linkBackground={section.link_background}
       />
+    )}
+    { section?.__typename?.endsWith(SectionTypes.media) && (
+      <Container>
+        <MediaInsert
+          media={section.media}
+          client:only='react'
+        />
+      </Container>
     )}
   </section>
 ))}

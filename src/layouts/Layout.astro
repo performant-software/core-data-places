@@ -5,8 +5,10 @@ import Title from '@components/Title';
 import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
+import HeaderContainer from '@layouts/HeaderContainer';
 import { useBlackText } from '@utils/layout';
-import { DISABLE_CACHE, STATIC_BUILD } from 'astro:env/client';
+import { setCacheControl } from '@utils/url';
+import { STATIC_BUILD } from 'astro:env/client';
 import clsx from 'clsx';
 import _ from 'underscore';
 
@@ -16,14 +18,7 @@ import '@styles/index.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-if (!DISABLE_CACHE) {
-  // Tell the browser to always check the freshness of the cache
-  Astro.response.headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
-
-  // Tell Netlify's CDN to treat it as fresh for 5 minutes, then for up to a week return a stale version
-  // while it revalidates. Use Durable Cache to minimize the need for serverless function calls.
-  Astro.response.headers.set('Netlify-CDN-Cache-Control', 'public, durable, s-maxage=300, stale-while-revalidate=604800');
-}
+setCacheControl(Astro.response.headers);
 
 const branding = await fetchBranding();
 const { header, footer } = branding;
@@ -113,11 +108,8 @@ const {
     class='flex h-full sm:min-h-screen flex-col bg-layout text-neutral-dark mx-auto font-sans'
     transition:animate='initial'
   >
-    <div
-      class={clsx(
-        'flex flex-row justify-center w-full z-10 text-text-primary h-[72px]',
-        { 'bg-primary': !transparent }
-      )}
+    <HeaderContainer
+      client:load
     >
       <Header
         fullscreen={fullscreen}
@@ -127,7 +119,7 @@ const {
         transparent={transparent}
         server:defer
       />
-    </div>
+    </HeaderContainer>
     <NotificationPanel
       client:only='react'
     />
@@ -151,3 +143,9 @@ const {
     )}
   </body>
 </html>
+
+<style is:global>
+.clover-viewer .clover-viewer-information-panel div[data-label="content-warning"] {
+  display: none;
+}
+</style>

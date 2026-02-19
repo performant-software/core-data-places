@@ -5,7 +5,7 @@ import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
 import NavBar from '@layouts/NavBar.astro';
 import { getCustomNavbar, getDefaultNavbar, getPages } from '@utils/nav';
-import { getCurrentURL } from '@utils/url';
+import { getCurrentURL, setCacheControl } from '@utils/url';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
 
@@ -34,6 +34,8 @@ if (navbar && navbar.items) {
 } else {
   items = getDefaultNavbar(pages, currentLocale, currentUrl.pathname, t);
 }
+
+setCacheControl(Astro.response.headers);
 
 ---
 
