@@ -1,8 +1,11 @@
 ---
 import UserDefinedFieldView from '@components/UserDefinedFieldView';
-import clsx from "clsx";
+import { UserDefinedFields as UserDefinedFieldUtils } from '@performant-software/shared-components';
+import clsx from 'clsx';
 
 const { record, excludes, t } = Astro.props
+
+const { DataTypes } = UserDefinedFieldUtils;
 
 
 ---
@@ -11,7 +14,7 @@ const { record, excludes, t } = Astro.props
     {Object.keys(record.user_defined).map(uuid => (
       (!excludes.includes(uuid) && !!record.user_defined[uuid].value) && <div class={clsx(
         'py-3',
-        {'col-span-2': record.user_defined[uuid].type === 'RichText'}  
+        {'col-span-2': record.user_defined[uuid].type === DataTypes.richText}  
       )}>
         <p class="capitalize font-semibold font-body">{t(uuid)}</p>
         <div class="text-neutral-800 break-words font-body">
