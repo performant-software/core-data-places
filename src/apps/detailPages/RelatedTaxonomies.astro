@@ -22,7 +22,7 @@ const { t } = await getTranslations(lang);
 {Object.keys(relationships).map((uuid) => (
   <Relations
     data={relationships[uuid]}
-    icon='location'
+    icon='bullet'
     label={t(uuid)}
     resolveDetailUrl={(taxonomy) => `/${lang}/taxonomies/${taxonomy.uuid}`}
     resolveName={taxonomy => taxonomy.name}
