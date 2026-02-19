@@ -99,15 +99,17 @@ setCacheControl(Astro.response.headers);
           class='flex flex-col lg:flex-row lg:w-full lg:justify-center gap-y-4 pb-12'
         >
           <LinkButton
-            className='bg-secondary w-[200px] text-center'
+            className='w-[200px] justify-center'
             content={t('coreDataLogin')}
             href={config.core_data.url}
+            color='secondary'
             target='_blank'
           />
           <LinkButton
-            className='bg-secondary w-[200px] text-center'
+            className='w-[200px] justify-center'
             content={t('tinaLogin')}
             href='/admin/index.html'
+            color='secondary'
             target='_blank'
           />
         </div>
