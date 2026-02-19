@@ -38,6 +38,10 @@ const ecViewer = config.detail_pages?.models[model]
   ? config.detail_pages?.models[model].editioncrafter_config
   : null;
 
+const resourceField = config.detail_pages?.models[model]
+  ? config.detail_pages?.models[model].resources_field
+  : null;
+
 let transcriptionTypes = {};
 
 if (ecViewer) {
@@ -102,7 +106,6 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
       t={t}
     />
     <RelatedMedia
-      lang={lang}
       model={model}
       uuid={record.uuid}
       server:defer
@@ -123,6 +126,7 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
       excludes={excludes}
       model={model}
       uuid={record.uuid}
+      resourceField={resourceField}
       server:defer
     />
     <RelatedOrganizations
