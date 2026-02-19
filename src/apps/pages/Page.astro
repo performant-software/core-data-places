@@ -2,13 +2,14 @@
 import { fetchPage } from '@backend/tina';
 import PageBody from '@components/PageBody.astro';
 import PageStoreProvider from '@components/PageStoreProvider';
+import { setCacheControl } from '@utils/url';
 
 const { slug } = Astro.props;
 const locale = Astro.currentLocale;
 
-console.time(`Fetching page: ${slug}...`);
 const page = await fetchPage(locale, slug);
-console.timeEnd(`Fetching page: ${slug}...`);
+
+setCacheControl(Astro.response.headers);
 
 ---
 
@@ -20,5 +21,6 @@ console.timeEnd(`Fetching page: ${slug}...`);
 
 <PageStoreProvider
   title={page.title}
+  transparent={page.transparent}
   client:load
 />

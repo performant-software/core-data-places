@@ -685,6 +685,19 @@ const Settings: Collection = {
           name: 'geoLocationField',
           label: 'Geo-location field',
           type: 'string'
+        }, {
+          name: 'additionalSearchParameters',
+          label: 'Additional Search Parameters',
+          type: 'object',
+          fields: [{
+            name: 'filter_by',
+            label: 'Filter By',
+            type: 'string'
+          }, {
+            name: 'preset',
+            label: 'Preset',
+            type: 'boolean',
+          }]
         }]
       }]
     }]

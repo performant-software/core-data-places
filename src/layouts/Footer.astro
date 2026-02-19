@@ -8,7 +8,7 @@ import config from '@config';
 import NavBar from '@layouts/NavBar.astro';
 import { getCustomNavbar, getDefaultNavbar, getPages } from '@utils/nav';
 import { toBackgroundClass } from '@utils/pageBuilder';
-import { getCurrentURL } from '@utils/url';
+import { getCurrentURL, setCacheControl } from '@utils/url';
 import clsx from 'clsx';
 import _ from 'underscore';
 
@@ -41,6 +41,8 @@ if (navbar && navbar.items) {
 } else {
   items = getDefaultNavbar(pages, currentLocale, currentUrl.pathname, t);
 }
+
+setCacheControl(Astro.response.headers);
 
 ---
 
