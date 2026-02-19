@@ -276,3 +276,30 @@ h1:has(+ h1) {
 .prose h6 {
   font-size: var(--font-sizes-h6);
 }
+
+/* Clover stuff */
+
+.clover-viewer .clover-viewer-information-panel div[data-label="content-warning"] {
+  display: none;
+}
+
+.clover-11 .clover-viewer-content > div,
+.clover-11 .clover-viewer-content > aside {
+  width: 50%;
+}
+
+.clover-12 .clover-viewer-content > div {
+  width: 33%;
+}
+
+.clover-12 .clover-viewer-content > aside {
+  width: 67%;
+}
+
+.clover-21 .clover-viewer-content > div {
+  width: 67%;
+}
+
+.clover-21 .clover-viewer-content > aside {
+  width: 33%;
+}

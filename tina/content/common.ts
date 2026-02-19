@@ -38,6 +38,16 @@ export const media = {
       ui: {
         component: TinaMediaPicker
       }
+    },
+    {
+      name: "ratio",
+      label: "Ratio",
+      type: "string",
+      options: [
+        { value: "clover-12", label: "1:2" },
+        { value: "clover-11", label: "1:1" },
+        { value: "clover-21", label: "2:1" }
+      ]
     }
   ]
 }
