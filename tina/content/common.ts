@@ -43,6 +43,7 @@ export const media = {
       name: "ratio",
       label: "Ratio",
       type: "string",
+      description: "Ratio of horizontal space that each pane of the viewer should take up. The image is on the left and the metadata is on the right. (Default: 2:1)",
       options: [
         { value: "clover-12", label: "1:2" },
         { value: "clover-11", label: "1:1" },

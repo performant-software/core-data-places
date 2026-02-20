@@ -1,10 +1,14 @@
-import Viewer from '@samvera/clover-iiif/viewer'
+import Viewer from '@samvera/clover-iiif/viewer';
+import clsx from 'clsx';
 
 const MediaInsert = (props: any) => {
-  const ratioClass = props.ratio || 'clover-21';
-
   return (
-    <div className={`mx-auto w-full ${ratioClass}`}>
+    <div
+      className={clsx(
+        'mx-auto w-full',
+        props.ratio || 'clover-21'
+      )}
+    >
       <Viewer
         iiifContent={props?.media?.manifest_url}
       />
