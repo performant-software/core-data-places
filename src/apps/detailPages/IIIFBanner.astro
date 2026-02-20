@@ -1,0 +1,39 @@
+---
+import Container from '@components/Container.astro';
+import Viewer from '@samvera/clover-iiif/viewer';
+import ServiceFactory from '@services/coreData/factory';
+
+interface Props {
+  model: string;
+  relatedModel: string;
+  relationshipUuid: string;
+  uuid: string;
+}
+
+const { model, relatedModel, relationshipUuid, uuid } = Astro.props;
+
+const service = ServiceFactory.getService(model);
+const relatedRecords = await service.getRelatedModel(uuid, relatedModel);
+
+let manifestUrl;
+
+if (relatedRecords[relatedModel].length > 0) {
+  const relatedService = ServiceFactory.getService(relatedModel);
+  const relatedRecord = relatedRecords[relatedModel][0];
+  const manifest = await relatedService.getRelatedManifests(relatedRecord.uuid);
+  const match = manifest.items.find(item => item.id.includes(relationshipUuid));
+
+  if (match) {
+    manifestUrl = match.id;
+  }
+}
+---
+{manifestUrl && (
+  <Container>
+    <Viewer
+      iiifContent={manifestUrl}
+      options={{ informationPanel: { open: false }}}
+      client:only='react'
+    />
+  </Container>
+)}

@@ -1,16 +1,18 @@
 ---
+import HomePage from '@apps/pages/HomePage.astro';
 import config from '@config';
-import Page from '@layouts/Page.astro';
-import { getHomepage } from '@utils/nav';
+import Layout from '@layouts/Layout.astro';
 import _ from 'underscore';
 
-const locale = Astro.currentLocale;
-const page = await getHomepage(locale);
-
-export const getStaticPaths = () => _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
+export const getStaticPaths = () => _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}));
 
 ---
 
-<Page
-  slug={page?._sys?.filename}
-/>
+<Layout
+  footer
+  fullscreen
+>
+  <HomePage
+    server:defer
+  />
+</Layout>

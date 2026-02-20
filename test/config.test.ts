@@ -1,6 +1,7 @@
 import { Configuration } from '@types';
 import _config from '@config' with { type: 'json' };
 import { describe, expect, test } from 'vitest';
+import fs from 'node:fs';
 
 const config = _config as Configuration;
 
@@ -32,6 +33,13 @@ const icons = [
   'zoom_out'
 ];
 
+const validSearchTypes = [
+  'grid',
+  'image',
+  'list',
+  'map'
+];
+
 describe('content', () => {
   const collections = [
     'paths',
@@ -44,6 +52,14 @@ describe('content', () => {
 
   test('localize_pages matches allowed values', () => {
     expect(config.content?.localize_pages).toBeBoolean();
+  });
+
+  test('posts_config.categories matches allowed values', () => {
+    expect(config.content?.posts_config?.categories).toBeArrayOf(String);
+  });
+
+  test('posts_config.drafts matches allowed values', () => {
+    expect(config.content?.posts_config?.drafts).toBeBoolean();
   });
 });
 
@@ -61,7 +77,13 @@ describe('core_data', () => {
   });
 });
 
-describe('detail_pages', () => {
+describe('custom_components', () => {
+  test.skipIf(!fs.existsSync('./content/components/Hit.tsx'))('Hit component has correct props', async () => {
+    await expect('Hit.tsx').toExtendProps();
+  });
+})
+
+describe.skipIf(!config.detail_pages?.models)('detail_pages', () => {
   const names = [
     'events',
     'instances',
@@ -73,7 +95,7 @@ describe('detail_pages', () => {
   ];
 
   test('matches allowed values', () => {
-    expect(config.detail_pages).toBeArrayOfValues(names);
+    expect(Object.keys(config.detail_pages.models)).toBeArrayOfValues(names);
   });
 });
 
@@ -201,7 +223,11 @@ describe('search', () => {
       expect(search.geosearch).toBeBoolean();
     });
 
-    describe('map', () => {
+    test.skipIf(!search.type)('type matches allowed values', () => {
+      expect(search.type).toBeOneOf(validSearchTypes);
+    });
+
+    describe.skipIf(search.type && search.type !== 'map')('map', () => {
       test('is not empty', () => {
         expect(search.map).toBeObject();
       });
@@ -246,6 +272,10 @@ describe('search', () => {
         });
       });
 
+      test.skipIf(!search.result_card?.relationships)('relationships match allowed values', () => {
+        expect(search.result_card.relationships).toBeArrayOf(String);
+      })
+
       describe.each(search.result_card?.tags || [])('tags', (tag) => {
         test('name is not empty', () => {
           expect(tag.name).toBeString();
@@ -258,6 +288,7 @@ describe('search', () => {
         '/events',
         '/instances',
         '/items',
+        '/media',
         '/organizations',
         '/people',
         '/places',

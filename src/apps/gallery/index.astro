@@ -1,0 +1,43 @@
+---
+import Container from '@components/Container.astro';
+import ManifestGrid from '@apps/gallery/ManifestGrid';
+import { getTranslations } from '@backend/i18n';
+import config from '@config';
+import { fetchJson, getManifestLabel } from '@utils/galleries';
+import { getManifestUrl } from '@services/gallery';
+
+const manifest = await fetchJson(config.gallery)
+
+const items = manifest.items.map((item) => ({
+  id: getManifestUrl(item.id),
+  thumbnail: item.thumbnail?.length && item.thumbnail[0].id,
+  label: getManifestLabel(item, Astro.currentLocale)
+}));
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+const imageSearchConfig = config.search.find(item => item.type === 'image');
+---
+<Container className='my-8'>
+  <div class='flex items-center justify-between gap-4 w-full'>
+    <h1 class='text-4xl font-header'>{t('imageGalleries')}</h1>
+    {imageSearchConfig && (
+      <a
+        class='bg-primary py-3 px-5 rounded-lg text-white text-sm'
+        href={`/${Astro.currentLocale}/search/${imageSearchConfig.name}`}
+      >
+        { t('viewAllImages') }
+      </a>
+    )}
+  </div>
+  <ManifestGrid
+    currentLocale={Astro.currentLocale}
+    items={items}
+    labels={{
+      contentWarning: t('sensitiveContentConfirmation'),
+      yes: t('yes'),
+      no: t('no')
+    }}
+    client:only='react'
+  />
+</Container>

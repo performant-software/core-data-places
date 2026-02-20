@@ -1,0 +1,32 @@
+---
+import RecordDetail from '@apps/detailPages/RecordDetail.astro';
+import PageStoreProvider from '@components/PageStoreProvider';
+import config from '@config';
+import PeopleService from '@services/coreData/people';
+import { getNameView } from '@utils/people';
+
+const { lang, uuid } = Astro.props;
+
+const { person } = await PeopleService.getOne(uuid);
+const excludes = config.result_filtering?.people?.exclude || [];
+
+const name = getNameView(person);
+
+---
+
+<RecordDetail
+  excludes={excludes}
+  lang={lang}
+  model='people'
+  name={name}
+  record={person}
+>
+  { person.biography && !excludes.includes('biography') && (
+    <p class='text-neutral-800 py-6 break-words'>{person.biography}</p>
+  )}
+</RecordDetail>
+
+<PageStoreProvider
+  title={name}
+  client:load
+/>

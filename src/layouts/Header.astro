@@ -1,74 +1,92 @@
 ---
+import { getTranslations } from '@backend/i18n';
+import { fetchNavbar } from '@backend/tina';
 import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
 import NavBar from '@layouts/NavBar.astro';
+import { getCustomNavbar, getDefaultNavbar, getPages } from '@utils/nav';
+import { getCurrentURL, setCacheControl } from '@utils/url';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
 
 const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
-const currentUrl = Astro.url;
+const currentUrl = getCurrentURL(Astro.request.headers);
 
 const {
   fullscreen,
   image,
   imageAlt,
-  items,
-  title
+  title,
+  transparent
 } = Astro.props;
+
+const [{ t }, navbar, pages] = await Promise.all([
+  getTranslations(currentLocale),
+  fetchNavbar(currentLocale),
+  getPages(currentLocale)
+]);
+
+let items;
+
+if (navbar && navbar.items) {
+  items = getCustomNavbar(navbar, currentLocale, currentUrl.pathname);
+} else {
+  items = getDefaultNavbar(pages, currentLocale, currentUrl.pathname, t);
+}
+
+setCacheControl(Astro.response.headers);
 
 ---
 
 <div
-  class='flex flex-row justify-center w-full bg-primary'
+  class={clsx(
+    'hidden xl:flex flex-row justify-between items-center px-12 py-3 w-full',
+    { '3xl:max-w-(--breakpoint-3xl)': !fullscreen }
+  )}
 >
-  <div
-    class={clsx(
-      'hidden lg:flex flex-row justify-between items-center px-6 py-5 h-[80px] w-full',
-      { '3xl:max-w-(--breakpoint-3xl)': !fullscreen }
-    )}
+  <a
+    class='flex flex-row items-center gap-6'
+    href={getRelativeLocaleUrl(currentLocale)}
   >
-    <a
-      class='flex flex-row items-center gap-6'
-      href={getRelativeLocaleUrl(currentLocale)}
-    >
-      { image && (
-        <img
-          alt={imageAlt}
-          class='h-10'
-          src={image}
-        />
-      )}
-      { title && (
-        <h1
-          class='text-lg font-medium'
-        >
-          { title }
-        </h1>
-      )}
-    </a>
-    <NavBar
-      className='flex flex-row gap-x-12 pe-10 align-baseline justify-around'
-      items={items}
-    >
-      <LanguagePicker
-        locales={locales}
-        currentLocale={currentLocale}
-        currentUrl={currentUrl.pathname}
-        client:only='react'
+    { image && (
+      <img
+        alt={imageAlt}
+        class='h-12'
+        src={image}
       />
-    </NavBar>
-  </div>
-  
-  <MobileHeader
+    )}
+    { title && (
+      <h1
+        class='text-2xl font-medium'
+      >
+        { title }
+      </h1>
+    )}
+  </a>
+  <NavBar
+    className='flex flex-row gap-x-12 align-baseline justify-around'
     items={items}
-    title={title}
-    client:load
   >
     <LanguagePicker
       locales={locales}
       currentLocale={currentLocale}
-      currentUrl={currentUrl}
+      currentUrl={currentUrl.pathname}
+      client:only='react'
     />
-  </MobileHeader>
+  </NavBar>
 </div>
+
+<MobileHeader
+  image={image}
+  items={items}
+  title={title}
+  transparent={transparent}
+  client:load
+>
+  <LanguagePicker
+    locales={locales}
+    currentLocale={currentLocale}
+    currentUrl={currentUrl.pathname}
+  />
+</MobileHeader>

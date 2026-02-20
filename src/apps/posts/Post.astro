@@ -1,0 +1,53 @@
+---
+import PostContent from '@apps/posts/PostContent';
+import { getTranslations } from '@backend/i18n';
+import { fetchPost } from '@backend/tina';
+import Container from '@components/Container.astro';
+import PageStoreProvider from '@components/PageStoreProvider';
+import { Icon } from '@performant-software/core-data/ssr';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+
+const [{ t }, post] = await Promise.all([
+  getTranslations(Astro.currentLocale),
+  fetchPost(slug)
+]);
+
+---
+
+<div class='bg-primary w-full pb-6'>
+  <Container>
+    <a
+      class='pb-4 flex items-center gap-2'
+      href={getRelativeLocaleUrl(Astro.currentLocale, 'posts')}
+    >
+      <Icon
+        name='left_arrow'
+        size={24}
+      />
+      <span class='uppercase font-semibold'>{t('allPosts')}</span>
+    </a>
+    <div class="flex flex-col gap-6 ">
+      <h1 class='text-3xl font-header text-center text-layout!'>{post?.title}</h1>
+      {post?.author && <p class='text-center font-header italic text-layout'>{t('by', { author: post.author })}</p>}
+    </div>
+  </Container>
+</div>
+<Container className='py-12'>
+  <PostContent
+    content={post?.body}
+    title={post?.title}
+    author={post?.author}
+    client:only='react'
+  />
+</Container>
+
+<PageStoreProvider
+  title={post.title}
+  client:load
+/>

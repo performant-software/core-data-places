@@ -1,7 +1,40 @@
-import { Collection } from '@tinacms/schema-tools';
+import { Collection, TinaField } from '@tinacms/schema-tools';
 import TinaMapLayerDefaultSwitch from '../components/TinaMapLayerDefaultSwitch';
 import TinaMapLayerOverlaySwitch from '../components/TinaMapLayerOverlaySwitch';
 import TinaMapLayerURLField from '../components/TinaMapLayerURLField';
+
+const editioncrafterConfigFields: TinaField<false>[] = [{
+  name: 'xml_id_field',
+  label: 'XML ID field identifier',
+  type: 'string'
+}, {
+  name: 'faircopy_base_url',
+  label: 'FairCopy base URL',
+  type: 'string'
+}, {
+  name: 'faircopy_project_id',
+  label: 'FairCopy project ID',
+  type: 'string'
+}, {
+  name: 'transcription_types',
+  label: 'Transcription Types',
+  type: 'object',
+  list: true,
+  fields: [{
+    name: 'key',
+    label: 'XML ID of text resource',
+    type: 'string'
+  }, {
+    name: 'label',
+    label: 'Label',
+    type: 'string'
+  }]
+}]
+
+const attributeParserOptions = [{
+  label: 'fuzzyDate',
+  value: 'fuzzyDate'
+}];
 
 const Settings: Collection = {
   name: 'settings',
@@ -21,6 +54,20 @@ const Settings: Collection = {
       name: 'localize_pages',
       label: 'Localize Pages',
       type: 'boolean'
+    }, {
+      name: 'posts_config',
+      label: 'Posts configuration',
+      type: 'object',
+      fields: [{
+        name: 'categories',
+        label: 'Categories',
+        type: 'string',
+        list: true
+      }, {
+        name: 'drafts',
+        label: 'Use Draft Workflow?',
+        type: 'boolean'
+      }]
     }]
   }, {
     name: 'core_data',
@@ -37,6 +84,231 @@ const Settings: Collection = {
       list: true
     }]
   }, {
+    name: 'detail_pages',
+    label: 'Detail Pages',
+    type: 'object',
+    fields: [{
+      name: 'models',
+      label: 'Models',
+      type: 'object',
+      fields: [{
+        name: 'events',
+        label: 'Events',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }, {
+          name: 'resources_field',
+          label: 'Resources Field',
+          description: 'Should be of the form `<relationship uuid>.<field uuid>` and point to a field in an Items model whose values are full URLs.',
+          type: 'string'
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
+        }]
+      }, {
+        name: 'instances',
+        label: 'Instances',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
+        }]
+      }, {
+        name: 'items',
+        label: 'Items',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
+        }]
+      }, {
+        name: 'organizations',
+        label: 'Organizations',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
+        }]
+      }, {
+        name: 'people',
+        label: 'People',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
+        }]
+      }, {
+        name: 'places',
+        label: 'Places',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
+        }]
+      }, {
+        name: 'taxonomies',
+        label: 'Taxonomies',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
+        }]
+      }, {
+        name: 'works',
+        label: 'Works',
+        type: 'object',
+        fields: [{
+          name: 'related_manifest',
+          label: 'Related Manifest',
+          type: 'object',
+          fields: [{
+            name: 'model',
+            label: 'Model',
+            type: 'string'
+          }, {
+            name: 'relationship',
+            label: 'Relationship',
+            type: 'string'
+          }]
+        }, {
+          name: 'editioncrafter_config',
+          label: 'EditionCrafter config',
+          type: 'object',
+          fields: editioncrafterConfigFields
+        }]
+      }]
+    }, {
+      name: 'relationship_fields',
+      label: 'Relationship Fields',
+      type: 'object',
+      fields: [{
+        name: 'events',
+        label: 'Events',
+        type: 'string',
+        list: true
+      }, {
+        name: 'instances',
+        label: 'Instances',
+        type: 'string',
+        list: true
+      }, {
+        name: 'items',
+        label: 'Items',
+        type: 'string',
+        list: true
+      }, {
+        name: 'works',
+        label: 'Works',
+        type: 'string',
+        list: true
+      }]
+    }]
+  },
+  {
     name: 'i18n',
     label: 'Internationalization',
     type: 'object',
@@ -50,6 +322,10 @@ const Settings: Collection = {
       type: 'string',
       list: true
     }]
+  }, {
+    name: 'gallery',
+    label: 'Gallery',
+    type: 'string'
   }, {
     name: 'layers',
     label: 'Layers',
@@ -126,6 +402,16 @@ const Settings: Collection = {
         list: true,
       }]
     }, {
+      name: 'items',
+      label: 'Items',
+      type: 'object',
+      fields: [{
+        name: 'exclude',
+        label: 'Exclude',
+        type: 'string',
+        list: true,
+      }]
+    }, {
       name: 'organizations',
       label: 'Organizations',
       type: 'object',
@@ -187,6 +473,23 @@ const Settings: Collection = {
       type: 'string',
       required: true
     }, {
+      name: 'type',
+      label: 'Type',
+      type: 'string',
+      options: [{
+        label: 'Map',
+        value: 'map'
+      }, {
+        label: 'List',
+        value: 'list'
+      }, {
+        label: 'Grid',
+        value: 'grid'
+      }, {
+        label: 'Image',
+        value: 'image'
+      }]
+    }, {
       name: 'geosearch',
       label: 'Geo-search',
       type: 'boolean'
@@ -213,7 +516,6 @@ const Settings: Collection = {
         name: 'type',
         label: 'Type',
         type: 'string',
-        list: true,
         options: [{
           value: 'list',
           label: 'List',
@@ -257,6 +559,11 @@ const Settings: Collection = {
         label: 'Attributes',
         type: 'object',
         list: true,
+        ui: {
+          itemProps: (item) => {
+            return { label: item?.name }
+          }
+        },
         fields: [{
           name: 'name',
           label: 'Name',
@@ -266,12 +573,45 @@ const Settings: Collection = {
           name: 'icon',
           label: 'Icon',
           type: 'string'
+        }, {
+          name: 'parser',
+          label: 'Parser to use for formatting',
+          type: 'string',
+          options: attributeParserOptions
         }]
       }, {
-    name: 'table',
-    label: 'Table results view?',
-    type: 'boolean'
-  }]
+        name: 'relationships',
+        label: 'Relationships',
+        type: 'string',
+        list: true
+      }, {
+        name: 'tags',
+        label: 'Tags',
+        type: 'object',
+        list: true,
+        fields: [{
+          name: 'name',
+          label: 'Name',
+          type: 'string'
+        }, {
+          name: 'primary',
+          label: 'Primary',
+          type: 'boolean'
+        }, {
+          name: 'secondary',
+          label: 'Secondary',
+          type: 'boolean'
+        }, {
+          name: 'parser',
+          label: 'Parser to use for formatting',
+          type: 'string',
+          options: attributeParserOptions
+        }]
+      }]
+    }, {
+      name: 'table',
+      label: 'Table results view?',
+      type: 'boolean'
     }, {
       name: 'timeline',
       label: 'Timeline',
@@ -345,6 +685,19 @@ const Settings: Collection = {
           name: 'geoLocationField',
           label: 'Geo-location field',
           type: 'string'
+        }, {
+          name: 'additionalSearchParameters',
+          label: 'Additional Search Parameters',
+          type: 'object',
+          fields: [{
+            name: 'filter_by',
+            label: 'Filter By',
+            type: 'string'
+          }, {
+            name: 'preset',
+            label: 'Preset',
+            type: 'boolean',
+          }]
         }]
       }]
     }]

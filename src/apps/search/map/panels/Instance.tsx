@@ -1,0 +1,36 @@
+import BasePanel from '@apps/search/map/panels/BasePanel';
+import InstancesService from '@backend/api/coreData/instances';
+import TranslationContext from '@contexts/TranslationContext';
+import { useRuntimeConfig } from '@peripleo/peripleo';
+import { useCallback, useContext } from 'react';
+import { hasDetailPage } from '@utils/detailPagePaths';
+
+interface Props {
+  className?: string;
+}
+
+const Instance = (props: Props) => {
+  const config = useRuntimeConfig();
+  const { lang } = useContext(TranslationContext);
+
+  /**
+   * Resolves the URL for the detail page.
+   */
+  const resolveDetailPageUrl = useCallback((instance) => {
+    if (instance && hasDetailPage('instances')) {
+      return `/${lang}/instances/${instance.uuid}`;
+    }
+  }, [lang]);
+
+  return (
+    <BasePanel
+      className={props.className}
+      name='instance'
+      exclusions={config.result_filtering?.instances?.exclude}
+      resolveDetailPageUrl={resolveDetailPageUrl}
+      service={InstancesService}
+    />
+  );
+};
+
+export default Instance;

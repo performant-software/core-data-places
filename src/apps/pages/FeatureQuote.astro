@@ -1,0 +1,61 @@
+---
+import clsx from 'clsx';
+import Container from '@components/Container.astro';
+import { toBackgroundClass } from '@utils/pageBuilder';
+
+const Height = {
+  small: 'small',
+  medium: 'medium',
+  large: 'large'
+};
+
+const {
+  attribution,
+  background,
+  backgroundImage,
+  darken,
+  date,
+  icon,
+  mode,
+  quote,
+  text
+} = Astro.props;
+---
+
+<div
+  class={clsx(
+    'w-full relative flex flex-col justify-center items-center font-serif overflow-hidden',
+    toBackgroundClass(background),
+    !mode?.length && text,
+    mode === 'light' && 'text-text-inverse',
+    mode === 'dark' && 'text-text-default'
+  )}
+>
+  { backgroundImage && (
+    <img 
+      src={backgroundImage} 
+      class='w-full h-full object-cover absolute inset-0'
+    /> 
+  ) }
+  { darken && (
+    <div
+      class='absolute top-0 left-0 w-full h-full bg-tertiary mix-blend-multiply'
+    /> 
+  ) }
+  <Container className={clsx(
+    'flex flex-col justify-center py-12 z-10'
+  )} >
+    { icon && (
+      <img src={icon} class='h-12 object-scale-down'/>
+    ) }
+    <p class='text-[20px] p-12 text-center'>
+      { quote }
+    </p>
+    <p class='italic font-serif text-sm text-center'>
+      { attribution }
+    </p>
+    <p class='italic font-serif text-sm text-center'>
+      { date }
+    </p>
+  </Container>
+</div>

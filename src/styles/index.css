@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baskervville+SC:wght@400..700&family=Baskervville:ital,wght@0,400..700;1,400..700&display=swap&family=Afacad:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Crimson+Text+SemiBold:ital,wght@0,600&family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&display=swap');
 
 @import 'tailwindcss';
 @import '@performant-software/core-data/tailwind.css';
@@ -6,6 +6,76 @@
 @plugin '@tailwindcss/typography';
 
 @source '../../node_modules/@performant-software/core-data';
+
+
+:root {
+  --font-sizes-page-header: 48px;
+  --font-sizes-hero-header: 36px;
+  --font-sizes-CTA-header: 36px;
+  
+  --font-sizes-h1: 48px;
+  --font-sizes-h2: 36px;
+  --font-sizes-h3: 24px;
+  --font-sizes-h4: 18px;
+  --font-sizes-h5: 18px;
+  --font-sizes-h6: 16px;
+  --font-sizes-paragraph: 16px;
+  --font-sizes-quote-text: 20px;
+  --font-sizes-description: 14px;
+  --font-sizes-header-tab-text: 20px;
+  --font-sizes-FairData-xs: 12px;
+  --font-sizes-FairData-sm: 14px;
+  --font-sizes-FairData-base: 16px;
+  --font-sizes-FairData-lg: 20px;
+
+  --font-variant-banner-header: var(--customBannerHeaderVariant, normal);
+
+}
+
+@media (min-width: 640px) {
+  :root {
+    --font-sizes-hero-header: 48px;
+    --font-sizes-h3: 30px;
+    --font-sizes-h4: 24px;
+    --font-sizes-h5: 24px;
+    --font-sizes-h6: 18px;
+    --font-sizes-CTA-header: 42px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --font-sizes-hero-header: var(--customHeroHeaderSize, 52px);
+  }
+}
+
+@theme inline {
+  --color-neutral-dark: #111928;
+  --color-neutral-light: #F5F5F5;
+  --color-default-primary: #073B4C;
+  --color-default-secondary: var(--color-neutral-light);
+
+  --color-primary: var(--customColorPrimary, var(--color-default-primary));
+  --color-secondary: var(--customColorSecondary, var(--color-default-secondary));
+  --color-tertiary: var(--customColorTertiary, var(--color-black));
+  --color-layout: var(--customLayout, var(--color-white));
+  --color-layout-alt: var(--customLayoutAlternate, var(--color-netural-light));
+  --color-text-primary: var(--customPrimaryContent, var(--color-white));
+  --color-text-secondary: var(--customSecondaryContent, var(--color-black));
+  --color-text-tertiary: var(--customTertiaryContent, var(--color-white));
+  --color-content: var(--customContent, var(--color-black));
+  --color-content-alt: var(--customContentAlternate, var(--color-neutral-dark));
+  --color-alt-content: var(--customAlternateContent, var(--color-black));
+  --color-alt-content-alt: var(--customAlternateContentAlternate, var(--color-neutral-dark));
+  --color-text-default: var(--customText, var(--color-black));
+  --color-text-inverse: var(--customTextInverse, var(--color-white));
+
+  --font-header: var(--customFontHeader, Inter);
+  --font-body: var(--customFontBody, Inter);
+  --font-sans: var(--font-body);
+
+  --font-weight-header: var(--customHeaderFontWeight, 400);
+}
 
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
@@ -23,23 +93,38 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
   }
+
+  h1 {
+    font-size: var(--font-sizes-h1);
+  }
+
+  h2 {
+    font-size: var(--font-sizes-h2);
+  }
+
+  h3 {
+    font-size: var(--font-sizes-h3);
+  }
+
+  h4 {
+    font-size: var(--font-sizes-h4)
+  }
+  
+  h5 {
+    font-size: var(--font-sizes-h5);
+    color: var(--color-secondary) !important;
+  }
+  
+  h6 {
+    font-size: var(--font-sizes-h6);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-header);
+    font-weight: var(--font-weight-header);
+  }
 }
 
-@theme {
-  --color-neutral-dark: #111928;
-  --color-neutral-light: #F5F5F5;
-  --color-default-primary: #073B4C;
-  --color-default-secondary: var(--color-neutral-light);
-
-  --color-primary: var(--customColorPrimary, var(--color-default-primary));
-  --color-secondary: var(--customColorSecondary, var(--color-default-secondary));
-  --color-text-primary: var(--customTextPrimary, var(--color-white));
-  --color-text-secondary: var(--customTextSecondary, var(--color-black));
-
-  --font-header: var(--customFontHeader, Inter);
-  --font-body: var(--customFontBody, Inter);
-  --font-sans: var(--font-body);
-}
 
 /*
  * Peripleo styles
@@ -59,8 +144,9 @@
 /*
  * Branding styles
  */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-header);
+
+h1:has(+ h1) { 
+  margin-bottom: 0;
 }
 
 .bg-primary, .fill-primary, .bg-primary div {
@@ -71,9 +157,122 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-secondary);
 }
 
+.bg-layout-alt, .bg-layout-alt div {
+  color: var(--color-alt-content);
+}
+
+.bg-layout-alt h1, .bg-layout-alt h2, .bg-layout-alt h3, .bg-layout-alt h4, .bg-layout-alt h6 {
+  color: var(--color-alt-content) !important;
+}
+
+.bg-layout .content-alt h1, .bg-layout .content-alt h2, .bg-layout .content-alt h3, .bg-layout .content-alt h4, .bg-layout .content-alt h6 {
+  color: var(--color-content) !important;
+}
+
+.content-alt, .bg-layout.content-alt, .bg-layout.content-alt div {
+  color: var(--color-content-alt);
+}
+
+.bg-layout-alt.content-alt, .bg-layout-alt.content-alt div {
+  color: var(--color-alt-content-alt);
+}
+
+.text-text-inverse, .text-text-inverse div {
+  color: var(--color-text-inverse);
+}
+
+.hero-tab.bg-layout {
+  color: var(--color-content)
+}
+
+.link-button:has(+ .link-button) {
+  margin-right: 1.5rem;
+}
+
+.link-button.bg-secondary, .link-button.bg-secondary div {
+  color: var(--color-text-secondary) !important;
+}
+
+.link-button div {
+  color: inherit;
+}
+
+.banner-header {
+  font-variant: var(--Font-Variant-banner-header);
+  font-size: var(--font-sizes-CTA-header);
+}
+
+.banner-header.banner-hero {
+  font-size: var(--font-sizes-page-header);
+}
+
+.banner-header.banner-hero.banner-home {
+  font-size: var(--font-sizes-hero-header);
+}
+
+.detail-panel h1 {
+  font-size: var(--font-sizes-h4);
+}
+
+.custom-footer .prose {
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .custom-footer .prose {
+    text-align: inherit;
+  }
+}
+
 /*
  * Swiper styles
  */
 .swiper-pagination > .swiper-pagination-bullet-active {
   background-color: var(--color-black);
+}
+
+/*
+* Overriding some very opinionated default prose styles
+*/
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: inherit;
+  font-family: var(--font-header);
+  font-weight: var(--font-weight-header);
+}
+
+.prose :where(strong) {
+  color: inherit;
+}
+
+.prose :where(h5 + *):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 0;
+}
+
+.prose :where(h4 + *):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 0;
+}
+
+.prose h1 {
+  font-size: var(--font-sizes-h1);
+}
+
+.prose h2 {
+  font-size: var(--font-sizes-h2);
+}
+
+.prose h3 {
+  font-size: var(--font-sizes-h3);
+}
+
+.prose h4 {
+  font-size: var(--font-sizes-h4)
+}
+
+.prose h5 {
+  font-size: var(--font-sizes-h5);
+  color: var(--color-secondary) !important;
+}
+
+.prose h6 {
+  font-size: var(--font-sizes-h6);
 }

@@ -1,14 +1,16 @@
-import TinaMediaPicker from '../components/TinaMediaPicker';
 import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection } from '@tinacms/schema-tools';
 import Visualizations from '@root/tina/content/visualizations';
+import _ from 'underscore';
+import config from '@config';
+import { media } from './common';
 
 const Posts: Collection = {
   name: 'post',
   label: 'Posts',
   path: 'content/posts',
   format: 'mdx',
-  fields: [
+  fields: _.compact([
     {
       type: 'string',
       name: 'title',
@@ -35,6 +37,20 @@ const Posts: Collection = {
       name: 'imageAlt',
       label: 'Card Image alt text',
       type: 'string'
+    },
+    config.content?.posts_config?.categories && {
+      name: 'category',
+      label: 'Category',
+      type: 'string',
+      options: _.map(config.content?.posts_config?.categories, (cat) => ({
+        label: cat,
+        value: cat
+      }))
+    },
+    config.content?.posts_config?.drafts &&     {
+      name: 'publish',
+      label: 'Publish',
+      type: 'boolean'
     },
     {
       type: 'rich-text',
@@ -132,51 +148,11 @@ const Posts: Collection = {
             }
           ],
         },
-        {
-          name: "media",
-          label: "Media",
-          fields: [
-            {
-              name: "media",
-              label: "Media",
-              type: "object",
-              fields: [
-                {
-                  name: "title",
-                  label: "Title",
-                  type: "string",
-                },
-                {
-                  name: "uuid",
-                  label: "UUID",
-                  type: "string"
-                },
-                {
-                  name: "manifest_url",
-                  label: "Manifest URL",
-                  type: "string"
-                },
-                {
-                  name: "content_url",
-                  label: "Content URL",
-                  type: "string"
-                },
-                {
-                  name: "content_preview_url",
-                  label: "Content Preview URL",
-                  type: "string"
-                }
-              ],
-              ui: {
-                component: TinaMediaPicker
-              }
-            }
-          ]
-        },
+        media,
         ...Visualizations
       ]
     },
-  ],
+  ]),
 };
 
 export default Posts;

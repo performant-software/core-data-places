@@ -1,0 +1,171 @@
+---
+import EditionCrafterViewer from '@apps/detailPages/EditionCrafterViewer.astro';
+import BackButton from '@components/BackButton';
+import Container from '@components/Container.astro';
+import GeoHeader from '@apps/detailPages/GeoHeader.astro';
+import Identifiers from '@apps/detailPages/Identifiers.astro';
+import IIIFBanner from '@apps/detailPages/IIIFBanner.astro';
+import RelatedEvents from '@apps/detailPages/RelatedEvents.astro';
+import RelatedInstances from '@apps/detailPages/RelatedInstances.astro';
+import RelatedItems from '@apps/detailPages/RelatedItems.astro';
+import RelatedMedia from '@apps/detailPages/RelatedMedia.astro';
+import RelatedOrganizations from '@apps/detailPages/RelatedOrganizations.astro';
+import RelatedPeople from '@apps/detailPages/RelatedPeople.astro';
+import RelatedPlaces from '@apps/detailPages/RelatedPlaces.astro';
+import RelatedTaxonomies from '@apps/detailPages/RelatedTaxonomies.astro';
+import RelatedWorks from '@apps/detailPages/RelatedWorks.astro';
+import UserDefined from '@apps/detailPages/UserDefined.astro';
+import { getTranslations } from '@backend/i18n';
+import config from '@config';
+
+interface Props {
+  excludes: string[];
+  geometry?: any;
+  lang: string;
+  model: string;
+  name: string;
+  record: any;
+}
+
+const { excludes, geometry, lang, model, name, record } = Astro.props;
+const { t } = await getTranslations(lang);
+
+const manifest = config.detail_pages?.models[model]
+  ? config.detail_pages?.models[model].related_manifest
+  : null;
+
+const ecViewer = config.detail_pages?.models[model]
+  ? config.detail_pages?.models[model].editioncrafter_config
+  : null;
+
+const resourceField = config.detail_pages?.models[model]
+  ? config.detail_pages?.models[model].resources_field
+  : null;
+
+let transcriptionTypes = {};
+
+if (ecViewer) {
+  for (const ttype of ecViewer.transcription_types) {
+    transcriptionTypes[ttype.key] = ttype.label;
+  }
+}
+
+const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewer.xml_id_field]?.value : null;
+---
+
+<div class='bg-primary w-full pb-8 pt-6'>
+  <Container>
+    <div class='pb-6 flex items-center gap-2'>
+      <BackButton
+        id='backButton'
+        size={24}
+      />
+      <span class='uppercase font-semibold'>{t('backTo', { label: t(model) })}</span>
+    </div>
+    <h1 class='text-5xl font-header'>{name}</h1>
+  </Container>
+</div>
+{ faircopyId && ( 
+  <EditionCrafterViewer
+    faircopyId={faircopyId}
+    transcriptionTypes={transcriptionTypes}
+    baseURL={ecViewer.faircopy_base_url}
+    projectId={ecViewer.faircopy_project_id}
+    name={name}
+  />
+)}
+{ !faircopyId && geometry && ( 
+  <GeoHeader
+    geometry={geometry}
+    lang={lang}
+    model={model}
+    name={name}
+    record={record}
+    server:defer
+  />
+)}
+{ manifest && (
+  <IIIFBanner
+    model={model}
+    relatedModel={manifest.model}
+    relationshipUuid={manifest.relationship}
+    uuid={record.uuid}
+    server:defer
+  />
+) }
+<div class='py-6 divide-y divide-solid divide-[#e5e5e5]'>
+  <Container>
+    <slot />
+    <UserDefined
+      record={record}
+      excludes={excludes}
+      t={t}
+    />
+    <Identifiers
+      record={record}
+      t={t}
+    />
+    <RelatedMedia
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedEvents
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedInstances
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedItems
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      resourceField={resourceField}
+      server:defer
+    />
+    <RelatedOrganizations
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedPlaces
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedPeople
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedTaxonomies
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+    <RelatedWorks
+      excludes={excludes}
+      model={model}
+      uuid={record.uuid}
+      server:defer
+    />
+  </Container>
+</div>
+
+<script>
+  window.document.addEventListener('DOMContentLoaded', () => {
+    const backButton = document.querySelector('#backButton');
+    const prevURL = document.referrer;
+    backButton.addEventListener('click', () => window.location.href = prevURL)
+  })
+</script>

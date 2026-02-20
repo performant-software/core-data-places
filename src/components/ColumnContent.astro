@@ -1,0 +1,142 @@
+---
+import Card from '@components/Card';
+import ContactForm from '@components/ContactForm';
+import RichText from '@components/RichText.astro';
+import Spacer from '@components/Spacer.astro';
+import { toBorderClass, toBackgroundClass } from '@root/src/utils/pageBuilder';
+import clsx from 'clsx';
+import _ from 'underscore';
+
+const { item, t } = Astro.props;
+
+const BlockTypes = {
+  basic: 'Basic',
+  card: 'Card',
+  contactForm: 'Contact_form',
+  counter: 'Counter',
+  image: 'Image',
+  imageLink: 'Image_link',
+  linkRow: 'Link_row',
+  quote: 'Quote',
+  text: 'Richtext'
+}
+
+---
+{ item.__typename.endsWith(BlockTypes.image) && ( 
+  <img src={item.image} class={clsx(
+    'w-full object-cover',
+    { 'h-full': item.full_height },
+    { 'rounded-md': item.rounded }
+  )} />
+)}
+
+{ item.__typename.endsWith(BlockTypes.text) && ( 
+  <div class={clsx(
+    'prose max-w-none py-8 lg:py-4 text-inherit',
+    item.padding && 'px-4',
+    item.size
+  )}>
+    <RichText content={item.text} />
+  </div>
+)}
+
+{ !item.__typename || item.__typename.endsWith(BlockTypes.basic) && ( 
+  <div
+    class='flex flex-col w-full'
+  >
+    <h4
+      class='text-3xl font-bold'
+    >
+      { item?.title }
+    </h4>
+    <p
+      class='font-light'
+    >
+      { item?.description }
+    </p>
+  </div>
+)}
+
+{ item.__typename.endsWith(BlockTypes.card) && ( 
+  <Card
+    alt={item.alt}
+    blurb={item.blurb}
+    category={item.category}
+    date={item.date}
+    imageUrl={item.image}
+    slug={item.slug}
+    labels={{
+      byline: item.author
+        ? t('by', { author: item.author })
+        : null,
+      readMore: t('readMore')
+    }}
+    title={item.title}
+  />
+)}
+
+{ item.__typename.endsWith(BlockTypes.contactForm) && (
+  <ContactForm
+    client:load
+  />
+)}
+
+{ item.__typename.endsWith(BlockTypes.quote) && ( 
+  <div class={clsx(
+    'flex flex-col relative p-8 gap-8',
+    item.bg_color && 'h-full',
+    item.text_color,
+    toBorderClass(item.border_color),
+    toBackgroundClass(item.bg_color),
+    { 'items-center text-center': item.text_alignment === 'center' }
+  )}>
+    <img src={item.icon} class={clsx(
+      'w-12 h-12',
+      item.icon_background && 'absolute top-4 left-4 opacity-20'
+     )} />
+    <p class='font-serif text-xl'>
+      { item.quote }
+    </p>
+    { item.border_color && <Spacer size='none' color={item.border_color} /> }
+    <p class='font-semibold -indent-2 pl-2 italic text-sm lg:max-w-[80%]'>
+      { item.attribution }
+    </p>
+  </div>
+)}
+
+{ item.__typename.endsWith(BlockTypes.imageLink) && ( 
+  <a href={item.link} class='relative cursor-pointer group overflow-hidden'>
+    <img src={item.image} class='w-full h-full object-contain transition-transform duration-500 ease-in-out transform group-hover:scale-110'/>
+    { item.overlay && ( 
+      <div class='absolute h-full w-full inset-0 bg-gradient-to-b to-black/60 p-6 flex flex-col justify-end'>
+        <h3 class='!text-text-inverse font-serif'>{ item.overlay }</h3>
+      </div> 
+    )}
+  </a>
+)}
+
+{ item.__typename.endsWith(BlockTypes.counter) && ( 
+  <div class='flex flex-col py-4 px-2 xl:px-4 gap-3 font-serif font-semibold bg-layout-alt items-center w-full h-full'>
+    <div class='flex flex-col'>
+      <p class='text-secondary text-5xl'>{ item.count }</p>
+      <p class='italic'>{ item.type || 'records' }</p>
+    </div>
+    <div class='text-lg'>{ item.description }</div>
+  </div>
+)}
+
+{ item.__typename.endsWith(BlockTypes.linkRow) && ( 
+  <div class={clsx(
+    'flex flex-wrap font-semibold font-sans py-1.5 justify-center',
+    { 'flex-row gap-5': item.orientation === 'row' || !item.orientation },
+    { 'flex-col gap-2 text-left': item.orientation === 'column' }
+  )}>
+    {
+      _.map(item.links, (link) => (
+        <a href={link.url} class='no-underline hover:underline underline-offset-4 decoration-2'>
+          { link.label }
+        </a>
+      ))
+    }
+  </div>
+)}

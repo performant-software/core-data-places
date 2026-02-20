@@ -1,7 +1,8 @@
-import config from '@config';
+import config from '@config' with { type: 'json' };
 import { hasContentCollection } from '@root/src/content.config';
 import { getCollection, getEntry } from 'astro:content';
 import _ from 'underscore';
+import { Models } from '@types';
 
 const REQUEST_PARAMS = {
   per_page: 0
@@ -45,54 +46,6 @@ class Base {
 
     return {
       [this.name]: records
-    };
-  }
-
-  /**
-   * Returns the full record for the passed ID. The returned object will include a `relatedRecords` attribute.
-   *
-   * @param id
-   */
-  async getFull(id: string) {
-    let record;
-
-    if (this.useCache()) {
-      const entry = await getEntry(this.name, id);
-      record = entry?.data;
-    } else {
-      const response = await this.service.fetchOne(id);
-      record = response[this.param];
-
-      const { events } = await this.getRelatedEvents(id);
-      const { instances } = await this.getRelatedInstances(id);
-      const { items } = await this.getRelatedItems(id);
-      const { mediaContents } = await this.getRelatedMediaContents(id);
-      const { organizations } = await this.getRelatedOrganizations(id);
-      const { people } = await this.getRelatedPeople(id);
-      const { places } = await this.getRelatedPlaces(id);
-      const { taxonomies } = await this.getRelatedTaxonomies(id);
-      const { works } = await this.getRelatedWorks(id);
-
-      const manifests = await this.getRelatedManifests(id);
-
-      _.extend(record, {
-        relatedRecords: {
-          events,
-          instances,
-          items,
-          manifests,
-          mediaContents,
-          organizations,
-          people,
-          places,
-          taxonomies,
-          works
-        }
-      });
-    }
-
-    return {
-      [this.param]: record
     };
   }
 
@@ -221,7 +174,7 @@ class Base {
         const response = await this.service.fetchRelatedMedia(id, REQUEST_PARAMS);
         mediaContents = response.media_contents;
       }
-  
+
       return { mediaContents };
     }
 
@@ -313,6 +266,26 @@ class Base {
     }
 
     return { works };
+  }
+
+  /**
+   * Calls the relevant getRelated method for the passed model name.
+   *
+   * @param id
+   * @param model
+   */
+  async getRelatedModel(id: string, model: Models) {
+    switch (model) {
+      case 'events': return await this.getRelatedEvents(id);
+      case 'instances': return await this.getRelatedInstances(id);
+      case 'items': return await this.getRelatedItems(id);
+      case 'mediaContents': return await this.getRelatedMediaContents(id);
+      case 'organizations': return await this.getRelatedOrganizations(id);
+      case 'people': return await this.getRelatedPeople(id);
+      case 'places': return await this.getRelatedPlaces(id);
+      case 'taxonomies': return await this.getRelatedTaxonomies(id);
+      case 'works': return await this.getRelatedWorks(id);
+    }
   }
 
   // private

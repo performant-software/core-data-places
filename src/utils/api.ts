@@ -41,3 +41,5 @@ export const buildStaticPaths = async (params: Params = {}) => {
 
   return routes;
 };
+
+

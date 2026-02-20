@@ -23,9 +23,21 @@
     "tinaLabel": "Posts",
     "defaultValue": "Posts"
   },
+  "all": {
+    "tinaLabel": "All",
+    "defaultValue": "All"
+  },
+  "loading": {
+    "tinaLabel": "Loading",
+    "defaultValue": "Loading"
+  },
+  "backTo": {
+    "tinaLabel": "Back to <label>",
+    "defaultValue": "Back to {{label}}"
+  },
   "by": {
-    "tinaLabel": "By <author>",
-    "defaultValue": "By {{author}}"
+    "tinaLabel": "by <author>",
+    "defaultValue": "by {{author}}"
   },
   "openMainMenu": {
     "tinaLabel": "Open Main Menu",
@@ -38,6 +50,34 @@
   "mapLayers": {
     "tinaLabel": "Map Layers",
     "defaultValue": "Map Layers"
+  },
+  "events": {
+    "tinaLabel": "Events",
+    "defaultValue": "Events"
+  },
+  "instances": {
+    "tinaLabel": "Instances",
+    "defaultValue": "Instances"
+  },
+  "items": {
+    "tinaLabel": "Items",
+    "defaultValue": "Items"
+  },
+  "organizations": {
+    "tinaLabel": "Organizations",
+    "defaultValue": "Organizations"
+  },
+  "people": {
+    "tinaLabel": "People",
+    "defaultValue": "People"
+  },
+  "places": {
+    "tinaLabel": "Places",
+    "defaultValue": "Places"
+  },
+  "works": {
+    "tinaLabel": "Works",
+    "defaultValue": "Works"
   },
   "relatedOrganizations": {
     "tinaLabel": "Related Organizations",
@@ -126,6 +166,10 @@
   "resultsCountSingular": {
     "tinaLabel": "1 result for <query>",
     "defaultValue": "1 result for {{query}}"
+  },
+  "ofResults": {
+    "tinaLabel": "< start >-< end > of < total > result(s)",
+    "defaultValue": "{{start}}-{{end}} of {{total}} result(s)"
   },
   "filters": {
     "tinaLabel": "Filters",
@@ -263,6 +307,10 @@
     "tinaLabel": "Item",
     "defaultValue": "Item"
   },
+  "media": {
+    "tinaLabel": "Media",
+    "defaultValue": "Media"
+  },
   "organization": {
     "tinaLabel": "Organization",
     "defaultValue": "Organization"
@@ -362,5 +410,85 @@
   "webAuthorities": {
     "tinaLabel": "Web Authorities",
     "defaultValue": "Web Authorities"
+  },
+  "sortBy": {
+    "tinaLabel": "Sort by:",
+    "defaultValue": "Sort by:"
+  },
+  "relevance": {
+    "tinaLabel": "Relevance",
+    "defaultValue": "Relevance"
+  },
+  "A-Z": {
+    "tinaLabel": "A-Z",
+    "defaultValue": "A-Z"
+  },
+  "Z-A": {
+    "tinaLabel": "Z-A",
+    "defaultValue": "Z-A"
+  },
+  "imageGalleries": {
+    "tinaLabel": "Image Galleries",
+    "defaultValue": "Image Galleries"
+  },
+  "gallery": {
+    "tinaLabel": "Gallery",
+    "defaultValue": "Gallery"
+  },
+  "viewAllImages": {
+    "tinaLabel": "View All Images",
+    "defaultValue": "View All Images"
+  },
+  "sensitiveContentConfirmation": {
+    "tinaLabel": "This gallery contains sensitive content. Are you sure you want to view it?",
+    "defaultValue": "This gallery contains sensitive content. Are you sure you want to view it?"
+  },
+  "yes": {
+    "tinaLabel": "Yes",
+    "defaultValue": "Yes"
+  },
+  "no": {
+    "tinaLabel": "No",
+    "defaultValue": "No"
+  },
+  "filterResultsBy": {
+    "tinaLabel": "Filter Results by:",
+    "defaultValue": "Filter Results by:"
+},
+  "allPosts": {
+    "tinaLabel": "All Posts",
+    "defaultValue": "All Posts"
+  },
+  "contactForm.name": {
+    "tinaLabel": "Contact Form > Name",
+    "defaultValue": "Name"
+  },
+  "contactForm.email": {
+    "tinaLabel": "Contact Form > Email",
+    "defaultValue": "Email"
+  },
+  "contactForm.organization": {
+    "tinaLabel": "Contact Form > Affiliated Organization",
+    "defaultValue": "Affiliated Organization"
+  },
+  "contactForm.message": {
+    "tinaLabel": "Contact Form > Message",
+    "defaultValue": "Message"
+  },
+  "contactForm.send": {
+    "tinaLabel": "Contact Form > Send",
+    "defaultValue": "Send"
+  },
+  "contactFormSubmitted.header": {
+    "tinaLabel": "Contact Form Submitted > Header",
+    "defaultValue": "Thank you for getting in touch!"
+  },
+  "contactFormSubmitted.content": {
+    "tinaLabel": "Contact Form Submitted > Content",
+    "defaultValue": "We appreciate you contacting us. One of our colleagues will get back in touch with you soon! Have a great day!"
+  },
+  "tags": {
+    "tinaLabel": "Tags",
+    "defaultValue": "Tags"
   }
 }

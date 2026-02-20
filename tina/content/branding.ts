@@ -1,8 +1,16 @@
 import { Collection } from '@tinacms/schema-tools';
+import { ColorOptionsBg, ColorOptionsBorder, ColorOptionsText, getLabel, richTextTemplates } from './pages';
+import _ from 'underscore';
 
 const Fonts = [{
   label: 'Afacad',
   value: 'Afacad'
+}, {
+  label: 'Baskervville',
+  value: 'Baskervville'
+}, {
+  label: 'Crimson Text SemiBold',
+  value: 'Crimson Text SemiBold'
 }, {
   label: 'DM Sans',
   value: 'DM Sans'
@@ -13,9 +21,42 @@ const Fonts = [{
   label: 'Inter',
   value: 'Inter'
 }, {
+  label: 'Libre Bodoni',
+  value: 'Libre Bodoni'
+}, {
   label: 'Open Sans',
   value: 'Open Sans'
 }];
+
+const HomeHeaderSizeOptions = [{
+  label: 'Default (52px)',
+  value: '52px'
+}, {
+  label: 'Large (64px)',
+  value: '64px'
+}, {
+  label: 'Extra Large (74px)',
+  value: '74px'
+}];
+
+const PageHeaderSizeOptions = [{
+  label: 'Default(48px)',
+  value: '48px'
+}, {
+  label: 'Large (64px)',
+  value: '64px'
+}];
+
+const HeaderFontWeightOptions = [{
+  label: 'Default (normal)',
+  value: '400'
+}, {
+  label: 'Semi-bold',
+  value: '600'
+}, {
+  label: 'Bold',
+  value: '700'
+}]
 
 const Branding: Collection = {
   name: 'branding',
@@ -32,6 +73,25 @@ const Branding: Collection = {
     type: 'string',
     options: Fonts
   }, {
+    name: 'header_size',
+    label: 'Home Page Hero Header Size',
+    type: 'string',
+    options: HomeHeaderSizeOptions
+  }, {
+    name: 'page_header_size',
+    label: 'Content Page Hero Header Size',
+    type: 'string',
+    options: PageHeaderSizeOptions
+  }, {
+    name: 'header_font_weight',
+    label: 'Header Font Weight',
+    type: 'string',
+    options: HeaderFontWeightOptions
+  }, {
+    name: 'small_caps',
+    label: 'Small Caps for hero and banner headers?',
+    type: 'boolean'
+  }, {
     name: 'font_body',
     label: 'Body Font',
     type: 'string',
@@ -45,7 +105,56 @@ const Branding: Collection = {
     }
   }, {
     name: 'secondary_color',
-    label: 'Secondary Color',
+    label: 'Secondary Color (accent)',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'tertiary_color',
+    label: 'Tertiary Color (overlay)',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'background_color',
+    label: 'Main background color',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'background_alternate',
+    label: 'Alternate Background',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_color',
+    label: 'Main Text Color for light background (defaults to black)',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_alternate',
+    label: 'Alternate text color',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_inverse',
+    label: 'Text on dark background (defaults to white)',
+    type: 'string',
+    ui: {
+      component: 'color'
+    }
+  }, {
+    name: 'content_inverse_alternate',
+    label: 'Text on dark background alternate',
     type: 'string',
     ui: {
       component: 'color'
@@ -68,6 +177,10 @@ const Branding: Collection = {
     label: 'Footer',
     type: 'object',
     fields: [{
+      name: 'custom',
+      label: 'Use custom footer?',
+      type: 'boolean'
+    }, {
       name: 'allow_login',
       label: 'Allow Login',
       type: 'boolean'
@@ -101,6 +214,260 @@ const Branding: Collection = {
       name: 'accessibility_url',
       label: 'Accessibility URL',
       type: 'string'
+    }, {
+      name: 'custom_content',
+      label: 'Custom Footer Content',
+      type: 'object',
+      fields: [{
+        name: 'background',
+        label: 'Background Color',
+        type: 'string',
+        options: ColorOptionsBg
+      }, {
+        name: 'image',
+        label: 'Background Image',
+        type: 'image'
+      }, {
+        name: 'text',
+        label: 'Text Color',
+        type: 'string',
+        options: ColorOptionsText
+      }, {
+        name: 'columns',
+        label: 'Columns',
+        type: 'object',
+        list: true,
+        ui: {
+          min: 1,
+          max: 6,
+          itemProps: (item) => {
+            const types = item?.content?.length && _.map(item.content, (block) => (block._template)).join(', ')
+            return ({ label: getLabel('Column', types) });
+          }
+        },
+        fields: [{
+          name: 'width',
+          label: 'Column width (percent)',
+          type: 'string',
+          options: [{
+            label: '16.5%',
+            value: 'col-span-2'
+          }, {
+            label: '25%',
+            value: 'col-span-3'
+          }, {
+            label: '33%',
+            value: 'col-span-4'
+          }, {
+            label: '50%',
+            value: 'col-span-6'
+          }, {
+            label: '67%',
+            value: 'col-span-8'
+          }, {
+            label: '75%',
+            value: 'col-span-9'
+          }, {
+            label: '100%',
+            value: 'col-span-12'
+          }]
+        }, {
+          name: 'justify',
+          label: 'Vertical Alignment',
+          type: 'string',
+          options: [{
+            label: 'Top (default)',
+            value: 'justify-start'
+          }, {
+            label: 'Center',
+            value: 'justify-center'
+          }, {
+            label: 'Bottom',
+            value: 'justify-end'
+          }]
+        }, {
+          name: 'align',
+          label: 'Horizontal Alignment',
+          type: 'string',
+          options: [{
+            label: 'Left (default)',
+            value: ''
+          }, {
+            label: 'Center',
+            value: 'items-center text-center'
+          }, {
+            label: 'Bottom',
+            value: 'justify-end'
+          }]         
+        }, {
+          name: 'border',
+          label: 'Border Color (leave blank for none)',
+          type: 'string',
+          options: ColorOptionsBorder
+        }, {
+          name: 'rounded',
+          label: 'Rounded Corners?',
+          type: 'boolean'
+        }, {
+          name: 'content',
+          label: 'Content',
+          type: 'object',
+          list: true,
+          templates: [{
+            name: 'richtext',
+            label: 'Rich Text',
+            fields: [{
+              name: 'text',
+              label: 'Text',
+              type: 'rich-text',
+              templates: richTextTemplates
+            }]
+          }, {
+            name: 'image',
+            label: 'Image',
+            fields: [{
+              name: 'image',
+              label: 'Image',
+              type: 'image'
+            }, {
+              name: 'rounded',
+              label: 'Rounded Corners?',
+              type: 'boolean'
+            }]
+          }, {
+            name: 'link_row',
+            label: 'Navigation Links',
+            fields: [{
+              name: 'links',
+              label: 'Links',
+              type: 'object',
+              list: true,
+              ui: {
+                itemProps: (item) => ({ label: getLabel('Nav link', item?.label)})
+              },
+              fields: [{
+                name: 'url',
+                label: 'URL',
+                type: 'string',
+              }, {
+                name: 'label',
+                label: 'Label',
+                type: 'string'
+              }]
+            }, {
+              name: 'orientation',
+              label: 'Orientation',
+              type: 'string',
+              options: [{
+                label: 'Row',
+                value: 'row'
+              }, {
+                label: 'Column',
+                value: 'column'
+              }]
+            }]
+          }, {
+            name: 'basic',
+            label: 'Title and Description (plain text)',
+            fields: [{
+              name: 'title',
+              label: 'Title',
+              type: 'string'
+            }, {
+              name: 'description',
+              label: 'Description',
+              type: 'string',
+              ui: {
+                component: 'textarea'
+              }
+            }]
+          }, {
+            name: 'card',
+            label: 'Card Link',
+            fields: [{
+              name: 'slug',
+              label: 'Link',
+              type: 'string'
+            }, {
+              name: 'title',
+              label: 'Title',
+              type: 'string'
+            }, {
+              name: 'author',
+              label: 'Author',
+              type: 'string'
+            }, {
+              name: 'date',
+              label: 'Date',
+              type: 'datetime'
+            }, {
+              name: 'category',
+              label: 'Category',
+              type: 'string'
+            }, {
+              name: 'image',
+              label: 'Image',
+              type: 'image',
+            }, {
+              name: 'alt',
+              label: 'Image Alt Text',
+              type: 'string'
+            }, {
+              name: 'blurb',
+              label: 'Blurb',
+              type: 'string',
+              ui: {
+                component: 'textarea'
+              }
+            }]
+          }, {
+            name: 'image_link',
+            label: 'Image Link',
+            fields: [{
+              name: 'image',
+              label: 'Image',
+              type: 'image'
+            }, {
+              name: 'link',
+              label: 'Link',
+              type: 'string'
+            }, {
+              name: 'overlay',
+              label: 'Overlay Text',
+              type: 'string'
+            }]
+          }, {
+            name: 'quote',
+            label: 'Quotation Card',
+            fields: [{
+              name: 'quote',
+              label: 'Quotation Text',
+              type: 'string',
+              ui: {
+                component: 'textarea'
+              }
+            }, {
+              name: 'attribution',
+              label: 'Attribution',
+              type: 'string'
+            }, {
+              name: 'text_color',
+              label: 'Text Color',
+              type: 'string',
+              options: ColorOptionsText
+            }, {
+              name: 'border_color',
+              label: 'Border Color',
+              type: 'string',
+              options: ColorOptionsBg
+            }, {
+              name: 'icon',
+              label: 'Icon',
+              type: 'image'
+            }]
+          }]
+        }]
+      }]
     }]
   }],
   ui: {

@@ -1,3 +1,18 @@
+import { ModelNames } from '@services/coreData/factory';
+
+export type Models =
+  typeof ModelNames.events |
+  typeof ModelNames.instances |
+  typeof ModelNames.items |
+  typeof ModelNames.mediaContents |
+  typeof ModelNames.organizations |
+  typeof ModelNames.people |
+  typeof ModelNames.places |
+  typeof ModelNames.taxonomies |
+  typeof ModelNames.works;
+
+import { Dispatch, SetStateAction } from "react";
+
 export interface SearchConfig {
   name: string,
   route: string,
@@ -13,7 +28,7 @@ export interface SearchConfig {
     icon?: string
   }>;
 
-  map:{
+  map?:{
     cluster_radius?: number,
     geometry: string,
     max_zoom?: number,
@@ -23,17 +38,22 @@ export interface SearchConfig {
   result_card: {
     attributes?: Array<{
       name: string,
-      icon?: string
+      icon?: string,
+      parser?: string
     }>,
+    relationships?: string[],
     title: string,
     tags?: Array<{
       name: string,
       primary?: boolean,
-      secondary?: boolean
+      secondary?: boolean,
+      parser?: string
     }>
   };
 
   table?: boolean;
+
+  type?: 'grid' | 'image' | 'list' | 'map';
 
   typesense: {
     host: string,
@@ -57,7 +77,11 @@ export interface SearchConfig {
 export interface Configuration {
   content?: {
     collections?: Array<String>,
-    localize_pages?: boolean
+    localize_pages?: boolean,
+    posts_config?: {
+      categories?: Array<String>,
+      drafts?: boolean
+    }
   };
 
   core_data: {
@@ -65,12 +89,33 @@ export interface Configuration {
     project_ids: string[]
   };
 
-  detail_pages?: Array<string>;
+  detail_pages?: {
+    models: {
+      [key in Models]: {
+        related_manifest?: {
+          model: string,
+          relationship: string
+        }
+      }
+    },
+    relationship_fields?: {
+      events?: string[],
+      instances?: string[],
+      items?: string[],
+      organizations?: string[],
+      people?: string[],
+      places?: string[],
+      taxonomies?: string[],
+      works?: string[]
+    }
+  };
 
   i18n: {
     default_locale: string,
     locales: string[]
   },
+
+  gallery?: string,
 
   layers?: Array<{
     name: string,
@@ -117,4 +162,36 @@ export interface SearchSession {
   id: string;
   name: string;
   searchName: string;
+}
+
+export interface HitComponentProps {
+  attributes: {
+    label: string;
+    icon: string;
+    name: string;
+    parser?: string;
+    value: string;
+  }[]
+  relationships: {
+    label: string;
+    names: string[];
+  }
+  highlightComponent?: React.FC<any>;
+  hit: any;
+  setManifestUrl?: Dispatch<SetStateAction<string>>
+  tags?: {
+    name: string;
+    primary?: boolean;
+    secondary?: boolean;
+    value: string;
+  }[]
+}
+
+export interface NavbarItem {
+  href?: string;
+  options?: NavbarItem[];
+}
+
+export interface Navbar {
+  items: NavbarItem[];
 }

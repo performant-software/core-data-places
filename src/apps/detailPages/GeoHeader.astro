@@ -1,0 +1,47 @@
+---
+import PlaceMap from '@apps/detailPages/PlaceMap';
+import Container from '@components/Container.astro';
+import ServiceFactory from '@services/coreData/factory';
+import { getCoverImage } from '@utils/detailPages';
+
+interface Props {
+  geometry?: any;
+  lang: string;
+  model: string;
+  name: string;
+  record: any;
+}
+
+const { geometry, lang, record, model, name } = Astro.props;
+
+const service = ServiceFactory.getService(model);
+const { mediaContents } = await service.getRelatedMediaContents(record.uuid);
+
+const coverUrl = getCoverImage(mediaContents);
+---
+{(geometry || coverUrl) && (
+  <div class='w-full pb-6 relative h-[300px]'>
+    <div class='bg-primary h-[80px] w-full' />
+    <div class='absolute gap-6 w-full top-0'>
+      <Container className='h-[300px] flex gap-6'>
+        {coverUrl && (
+          <img
+            alt={name}
+            class={`${geometry ? 'w-[40%]' : 'w-full'} h-full object-cover`}
+            src={coverUrl}
+          />
+        )}
+        {geometry && (
+          <div class={coverUrl ? 'w-[60%]' : 'w-full'}>
+            <PlaceMap
+              client:only='react'
+              geometry={geometry}
+              lang={lang}
+            />
+          </div>
+        )}
+      </Container>
+    </div>
+  </div>
+)}
+

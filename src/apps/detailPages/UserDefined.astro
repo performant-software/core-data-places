@@ -1,0 +1,29 @@
+---
+import UserDefinedFieldView from '@components/UserDefinedFieldView';
+import { UserDefinedFields as UserDefinedFieldUtils } from '@performant-software/shared-components';
+import clsx from 'clsx';
+
+const { record, excludes, t } = Astro.props
+
+const { DataTypes } = UserDefinedFieldUtils;
+
+
+---
+{record.user_defined && Object.keys(record.user_defined).length > 0 && (
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+    {Object.keys(record.user_defined).map(uuid => (
+      (!excludes.includes(uuid) && !!record.user_defined[uuid].value) && <div class={clsx(
+        'py-3',
+        {'col-span-2': record.user_defined[uuid].type === DataTypes.richText}  
+      )}>
+        <p class="capitalize font-semibold font-body">{t(uuid)}</p>
+        <div class="text-neutral-800 break-words font-body">
+          <UserDefinedFieldView
+            type={record.user_defined[uuid].type}
+            value={record.user_defined[uuid].value}
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+)}

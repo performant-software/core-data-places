@@ -1,54 +1,31 @@
 ---
-import { getTranslations } from '@backend/i18n';
-import { fetchPosts } from '@backend/tina';
-import Card from '@components/Card.astro';
-import Cards from '@components/Cards.astro';
+import Posts from '@apps/posts/Posts';
 import Container from '@components/Container.astro';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
 import { hasPostsContent } from '@utils/config';
-import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';
-
-const { t } = await getTranslations(Astro.currentLocale);
-const posts = await fetchPosts();
 
 export const getStaticPaths = () => {
   if (!hasPostsContent(config)) {
     return [];
   }
 
-  return _.map(config.i18n.locales, (lang) => ({ params: { lang }}));
+  return _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}));
 }
 
 ---
 
 <Layout
   footer
-  t={t}
-  tab='posts'
-  title={t('posts')}
+  titleKey='posts'
 >
   <Container
     className='pb-16 w-full'
   >
-    <h1
-      class='text-3xl my-12'
-    >
-      { t('posts') }
-    </h1>
-    <Cards>
-      { _.map(posts, (post) => (
-        <Card
-          imageUrl={post?.cardImage}
-          alt={post?.imageAlt}
-          slug={getRelativeLocaleUrl(Astro.currentLocale, `posts/${post._sys.filename}`)}
-          t={t}
-          title={post.title}
-          author={post.author}
-          date={post.date}
-        />
-      ))}
-    </Cards>
+    <Posts
+      lang={Astro.currentLocale}
+      client:only='react'
+    />
   </Container>
 </Layout>

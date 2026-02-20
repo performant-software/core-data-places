@@ -1,0 +1,26 @@
+---
+import { fetchPage } from '@backend/tina';
+import PageBody from '@components/PageBody.astro';
+import PageStoreProvider from '@components/PageStoreProvider';
+import { setCacheControl } from '@utils/url';
+
+const { slug } = Astro.props;
+const locale = Astro.currentLocale;
+
+const page = await fetchPage(locale, slug);
+
+setCacheControl(Astro.response.headers);
+
+---
+
+<PageBody
+  sections={page?.sections}
+  transparent={page?.transparent}
+  home={page?.home_page}
+/>
+
+<PageStoreProvider
+  title={page.title}
+  transparent={page.transparent}
+  client:load
+/>

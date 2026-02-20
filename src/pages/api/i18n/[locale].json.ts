@@ -1,4 +1,4 @@
-import config from '@config';
+import config from '@config' with { type: 'json' };
 import { getI18n } from '@services/i18n';
 import { buildResponse } from '@utils/api';
 import { APIRoute } from 'astro';

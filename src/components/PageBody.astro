@@ -1,0 +1,169 @@
+---
+import Banner from '@apps/pages/Banner.astro';
+import Carousel from '@apps/pages/Carousel';
+import ContactForm from '@components/ContactForm';
+import FeatureQuote from '@apps/pages/FeatureQuote.astro';
+import FreeText from '@apps/pages/FreeText.astro';
+import Images from '@apps/pages/Images.astro';
+import LinksBanner from '@apps/pages/LinksBanner.astro';
+import MultiColumn from '@apps/pages/MultiColumn.astro';
+import Spacer from '@components/Spacer.astro';
+import Tabs from '@apps/pages/Tabs.astro';
+import TextImage from '@apps/pages/TextImage';
+import Container from '@components/Container.astro';
+import { toBackgroundClass } from '@utils/pageBuilder';
+import clsx from 'clsx';
+import _ from 'underscore';
+import MediaInsert from '@components/MediaInsert';
+
+const { sections, transparent, home } = Astro.props;
+
+const SectionTypes = {
+  banner: 'Banner',
+  carousel: 'Carousel',
+  contactForm: 'Contact_form',
+  freeText: 'Free_text',
+  images: 'Images',
+  linkBanner: 'Link_banner',
+  multiColumn: 'Multi_column',
+  featureQuote: 'Feature_quote',
+  spacer: 'Spacer',
+  tabs: 'Tabs',
+  textImage: 'Text_image',
+  media: 'Media'
+};
+
+---
+{ _.map(sections, (section, idx) => (
+  <section
+    class={clsx(
+      'page-builder',
+      'relative',
+      toBackgroundClass(section.background),
+      section.text,
+      section.top_margin,
+      section.bottom_margin,
+      { '-mt-[72px]': transparent && idx === 0 }
+    )}
+  >
+    { section?.__typename?.endsWith(SectionTypes.carousel) && (
+      <Container>
+        <Carousel
+          items={section.items}
+          client:only='react'
+        />
+      </Container>
+    )}
+    { section?.__typename?.endsWith(SectionTypes.contactForm) && (
+      <Container>
+        <ContactForm
+          client:load
+        />
+      </Container>
+    )}
+    { section?.__typename?.endsWith(SectionTypes.freeText) && (
+      <Container>
+        <FreeText
+          content={section.body}
+        />
+      </Container>
+    )}
+    { section?.__typename?.endsWith(SectionTypes.images) && (
+      <Container>
+        <Images
+          items={section.items}
+          title={section.title}
+        />
+      </Container>
+    )}
+    { section?.__typename?.endsWith(SectionTypes.spacer) && (
+      <Container>
+        <Spacer
+          color={section.color}
+          size={section.size}
+          thick
+        />
+      </Container>
+    )}
+    { section?.__typename?.endsWith(SectionTypes.textImage) && (
+      <Container>
+        <TextImage
+          backgroundPosition={section.background_position}
+          buttonText={section.button_text}
+          citation={section.citation}
+          citationLink={section.citation_link}
+          description={section.description}
+          image={section.image}
+          imageAlt={section.image_alt}
+          textPosition={section.text_position}
+          title={section.title}
+          url={section.url}
+          client:load
+        />
+      </Container>
+    )}
+    { section?.__typename?.endsWith(SectionTypes.multiColumn) && (
+      <MultiColumn
+        background={section.background}
+        backgroundImage={section.background_image}
+        buttonText={section.button_text}
+        darken={section.darken}
+        textAlignment={section.text_alignment}
+        title={section.title}
+        url={section.url}
+        content={section.columns}
+        gap={section.gap}
+      />
+    )}
+    { section?.__typename?.endsWith(SectionTypes.banner) && (
+      <Banner
+        background={section.background}
+        buttonText={section.button_text}
+        color={section.color}
+        content={section.content}
+        darken={section.darken}
+        fullWidth={section.full_width}
+        height={section.height}
+        hero={section.hero}
+        home={home}
+        image={section.background_image}
+        imageAlt={section.background_image_alt}
+        search={section.search}
+        subtitle={section.subtitle}
+        textAlignment={section.text_alignment}
+        title={section.title}
+        url={section.url}
+      />
+    )}
+    { section?.__typename?.endsWith(SectionTypes.tabs) && ( 
+        <Tabs
+          tabs={section.tabs}
+          raise={section.top_margin && section.top_margin.startsWith('-')}
+          activeBg={section.active_bg}
+          inactiveBg={section.inactive_bg}
+          textStyle={section.text_style}
+          invertText={section.invert_text}
+        />
+    )}
+    { section?.__typename?.endsWith(SectionTypes.featureQuote) && ( 
+      <FeatureQuote
+        {...section}
+        backgroundImage={section.background_image}
+      />
+    )}
+    { section?.__typename?.endsWith(SectionTypes.linkBanner) && ( 
+      <LinksBanner
+        {...section}
+        linkBackground={section.link_background}
+      />
+    )}
+    { section?.__typename?.endsWith(SectionTypes.media) && (
+      <Container>
+        <MediaInsert
+          media={section.media}
+          client:only='react'
+        />
+      </Container>
+    )}
+  </section>
+))}

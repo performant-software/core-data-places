@@ -1,0 +1,18 @@
+---
+import Gallery from '@apps/gallery/index.astro';
+import config from '@config';
+import Layout from '@layouts/Layout.astro';
+import _ from 'underscore';
+
+export const getStaticPaths = () => _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}));
+
+---
+
+<Layout
+  footer
+  titleKey='gallery'
+>
+  <Gallery
+    server:defer
+  />
+</Layout>

@@ -1,48 +1,12 @@
-import { useSearchConfig } from '@apps/search/SearchContext';
 import {
-  FacetStateContextProvider,
-  PersistentSearchStateContextProvider,
   Typesense as TypesenseUtils
 } from '@performant-software/core-data';
 import { useMemo, type ReactNode } from 'react';
 import {
-  InstantSearch,
-  useGeoSearch,
-  useInfiniteHits,
-  useRange,
-  useRefinementList,
-  useSearchBox
+  InstantSearch, useRange, useRefinementList,
 } from 'react-instantsearch';
-
-const SearchProvider = (props: { children: ReactNode }) => {
-  const config = useSearchConfig();
-  const geoSearch = useGeoSearch();
-  const infiniteHits = useInfiniteHits();
-  const searchBox = useSearchBox();
-
-  const { typesense } = config;
-
-  return (
-    <PersistentSearchStateContextProvider
-      infiniteHits={infiniteHits}
-      geoSearch={geoSearch}
-      searchBox={searchBox}
-    >
-      <FacetStateContextProvider
-        apiKey={typesense.api_key}
-        exclude={typesense.facets?.exclude}
-        host={typesense.host}
-        include={typesense.facets?.include}
-        indexName={typesense.index_name}
-        protocol={typesense.protocol}
-        useRange={useRange}
-        useRefinementList={useRefinementList}
-      >
-        { props.children }
-      </FacetStateContextProvider>
-    </PersistentSearchStateContextProvider>
-  )
-};
+import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import { FacetStateContextProvider } from '@performant-software/core-data';
 
 const TypesenseSearch = (props: { children: ReactNode }) => {
   const config = useSearchConfig();
@@ -61,9 +25,18 @@ const TypesenseSearch = (props: { children: ReactNode }) => {
         preserveSharedStateOnUnmount: true
       }}
     >
-      <SearchProvider>
+      <FacetStateContextProvider
+        apiKey={typesense.api_key}
+        exclude={typesense.facets?.exclude}
+        host={typesense.host}
+        include={typesense.facets?.include}
+        indexName={typesense.index_name}
+        protocol={typesense.protocol}
+        useRange={useRange}
+        useRefinementList={useRefinementList}
+      >
         { props.children }
-      </SearchProvider>
+      </FacetStateContextProvider>
     </InstantSearch>
   )
 };

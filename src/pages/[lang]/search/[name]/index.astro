@@ -1,22 +1,23 @@
 ---
-import Search from '@apps/search/Search';
-import { getTranslations } from '@backend/i18n';
+import ListSearch from '@apps/search/list/ListSearch';
+import MapSearch from '@apps/search/map/MapSearch';
 import config from '@config';
-import Layout from "@layouts/Layout.astro";
-import { STATIC_BUILD } from 'astro:env/client';
+import Layout from '@layouts/Layout.astro';
+import { SearchConfig } from '@types';
+import { PRELOAD_MAP, STATIC_BUILD } from 'astro:env/client';
 import _ from 'underscore';
 
-const { lang } = Astro.params
+const { lang, name } = Astro.params;
 
-const { t } = await getTranslations(Astro.currentLocale);
-const { name } = Astro.params;
+const searchConfig = config.search.find((s) => s.name === name) as SearchConfig;
+const isListSearch = !!searchConfig.type && searchConfig.type !== 'map';
 
 export const getStaticPaths = () => {
   const paths = [];
 
   _.each(config.i18n.locales, (lang) => {
-    _.each(config.search, ({ name }) => {
-      paths.push({ params: { lang, name }});
+    _.each(config.search, ({name}) => {
+      paths.push({params: {lang, name}});
     });
   });
 
@@ -27,14 +28,24 @@ export const getStaticPaths = () => {
 
 <Layout
   fullscreen
-  t={t}
-  title={t('explore')}
-  tab="search"
+  titleKey='explore'
 >
-  <Search
-    allowSave={!STATIC_BUILD}
-    lang={lang}
-    name={name}
-    client:only='react'
-  />
+  {isListSearch
+    ? (
+      <ListSearch
+        lang={lang}
+        name={name}
+        client:only='react'
+      />
+    )
+    : (
+      <MapSearch
+        allowSave={!STATIC_BUILD}
+        lang={lang}
+        name={name}
+        preload={PRELOAD_MAP}
+        client:only='react'
+      />
+    )
+  }
 </Layout>

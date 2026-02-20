@@ -13,15 +13,26 @@ import {
   LabelList,
   TooltipContentProps
 } from 'recharts';
-import config from '@config';
+import config from '@config' with { type: 'json' };
 import _ from 'underscore';
+import { hasDetailPage } from '@utils/detailPagePaths';
+
+interface Props extends DataVisualizationProps {
+  link?: string;
+  model?: string;
+  filter?: string;
+}
 
 const CustomTooltip = ({ active, payload, label }: TooltipContentProps<string | number, string>) => {
   const isVisible = active && payload && payload.length;
   const start = useMemo(() => (new Date(payload[0]?.value[0]*1000).getFullYear()), [payload]);
   const end = useMemo(() => (new Date(payload[0]?.value[1]*1000).getFullYear()), [payload]);
+
   return (
-    <div className="custom-tooltip bg-white rounded-md drop-shadow-xl p-4 flex flex-col gap-2 not-prose border border-primary" style={{ visibility: isVisible ? 'visible' : 'hidden' }}>
+    <div
+      className="custom-tooltip bg-white rounded-md drop-shadow-xl p-4 flex flex-col gap-2 not-prose border border-primary"
+      style={{ visibility: isVisible ? 'visible' : 'hidden' }}
+    >
       {isVisible && (
         <>
           <p className="label">{label}</p>
@@ -32,7 +43,8 @@ const CustomTooltip = ({ active, payload, label }: TooltipContentProps<string | 
   );
 };
 
-const StackedTimeline = (props: DataVisualizationProps) => {
+const StackedTimeline = (props: Props) => {
+  const { link, model, filter } = props;
   
   /**
    * Memo-izes the data as parsed JSON.
@@ -42,10 +54,15 @@ const StackedTimeline = (props: DataVisualizationProps) => {
  const language = useMemo(() => getLanguageFromUrl(window.location.pathname), [window.location.pathname]);
 
  const onClickBar = useCallback((data: any) => {
-  if (data.uuid) {
-    window.location.href = `/${language}/events/${data.uuid}`
+  if (!link?.length) {
+    return;
   }
- }, [language]);
+  if (link === 'detail' && data.uuid && hasDetailPage('events')) {
+    window.location.href = `/${language}/events/${data.uuid}`
+  } else if (link === 'search' && data.name && model && filter && _.find(config.search, (item) => (item.name === model))) {
+    window.location.href = `/${language}/search/${model}/?${filter}.name_facet[0]=${data.name}`
+  }
+ }, [language, link, model, filter]);
 
  const renderLabel = useCallback((props) => {
    const { x, y, width, height, value, index } = props;
@@ -94,7 +111,7 @@ const StackedTimeline = (props: DataVisualizationProps) => {
             <Bar
               dataKey='date_range'
               fill='var(--color-primary)'
-              onClick={config.detail_pages?.includes('events') ? onClickBar : null}
+              onClick={link ? onClickBar : null}
               minPointSize={1}
             >
               <LabelList dataKey='name' content={renderLabel} />

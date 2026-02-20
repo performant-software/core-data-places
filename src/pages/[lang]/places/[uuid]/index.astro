@@ -1,32 +1,21 @@
 ---
+import Place from '@apps/detailPages/Place.astro';
 import Layout from '@layouts/Layout.astro';
-import config from '@config';
-import RecordDetail from '@apps/pages/RecordDetail/index.astro';
-import { getTranslations } from '@backend/i18n';
 import { ModelNames } from '@services/coreData/factory';
-import PlacesService from '@services/coreData/places';
-import { getCoverImage, getDetailPagePaths } from '@utils/detailPages';
-
-const { t } = await getTranslations(Astro.currentLocale);
+import { getDetailPagePaths } from '@utils/detailPages';
 
 const { lang, uuid } = Astro.params;
 
-const { place } = await PlacesService.getFull(uuid);
-const excludes = config.result_filtering?.places?.exclude || [];
+export const getStaticPaths = async () => await getDetailPagePaths(ModelNames.places);
 
-const coverUrl = getCoverImage(place);
-const geometry = place?.place_geometry?.geometry_json
-
-export const getStaticPaths = async () => await getDetailPagePaths(config, ModelNames.places);
 ---
 
-<Layout footer t={t} title={place.name}>
-  <RecordDetail
-    excludes={excludes}
+<Layout
+  footer
+>
+  <Place
     lang={lang}
-    name={place.name}
-    record={place}
-    coverUrl={coverUrl}
-    geometry={!excludes.includes('place_geometry') ? geometry : null}
+    uuid={uuid}
+    server:defer
   />
 </Layout>

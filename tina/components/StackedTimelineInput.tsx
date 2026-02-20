@@ -1,4 +1,4 @@
-import config from '@config';
+import config from '@config' with { type: 'json' };
 import { buildStackedTimelineData } from '@utils/visualization';
 import { useCallback, useState } from 'react';
 import { wrapFieldsWithMeta } from 'tinacms';

@@ -1,0 +1,29 @@
+---
+import RecordDetail from '@apps/detailPages/RecordDetail.astro';
+import PageStoreProvider from '@components/PageStoreProvider';
+import config from '@config';
+import OrganizationsService from '@services/coreData/organizations';
+
+const { lang, uuid } = Astro.props;
+
+const { organization } = await OrganizationsService.getOne(uuid);
+const excludes = config.result_filtering?.organizations?.exclude || [];
+
+---
+
+<RecordDetail
+  excludes={excludes}
+  lang={lang}
+  model='organizations'
+  name={organization.name}
+  record={organization}
+>
+  { organization.description && !excludes.includes('description') && (
+    <p class='text-neutral-800 py-6 break-words'>{organization.description}</p>
+  )}
+</RecordDetail>
+
+<PageStoreProvider
+  title={organization.name}
+  client:load
+/>
