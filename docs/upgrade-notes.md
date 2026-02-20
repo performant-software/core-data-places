@@ -2,6 +2,41 @@
 
 Describes the breaking changes and steps required to upgrade to a more recent version of Core Data Places.
 
+## 1.5.0
+
+### Detail pages
+
+`1.5.0` changes `detail_pages` from an array to a object with nested fields.
+
+For a value such as:
+
+```json
+{
+  "detail_pages": [
+    "people",
+    "places"
+  ]
+}
+```
+
+The updated value should be:
+
+```json
+{
+  "detail_pages": {
+    "models": {
+      "people": {},
+      "places": {}
+    }
+  }
+}
+```
+
+### Page content
+
+- The `Hero` component has been removed. Replace it with `Banner`.
+- The `Text` component has been removed. Replace it with `Columns`.
+
 ## v1.2.0
 
 ### Content Collections
