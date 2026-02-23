@@ -158,7 +158,8 @@ const TextImage = (props: Props) => {
           { !_.isEmpty(props.url) && (
             <div>
               <LinkButton
-                className='bg-secondary mt-8'
+                className='mt-8'
+                color='secondary'
                 content={props.buttonText}
                 href={props.url}
               />
