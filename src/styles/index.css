@@ -198,7 +198,7 @@ h1:has(+ h1) {
 }
 
 .banner-header {
-  font-variant: var(--Font-Variant-banner-header);
+  font-variant: var(--font-variant-banner-header);
   font-size: var(--font-sizes-CTA-header);
 }
 
