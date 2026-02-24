@@ -4,6 +4,7 @@ import { Button, Icon, useCachedHits } from '@performant-software/core-data';
 import { exportAsJSON } from '@utils/search';
 import { Fragment, useCallback, useContext } from 'react';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import MapSearchContext from '@apps/search/map/MapSearchContext';
 
 const Options = {
   json: 'json'
@@ -11,17 +12,18 @@ const Options = {
 
 const ExportButton = () => {
   const { name } = useSearchConfig();
-  const hits = useCachedHits();
   const { t } = useContext(TranslationContext);
+
+  const { features } = useContext(MapSearchContext);
 
   /**
    * Exports the current search results in the passed format.
    */
   const onSelection = useCallback((option) => {
     if (option === Options.json) {
-      exportAsJSON({ name, data: hits });
+      exportAsJSON({ name, data: { features } });
     }
-  }, [hits, name]);
+  }, [name, features]);
 
   return (
     <Listbox
