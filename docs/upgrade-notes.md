@@ -2,6 +2,12 @@
 
 Describes the breaking changes and steps required to upgrade to a more recent version of Core Data Places.
 
+## 1.6.0
+
+### Embedded maps
+
+If you're using an embedded map that was exported from the map search, re-export the map and update the GeoJSON data in your post.
+
 ## 1.5.0
 
 ### Detail pages
