@@ -88,9 +88,19 @@ const Branding: Collection = {
     type: 'string',
     options: HeaderFontWeightOptions
   }, {
-    name: 'small_caps',
-    label: 'Small Caps for hero and banner headers?',
-    type: 'boolean'
+    name: 'header_capitalization',
+    label: 'Capitalization for hero and banner headers',
+    type: 'string',
+    options: [{
+      label: 'Original',
+      value: 'normal'
+    }, {
+      label: 'Small Caps',
+      value: 'small-caps'
+    }, {
+      label: 'All Caps',
+      value: 'uppercase'
+    }]
   }, {
     name: 'font_body',
     label: 'Body Font',
