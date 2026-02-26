@@ -80,7 +80,8 @@ export interface Configuration {
     localize_pages?: boolean,
     posts_config?: {
       categories?: Array<String>,
-      drafts?: boolean
+      drafts?: boolean,
+      layout?: 'list' | 'grid'
     }
   };
 
