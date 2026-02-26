@@ -67,6 +67,17 @@ const Settings: Collection = {
         name: 'drafts',
         label: 'Use Draft Workflow?',
         type: 'boolean'
+      }, {
+        name: 'layout',
+        label: 'Layout',
+        type: 'string',
+        options: [{
+          label: 'List',
+          value: 'list'
+        }, {
+          label: 'Grid',
+          value: 'grid'
+        }]
       }]
     }]
   }, {
