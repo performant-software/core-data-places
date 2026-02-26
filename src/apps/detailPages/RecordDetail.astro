@@ -17,6 +17,7 @@ import RelatedWorks from '@apps/detailPages/RelatedWorks.astro';
 import UserDefined from '@apps/detailPages/UserDefined.astro';
 import { getTranslations } from '@backend/i18n';
 import config from '@config';
+import HtmlViewer from './HtmlViewer.astro';
 
 interface Props {
   excludes: string[];
@@ -50,6 +51,15 @@ if (ecViewer) {
   }
 }
 
+const textViewer = config.detail_pages?.models[model]
+  ? config.detail_pages?.models[model].text_viewer_config
+  : null;
+
+const textUrl = textViewer
+  && (!textViewer.opt_in_field || record.user_defined[textViewer.opt_in_field]?.value)
+  ? `${textViewer.base_url}/${record.user_defined[textViewer.file_path_field]?.value}`
+  : null;
+
 const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewer.xml_id_field]?.value : null;
 ---
 
@@ -74,7 +84,15 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
     name={name}
   />
 )}
-{ !faircopyId && geometry && ( 
+{
+  textUrl && !faircopyId && ( 
+    <HtmlViewer
+      url={textUrl}
+      header={t('transcription')}
+    />
+  )
+}
+{ !faircopyId && !textUrl && geometry && ( 
   <GeoHeader
     geometry={geometry}
     lang={lang}

@@ -1,0 +1,37 @@
+---
+import Container from '@components/Container.astro';
+import sanitizeHtml from 'sanitize-html';
+import '@styles/tei.css';
+
+interface Props {
+  header: string;
+  url: string;
+};
+
+const { header, url } = Astro.props;
+
+const resp = await fetch(url).then((res) => (res.text()));
+const text = resp.includes('<tei-text') 
+  && !resp.toLowerCase().includes('<script') 
+  && !resp.toLowerCase().includes('<style')
+  ? '<tei-text' + resp.split('<tei-text')[1].split('</tei-text>')[0] + '</tei-text>' 
+  : '';
+const escapedText = sanitizeHtml(text, {
+  allowedTags: false,
+  allowedAttributes: false
+});
+---
+
+{ escapedText && ( 
+  <div class='w-full pb-6 relative h-[800px]'>
+    <div class='bg-primary h-[80px] w-full' />
+    <div class='absolute gap-6 w-full top-0 h-full'>
+      <Container className='h-full overflow-y-auto flex justify-center bg-layout-alt'>      
+        <div class='md:w-3/4 m-auto py-4 md:py-16'>
+          <h4 class='mb-6'>{ header }</h4>
+          <Fragment set:html={escapedText} />
+        </div>
+      </Container>
+    </div>
+  </div>
+)}

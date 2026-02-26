@@ -454,7 +454,7 @@
   "filterResultsBy": {
     "tinaLabel": "Filter Results by:",
     "defaultValue": "Filter Results by:"
-},
+  },
   "allPosts": {
     "tinaLabel": "All Posts",
     "defaultValue": "All Posts"
@@ -490,5 +490,9 @@
   "tags": {
     "tinaLabel": "Tags",
     "defaultValue": "Tags"
+  },
+  "transcription": {
+    "tinaLabel": "Transcription",
+    "defaultValue": "Transcription"
   }
 }
