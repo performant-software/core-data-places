@@ -12,7 +12,8 @@
   --font-sizes-page-header: 48px;
   --font-sizes-hero-header: 36px;
   --font-sizes-CTA-header: 36px;
-  
+  --font-weight-hero-header: 700;
+
   --font-sizes-h1: 48px;
   --font-sizes-h2: 36px;
   --font-sizes-h3: 24px;
@@ -29,6 +30,7 @@
   --font-sizes-FairData-lg: 20px;
 
   --font-variant-banner-header: var(--customBannerHeaderVariant, normal);
+  --font-variant-banner-header-transform: var(--customBannerHeaderTransform, none);
 
 }
 
@@ -208,6 +210,8 @@ h1:has(+ h1) {
 
 .banner-header.banner-hero.banner-home {
   font-size: var(--font-sizes-hero-header);
+  text-transform: var(--font-variant-banner-header-transform);
+  font-weight: var(--font-weight-hero-header);
 }
 
 .detail-panel h1 {

@@ -28,7 +28,8 @@ const { font_header: fontHeader, font_body: fontBody } = branding;
 const heroHeaderSize = branding.header_size || '52px';
 const pageHeaderSize = branding.page_header_size || '48px';
 const headerFontWeight = branding.header_font_weight || '400';
-const bannerHeaderVariant = branding.small_caps ? 'small-caps' : 'normal';
+const bannerHeaderVariant = branding.header_capitalization === 'small_caps' ? 'small-caps' : 'normal';
+const bannerHeaderTransform = branding.header_capitalization === 'uppercase' ? 'uppercase' : 'none';
 
 //dark and light mode default text color
 const content = branding.content_color || 'var(--color-black)';
@@ -84,6 +85,7 @@ const {
         customFontBody: fontBody,
         customHeroHeaderSize: heroHeaderSize,
         customBannerHeaderVariant: bannerHeaderVariant,
+        customBannerHeaderTransform: bannerHeaderTransform,
         customPageHeaderSize: pageHeaderSize,
         customHeaderFontWeight: headerFontWeight,
         customLayout: colorLayout,
