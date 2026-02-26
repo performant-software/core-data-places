@@ -7,7 +7,6 @@ import { useTranslations } from '@i18n/useTranslations';
 import config from '@config';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import PostCard from '@apps/posts/PostCard';
 import Cards from '@components/Cards';
 import Card from '@components/Card';
 import { getRelativeLocaleUrl } from 'astro:i18n';
