@@ -1,5 +1,4 @@
 import LabelPlaceholder from '@components/LabelPlaceholder';
-import { getRelativeLocaleUrl } from 'astro:i18n';
 import _ from 'underscore';
 import { useCallback, useEffect, useState } from 'react';
 import { fetchPosts } from '@backend/api/posts';
@@ -8,6 +7,9 @@ import { useTranslations } from '@i18n/useTranslations';
 import config from '@config';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import Cards from '@components/Cards';
+import Card from '@components/Card';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 
 interface Props {
   lang: string;
@@ -50,6 +52,8 @@ const PostList = (props: Props) => {
     onLoadPosts();
   }, [category]);
 
+  const layout = config.content?.posts_config?.layout || 'list';
+
   return (
     <div>
       <div className='flex items-center justify-between'>
@@ -85,20 +89,44 @@ const PostList = (props: Props) => {
           )
         }
       </div>
-      <div className='flex flex-col italic text-lg divide-y divide-secondary text-[#222222]'>
-        { loading && <p className='not-italic text-base'>{t('loading')}...</p>}
-        { _.map(posts, (post) => (
-          <a
-            className='hover:underline hover:font-semibold py-4 font-header'
-            href={getRelativeLocaleUrl(lang, `posts/${post?._sys?.filename}`)}
-            key={post?._sys?.filename}
-          >
-            <p>
-              { post?.title }
-            </p>
-          </a>
-        )) }
-      </div>
+      { loading && <p className='text-base'>{t('loading')}...</p>}
+      { !loading && (
+        <div className='flex flex-col text-lg divide-y divide-secondary text-[#222222]'>
+          { layout === 'list' && (
+            <>
+              { _.map(posts, (post) => (
+                <a
+                  className='hover:underline hover:font-semibold py-4 font-header italic'
+                  href={getRelativeLocaleUrl(lang, `posts/${post?._sys?.filename}`)}
+                  key={post?._sys?.filename}
+                >
+                  <p>
+                    { post?.title }
+                  </p>
+                </a>
+              )) }
+            </>
+          )}
+          { layout === 'grid' && (
+            <Cards>
+              { _.map(posts, (post) => (
+                <Card
+                  imageUrl={post?.cardImage}
+                  alt={post?.imageAlt}
+                  slug={getRelativeLocaleUrl(lang, `posts/${post._sys.filename}`)}
+                  title={post.title}
+                  date={post.date}
+                  key={post?._sys?.filename}
+                  labels={{
+                    byline: t('by', { author: post.author, date: post.date }),
+                    readMore: t('readMore')
+                  }}
+                />
+              ))}
+            </Cards>
+          )}
+        </div>
+      )}
       { cursor && !loading && (
         <div className='w-full flex justify-center items-center py-6'>
           <Button
