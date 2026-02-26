@@ -202,6 +202,7 @@ h1:has(+ h1) {
 .banner-header {
   font-variant: var(--font-variant-banner-header);
   font-size: var(--font-sizes-CTA-header);
+  text-transform: var(--font-variant-banner-header-transform);
 }
 
 .banner-header.banner-hero {
@@ -210,7 +211,6 @@ h1:has(+ h1) {
 
 .banner-header.banner-hero.banner-home {
   font-size: var(--font-sizes-hero-header);
-  text-transform: var(--font-variant-banner-header-transform);
   font-weight: var(--font-weight-hero-header);
 }
 
