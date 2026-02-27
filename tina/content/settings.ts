@@ -67,6 +67,15 @@ const Settings: Collection = {
         name: 'drafts',
         label: 'Use Draft Workflow?',
         type: 'boolean'
+      }, {
+        name: 'sort_by',
+        label: 'Post display order',
+        type: 'string',
+        description: 'If set to Date, will display posts in reverse chronological order. Note that if this setting is selected, only posts with a value in the Date field will display.',
+        options: [{
+          label: 'Date (newest first)',
+          value: 'date'
+        }]
       }]
     }]
   }, {

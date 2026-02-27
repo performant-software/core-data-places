@@ -3,6 +3,7 @@ import TranslationContext from '@contexts/TranslationContext';
 import PostList from '@apps/posts/PostList';
 
 interface Props {
+  chrono?: boolean;
   lang: string;
 }
 
@@ -14,6 +15,7 @@ const Posts = (props: Props) => {
       value={{ lang: props.lang, t }}
     >
       <PostList
+        chrono={props.chrono}
         lang={props.lang}
       />
     </TranslationContext.Provider>

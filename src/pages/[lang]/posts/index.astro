@@ -25,6 +25,7 @@ export const getStaticPaths = () => {
   >
     <Posts
       lang={Astro.currentLocale}
+      chrono={config.posts_config?.sort_by === 'date'}
       client:only='react'
     />
   </Container>
