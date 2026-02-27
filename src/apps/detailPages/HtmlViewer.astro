@@ -18,7 +18,8 @@ const text = resp.includes('<tei-text')
   : '';
 const escapedText = sanitizeHtml(text, {
   allowedTags: false,
-  allowedAttributes: false
+  allowedAttributes: false,
+  allowVulnerableTags: true
 });
 ---
 
