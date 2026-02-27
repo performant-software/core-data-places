@@ -3,8 +3,11 @@ import TranslationContext from '@contexts/TranslationContext';
 import PostList from '@apps/posts/PostList';
 
 interface Props {
-  chrono?: boolean;
   lang: string;
+  sort?: {
+    name: string;
+    direction?: 'asc' | 'desc';
+  };
 }
 
 const Posts = (props: Props) => {
@@ -15,7 +18,7 @@ const Posts = (props: Props) => {
       value={{ lang: props.lang, t }}
     >
       <PostList
-        chrono={props.chrono}
+        sort={props.sort}
         lang={props.lang}
       />
     </TranslationContext.Provider>

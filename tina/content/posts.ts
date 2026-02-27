@@ -1,9 +1,38 @@
 import TinaPlacePicker from '../components/TinaPlacePicker';
-import { Collection } from '@tinacms/schema-tools';
+import { Collection, TinaField } from '@tinacms/schema-tools';
 import Visualizations from '@root/tina/content/visualizations';
 import _ from 'underscore';
 import config from '@config';
 import { media } from './common';
+
+export const postMetadata: TinaField<false>[] = _.compact([
+  {
+    type: 'string',
+    name: 'title',
+    label: 'Title',
+    isTitle: true,
+    required: true,
+  },
+  {
+    name: 'author',
+    label: 'Author',
+    type: 'string'
+  },
+  {
+    name: 'date',
+    label: 'Date',
+    type: 'datetime'
+  },
+    config.content?.posts_config?.categories && {
+    name: 'category',
+    label: 'Category',
+    type: 'string',
+    options: _.map(config.content?.posts_config?.categories, (cat) => ({
+      label: cat,
+      value: cat
+    }))
+  },
+]);
 
 const Posts: Collection = {
   name: 'post',
@@ -11,23 +40,7 @@ const Posts: Collection = {
   path: 'content/posts',
   format: 'mdx',
   fields: _.compact([
-    {
-      type: 'string',
-      name: 'title',
-      label: 'Title',
-      isTitle: true,
-      required: true,
-    },
-    {
-      name: 'author',
-      label: 'Author',
-      type: 'string'
-    },
-    {
-      name: 'date',
-      label: 'Date',
-      type: 'datetime'
-    },
+    ...postMetadata,
     {
       name: 'cardImage',
       label: 'Card Image',
@@ -37,15 +50,6 @@ const Posts: Collection = {
       name: 'imageAlt',
       label: 'Card Image alt text',
       type: 'string'
-    },
-    config.content?.posts_config?.categories && {
-      name: 'category',
-      label: 'Category',
-      type: 'string',
-      options: _.map(config.content?.posts_config?.categories, (cat) => ({
-        label: cat,
-        value: cat
-      }))
     },
     config.content?.posts_config?.drafts &&     {
       name: 'publish',

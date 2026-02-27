@@ -2,6 +2,8 @@ import { Collection, TinaField } from '@tinacms/schema-tools';
 import TinaMapLayerDefaultSwitch from '../components/TinaMapLayerDefaultSwitch';
 import TinaMapLayerOverlaySwitch from '../components/TinaMapLayerOverlaySwitch';
 import TinaMapLayerURLField from '../components/TinaMapLayerURLField';
+import { postMetadata } from './posts';
+import _ from 'underscore';
 
 const editioncrafterConfigFields: TinaField<false>[] = [{
   name: 'xml_id_field',
@@ -29,7 +31,12 @@ const editioncrafterConfigFields: TinaField<false>[] = [{
     label: 'Label',
     type: 'string'
   }]
-}]
+}];
+
+const sortOptions = _.map(postMetadata, (field) => ({
+  label: field.label,
+  value: field.name
+}));
 
 const attributeParserOptions = [{
   label: 'fuzzyDate',
@@ -70,11 +77,23 @@ const Settings: Collection = {
       }, {
         name: 'sort_by',
         label: 'Post display order',
-        type: 'string',
-        description: 'If set to Date, will display posts in reverse chronological order. Note that if this setting is selected, only posts with a value in the Date field will display.',
-        options: [{
-          label: 'Date (newest first)',
-          value: 'date'
+        type: 'object',
+        fields: [{
+          name: 'name',
+          label: 'Field to sort by',
+          type: 'string',
+          options: sortOptions
+        }, {
+          name: 'direction',
+          label: 'Sort direction (ascending or descending)',
+          type: 'string',
+          options: [{
+            label: 'Ascending',
+            value: 'asc'
+          }, {
+            label: 'Descending',
+            value: 'desc'
+          }]
         }]
       }]
     }]

@@ -11,14 +11,17 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 interface Props {
   lang: string;
-  chrono?: boolean;
+  sort?: {
+    name: string;
+    direction?: 'asc' | 'desc';
+  };
 }
 
-const PER_PAGE = 2;
+const PER_PAGE = 25;
 
 const PostList = (props: Props) => {
   const { t } = useTranslations();
-  const { chrono, lang } = props;
+  const { sort, lang } = props;
 
   const [cursor, setCursor] = useState<string | null>(null);
   const [posts, setPosts] = useState<any[]>([]);
@@ -27,17 +30,17 @@ const PostList = (props: Props) => {
 
   const onLoadPosts = useCallback(async (cursor?: string) => {
     setLoading(true);
-    const params = chrono
+    const params = sort?.direction === 'desc'
       ? {
         last: PER_PAGE,
-        sort: 'date'
+        sort: sort?.name
       } 
       : {
         first: PER_PAGE,
       };
 
     if (cursor) {
-      if (chrono) {
+      if (sort?.direction === 'desc') {
         params['before'] = cursor;
       } else {
         params['after'] = cursor;
@@ -51,7 +54,7 @@ const PostList = (props: Props) => {
     const res = await fetchPosts(params);
 
     setPosts(prev => prev.concat(res.posts));
-    const next = chrono ? 'hasPreviousPage' : 'hasNextPage';
+    const next = sort?.direction === 'desc' ? 'hasPreviousPage' : 'hasNextPage';
     setCursor((res.metadata && res.metadata[next]) ? res.metadata?.endCursor : null);
     setLoading(false);
   }, [category]);
