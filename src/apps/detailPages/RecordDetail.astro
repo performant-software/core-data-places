@@ -57,8 +57,8 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
   <Container>
     <div class='pb-6 flex items-center gap-2'>
       <BackButton
-        id='backButton'
         size={24}
+        client:load
       />
       <span class='uppercase font-semibold'>{t('backTo', { label: t(model) })}</span>
     </div>
@@ -161,11 +161,3 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
     />
   </Container>
 </div>
-
-<script>
-  window.document.addEventListener('DOMContentLoaded', () => {
-    const backButton = document.querySelector('#backButton');
-    const prevURL = document.referrer;
-    backButton.addEventListener('click', () => window.location.href = prevURL)
-  })
-</script>

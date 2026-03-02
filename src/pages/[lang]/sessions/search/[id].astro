@@ -23,7 +23,7 @@ export const getStaticPaths = () => [];
   >
     <BackButton
       className='absolute top-[26px]'
-      id='backButton'
+      client:load
     />
     <div
       class='ml-12'
@@ -42,8 +42,3 @@ export const getStaticPaths = () => [];
   title={item?.name}
   client:load
 />
-
-<script>
-  const backButton = document.querySelector('#backButton')
-  backButton.addEventListener('click', () => history.back())
-</script>
