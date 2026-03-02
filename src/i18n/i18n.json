@@ -490,5 +490,17 @@
   "tags": {
     "tinaLabel": "Tags",
     "defaultValue": "Tags"
+  },
+  "content_warning": {
+    "tinaLabel": "Content Warning",
+    "defaultValue": "Content Warning"
+  },
+  "sensitiveContentFilter": {
+    "tinaLabel": "Sensitive content filter for image search",
+    "defaultValue": "Hide sensitive content"
+  },
+  "contentWarningRelatedMedia": {
+    "tinaLabel": "Sensitive content warning for related media",
+    "defaultValue": "This media contain sensitive content. Show anyway?"
   }
 }
