@@ -1,19 +1,19 @@
 ---
 import PathViewer from '@apps/paths/PathViewer';
-import { fetchPath } from '@backend/tina';
+import { fetchPathResponse } from '@backend/tina';
 import PageStoreProvider from '@components/PageStoreProvider';
 
 const { slug } = Astro.props;
-const path = await fetchPath(slug);
+const pathResponse = await fetchPathResponse(slug);
 
 ---
 
 <PathViewer
-  path={path}
+  {...pathResponse}
   client:only='react'
 />
 
 <PageStoreProvider
-  title={path.title}
+  title={pathResponse?.data?.path.title}
   client:load
 />

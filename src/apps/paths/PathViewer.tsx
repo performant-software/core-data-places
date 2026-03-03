@@ -20,15 +20,25 @@ import {
 } from 'react';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import Byline from '@components/Byline';
+import { PathQuery, PathQueryVariables } from '@root/tina/__generated__/types';
+import { tinaField, useTina } from 'tinacms/dist/react';
 
 export interface PathViewerProps {
-  path: any;
+  variables: PathQueryVariables;
+  data: PathQuery;
+  query: string;
 }
 
 const PathViewer = (props: PathViewerProps) => {
   const [current, setCurrent] = useState(-1);
 
-  const { path } = props;
+  const { data } = useTina({
+    query: props.query,
+    variables: props.variables,
+    data: props.data,
+  });
+
+  const path = useMemo(() => (data?.path), [data]);
   const contentDiv = useRef(null);
 
   const { t } = useTranslations();
@@ -138,11 +148,13 @@ const PathViewer = (props: PathViewerProps) => {
                     <>
                       <h2
                         className='text-3xl'
+                        data-tina-field={tinaField(path.path[current].place, 'title')}
                       >
                         { path.path[current].place.title }
                       </h2>
                       <article
                         className='prose prose-invert max-w-none'
+                        data-tina-field={tinaField(path.path[current])}
                       >
                         <TinaMarkdown
                           content={path.path[current].blurb}
@@ -158,12 +170,14 @@ const PathViewer = (props: PathViewerProps) => {
                     <>
                       <h2
                         className='text-3xl'
+                        data-tina-field={tinaField(data?.path, 'title')}
                       >
                         { path.title }
                       </h2>
                       { (path.author || path.date) && <Byline author={path.author} date={path.date} /> }
                       <article
                         className='prose prose-xl prose-invert max-w-none'
+                        data-tina-field={tinaField(data?.path, 'description')}
                       >
                         <TinaMarkdown
                           content={path.description}
