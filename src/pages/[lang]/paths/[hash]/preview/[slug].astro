@@ -1,0 +1,36 @@
+---
+import Path from '@apps/paths/Path.astro';
+import Layout from "@layouts/Layout.astro";
+
+const createHash = async (input: string) => {
+  const str = input + import.meta.env.TINA_PUBLIC_HASH_KEY;
+  const buffer = new TextEncoder().encode(str);
+  const hash = await crypto.subtle.digest('SHA-256', buffer);
+  return hash;
+};
+
+export const prerender = false;
+
+const { hash, slug } = Astro.params;
+
+const slugHash = await createHash(slug);
+const hashArray = new Uint8Array(slugHash);
+const hashHex = Array.from(hashArray)
+  .map(byte => byte.toString(16).padStart(2, '0'))
+  .join(''); 
+
+if (hash !== hashHex) {
+  return Astro.redirect('/');
+}
+
+
+
+---
+
+<Layout
+  fullscreen
+>
+  <Path
+    slug={slug}
+  />
+</Layout>

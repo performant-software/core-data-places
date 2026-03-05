@@ -11,15 +11,23 @@ import Map from '@visualizations/Map';
 import Table from '@visualizations/Table';
 import Timeline from '@visualizations/Timeline';
 import { TinaMarkdown, TinaMarkdownContent } from 'tinacms/dist/rich-text';
+import { PostQuery, PostQueryVariables } from '@root/tina/__generated__/types';
+import { tinaField, useTina } from "tinacms/dist/react";
 
 interface PostContentProps {
-  content: TinaMarkdownContent;
-  title: string;
-  author?: string;
+  variables: PostQueryVariables;
+  data: PostQuery;
+  query: string;
 }
 
 const PostContent = (props: PostContentProps) => {
   const { t } = useTranslations();
+
+  const { data } = useTina({
+    query: props.query,
+    variables: props.variables,
+    data: props.data,
+  });
 
   return (
     <RuntimeConfig
@@ -35,6 +43,7 @@ const PostContent = (props: PostContentProps) => {
           >
             <article
               className='prose prose-lg max-w-none w-full'
+              data-tina-field={tinaField(data?.post)}
             >
               <TinaMarkdown
                 components={{
@@ -47,7 +56,7 @@ const PostContent = (props: PostContentProps) => {
                   stacked_timeline: StackedTimeline,
                   timeline: Timeline
                 }}
-                content={props.content}
+                content={data?.post?.body}
               />
             </article>
           </div>
