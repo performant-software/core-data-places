@@ -13,13 +13,17 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 interface Props {
   lang: string;
+  sort?: {
+    name: string;
+    direction?: 'asc' | 'desc';
+  };
 }
 
 const PER_PAGE = 25;
 
 const PostList = (props: Props) => {
   const { t } = useTranslations();
-  const { lang } = props;
+  const { sort, lang } = props;
 
   const [cursor, setCursor] = useState<string | null>(null);
   const [posts, setPosts] = useState<any[]>([]);
@@ -28,12 +32,21 @@ const PostList = (props: Props) => {
 
   const onLoadPosts = useCallback(async (cursor?: string) => {
     setLoading(true);
-    const params = {
-      first: PER_PAGE,
-    };
+    const params = sort?.direction === 'desc'
+      ? {
+        last: PER_PAGE,
+        sort: sort?.name
+      } 
+      : {
+        first: PER_PAGE,
+      };
 
     if (cursor) {
-      params['after'] = cursor;
+      if (sort?.direction === 'desc') {
+        params['before'] = cursor;
+      } else {
+        params['after'] = cursor;
+      }
     }
 
     if (category) {
@@ -43,7 +56,8 @@ const PostList = (props: Props) => {
     const res = await fetchPosts(params);
 
     setPosts(prev => prev.concat(res.posts));
-    setCursor(res.metadata?.hasNextPage ? res.metadata?.endCursor : null);
+    const next = sort?.direction === 'desc' ? 'hasPreviousPage' : 'hasNextPage';
+    setCursor((res.metadata && res.metadata[next]) ? res.metadata?.endCursor : null);
     setLoading(false);
   }, [category]);
 

@@ -4,6 +4,10 @@ import PostList from '@apps/posts/PostList';
 
 interface Props {
   lang: string;
+  sort?: {
+    name: string;
+    direction?: 'asc' | 'desc';
+  };
 }
 
 const Posts = (props: Props) => {
@@ -14,6 +18,7 @@ const Posts = (props: Props) => {
       value={{ lang: props.lang, t }}
     >
       <PostList
+        sort={props.sort}
         lang={props.lang}
       />
     </TranslationContext.Provider>
