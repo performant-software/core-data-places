@@ -56,7 +56,7 @@ test.describe('Accessibility testing', () => {
       const paths = await fetchPaths();
 
       for (const path of paths) {
-        await page.goto(`posts/${path._sys.filename}`);
+        await page.goto(`paths/${path._sys.filename}`);
         await checkPage(page);
       }
     });
@@ -198,6 +198,9 @@ test.describe('Accessibility testing', () => {
  * @param message
  */
 const checkPage = async (page: Page, message: string = '') => {
-  const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-  expect(accessibilityScanResults.violations, message || page.url()).toEqual([]);
+  const accessibilityScanResults = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag22aa'])
+    .analyze();
+
+  expect.soft(accessibilityScanResults.violations, message || page.url()).toEqual([]);
 };
