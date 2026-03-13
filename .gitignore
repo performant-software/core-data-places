@@ -41,6 +41,9 @@ tmp/
 # Development config
 /public/config.dev*.json
 
+# Local site registry (contains client-specific Netlify site IDs)
+/scripts/sites.json
+
 # Workspaces
 *.code-workspace
 
