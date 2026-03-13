@@ -4,12 +4,6 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SITES_FILE="$SCRIPT_DIR/sites.json"
 
-if [ ! -f "$SITES_FILE" ]; then
-  echo "Error: $SITES_FILE not found." >&2
-  echo "Copy scripts/sites.example.json to scripts/sites.json and add your Netlify site IDs." >&2
-  exit 1
-fi
-
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -33,14 +27,53 @@ Options:
   --no-match     Skip checking out the site's deployed CDP version
   --skip-clean   Skip content/cache cleanup (faster restart for same site)
   --list         Show available site names
+  --init         Generate scripts/sites.json from your Netlify account
   -h, --help     Show this help
 
 Examples:
+  scripts/dev.sh --init             # First-time setup: generate sites.json
   scripts/dev.sh atlas              # Match deployed version, switch, and start
   scripts/dev.sh uss --no-match     # Skip version matching, just switch and start
   scripts/dev.sh atlas --skip-clean # Restart Atlas without re-cloning content
   npm run dev -- atlas              # Same thing via npm
 EOF
+}
+
+init_sites() {
+  info "Querying Netlify for CDP sites..."
+  local json
+  json=$(npx netlify sites:list --json 2>/dev/null)
+
+  if [ -z "$json" ]; then
+    error "Failed to fetch sites. Make sure you're logged in (netlify login)."
+    exit 1
+  fi
+
+  node -e "
+    const sites = JSON.parse(process.argv[1]);
+    const cdpSites = sites.filter(s =>
+      s.build_settings?.repo_url === 'https://github.com/performant-software/core-data-places'
+    );
+
+    if (cdpSites.length === 0) {
+      console.error('No CDP sites found in your Netlify account.');
+      process.exit(1);
+    }
+
+    const registry = {};
+    for (const s of cdpSites.sort((a, b) => a.name.localeCompare(b.name))) {
+      registry[s.name] = s.id;
+    }
+
+    const fs = require('fs');
+    fs.writeFileSync('$SITES_FILE', JSON.stringify(registry, null, 2) + '\n');
+    console.log('Wrote $SITES_FILE with ' + cdpSites.length + ' sites:');
+    for (const [name, id] of Object.entries(registry)) {
+      console.log('  ' + name + '  ' + id);
+    }
+    console.log('');
+    console.log('Tip: edit the file to use shorter names (e.g. \"uss\" instead of \"universities-studying-slavery\").');
+  " "$json"
 }
 
 list_sites() {
@@ -183,6 +216,10 @@ SKIP_CLEAN=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --init)
+      init_sites
+      exit 0
+      ;;
     --list)
       list_sites
       exit 0
@@ -225,6 +262,13 @@ if [ -z "$SITE" ]; then
       break
     fi
   done
+fi
+
+# Ensure sites.json exists
+if [ ! -f "$SITES_FILE" ]; then
+  error "$SITES_FILE not found."
+  echo "Run 'scripts/dev.sh --init' to generate it from your Netlify account." >&2
+  exit 1
 fi
 
 # Resolve site name to ID
