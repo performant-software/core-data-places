@@ -12,9 +12,7 @@ export const GET: APIRoute = async (req) => {
 
   let filter = {};
 
-  if (config.content?.posts_config?.drafts) {
-    filter['publish'] = { eq: true };
-  }
+  filter['published'] = { eq: true };
 
   if (params?.category) {
     filter['category'] = { eq: params.category };

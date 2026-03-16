@@ -71,10 +71,6 @@ const Settings: Collection = {
         type: 'string',
         list: true
       }, {
-        name: 'drafts',
-        label: 'Use Draft Workflow?',
-        type: 'boolean'
-      }, {
         name: 'sort_by',
         label: 'Post display order',
         type: 'object',

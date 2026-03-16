@@ -47,8 +47,16 @@ const Posts: Collection = {
       const hashArray = new Uint8Array(hash);
       const hashHex = Array.from(hashArray)
         .map(byte => byte.toString(16).padStart(2, '0'))
-        .join('');      
+        .join('');
       return `/en/posts/${hashHex}/preview/${document._sys.filename}`;
+    },
+    beforeSubmit: async ({ values, cms }: any) => {
+      const user = await cms.authProvider?.getUser?.();
+      if (user?.id && !values.owner_id) {
+        values.owner_id = user.id;
+        values.owner_name = user.fullName || user.primaryEmailAddress?.emailAddress || '';
+      }
+      return values;
     },
   },
   fields: _.compact([
@@ -63,10 +71,22 @@ const Posts: Collection = {
       label: 'Card Image alt text',
       type: 'string'
     },
-    config.content?.posts_config?.drafts &&     {
-      name: 'publish',
-      label: 'Publish',
-      type: 'boolean'
+    {
+      name: 'published',
+      label: 'Published',
+      type: 'boolean',
+      ui: { component: 'PublishedToggle' }
+    },
+    {
+      name: 'owner_id',
+      type: 'string',
+      ui: { component: () => null }
+    },
+    {
+      name: 'owner_name',
+      label: 'Created by',
+      type: 'string',
+      ui: { component: 'ReadOnlyText' }
     },
     {
       type: 'rich-text',

@@ -10,6 +10,8 @@ import authConfig from '@root/auth.config';
 import { Session } from '@auth/core/types';
 import { Auth } from '@auth/core';
 import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs';
+import { createClerkClient } from '@clerk/backend';
+import { enforceEditorRules } from '../tina/clerk-rbac';
 
 dotenv.config();
 
@@ -23,6 +25,7 @@ app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 const useSSO = process.env.TINA_PUBLIC_AUTH_USE_KEYCLOAK === 'true';
+const useClerk = process.env.TINA_PUBLIC_AUTH_USE_CLERK === 'true';
 
 async function getSession(req: Request, options = authConfig): Promise<Session | null> {
   // @ts-ignore
@@ -42,6 +45,45 @@ async function getSession(req: Request, options = authConfig): Promise<Session |
   if (status === 200) return data
   throw new Error(data.message)
 }
+
+// Short-TTL cache for Clerk token verification (avoids rate limits)
+const clerkTokenCache = new Map<string, { result: any, expires: number }>();
+const CLERK_CACHE_TTL = 60_000; // 60 seconds
+
+const ClerkRBACAuth = (secretKey: string) => ({
+  isAuthorized: async (req: any, _res: any) => {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    if (!token) return { isAuthorized: false as const, errorCode: 401, errorMessage: 'No token' };
+
+    // Check cache
+    const cached = clerkTokenCache.get(token);
+    if (cached && cached.expires > Date.now()) {
+      Object.assign(req, cached.result);
+      return { isAuthorized: true as const };
+    }
+
+    try {
+      const clerk = createClerkClient({ secretKey });
+      const session = await clerk.verifyToken(token);
+      const user = await clerk.users.getUser(session.sub);
+      const role = (user.publicMetadata as any)?.role || 'editor';
+
+      const reqData = {
+        __clerkRole: role,
+        __clerkUserId: session.sub,
+        __clerkUserName: [user.firstName, user.lastName].filter(Boolean).join(' ')
+          || user.emailAddresses[0]?.emailAddress,
+      };
+
+      Object.assign(req, reqData);
+      clerkTokenCache.set(token, { result: reqData, expires: Date.now() + CLERK_CACHE_TTL });
+
+      return { isAuthorized: true as const };
+    } catch (err) {
+      return { isAuthorized: false as const, errorCode: 401, errorMessage: 'Invalid token' };
+    }
+  }
+});
 
 const CustomBackendAuth = () => {
   return {
@@ -64,15 +106,17 @@ const CustomBackendAuth = () => {
 
 const authProvider = isLocal
   ? LocalBackendAuthProvider()
-  : useSSO
-    ? CustomBackendAuth()
-    : AuthJsBackendAuthProvider({
-      authOptions: TinaAuthJSOptions({
-        databaseClient,
-        secret: process.env.NEXTAUTH_SECRET!,
-        debug: true
-      })
-    })
+  : useClerk
+    ? ClerkRBACAuth(process.env.CLERK_SECRET_KEY!)
+    : useSSO
+      ? CustomBackendAuth()
+      : AuthJsBackendAuthProvider({
+          authOptions: TinaAuthJSOptions({
+            databaseClient,
+            secret: process.env.NEXTAUTH_SECRET!,
+            debug: true
+          })
+        })
 
 const tinaBackend = TinaNodeBackend({
   authProvider,
@@ -96,7 +140,17 @@ const mediaHandler = createMediaHandler({
   }
 });
 
-app.post('/api/tina/*', async (req, res) => {
+app.post('/api/tina/*', async (req: any, res: any) => {
+  if (useClerk) {
+    const authResult = await authProvider.isAuthorized(req, res);
+    if (!authResult.isAuthorized) {
+      return res.status(authResult.errorCode).json({ error: authResult.errorMessage });
+    }
+    if (req.__clerkRole === 'editor' && req.body?.query) {
+      const rejection = await enforceEditorRules(req.body, req.__clerkUserId, databaseClient);
+      if (rejection) return res.status(403).json({ error: rejection });
+    }
+  }
   tinaBackend(req, res);
 });
 

@@ -43,8 +43,12 @@ export const fetchPage = async (locale: string, slug: string) => {
   }
 
   const response = await fetchOne(locale, slug, client.queries.pages);
+  const page = response.data?.pages;
 
-  return response.data?.pages;
+  // Home page always renders; other pages require published === true
+  if (page && !page.home_page && page.published !== true) return null;
+
+  return page;
 };
 
 export const fetchPages = async (locale: string, params?: any) => {
@@ -52,19 +56,26 @@ export const fetchPages = async (locale: string, params?: any) => {
     return null;
   }
 
-  const response = await client.queries.pagesConnection(params);
+  const response = await client.queries.pagesConnection({
+    ...params,
+    filter: { ...params?.filter, published: { eq: true } }
+  });
   const pages = response.data?.pagesConnection?.edges?.map((item) => item?.node);
 
   return filterAll(locale, pages);
 };
 
-export const fetchPath = async (slug: string) => {
+export const fetchPath = async (slug: string, skipPublishedCheck = false) => {
   if (!client.queries.path) {
     return null;
   }
 
   const response = await client.queries.path({ relativePath: `${slug}.mdx`});
-  return response.data?.path;
+  const path = response.data?.path;
+
+  if (!skipPublishedCheck && path && path.published !== true) return null;
+
+  return path;
 };
 
 export const fetchPathResponse = async (slug: string) => {
@@ -81,17 +92,23 @@ export const fetchPaths = async () => {
     return null;
   }
 
-  const response = await client.queries.pathConnection();
+  const response = await client.queries.pathConnection({
+    filter: { published: { eq: true } }
+  });
   return response.data?.pathConnection?.edges?.map((item) => item?.node);
 };
 
-export const fetchPost = async (slug: string) => {
+export const fetchPost = async (slug: string, skipPublishedCheck = false) => {
   if (!client.queries.post) {
     return null;
   }
 
   const response = await client.queries.post({ relativePath: `${slug}.mdx`});
-  return response.data?.post;
+  const post = response.data?.post;
+
+  if (!skipPublishedCheck && post && post.published !== true) return null;
+
+  return post;
 };
 
 export const fetchPostResponse = async (slug: string) => {
@@ -103,12 +120,15 @@ export const fetchPostResponse = async (slug: string) => {
   return response;
 }
 
-export const fetchPosts = async (params = {}) => {
+export const fetchPosts = async (params: any = {}) => {
   if (!client.queries.postConnection) {
     return null;
   }
 
-  const response = await client.queries.postConnection(params);
+  const response = await client.queries.postConnection({
+    ...params,
+    filter: { ...params?.filter, published: { eq: true } }
+  });
 
   return {
     metadata: response.data?.postConnection?.pageInfo,

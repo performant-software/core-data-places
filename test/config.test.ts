@@ -58,9 +58,7 @@ describe('content', () => {
     expect(config.content?.posts_config?.categories).toBeArrayOf(String);
   });
 
-  test('posts_config.drafts matches allowed values', () => {
-    expect(config.content?.posts_config?.drafts).toBeBoolean();
-  });
+  // drafts field removed — publishing is now handled via the published field on each document
 });
 
 describe('core_data', () => {

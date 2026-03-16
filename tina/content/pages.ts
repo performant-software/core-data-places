@@ -925,12 +925,36 @@ const Pages: Collection = {
   label: 'Pages',
   path: 'content/pages',
   format: 'mdx',
+  ui: {
+    beforeSubmit: async ({ values, cms }: any) => {
+      const user = await cms.authProvider?.getUser?.();
+      if (user?.id && !values.owner_id) {
+        values.owner_id = user.id;
+        values.owner_name = user.fullName || user.primaryEmailAddress?.emailAddress || '';
+      }
+      return values;
+    },
+  },
   fields: [{
     name: 'title',
     label: 'Title',
     type: 'string',
     isTitle: true,
     required: true
+  }, {
+    name: 'published',
+    label: 'Published',
+    type: 'boolean',
+    ui: { component: 'PublishedToggle' }
+  }, {
+    name: 'owner_id',
+    type: 'string',
+    ui: { component: () => null }
+  }, {
+    name: 'owner_name',
+    label: 'Created by',
+    type: 'string',
+    ui: { component: 'ReadOnlyText' }
   }, {
     name: 'home_page',
     label: 'Home Page',
