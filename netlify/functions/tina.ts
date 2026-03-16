@@ -10,7 +10,7 @@ import authConfig from '@root/auth.config';
 import { Session } from '@auth/core/types';
 import { Auth } from '@auth/core';
 import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs';
-import { createClerkClient } from '@clerk/backend';
+import { Clerk, verifyToken } from '@clerk/backend';
 import { enforceEditorRules } from '../tina/clerk-rbac';
 
 dotenv.config();
@@ -63,8 +63,8 @@ const ClerkRBACAuth = (secretKey: string) => ({
     }
 
     try {
-      const clerk = createClerkClient({ secretKey });
-      const session = await clerk.verifyToken(token);
+      const clerk = Clerk({ secretKey });
+      const session = await verifyToken(token);
       const user = await clerk.users.getUser(session.sub);
       const role = (user.publicMetadata as any)?.role || 'editor';
 
