@@ -1,5 +1,6 @@
 [functions]
   node_bundler = "esbuild"
+  external_node_modules = ["next"]
 
 [[redirects]]
   from = "/api/tina/*"
