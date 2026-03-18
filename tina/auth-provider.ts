@@ -1,26 +1,99 @@
+import { type Clerk } from '@clerk/clerk-js';
 import { AbstractAuthProvider } from 'tinacms';
-import { signIn, signOut } from 'auth-astro/client';
+import { ClerkProvider } from '@clerk/react';
+import { ui } from '@clerk/ui';
 
-export class CustomAuthProvider extends AbstractAuthProvider {
-  constructor() {
-    super()
-    // Do any setup here
+
+
+export class ClerkAuthProvider extends AbstractAuthProvider {
+  clerk: Clerk;
+  allowedList?: string[];
+  orgId?: string;
+  constructor({
+    orgId,
+    clerk,
+    allowedList,
+  }: {
+    clerk: Clerk;
+    /**
+     * For premium Clerk users, you can use restrictions
+     * https://clerk.com/docs/authentication/allowlist
+     */
+    allowedList?: string[];
+    // Ensure the user is a member of the provided orgId
+    orgId?: string;
+  }) {
+    super();
+    this.clerk = clerk;
+
+    this.allowedList = allowedList;
+    this.orgId = orgId;
   }
-  async authenticate(props?: {}): Promise<any> {
-    // Do any authentication here
-    return signIn("keycloak");
-  }
+  /**
+   * Generates a short-lived token when Tina makes a request
+   */
   async getToken() {
-    // Return the token here. The token will be passed as an Authorization header in the format `Bearer <token>`
-    return Promise.resolve({ id_token: "" });
+    await this.clerk.load({ ui });
+    if (this.clerk.session) {
+      return { id_token: await this.clerk.session.getToken() };
+    }
   }
-  async getUser() {
-    // Returns a truthy value, the user is logged in and if it returns a falsy value the user is not logged in.
-    const session = await fetch('/api/auth/session').then((res) => (res.json()));
-    return (session == null ? void 0 : session.user) || false;
-  }
+
   async logout() {
-    // Do any logout logic here
-    await signOut();
+    await this.clerk?.load({ ui });
+    await this.clerk?.session?.remove();
+  }
+  async authenticate() {
+    this.clerk.openSignIn({
+      appearance: {
+        elements: {
+          // Tina's sign in modal is in the way without this
+          modalBackdrop: { zIndex: 20000 },
+          // Some styles clash with Tina's styling
+          socialButtonsBlockButton: 'px-4 py-2 border border-gray-100',
+          formFieldInput: `px-4 py-2`,
+          formButtonPrimary: 'bg-blue-600 text-white p-4',
+          formFieldInputShowPasswordButton: 'm-2',
+          dividerText: 'px-2',
+        },
+      },
+    });
+  }
+  async authorize(context?: any): Promise<any> {
+    if (this.clerk.user) {
+      if (
+        this.allowedList &&
+        !this.allowedList.includes(
+          this.clerk.user.primaryEmailAddress.emailAddress
+        )
+      ) {
+        // if there is an allowList, and the user is not in it, return false
+        return false;
+      }
+
+      if (
+        this.orgId &&
+        !this.clerk.user.organizationMemberships.find(
+          (x) => x.organization.id === this.orgId
+        )
+      ) {
+        // if there is an orgId, and the user is not in it, return false
+        return false;
+      }
+
+      return true;
+    }
+    // Handle when a user is logged in outside of the org
+    await this.clerk.session.end();
+    return false;
+  }
+
+  async getUser(): Promise<any> {
+    await this.clerk.load({ ui });
+    return this.clerk.user;
+  }
+
+  getSessionProvider(): import("react").FC<{}> {
+    return ClerkProvider
   }
 }

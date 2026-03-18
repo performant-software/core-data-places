@@ -1,11 +1,29 @@
 import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection, TinaField } from '@tinacms/schema-tools';
 import Visualizations from '@root/tina/content/visualizations';
+import Creator from '../components/Creator';
 import _ from 'underscore';
 import config from '@config';
 import { media } from './common';
 
 export const postMetadata: TinaField<false>[] = _.compact([
+  {
+    type: 'object',
+    name: 'creator',
+    label: 'Creator',
+    fields: [{
+      name: 'id',
+      label: 'ID',
+      type: 'string'
+    }, {
+      name: 'email',
+      label: 'Email',
+      type: 'string'
+    }],
+    ui: {
+      component: Creator
+    }
+  },
   {
     type: 'string',
     name: 'title',
@@ -32,6 +50,11 @@ export const postMetadata: TinaField<false>[] = _.compact([
       value: cat
     }))
   },
+  {
+    name: 'published',
+    label: 'Published',
+    type: 'boolean'
+  }
 ]);
 
 const Posts: Collection = {
@@ -50,6 +73,17 @@ const Posts: Collection = {
         .join('');      
       return `/en/posts/${hashHex}/preview/${document._sys.filename}`;
     },
+    // Automatically set authorEmail on create
+    beforeSubmit: (arg: { values, form, cms }) => {
+      const user = arg.cms?.api?.tina?.authProvider?.clerk?.user; // update this to also work for native tina auth?
+      if (!arg.values.creator && user) {
+        arg.values.creator = {
+          id: user.id,
+          email: user.primaryEmailAddress?.emailAddress
+        };
+      }
+      return arg.values;
+    }
   },
   fields: _.compact([
     ...postMetadata,
@@ -62,11 +96,6 @@ const Posts: Collection = {
       name: 'imageAlt',
       label: 'Card Image alt text',
       type: 'string'
-    },
-    config.content?.posts_config?.drafts &&     {
-      name: 'publish',
-      label: 'Publish',
-      type: 'boolean'
     },
     {
       type: 'rich-text',
