@@ -61,7 +61,7 @@ const ClerkBackendAuthentication = ({
             return {
               isAuthorized: false as const,
               errorMessage:
-                'User not authorized. Not a member of the provided organization.',
+                `User ${user.id} not authorized. Not a member of the provided organization (${orgId}).`,
               errorCode: 401,
             };
           }
