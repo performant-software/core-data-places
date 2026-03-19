@@ -7,7 +7,7 @@ import express from 'express';
 import { createMediaHandler } from 'next-tinacms-s3/dist/handlers';
 import ServerlessHttp from 'serverless-http';
 import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs';
-import { Clerk } from '@clerk/backend';
+import { createClerkClient } from '@clerk/backend';
 import type { IncomingMessage, ServerResponse } from 'http';
 
 dotenv.config();
@@ -34,7 +34,7 @@ const ClerkBackendAuthentication = ({
   // Ensure the user is a member of the provided orgId
   orgId?: string;
 }) => {
-  const clerk = Clerk({
+  const clerk = createClerkClient({
     secretKey,
   });
 
@@ -50,16 +50,15 @@ const ClerkBackendAuthentication = ({
         const user = await clerk.users.getUser(requestState.toAuth().userId);
         if (orgId) {
           // Get the list of member id's for the organization
-          const membershipList = (
+          const membershipResponse = (
             await clerk.organizations.getOrganizationMembershipList({
               organizationId: orgId,
+              userId: [user.id]
             })
           );
-          console.log(membershipList.length, membershipList.map((mem) => ({ email: mem.publicUserData?.identifier, id: mem.publicUserData?.userId})), user);
-          const orgUser = membershipList?.find((mem) => (mem.publicUserData?.userId === user.id));
-          console.log(orgUser);
+          const membershipList = membershipResponse.data;
           // if the user is not in the list, they are not authorized
-          if (!orgUser) {
+          if (!membershipList?.length) {
             return {
               isAuthorized: false as const,
               errorMessage:
@@ -68,7 +67,7 @@ const ClerkBackendAuthentication = ({
             };
           }
           // otherwise, add the role to the user object
-          user.role = orgUser.role;
+          user.role = membershipList[0].role;
         }
         // if the user's email is not in the allowList, they are not authorized
         const primaryEmail = user.emailAddresses.find(
