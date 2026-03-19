@@ -1,9 +1,6 @@
 import { type Clerk } from '@clerk/clerk-js';
 import { AbstractAuthProvider } from 'tinacms';
-import { ClerkProvider } from '@clerk/react';
 import { ui } from '@clerk/ui';
-
-
 
 export class ClerkAuthProvider extends AbstractAuthProvider {
   clerk: Clerk;
@@ -91,9 +88,5 @@ export class ClerkAuthProvider extends AbstractAuthProvider {
   async getUser(): Promise<any> {
     await this.clerk.load({ ui });
     return this.clerk.user;
-  }
-
-  getSessionProvider(): import("react").FC<{}> {
-    return ClerkProvider
   }
 }

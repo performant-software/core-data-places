@@ -33,7 +33,7 @@
     "@astrojs/react": "^4.3.0",
     "@astrojs/sitemap": "^3.4.1",
     "@astrojs/ts-plugin": "^1.10.4",
-    "@clerk/backend": "^3.2.1",
+    "@clerk/backend": "^0.31.3",
     "@clerk/clerk-js": "^6.3.0",
     "@clerk/react": "^6.1.0",
     "@clerk/ui": "^1.2.1",

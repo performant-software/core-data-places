@@ -7,7 +7,7 @@ import express from 'express';
 import { createMediaHandler } from 'next-tinacms-s3/dist/handlers';
 import ServerlessHttp from 'serverless-http';
 import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs';
-import { createClerkClient } from '@clerk/backend';
+import { Clerk } from '@clerk/backend';
 import type { IncomingMessage, ServerResponse } from 'http';
 
 dotenv.config();
@@ -34,7 +34,7 @@ const ClerkBackendAuthentication = ({
   // Ensure the user is a member of the provided orgId
   orgId?: string;
 }) => {
-  const clerk = createClerkClient({
+  const clerk = Clerk({
     secretKey,
   });
 
@@ -50,15 +50,15 @@ const ClerkBackendAuthentication = ({
         const user = await clerk.users.getUser(requestState.toAuth().userId);
         if (orgId) {
           // Get the list of member id's for the organization
-          const membershipResponse = (
+          const membershipList = (
             await clerk.organizations.getOrganizationMembershipList({
               organizationId: orgId,
-              userId: [user.id]
+              limit: 100 //come back to this when we have orgs with more than 100 members
             })
           );
-          const membershipList = membershipResponse.data;
+          const orgUser = membershipList?.find((mem) => (mem.publicUserData?.userId === user.id));
           // if the user is not in the list, they are not authorized
-          if (!membershipList?.length) {
+          if (!orgUser) {
             return {
               isAuthorized: false as const,
               errorMessage:
@@ -67,7 +67,7 @@ const ClerkBackendAuthentication = ({
             };
           }
           // otherwise, add the role to the user object
-          user.role = membershipList[0].role;
+          user.role = orgUser.role;
         }
         // if the user's email is not in the allowList, they are not authorized
         const primaryEmail = user.emailAddresses.find(
