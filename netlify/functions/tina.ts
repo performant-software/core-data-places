@@ -55,6 +55,7 @@ const ClerkBackendAuthentication = ({
               organizationId: orgId,
             })
           );
+          console.log(membershipList, user);
           const orgUser = membershipList?.find((mem) => (mem.publicUserData?.userId === user.id));
           // if the user is not in the list, they are not authorized
           if (!orgUser) {
