@@ -5,6 +5,7 @@ import Creator from '../components/Creator';
 import _ from 'underscore';
 import config from '@config';
 import { media } from './common';
+import PublishToggle from '../components/PublishToggle';
 
 export const postMetadata: TinaField<false>[] = _.compact([
   {
@@ -53,7 +54,10 @@ export const postMetadata: TinaField<false>[] = _.compact([
   {
     name: 'published',
     label: 'Published',
-    type: 'boolean'
+    type: 'boolean',
+    ui: {
+      component: PublishToggle
+    }
   }
 ]);
 

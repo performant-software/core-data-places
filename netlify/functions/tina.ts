@@ -88,16 +88,32 @@ const ClerkBackendAuthentication = ({
               errorCode: 401,
             };
           }
-          // non-admin users can only edit paths and posts they created
           for (const collection of ['path', 'post']) {
-            if (req.body?.variables?.params && req.body?.variables?.params[collection]?.creator?.id !== user.id) {
-              return {
-                isAuthorized: false as const,
-                errorMessage: 'You may only edit content you created.',
-                errorCode: 401,
-              };
+            if (
+              req.body?.variables?.params 
+            ) {
+              // non-admin users can only edit paths and posts they created
+              if (req.body?.variables?.params[collection]?.creator?.id 
+                && req.body?.variables?.params[collection]?.creator?.id !== user.id
+              ) {
+                return {
+                  isAuthorized: false as const,
+                  errorMessage: 'You may only edit content you created.',
+                  errorCode: 401,
+                };
+              }
+
+              // non-admin users cannot publish posts or edit published posts
+              if (req.body?.variables?.params[collection]?.published) {
+                return {
+                  isAuthorized: false as const,
+                  errorMessage: 'You may not edit published content.',
+                  errorCode: 401,
+                }
+              }
             }
           }
+          // non-admin users cannot publish posts or edit published posts
           return { isAuthorized: true as const };
         }
       }
