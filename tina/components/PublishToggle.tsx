@@ -39,7 +39,7 @@ const PublishToggle = (props) => {
 
       {
         userRole !== 'org:admin' && ( 
-          <p className='p-3 font-bold'>
+          <p className='p-2 mb-5 text-sm font-bold'>
             {
               props.input.value.published ? 'Published' : 'Unpublished'
             }
