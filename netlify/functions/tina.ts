@@ -80,6 +80,22 @@ const ClerkBackendAuthentication = ({
           if (user.role === 'org:admin') {
             return { isAuthorized: true as const };
           }
+          // non-admin users cannot delete
+          if (req.body?.query?.includes('DeleteDocument')) {
+            return {
+              isAuthorized: false as const,
+              errorMessage: 'You do not have permission to delete documents.',
+              errorCode: 401,
+            };           
+          }
+          // non-admin users cannot delete
+          if (req.body?.query?.includes('RenameDocument')) {
+            return {
+              isAuthorized: false as const,
+              errorMessage: 'You do not have permission to rename documents.',
+              errorCode: 401,
+            };           
+          }
           // non-admin users can only edit paths and posts
           if (req.body?.variables?.collection && !(req.body?.variables?.collection === 'post' || req.body?.variables?.collection === 'path')) {
             return {
