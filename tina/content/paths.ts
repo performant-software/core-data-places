@@ -1,3 +1,5 @@
+import Creator from '../components/Creator';
+import PublishToggle from '../components/PublishToggle';
 import TinaMediaPicker from '../components/TinaMediaPicker';
 import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection } from '@tinacms/schema-tools';
@@ -18,8 +20,35 @@ const Paths: Collection = {
         .join('');      
       return `/en/paths/${hashHex}/preview/${document._sys.filename}`;
     },
+    beforeSubmit: (arg: { values, form, cms }) => {
+      const user = arg.cms?.api?.tina?.authProvider?.clerk?.user; // update this to also work for native tina auth?
+      if (!arg.values.creator && user) {
+        arg.values.creator = {
+          id: user.id,
+          email: user.primaryEmailAddress?.emailAddress
+        };
+      }
+      return arg.values;
+    }
   },
   fields: [
+    {
+      type: 'object',
+      name: 'creator',
+      label: 'Creator',
+      fields: [{
+        name: 'id',
+        label: 'ID',
+        type: 'string'
+      }, {
+        name: 'email',
+        label: 'Email',
+        type: 'string'
+      }],
+      ui: {
+        component: Creator
+      }
+    },
     {
       name: 'title',
       label: 'Title',
@@ -46,6 +75,14 @@ const Paths: Collection = {
       name: 'date',
       label: 'Date',
       type: 'datetime'
+    },
+    {
+      name: 'published',
+      label: 'Published',
+      type: 'boolean',
+      ui: {
+        component: PublishToggle
+      }
     },
     {
       name: 'description',
