@@ -1,8 +1,74 @@
+import _ from 'underscore';
 import Creator from '../components/Creator';
 import PublishToggle from '../components/PublishToggle';
 import TinaMediaPicker from '../components/TinaMediaPicker';
 import TinaPlacePicker from '../components/TinaPlacePicker';
-import { Collection } from '@tinacms/schema-tools';
+import { Collection, TinaField } from '@tinacms/schema-tools';
+import config from '@config';
+
+export const pathMetadata: TinaField<false>[] = _.compact([
+  {
+    type: 'object',
+    name: 'creator',
+    label: 'Creator',
+    fields: [{
+      name: 'id',
+      label: 'ID',
+      type: 'string'
+    }, {
+      name: 'email',
+      label: 'Email',
+      type: 'string'
+    }],
+    ui: {
+      component: Creator
+    }
+  },
+  {
+    name: 'title',
+    label: 'Title',
+    type: 'string',
+    required: true,
+    isTitle: true,
+  },
+  {
+    name: 'image',
+    label: 'Cover Image',
+    type: 'image'
+  },
+  {
+    name: 'imageAlt',
+    label: 'Cover Image alt text',
+    type: 'string'
+  },
+  {
+    name: 'author',
+    label: 'Author',
+    type: 'string'
+  },
+  {
+    name: 'date',
+    label: 'Date',
+    type: 'datetime'
+  },
+  config.content?.paths_config?.categories && {
+    name: 'category',
+    label: 'Category',
+    type: 'string',
+    options: _.map(config.content?.paths_config?.categories, (cat) => ({
+      label: cat,
+      value: cat
+    }))
+  },
+  {
+    name: 'published',
+    label: 'Published',
+    type: 'boolean',
+    ui: {
+      component: PublishToggle
+    }
+  }]
+);
 
 const Paths: Collection = {
   name: 'path',
@@ -32,58 +98,7 @@ const Paths: Collection = {
     }
   },
   fields: [
-    {
-      type: 'object',
-      name: 'creator',
-      label: 'Creator',
-      fields: [{
-        name: 'id',
-        label: 'ID',
-        type: 'string'
-      }, {
-        name: 'email',
-        label: 'Email',
-        type: 'string'
-      }],
-      ui: {
-        component: Creator
-      }
-    },
-    {
-      name: 'title',
-      label: 'Title',
-      type: 'string',
-      required: true,
-      isTitle: true,
-    },
-    {
-      name: 'image',
-      label: 'Cover Image',
-      type: 'image'
-    },
-    {
-      name: 'imageAlt',
-      label: 'Cover Image alt text',
-      type: 'string'
-    },
-    {
-      name: 'author',
-      label: 'Author',
-      type: 'string'
-    },
-    {
-      name: 'date',
-      label: 'Date',
-      type: 'datetime'
-    },
-    {
-      name: 'published',
-      label: 'Published',
-      type: 'boolean',
-      ui: {
-        component: PublishToggle
-      }
-    },
+    ...pathMetadata, 
     {
       name: 'description',
       label: 'Description',

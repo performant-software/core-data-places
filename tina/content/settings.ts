@@ -107,6 +107,52 @@ const Settings: Collection = {
           value: 'grid'
         }]
       }]
+    }, {
+      name: 'paths_config',
+      label: 'Paths configuration',
+      type: 'object',
+      fields: [{
+        name: 'categories',
+        label: 'Categories',
+        type: 'string',
+        list: true
+      }, {
+        name: 'drafts',
+        label: 'Use Draft Workflow?',
+        type: 'boolean'
+      }, {
+        name: 'sort_by',
+        label: 'Path display order',
+        type: 'object',
+        fields: [{
+          name: 'name',
+          label: 'Field to sort by',
+          type: 'string',
+          options: sortOptions
+        }, {
+          name: 'direction',
+          label: 'Sort direction (ascending or descending)',
+          type: 'string',
+          options: [{
+            label: 'Ascending',
+            value: 'asc'
+          }, {
+            label: 'Descending',
+            value: 'desc'
+          }]
+        }]
+      }, {
+        name: 'layout',
+        label: 'Layout',
+        type: 'string',
+        options: [{
+          label: 'List',
+          value: 'list'
+        }, {
+          label: 'Grid',
+          value: 'grid'
+        }]
+      }]
     }]
   }, {
     name: 'core_data',

@@ -42,7 +42,7 @@ export const postMetadata: TinaField<false>[] = _.compact([
     label: 'Date',
     type: 'datetime'
   },
-    config.content?.posts_config?.categories && {
+  config.content?.posts_config?.categories && {
     name: 'category',
     label: 'Category',
     type: 'string',
