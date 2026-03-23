@@ -341,7 +341,13 @@ restore_env() {
 }
 trap restore_env EXIT
 
-# Step 8: Start dev server
+# Step 8: Pre-build with Netlify env vars (before netlify dev timeout kicks in)
+info "Running pre-build with Netlify env vars..."
+npx netlify dev:exec node scripts/build.mjs
+success "Pre-build complete"
+echo ""
+
+# Step 9: Start dev server (skip build.mjs, already done)
 export USE_CONTENT_CACHE=true
 info "Starting dev server (USE_CONTENT_CACHE=true)..."
 echo ""
