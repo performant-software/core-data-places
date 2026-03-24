@@ -38,7 +38,7 @@ export class ClerkAuthProvider extends AbstractAuthProvider {
 
   async logout() {
     await this.clerk?.load({ ui });
-    await this.clerk?.session?.remove();
+    await this.clerk?.signOut();
   }
   async authenticate() {
     this.clerk.openSignIn({
