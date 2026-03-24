@@ -1,51 +1,166 @@
 {
+  "branding": {
+    "header_hide_title": false,
+    "footer_hide_title": false,
+    "footer_login": true
+  },
   "content": {
     "collections": [
       "paths",
       "posts"
-    ]
+    ],
+    "posts_config": {
+      "layout": "grid"
+    }
   },
   "core_data": {
     "url": "https://staging.coredata.cloud",
     "project_ids": [
-      "1",
-      "2",
-      "3"
+      "230"
     ]
+  },
+  "detail_pages": {
+    "models": {
+      "events": {},
+      "organizations": {},
+      "people": {}
+    }
   },
   "i18n": {
     "default_locale": "en",
-    "locales": ["en"]
+    "locales": [
+      "en"
+    ]
   },
-  "layers": [{
-    "name": "Maptiler DataViz Style",
-    "layer_type": "vector",
-    "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
-  }],
-  "search": [{
-    "name": "places",
-    "route": "/places",
-    "geosearch": true,
-    "map": {
-      "clusterRadius": 6,
-      "geometry": "geometry",
-      "max_zoom": 14,
-      "zoom_to_place": true
+  "layers": [
+    {
+      "name": "Maptiler DataViz Style",
+      "layer_type": "vector",
+      "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
+    }
+  ],
+  "result_filtering": {
+    "events": {
+      "exclude": [
+        "a69b5ef5-f119-4b2f-8a33-dfce360e172d"
+      ]
     },
-    "result_card": {
-      "title": "name"
+    "people": {
+      "exclude": [
+        "3d0b932c-fec0-4b83-97aa-63ab4ccc0657",
+        "1bf54ef5-adba-45bb-9ee3-3d3a5f78de01"
+      ]
+    }
+  },
+  "search": [
+    {
+      "name": "events",
+      "route": "/events",
+      "facets": [
+        {
+          "name": "cb9e196b-0151-4584-a295-454404aff84b.names_facet",
+          "type": "select"
+        }
+      ],
+      "map": {
+        "geometry": "cb9e196b-0151-4584-a295-454404aff84b.geometry",
+        "max_zoom": 14,
+        "zoom_to_place": true
+      },
+      "result_card": {
+        "title": "name"
+      },
+      "timeline": {
+        "date_range_facet": "start_year_facet"
+      },
+      "typesense": {
+        "host": "i74olkjcuy69ze2vp-1.a1.typesense.net",
+        "port": 443,
+        "protocol": "https",
+        "api_key": "Qu4sjurXtgQKXIX4pxUyjmiaOtjP7YPS",
+        "index_name": "padp_events",
+        "query_by": "name",
+        "default_sort": "name",
+        "facets": {
+          "include": [
+            "start_year_facet",
+            "end_year_facet",
+            "cb9e196b-0151-4584-a295-454404aff84b.names_facet",
+            "0512f56e-385d-4f2c-8e4c-61968f84212c.name_facet"
+          ]
+        }
+      }
     },
-    "typesense": {
-      "host": "example.typesense.com",
-      "port": 443,
-      "protocol": "https",
-      "api_key": "abcdefg",
-      "index_name": "core_data_places",
-      "query_by": "name",
-      "default_sort": "name",
-      "overrides": {
-        "geoLocationField": "coordinates"
+    {
+      "name": "people",
+      "route": "/people",
+      "map": {
+        "geometry": "e9e676dc-5297-4227-ab01-fb710b7f67ce.geometry",
+        "max_zoom": 14,
+        "zoom_to_place": true
+      },
+      "result_card": {
+        "title": "name"
+      },
+      "typesense": {
+        "host": "i74olkjcuy69ze2vp-1.a1.typesense.net",
+        "port": 443,
+        "protocol": "https",
+        "api_key": "fJr1a9G307zqpTpkGkDak6Lw7ahxXJPw",
+        "index_name": "padp_people",
+        "query_by": "name",
+        "default_sort": "name",
+        "facets": {
+          "include": [
+            "ea3f1de5-9122-4962-90a9-858c0483b9e7_facet",
+            "event_range_facet",
+            "9dd32cae-d1bc-48ad-8245-1000346b3386.name_facet",
+            "0512f56e-385d-4f2c-8e4c-61968f84212c.start_year_facet",
+            "0512f56e-385d-4f2c-8e4c-61968f84212c.end_year_facet",
+            "0512f56e-385d-4f2c-8e4c-61968f84212c.name_facet",
+            "ea3f1de5-9122-4962-90a9-858c0483b9e7_facet",
+            "0512f56e-385d-4f2c-8e4c-61968f84212c.names_facet"
+          ]
+        }
+      }
+    },
+    {
+      "name": "organizations",
+      "route": "/organizations",
+      "facets": [
+        {
+          "name": "7e4cc022-7fe4-47d4-823b-5f5fa69298e8.names_facet",
+          "type": "select"
+        }
+      ],
+      "map": {
+        "geometry": "7e4cc022-7fe4-47d4-823b-5f5fa69298e8.geometry",
+        "max_zoom": 14,
+        "zoom_to_place": true
+      },
+      "result_card": {
+        "title": "name"
+      },
+      "timeline": {
+        "date_range_facet": "84b4aa28-be46-474a-acd7-30bfcf6a444c.start_year_facet",
+        "event_path": "84b4aa28-be46-474a-acd7-30bfcf6a444c"
+      },
+      "typesense": {
+        "host": "i74olkjcuy69ze2vp-1.a1.typesense.net",
+        "port": 443,
+        "protocol": "https",
+        "api_key": "DXMrSPNPrYYhUkeu4LdzdzQu8Yr5iBRq",
+        "index_name": "padp_organizations",
+        "query_by": "name",
+        "default_sort": "name",
+        "facets": {
+          "include": [
+            "84b4aa28-be46-474a-acd7-30bfcf6a444c.start_year_facet",
+            "7e4cc022-7fe4-47d4-823b-5f5fa69298e8.names_facet",
+            "9dd32cae-d1bc-48ad-8245-1000346b3386.name_facet"
+          ]
+        }
       }
     }
-  }]
+  ]
 }
