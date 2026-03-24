@@ -32,9 +32,11 @@ export default defineConfig({
     publicFolder: 'public',
   },
   cmsCallback: (cms) => {
-    import('./role-ui').then(({ applyRoleRestrictions }) => {
-      applyRoleRestrictions(cms);
-    });
+    if (useSSO) {
+      import('./role-ui').then(({ applyRoleRestrictions }) => {
+        applyRoleRestrictions(cms);
+      });
+    }
     return cms;
   },
   contentApiUrlOverride: '/api/tina/gql',

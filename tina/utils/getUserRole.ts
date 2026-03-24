@@ -24,6 +24,12 @@ export const getUserRole = (cms: any): RoleInfo => {
   }
 
   const user = cms?.api?.tina?.authProvider?.clerk?.user;
+
+  // No Clerk user — site may not use Clerk. Default to admin (no restrictions).
+  if (!user) {
+    return { role: 'org:admin', userId: undefined, isAdmin: true };
+  }
+
   const membership = _.find(
     user?.organizationMemberships,
     (org: any) => org.organization.id === process.env.TINA_PUBLIC_CLERK_ORG_ID
