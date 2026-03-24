@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useCMS } from 'tinacms';
 import { getUserRole } from '../utils/getUserRole';
 
@@ -14,14 +15,12 @@ const OwnershipNotice = (props: any) => {
   const { isAdmin, userId } = getUserRole(cms);
 
   const creatorId = props.tinaForm?.values?.creator?.id;
-  const creatorEmail = props.tinaForm?.values?.creator?.email;
   const isOwner = !creatorId || creatorId === userId;
   const isReadOnly = !isAdmin && !isOwner;
 
-  // Set a data attribute for CSS-based field disabling
-  if (typeof document !== 'undefined') {
+  useEffect(() => {
     document.body.dataset.tinaReadOnly = isReadOnly ? 'true' : 'false';
-  }
+  }, [isReadOnly]);
 
   if (!isReadOnly) return null;
 
@@ -38,11 +37,13 @@ const OwnershipNotice = (props: any) => {
         gap: '8px',
         fontSize: '13px',
         color: '#92400e',
+        boxSizing: 'border-box',
+        maxWidth: '100%',
       }}
     >
       <span>🔒</span>
-      <span>
-        This content was created by {creatorEmail || 'another user'}. You can view but not edit it.
+      <span style={{ wordBreak: 'break-word', minWidth: 0 }}>
+        You're not the author of this content. You can view but not edit.
       </span>
     </div>
   );
