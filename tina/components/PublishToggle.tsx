@@ -1,17 +1,16 @@
 import { Switch } from "@headlessui/react";
 import { useCMS } from "tinacms";
-import _ from "underscore";
+import { getUserRole } from '../utils/getUserRole';
 
 
 const PublishToggle = (props) => {
-  const tina = useCMS();
-  const user = tina?.api?.tina?.authProvider?.clerk?.user; // TODO: this is very dependent on the exact clerk schema; should probably be factored out somehow?
-  const userRole = _.find(user?.organizationMemberships, (org) => (org.organization.id === process.env.TINA_PUBLIC_CLERK_ORG_ID))?.role;
+  const cms = useCMS();
+  const { isAdmin } = getUserRole(cms);
 
   return ( 
     <div>
       {
-        userRole === 'org:admin' && ( 
+        isAdmin && ( 
           <div className='flex flex-col gap-3 mb-5 p-2'>
             <p className='font-semibold text-sm'>Published</p>
             <Switch
@@ -32,7 +31,7 @@ const PublishToggle = (props) => {
       }
 
       {
-        userRole !== 'org:admin' && ( 
+        !isAdmin && ( 
           <div className='flex flex-col gap-3 p-2 mb-5 text-sm'>
             <p className='font-bold'>
               {

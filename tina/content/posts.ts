@@ -2,10 +2,12 @@ import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection, TinaField } from '@tinacms/schema-tools';
 import Visualizations from '@root/tina/content/visualizations';
 import Creator from '../components/Creator';
+import NotEditableNotice from '../components/NotEditableNotice';
 import _ from 'underscore';
 import config from '@config';
 import { media } from './common';
 import PublishToggle from '../components/PublishToggle';
+import { getUserRole } from '../utils/getUserRole';
 
 export const postMetadata: TinaField<false>[] = _.compact([
   {
@@ -77,9 +79,16 @@ const Posts: Collection = {
         .join('');      
       return `/en/posts/${hashHex}/preview/${document._sys.filename}`;
     },
-    // Automatically set authorEmail on create
     beforeSubmit: (arg: { values, form, cms }) => {
-      const user = arg.cms?.api?.tina?.authProvider?.clerk?.user; // update this to also work for native tina auth?
+      const { isAdmin, userId } = getUserRole(arg.cms);
+
+      // Block saves for non-owners
+      if (!isAdmin && arg.values.creator?.id && arg.values.creator.id !== userId) {
+        throw new Error('You can only edit content you created.');
+      }
+
+      // Auto-populate creator on first save
+      const user = arg.cms?.api?.tina?.authProvider?.clerk?.user;
       if (!arg.values.creator && user) {
         arg.values.creator = {
           id: user.id,
@@ -90,6 +99,13 @@ const Posts: Collection = {
     }
   },
   fields: _.compact([
+    {
+      name: '_notEditableNotice',
+      type: 'string',
+      ui: {
+        component: NotEditableNotice
+      }
+    },
     ...postMetadata,
     {
       name: 'cardImage',

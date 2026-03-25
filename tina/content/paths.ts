@@ -1,10 +1,12 @@
 import _ from 'underscore';
 import Creator from '../components/Creator';
+import NotEditableNotice from '../components/NotEditableNotice';
 import PublishToggle from '../components/PublishToggle';
 import TinaMediaPicker from '../components/TinaMediaPicker';
 import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection, TinaField } from '@tinacms/schema-tools';
 import config from '@config';
+import { getUserRole } from '../utils/getUserRole';
 
 export const pathMetadata: TinaField<false>[] = _.compact([
   {
@@ -87,7 +89,15 @@ const Paths: Collection = {
       return `/en/paths/${hashHex}/preview/${document._sys.filename}`;
     },
     beforeSubmit: (arg: { values, form, cms }) => {
-      const user = arg.cms?.api?.tina?.authProvider?.clerk?.user; // update this to also work for native tina auth?
+      const { isAdmin, userId } = getUserRole(arg.cms);
+
+      // Block saves for non-owners
+      if (!isAdmin && arg.values.creator?.id && arg.values.creator.id !== userId) {
+        throw new Error('You can only edit content you created.');
+      }
+
+      // Auto-populate creator on first save
+      const user = arg.cms?.api?.tina?.authProvider?.clerk?.user;
       if (!arg.values.creator && user) {
         arg.values.creator = {
           id: user.id,
@@ -98,7 +108,14 @@ const Paths: Collection = {
     }
   },
   fields: [
-    ...pathMetadata, 
+    {
+      name: '_notEditableNotice',
+      type: 'string',
+      ui: {
+        component: NotEditableNotice
+      }
+    },
+    ...pathMetadata,
     {
       name: 'description',
       label: 'Description',
