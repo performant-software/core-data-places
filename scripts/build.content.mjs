@@ -22,8 +22,8 @@ export const fetchContent = async () => {
 
   // Append any custom Netlify config to the main one
   // (mainly used for redirecting the admin site to a Performant Studio subdomain)
-  if (fs.existsSync('./content/netlify.toml')) {
-    const customConfig = fs.readFileSync('./content/netlify.toml', 'utf8');
+  if (fs.existsSync(`${TEMP_DIR}/netlify.toml`)) {
+    const customConfig = fs.readFileSync(`${TEMP_DIR}/netlify.toml`, 'utf8');
     const existingConfig = fs.readFileSync('./netlify.toml', 'utf8');
     const newConfig = `${existingConfig}\n\n${customConfig}`;
     fs.writeFileSync('./netlify.toml', newConfig);
