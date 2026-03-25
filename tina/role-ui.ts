@@ -57,7 +57,11 @@ export const applyRoleRestrictions = async (cms: any) => {
   if (typeof MutationObserver === 'undefined') return;
 
   const lockSidebarItems = () => {
-    const links = document.querySelectorAll('a[href*="#/collections/"], a[href*="/admin"]');
+    const links = document?.querySelectorAll('a[href*="#/collections/"], a[href*="/admin"]');
+
+    if (!links || !links?.length) {
+      return;
+    }
 
     links.forEach((link: Element) => {
       const el = link as HTMLAnchorElement;
