@@ -1,18 +1,12 @@
 ---
 import Path from '@apps/paths/Path.astro';
-import { fetchPath, fetchPaths } from '@backend/tina';
+import { fetchPaths } from '@backend/tina';
 import config from '@config';
 import Layout from "@layouts/Layout.astro";
 import { hasPathsContent } from '@utils/config';
 import _ from 'underscore';
 
 const { slug } = Astro.params;
-
-const path = await fetchPath(slug);
-
-if (!path?.published) {
-  return new Response(null, { status: 404 });
-}
 
 export const getStaticPaths = async () => {
   if (!hasPathsContent(config)) {
@@ -45,6 +39,7 @@ export const getStaticPaths = async () => {
 >
   <Path
     slug={slug}
+    publishedOnly={true}
     server:defer
   />
 </Layout>
