@@ -11,7 +11,10 @@ interface CustomTinaFieldProps {
 }
 
 const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
-  const [selectedPlace, setSelectedPlace] = useState<any>();
+  const [selectedPlace, setSelectedPlace] = useState<any>({
+    ...props.input.value,
+    name: props.input.value?.title
+  });
   const [message, setMessage] = useState('');
 
   const toggleAnimate = (e: any) => {
@@ -35,7 +38,7 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
   const onUpdateBuffer = (e: any) => {
     const newData = {
       ...props.input.value,
-      buffer: e.target.valueAsNumber
+      buffer: e.target.valueAsNumber || 2
     };
     props.input.onChange(newData);
   };
@@ -47,7 +50,7 @@ const TinaPlacePicker = wrapFieldsWithMeta((props: CustomTinaFieldProps) => {
       uuid: selectedPlace?.uuid
     });
 
-    if (selectedPlace && !selectedPlace.place_geometry) {
+    if (selectedPlace && selectedPlace.place_geometry === null) {
       setMessage('NOTE: The selected place has no specified location in Core Data. This may cause errors.')
     }
     else {

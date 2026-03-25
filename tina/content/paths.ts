@@ -7,6 +7,18 @@ const Paths: Collection = {
   label: 'Paths',
   path: 'content/paths',
   format: 'mdx',
+  ui: {
+    async router({ document }) {
+      const str = document._sys.filename + process.env.TINA_PUBLIC_HASH_KEY;
+      const buffer = new TextEncoder().encode(str);
+      const hash = await crypto.subtle.digest('SHA-256', buffer);
+      const hashArray = new Uint8Array(hash);
+      const hashHex = Array.from(hashArray)
+        .map(byte => byte.toString(16).padStart(2, '0'))
+        .join('');      
+      return `/en/paths/${hashHex}/preview/${document._sys.filename}`;
+    },
+  },
   fields: [
     {
       name: 'title',
