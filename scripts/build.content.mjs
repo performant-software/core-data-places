@@ -25,7 +25,7 @@ export const fetchContent = async () => {
   if (fs.existsSync('./content/netlify.toml')) {
     const customConfig = fs.readFileSync('./content/netlify.toml', 'utf8');
     const existingConfig = fs.readFileSync('./netlify.toml', 'utf8');
-    const newConfig = `${existingConfig}\n${customConfig}`;
+    const newConfig = `${existingConfig}\n\n${customConfig}`;
     fs.writeFileSync('./netlify.toml', newConfig);
   }
 
