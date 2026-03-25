@@ -1,22 +1,29 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useCMS } from 'tinacms';
 import { getUserRole } from '../utils/getUserRole';
 
 /**
  * A pseudo-field component that renders a read-only banner when
- * the current user doesn't own the content. Placed at the top
+ * the current user doesn't own the content, or if the content is 
+ * published and can't be edited further. Placed at the top
  * of the fields list in posts/paths collections.
  *
  * Also injects a data attribute on the form for CSS-based
  * disabling of other fields.
  */
-const OwnershipNotice = (props: any) => {
+const NotEditableNotice = (props: any) => {
   const cms = useCMS();
   const { isAdmin, userId } = getUserRole(cms);
 
   const creatorId = props.tinaForm?.values?.creator?.id;
   const isOwner = !creatorId || creatorId === userId;
-  const isReadOnly = !isAdmin && !isOwner;
+  const isReadOnly = !isAdmin && (!isOwner || props.tinaForm?.values?.published);
+
+  const msg = useMemo(() => ( 
+    !isOwner
+    ? 'You\'re not the author of this content. You can view but not edit.'
+    : 'This content has been published and cannot be edited.'
+  ), [isOwner]);
 
   useEffect(() => {
     document.body.dataset.tinaReadOnly = isReadOnly ? 'true' : 'false';
@@ -43,10 +50,10 @@ const OwnershipNotice = (props: any) => {
     >
       <span>🔒</span>
       <span style={{ wordBreak: 'break-word', minWidth: 0 }}>
-        You're not the author of this content. You can view but not edit.
+        { msg }
       </span>
     </div>
   );
 };
 
-export default OwnershipNotice;
+export default NotEditableNotice;

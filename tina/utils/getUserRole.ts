@@ -7,6 +7,17 @@ interface RoleInfo {
 }
 
 /**
+ * Loads the current Clerk instance and then calls `getUserRole`
+ * @param cms 
+ * @returns Promise<RoleInfo>
+ */
+
+export const getUserRoleAsync = async (cms: any): Promise<RoleInfo> => {
+  await cms?.api?.tina?.authProvider?.clerk?.load();
+  return getUserRole(cms);
+}
+
+/**
  * Detect the current user's role from Clerk org membership,
  * with a dev-mode override for local testing.
  */

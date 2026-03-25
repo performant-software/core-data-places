@@ -1,4 +1,4 @@
-import { getUserRole } from './utils/getUserRole';
+import { getUserRoleAsync } from './utils/getUserRole';
 
 const ADMIN_ONLY_COLLECTIONS = ['Settings', 'Branding', 'Internationalization', 'Navbar', 'Pages'];
 
@@ -6,8 +6,8 @@ const ADMIN_ONLY_COLLECTIONS = ['Settings', 'Branding', 'Internationalization', 
  * Apply role-based UI restrictions to the TinaCMS admin.
  * Cosmetic only — backend enforcement is the security layer.
  */
-export const applyRoleRestrictions = (cms: any) => {
-  const { isAdmin, userId } = getUserRole(cms);
+export const applyRoleRestrictions = async (cms: any) => {
+  const { isAdmin, userId } = await getUserRoleAsync(cms);
 
   if (typeof document === 'undefined') return;
 

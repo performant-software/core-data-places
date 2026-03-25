@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import Creator from '../components/Creator';
-import OwnershipNotice from '../components/OwnershipNotice';
+import NotEditableNotice from '../components/NotEditableNotice';
 import PublishToggle from '../components/PublishToggle';
 import TinaMediaPicker from '../components/TinaMediaPicker';
 import TinaPlacePicker from '../components/TinaPlacePicker';
@@ -109,10 +109,10 @@ const Paths: Collection = {
   },
   fields: [
     {
-      name: '_ownershipNotice',
+      name: '_notEditableNotice',
       type: 'string',
       ui: {
-        component: OwnershipNotice
+        component: NotEditableNotice
       }
     },
     ...pathMetadata,

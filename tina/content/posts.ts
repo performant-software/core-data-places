@@ -2,7 +2,7 @@ import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection, TinaField } from '@tinacms/schema-tools';
 import Visualizations from '@root/tina/content/visualizations';
 import Creator from '../components/Creator';
-import OwnershipNotice from '../components/OwnershipNotice';
+import NotEditableNotice from '../components/NotEditableNotice';
 import _ from 'underscore';
 import config from '@config';
 import { media } from './common';
@@ -100,10 +100,10 @@ const Posts: Collection = {
   },
   fields: _.compact([
     {
-      name: '_ownershipNotice',
+      name: '_notEditableNotice',
       type: 'string',
       ui: {
-        component: OwnershipNotice
+        component: NotEditableNotice
       }
     },
     ...postMetadata,
