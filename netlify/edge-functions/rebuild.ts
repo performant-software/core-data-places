@@ -1,4 +1,4 @@
-import type { Context } from "@netlify/functions";
+import type { Context } from "@netlify/edge-functions";
 import { Clerk, type User } from "@clerk/backend";
 
 const NETLIFY_API = "https://api.netlify.com/api/v1";
@@ -41,30 +41,20 @@ function buildResponse(statusCode: number, body: ApiResponse | null): Response {
   });
 }
 
-async function authenticate(req: Request): Promise<User | null> {
-  const { toAuth } = await clerkClient.authenticateRequest(req);
+async function authenticate(req: Request): Promise<boolean> {
+  const token = req.headers.get('authorization');
+  const tokenWithoutBearer = token?.replace('Bearer ', '').trim();
 
-  const { user } = toAuth();
+  const { toAuth } = await clerkClient.authenticateRequest({
+    headerToken: tokenWithoutBearer
+  });
 
-  return user;
-}
+  const { sessionClaims, user } = toAuth();
 
-async function isAdmin(user: User, orgId?: string): Promise<boolean> {
-  if (orgId) {
-    const membershipList = await clerkClient.organizations.getOrganizationMembershipList({
-      organizationId: orgId,
-      limit: -1,
-    });
+  const isMember = sessionClaims.o.id === process.env.TINA_PUBLIC_CLERK_ORG_ID
+  const isAdmin = sessionClaims.o.rol === 'admin'
 
-    const orgUser = membershipList?.find((mem) => mem.publicUserData?.userId === user.id);
-
-    console.log(orgUser);
-
-    return orgUser?.role === 'admin';
-  }
-
-  const role = (user.publicMetadata as { role?: string })?.role;
-  return role === "admin";
+  return isMember && isAdmin;
 }
 
 async function netlifyFetch(path: string, options: RequestInit = {}): Promise<globalThis.Response> {
@@ -109,27 +99,19 @@ async function triggerBuild(): Promise<NetlifyBuild> {
 }
 
 const handler = async (req: Request, _context: Context): Promise<Response> => {
-  if (req.method === "OPTIONS") {
-    return buildResponse(204, null);
-  }
-
   if (req.method !== "POST") {
     return buildResponse(405, { error: "Method not allowed" });
   }
 
-  let user: User | null;
+  let isAdmin = false;
   try {
-    user = await authenticate(req);
-  } catch {
-    return buildResponse(401, { error: "Invalid or expired token" });
+    isAdmin = await authenticate(req);
+  } catch (e) {
+    return buildResponse(401, { error: e.message ||  "Authentication failed" });
   }
 
-  if (!user) {
-    return buildResponse(401, { error: "Missing authorization header" });
-  }
-
-  if (!(await isAdmin(user, process.env.TINA_PUBLIC_CLERK_ORG_ID))) {
-    return buildResponse(403, { error: "Admin role required" });
+  if (!isAdmin) {
+    return buildResponse(401, { error: "Unauthorized" });
   }
 
   let activeBuild: NetlifyDeploy | null;
@@ -170,6 +152,6 @@ const handler = async (req: Request, _context: Context): Promise<Response> => {
 export default handler;
 
 export const config = {
-  path: "/api/trigger-rebuild",
+  path: "/api/rebuild",
   method: "POST",
 };
