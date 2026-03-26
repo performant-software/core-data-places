@@ -26,7 +26,8 @@ const RebuildSiteButton = () => {
   };
 
   return (
-    <div className='flex flex-col gap-2'>
+    <div className='flex gap-2 items-center justify-end w-full'>
+      {message && <p className='text-sm text-gray-600'>{message}</p>}
       <button
         className='inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-white disabled:opacity-50'
         type='button'
@@ -34,8 +35,6 @@ const RebuildSiteButton = () => {
       >
         Rebuild site
       </button>
-
-      {message && <p className='text-sm text-gray-600'>{message}</p>}
     </div>
   );
 }

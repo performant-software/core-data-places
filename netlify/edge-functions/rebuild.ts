@@ -1,43 +1,17 @@
-import type { Context } from "@netlify/edge-functions";
-import { Clerk, type User } from "@clerk/backend";
+import type { Context } from '@netlify/edge-functions';
+import { Clerk } from '@clerk/backend';
 
-const NETLIFY_API = "https://api.netlify.com/api/v1";
-const SITE_ID = process.env.NETLIFY_SITE_ID!;
-const NETLIFY_TOKEN = process.env.NETLIFY_ACCESS_TOKEN!;
-const secretKey = process.env.CLERK_SECRET;
-
-interface NetlifyDeploy {
-  id: string;
-  state: string;
-  created_at: string;
-  [key: string]: unknown;
-}
-
-interface NetlifyBuild {
-  id: string;
-  [key: string]: unknown;
-}
-
-interface ApiResponse {
-  error?: string;
-  detail?: string;
-  message?: string;
-  build_id?: string;
-  build?: {
-    id: string;
-    state: string;
-    created_at: string;
-  };
-}
+const BASE_URL = 'https://api.netlify.com/api/v1';
+const NETLIFY_TOKEN = process.env.NETLIFY_TOKEN!;
 
 const clerkClient = Clerk({
   secretKey: process.env.CLERK_SECRET,
 });
 
-function buildResponse(statusCode: number, body: ApiResponse | null): Response {
+function buildResponse(statusCode: number, body: any | null): Response {
   return new Response(JSON.stringify(body), {
     status: statusCode,
-    headers: { "Content-Type": "application/json" },
+    headers: { 'Content-Type': 'application/json' },
   });
 }
 
@@ -49,7 +23,7 @@ async function authenticate(req: Request): Promise<boolean> {
     headerToken: tokenWithoutBearer
   });
 
-  const { sessionClaims, user } = toAuth();
+  const { sessionClaims } = toAuth();
 
   const isMember = sessionClaims.o.id === process.env.TINA_PUBLIC_CLERK_ORG_ID
   const isAdmin = sessionClaims.o.rol === 'admin'
@@ -58,35 +32,35 @@ async function authenticate(req: Request): Promise<boolean> {
 }
 
 async function netlifyFetch(path: string, options: RequestInit = {}): Promise<globalThis.Response> {
-  return fetch(`${NETLIFY_API}${path}`, {
+  return fetch(`${BASE_URL}${path}`, {
     ...options,
     headers: {
       Authorization: `Bearer ${NETLIFY_TOKEN}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       ...(options.headers as Record<string, string>),
     },
   });
 }
 
-async function getActiveBuild(): Promise<NetlifyDeploy | null> {
-  const res = await netlifyFetch(`/sites/${SITE_ID}/deploys?per_page=5`);
-  const deploys: NetlifyDeploy[] = await res.json();
+async function getActiveBuild(siteId: string) {
+  const res = await netlifyFetch(`/sites/${siteId}/deploys?per_page=5`);
+  const deploys = await res.json();
 
   const activeStates = [
-    "building",
-    "enqueued",
-    "preparing",
-    "processing",
-    "uploading",
-    "uploaded",
+    'building',
+    'enqueued',
+    'preparing',
+    'processing',
+    'uploading',
+    'uploaded',
   ];
 
   return deploys.find((d) => activeStates.includes(d.state)) ?? null;
 }
 
-async function triggerBuild(): Promise<NetlifyBuild> {
-  const res = await netlifyFetch(`/sites/${SITE_ID}/builds`, {
-    method: "POST",
+async function triggerBuild(siteId: string) {
+  const res = await netlifyFetch(`/sites/${siteId}/builds`, {
+    method: 'POST',
     body: JSON.stringify({}),
   });
 
@@ -98,53 +72,45 @@ async function triggerBuild(): Promise<NetlifyBuild> {
   return res.json();
 }
 
-const handler = async (req: Request, _context: Context): Promise<Response> => {
-  if (req.method !== "POST") {
-    return buildResponse(405, { error: "Method not allowed" });
+const handler = async (req: Request, context: Context): Promise<Response> => {
+  if (req.method !== 'POST') {
+    return buildResponse(405, { error: 'Method not allowed' });
   }
 
   let isAdmin = false;
   try {
     isAdmin = await authenticate(req);
   } catch (e) {
-    return buildResponse(401, { error: e.message ||  "Authentication failed" });
+    return buildResponse(401, { message: e.message ||  'Authentication failed' });
   }
 
   if (!isAdmin) {
-    return buildResponse(401, { error: "Unauthorized" });
+    return buildResponse(401, { message: 'Unauthorized' });
   }
 
-  let activeBuild: NetlifyDeploy | null;
+  let activeBuild;
   try {
-    activeBuild = await getActiveBuild();
+    activeBuild = await getActiveBuild(context.site.id);
   } catch (err) {
     return buildResponse(502, {
-      error: "Failed to check build status",
-      detail: (err as Error).message,
+      message: 'Failed to check build status'
     });
   }
 
   if (activeBuild) {
     return buildResponse(409, {
-      error: "A build is already in progress",
-      build: {
-        id: activeBuild.id,
-        state: activeBuild.state,
-        created_at: activeBuild.created_at,
-      },
+      message: 'A build is already in progress'
     });
   }
 
   try {
-    const build = await triggerBuild();
+    await triggerBuild(context.site.id);
     return buildResponse(200, {
-      message: "Build triggered successfully",
-      build_id: build.id,
+      message: 'Build triggered successfully'
     });
   } catch (err) {
     return buildResponse(502, {
-      error: "Failed to trigger build",
-      detail: (err as Error).message,
+      message: 'Failed to trigger build'
     });
   }
 };
@@ -152,6 +118,6 @@ const handler = async (req: Request, _context: Context): Promise<Response> => {
 export default handler;
 
 export const config = {
-  path: "/api/rebuild",
-  method: "POST",
+  path: '/api/rebuild',
+  method: 'POST',
 };
