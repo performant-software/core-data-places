@@ -2,6 +2,7 @@ import { Collection, TinaField } from '@tinacms/schema-tools';
 import TinaMapLayerDefaultSwitch from '../components/TinaMapLayerDefaultSwitch';
 import TinaMapLayerOverlaySwitch from '../components/TinaMapLayerOverlaySwitch';
 import TinaMapLayerURLField from '../components/TinaMapLayerURLField';
+import RebuildSiteButton from '../components/RebuildSiteButton';
 import { postMetadata } from './posts';
 import _ from 'underscore';
 
@@ -786,6 +787,13 @@ const Settings: Collection = {
         }]
       }]
     }]
+  }, {
+    name: 'rebuild_site',
+    label: 'Rebuild site',
+    type: 'boolean',
+    ui: {
+      component: RebuildSiteButton
+    }
   }],
   ui: {
     allowedActions: {
