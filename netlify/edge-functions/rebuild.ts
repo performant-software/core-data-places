@@ -2,10 +2,10 @@ import type { Context } from '@netlify/edge-functions';
 import { Clerk } from '@clerk/backend';
 
 const BASE_URL = 'https://api.netlify.com/api/v1';
-const NETLIFY_TOKEN = process.env.NETLIFY_TOKEN!;
+const NETLIFY_TOKEN = Netlify.env.get('NETLIFY_TOKEN')!;
 
 const clerkClient = Clerk({
-  secretKey: process.env.CLERK_SECRET,
+  secretKey: Netlify.env.get('CLERK_SECRET')!,
 });
 
 function buildResponse(statusCode: number, body: any | null): Response {
@@ -25,7 +25,7 @@ async function authenticate(req: Request): Promise<boolean> {
 
   const { sessionClaims } = toAuth();
 
-  const isMember = sessionClaims.o.id === process.env.TINA_PUBLIC_CLERK_ORG_ID
+  const isMember = sessionClaims.o.id === Netlify.env.get('TINA_PUBLIC_CLERK_ORG_ID')
   const isAdmin = sessionClaims.o.rol === 'admin'
 
   return isMember && isAdmin;
