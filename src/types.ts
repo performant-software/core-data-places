@@ -82,6 +82,11 @@ export interface Configuration {
       categories?: Array<String>,
       drafts?: boolean,
       layout?: 'list' | 'grid'
+    },
+    paths_config?: {
+      categories?: Array<String>,
+      drafts?: boolean,
+      layout?: 'list' | 'grid'     
     }
   };
 
