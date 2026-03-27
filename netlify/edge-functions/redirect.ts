@@ -3,12 +3,26 @@ import type { Config, Context } from '@netlify/edge-functions';
 const publicDomain = Netlify.env.get('PUBLIC_DOMAIN');
 const adminDomain = Netlify.env.get('ADMIN_DOMAIN');
 
+const secFetchHeaders = [
+  'iframe',
+  'empty'
+]
+
+const ignorePaths = [
+  '/api/tina',
+  '/api/s3/'
+]
+
 export default async (request: Request, context: Context) => {
   if (!publicDomain || !adminDomain) {
     return context.next();
   }
 
-  if (request.headers.get('sec-fetch-dest') === 'iframe') {
+  if (secFetchHeaders.includes(request.headers.get('sec-fetch-dest'))) {
+    return context.next();
+  }
+
+  if (ignorePaths.some(path => request.url.startsWith(path))) {
     return context.next();
   }
 
