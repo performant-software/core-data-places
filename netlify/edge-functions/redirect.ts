@@ -8,9 +8,9 @@ const secFetchHeaders = [
   'empty'
 ]
 
-const adminPaths = [
-  '/admin',
-  '/api/tina'
+const ignorePaths = [
+  '/api/tina',
+  '/api/s3/'
 ]
 
 export default async (request: Request, context: Context) => {
@@ -22,15 +22,19 @@ export default async (request: Request, context: Context) => {
     return context.next();
   }
 
+  if (ignorePaths.some(path => request.url.startsWith(path))) {
+    return context.next();
+  }
+
   const url = new URL(request.url);
 
-  if (url.hostname === publicDomain && adminPaths.some((path) => url.pathname.startsWith(path))) {
+  if (url.hostname === publicDomain && url.pathname.startsWith('/admin')) {
     url.hostname = adminDomain;
     url.port = '';
     return Response.redirect(url.toString(), 301);
   }
 
-  if (url.hostname === adminDomain && !adminPaths.some(path => url.pathname.startsWith(path))) {
+  if (url.hostname === adminDomain && !url.pathname.startsWith('/admin')) {
     url.hostname = publicDomain;
     return Response.redirect(url.toString(), 301);
   }
