@@ -4,6 +4,10 @@ const publicDomain = Netlify.env.get('PUBLIC_DOMAIN');
 const adminDomain = Netlify.env.get('ADMIN_DOMAIN');
 
 export default async (request: Request, context: Context) => {
+  if (!publicDomain || !adminDomain) {
+    return context.next();
+  }
+
   if (request.headers.get('sec-fetch-dest') === 'iframe') {
     return context.next();
   }
