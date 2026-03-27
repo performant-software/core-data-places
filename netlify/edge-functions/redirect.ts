@@ -10,7 +10,7 @@ const secFetchHeaders = [
 
 const ignorePaths = [
   '/api/tina',
-  '/api/s3/',
+  '/api/s3',
   '/_astro'
 ]
 
@@ -23,11 +23,11 @@ export default async (request: Request, context: Context) => {
     return context.next();
   }
 
-  if (ignorePaths.some(path => request.url.startsWith(path))) {
+  const url = new URL(request.url);
+
+  if (ignorePaths.some(path => url.pathname.startsWith(path))) {
     return context.next();
   }
-
-  const url = new URL(request.url);
 
   if (url.hostname === publicDomain && url.pathname.startsWith('/admin')) {
     url.hostname = adminDomain;
