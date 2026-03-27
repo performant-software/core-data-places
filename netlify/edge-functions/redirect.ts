@@ -10,7 +10,8 @@ const secFetchHeaders = [
 
 const ignorePaths = [
   '/api/tina',
-  '/api/s3/'
+  '/api/s3/',
+  '/_astro'
 ]
 
 export default async (request: Request, context: Context) => {
