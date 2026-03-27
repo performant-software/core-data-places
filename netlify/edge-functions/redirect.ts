@@ -14,8 +14,6 @@ export default async (request: Request, context: Context) => {
 
   const url = new URL(request.url);
 
-  console.log(url.hostname, url.pathname);
-
   if (url.hostname === publicDomain && url.pathname.startsWith('/admin')) {
     url.hostname = adminDomain;
     url.port = '';
