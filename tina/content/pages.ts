@@ -513,6 +513,10 @@ const staticSectionTemplates: Template<false>[] = [{
           label: 'Image',
           type: 'image'
         }, {
+          name: 'image_alt',
+          label: 'Image Alt Text',
+          type: 'string'
+        }, {
           name: 'full_height',
           label: 'Full height?',
           type: 'boolean'
