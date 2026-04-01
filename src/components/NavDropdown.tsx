@@ -39,8 +39,8 @@ const NavDropdown = (props: Props) => {
       <DropdownMenu.Trigger
         asChild
       >
-        <div
-          className='flex items-center gap-x-2 cursor-pointer outline-hidden hover:bg-transparent'
+        <button
+          className='flex items-center gap-x-2 cursor-pointer outline-hidden hover:bg-transparent border-none bg-transparent p-0'
         >
           <NavItem
             active={props.active}
@@ -49,7 +49,7 @@ const NavDropdown = (props: Props) => {
           <Icon
             name='down'
           />
-        </div>
+        </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content

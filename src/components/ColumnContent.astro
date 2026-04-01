@@ -23,7 +23,7 @@ const BlockTypes = {
 
 ---
 { item.__typename.endsWith(BlockTypes.image) && ( 
-  <img src={item.image} class={clsx(
+  <img src={item.image} alt={item.image_alt || ''} class={clsx(
     'w-full object-cover',
     { 'h-full': item.full_height },
     { 'rounded-md': item.rounded }

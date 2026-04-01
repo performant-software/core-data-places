@@ -85,6 +85,7 @@ const SearchList = () => {
           { t('savedSearches') }
         </h1>
         <Button
+          aria-label={t('clearAll')}
           className='bg-red-700 text-white font-bold'
           onClick={onDeleteAll}
           rounded

@@ -1,0 +1,80 @@
+name: Accessibility Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'URL to test (e.g., https://uss-staging.netlify.app). Leave empty to build and test locally.'
+        required: false
+        type: string
+
+jobs:
+  a11y:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright chromium
+        run: npx playwright install --with-deps chromium
+
+      # When testing a deployed URL, just fetch config for test scaffolding
+      - name: Fetch config
+        if: ${{ inputs.url != '' }}
+        env:
+          CONFIG_URL: ${{ secrets.CONFIG_URL }}
+        run: curl -fsSL "$CONFIG_URL" -o public/config.json
+
+      # When no URL provided, do a full static build
+      - name: Build static site
+        if: ${{ inputs.url == '' }}
+        env:
+          STATIC_BUILD: 'true'
+          CONFIG_URL: ${{ secrets.CONFIG_URL }}
+          GITHUB_OWNER: ${{ secrets.CONTENT_GITHUB_OWNER }}
+          GITHUB_REPO: ${{ secrets.CONTENT_GITHUB_REPO }}
+          GITHUB_BRANCH: ${{ secrets.CONTENT_GITHUB_BRANCH }}
+          GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.CONTENT_GITHUB_PERSONAL_ACCESS_TOKEN }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_NAME: ${{ secrets.MONGODB_NAME }}
+          MONGODB_COLLECTION_NAME: ${{ secrets.MONGODB_COLLECTION_NAME }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+        run: npm run build
+
+      - name: Start preview server
+        if: ${{ inputs.url == '' }}
+        run: npx astro preview &
+
+      - name: Wait for server
+        if: ${{ inputs.url == '' }}
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:4321 > /dev/null 2>&1 && exit 0
+            sleep 1
+          done
+          echo "Server failed to start" && exit 1
+
+      - name: Run accessibility tests
+        env:
+          A11Y_HOST: ${{ inputs.url || 'http://localhost:4321' }}
+          STATIC_BUILD: ${{ inputs.url != '' && 'false' || 'true' }}
+        run: npx playwright test --project=chromium
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30
