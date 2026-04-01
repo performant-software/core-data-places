@@ -142,6 +142,7 @@ test.describe('Accessibility testing', () => {
 
     test('Sessions should have no violations', async ({ page }) => {
       await page.goto('sessions/search');
+      await page.getByRole('button', { name: /clear/i }).waitFor();
       await checkPage(page);
     });
   });
@@ -170,9 +171,9 @@ test.describe('Accessibility testing', () => {
 
   // Detail pages
   test.describe('Detail pages', () => {
-    test.skip(!_config.detail_pages, 'No detail pages configured.');
+    test.skip(!_config.detail_pages?.models, 'No detail pages configured.');
 
-    const models = Object.keys(_config.detail_pages.models);
+    const models = Object.keys(_config.detail_pages?.models || {});
 
     models.forEach((name) => {
       test(`${name} should have no violations`, async ({ page }) => {
