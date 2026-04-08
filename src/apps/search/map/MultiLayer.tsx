@@ -3,6 +3,7 @@ import Tooltip from '@apps/search/map/Tooltip';
 import { SearchResultsLayer } from '@performant-software/core-data';
 import { HoverTooltip } from '@peripleo/maplibre';
 import _ from 'underscore';
+import CertaintyLayer from '@components/CertaintyLayer';
 
 const MultiLayer = (props) => {
   const config = useSearchConfig();
@@ -18,6 +19,10 @@ const MultiLayer = (props) => {
         key={`layer-${feature.properties.uuid}`}
         layerId={feature.properties.uuid}
         visible={feature.properties.visible}
+      />
+      <CertaintyLayer
+        data={props.data}
+        getProperties={(item) => item.properties?.originalProperties?.certainty_radius}
       />
       <HoverTooltip
         key={`hover-${feature.properties.uuid}`}
