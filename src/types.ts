@@ -31,6 +31,7 @@ export interface SearchConfig {
   map?:{
     cluster_radius?: number,
     geometry: string,
+    properties?: string,
     max_zoom?: number,
     zoom_to_place?: boolean
   };

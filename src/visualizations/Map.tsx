@@ -46,9 +46,9 @@ const Map = (props: DataVisualizationProps) => {
   useEffect(() => {
     if (!parsed.data.features) {
       const { hits } = parsed.data;
-      const { geometry } = config.map;
+      const { geometry, properties } = config.map;
 
-      setFeatures(TypesenseUtils.getFeatures([], hits, geometry));
+      setFeatures(TypesenseUtils.getFeatures([], hits, geometry, properties));
     }
   }, [parsed]);
 

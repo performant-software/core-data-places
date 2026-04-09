@@ -5,6 +5,7 @@ import { Map as MapUtils } from '@performant-software/geospatial';
 import { HoverTooltip } from '@peripleo/maplibre';
 import { useMemo } from 'react';
 import _ from 'underscore';
+import CertaintyLayer from '@components/CertaintyLayer';
 
 const SingleLayer = (props) => {
   const config = useSearchConfig();
@@ -24,6 +25,10 @@ const SingleLayer = (props) => {
         clusterRadius={config.map.cluster_radius}
         fitBoundingBox={false}
         interactive
+      />
+      <CertaintyLayer
+        data={props.data}
+        getProperties={(item) => item.properties?.originalProperties?.certainty_radius}
       />
       <HoverTooltip
         tooltip={({ hovered }) => (
