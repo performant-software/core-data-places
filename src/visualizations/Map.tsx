@@ -11,6 +11,10 @@ import _ from 'underscore';
 const Map = (props: DataVisualizationProps) => {
   const [features, setFeatures] = useState([]);
 
+  if (!props.data) {
+    return null;
+  }
+
   const runtimeConfig = useRuntimeConfig<Configuration>();
 
   /**
@@ -59,12 +63,14 @@ const Map = (props: DataVisualizationProps) => {
       <div
         className='h-[400px]'
       >
-        <BaseMap>
-          <LocationMarkers
-            boundingBoxOptions={{ padding: 20 }}
-            data={MapUtils.toFeatureCollection(features)}
-          />
-        </BaseMap>
+        { features && (
+          <BaseMap>
+            <LocationMarkers
+              boundingBoxOptions={{ padding: 20 }}
+              data={MapUtils.toFeatureCollection(features)}
+            />
+          </BaseMap> 
+        )}
       </div>
     </VisualizationContainer>
   );

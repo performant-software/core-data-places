@@ -7,7 +7,7 @@ import React, { useMemo } from 'react';
 const PlaceInsert = (props: any) => {
   const { selection, setSelection } = useSelectionState();
 
-  if (!props.place) {
+  if (!props.place?.uuid) {
     return null;
   }
 
