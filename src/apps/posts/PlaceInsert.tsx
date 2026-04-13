@@ -7,16 +7,12 @@ import React, { useMemo } from 'react';
 const PlaceInsert = (props: any) => {
   const { selection, setSelection } = useSelectionState();
 
-  if (!props.place?.uuid) {
-    return null;
-  }
-
   /**
    * Memo-izes the properties of the selected feature.
    */
   const place = useMemo(() => parseFeature(selection), [selection]);
 
-  return (
+  return props.place?.uuid && (
     <div
       className='flex flex-col gap-y-2 my-8 w-full'
     >

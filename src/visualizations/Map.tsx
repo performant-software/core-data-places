@@ -11,27 +11,23 @@ import _ from 'underscore';
 const Map = (props: DataVisualizationProps) => {
   const [features, setFeatures] = useState([]);
 
-  if (!props.data) {
-    return null;
-  }
-
   const runtimeConfig = useRuntimeConfig<Configuration>();
 
   /**
    * Memo-izes the "data" prop as JSON.
    */
-  const parsed = useMemo(() => JSON.parse(props.data), [props.data]);
+  const parsed = useMemo(() => props.data ? JSON.parse(props.data) : null, [props.data]);
 
   /**
    * Memo-izes the search config based on the data set.
    */
-  const config = useMemo(() => _.findWhere(runtimeConfig.search, { name: parsed.name }), [parsed, runtimeConfig]);
+  const config = useMemo(() => parsed ? _.findWhere(runtimeConfig.search, { name: parsed.name }) : null, [parsed, runtimeConfig]);
 
   /**
    * If the data set contains the features data, fetch the geometry for each.
    */
   useEffect(() => {
-    if (parsed.data.features) {
+    if (parsed?.data?.features) {
       const promises = _.map(parsed.data.features, ({ properties }) => (
         fetchGeometry(properties.uuid)
           .then((data) => ({ data, properties }))
@@ -48,7 +44,7 @@ const Map = (props: DataVisualizationProps) => {
    * If the data set does not contain the features data, pull the geometry directly off the hits.
    */
   useEffect(() => {
-    if (!parsed.data.features) {
+    if (parsed?.data && !parsed?.data?.features) {
       const { hits } = parsed.data;
       const { geometry } = config.map;
 
@@ -56,7 +52,7 @@ const Map = (props: DataVisualizationProps) => {
     }
   }, [parsed]);
 
-  return (
+  return parsed && (
     <VisualizationContainer
       title={props.title}
     >

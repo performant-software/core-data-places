@@ -5,25 +5,21 @@ import React, { useMemo } from 'react';
 import _ from 'underscore';
 
 const TimelineVisualization = (props: DataVisualizationProps) => {
-
-  if (!props.data) {
-    return null;
-  }
   
   /**
    * Memo-izes the "data" prop as JSON.
    */
-  const data = useMemo(() => JSON.parse(props.data), [props.data]);
+  const data = useMemo(() => props.data ? JSON.parse(props.data) : null, [props.data]);
 
   /**
    * Memo-izes the events and sets the "date" attribute.
    */
-  const events = useMemo(() => _.map(data.events, (event) => ({
+  const events = useMemo(() => _.map(data?.events, (event) => ({
     ...event,
     date: TypesenseUtils.getDate(event)
   })), [data]);
 
-  return (
+  return data && (
     <VisualizationContainer
       title={props.title}
     >

@@ -45,15 +45,11 @@ const CustomTooltip = ({ active, payload, label }: TooltipContentProps<string | 
 
 const StackedTimeline = (props: Props) => {
   const { link, model, filter } = props;
-
-  if (!props.data) {
-    return null;
-  }
   
   /**
    * Memo-izes the data as parsed JSON.
   */
- const data = useMemo(() => JSON.parse(props.data), [props.data]);
+ const data = useMemo(() => props.data ? JSON.parse(props.data) : null, [props.data]);
 
  const language = useMemo(() => getLanguageFromUrl(window.location.pathname), [window.location.pathname]);
 
@@ -80,7 +76,7 @@ const StackedTimeline = (props: Props) => {
    );
  }, [data]);
 
-  return (
+  return data && (
     <VisualizationContainer
       title={props.title}
     >
