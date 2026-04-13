@@ -5,6 +5,8 @@ import Map from '@components/Map';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
 import CertaintyLayer from '@components/CertaintyLayer';
+import { useMemo } from 'react';
+import { kilometersToMiles } from '@utils/map';
 
 interface Props {
   classNames?: {
@@ -21,6 +23,10 @@ interface Props {
 const PlaceMap = (props: Props) => {
   const { t } = useTranslations();
 
+  const buffer = useMemo(() => (
+    kilometersToMiles(props.geometry.properties?.certainty_radius)
+  ), [props.geometry.properties?.certainty_radius]);
+
   return (
     <TranslationContext.Provider
       value={{ t, lang: props.lang }}
@@ -35,6 +41,7 @@ const PlaceMap = (props: Props) => {
               boundingBoxOptions={{
                 animate: false
               }}
+              buffer={buffer}
               data={props.geometry.geometry_json}
             />
             <CertaintyLayer
