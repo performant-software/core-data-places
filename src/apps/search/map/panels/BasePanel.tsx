@@ -461,7 +461,7 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
       </RecordDetailPanel>
       { geometryData && (
         <LocationMarkers
-          animate
+          animate={!geometryData.properties?.certainty_radius}
           boundingBoxOptions={boundingBoxOptions}
           buffer={geometryData.properties?.certainty_radius
             ? kilometersToMiles(geometryData.properties?.certainty_radius)
