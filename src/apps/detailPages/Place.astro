@@ -9,8 +9,7 @@ const { lang, uuid } = Astro.props;
 const { place } = await PlacesService.getOne(uuid);
 const excludes = config.result_filtering?.places?.exclude || [];
 
-const geometry = excludes.includes('place_geometry') ? null : place?.place_geometry?.geometry_json;
-
+const geometry = excludes.includes('place_geometry') ? null : place?.place_geometry;
 ---
 
 <RecordDetail

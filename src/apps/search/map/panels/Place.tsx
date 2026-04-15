@@ -31,6 +31,17 @@ const Place = (props: Props) => {
     }
   }, [lang]);
 
+  const resolveGeometry = useCallback((place) => {
+    if (place?.place_geometry) {
+      return {
+        geometry: CoreDataUtils.toFeatureCollection([place]),
+        properties: place.place_geometry.properties
+      }
+    }
+
+    return null;
+  }, []);
+
   return (
     <BasePanel
       className={clsx('place', props.className)}
@@ -49,7 +60,7 @@ const Place = (props: Props) => {
         </>
       )}
       resolveDetailPageUrl={resolveDetailPageUrl}
-      resolveGeometry={(place) => place?.place_geometry && CoreDataUtils.toFeatureCollection([place])}
+      resolveGeometry={resolveGeometry}
       service={PlacesService}
     />
   );

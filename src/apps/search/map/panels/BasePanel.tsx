@@ -26,6 +26,7 @@ import {
 import _ from 'underscore';
 import PanelHistoryContext from '@apps/search/map/PanelHistoryContext';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import { kilometersToMiles } from '@utils/map';
 
 interface Props {
   className?: string;
@@ -210,17 +211,25 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
   /**
    * Memo-izes the geometry.
    */
-  const geometry = useMemo(() => {
+  const geometryData = useMemo(() => {
     if (props.resolveGeometry && item) {
       return props.resolveGeometry(item);
     }
 
-    return !_.isEmpty(places.filter((place) => place.place_geometry)) &&
-      CoreDataUtils.toFeatureCollection(
-        places.filter((place) => place.place_geometry)
-      );
+    if (!_.isEmpty(places.filter((place) => place.place_geometry))) {
+      return {
+        geometry: CoreDataUtils.toFeatureCollection(
+          places.filter((place) => place.place_geometry)
+        ),
+        properties: {
+          certainty_radius: Math.max(places.map(p => p.place_geometry?.properties?.certainty_radius || 0))
+        }
+      }
+    }
+
+    return null;
   }, [item, places, props.resolveGeometry]);
-  
+
   /**
    * Memo-izes the related media items.
    */
@@ -450,11 +459,14 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
           />
         )}
       </RecordDetailPanel>
-      { geometry && (
+      { geometryData && (
         <LocationMarkers
-          animate
+          animate={!geometryData.properties?.certainty_radius}
           boundingBoxOptions={boundingBoxOptions}
-          data={geometry}
+          buffer={geometryData.properties?.certainty_radius
+            ? kilometersToMiles(geometryData.properties?.certainty_radius)
+            : undefined}
+          data={geometryData.geometry}
           fillStyle={{
             type: 'fill',
             paint: {
