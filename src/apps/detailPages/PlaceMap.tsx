@@ -4,28 +4,53 @@ import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import Map from '@components/Map';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
-import CertaintyLayer from '@components/CertaintyLayer';
 import { useMemo } from 'react';
 import { kilometersToMiles } from '@utils/map';
+import { Map as MapUtils } from '@performant-software/geospatial';
 
 interface Props {
   classNames?: {
     controls?: string
     root?: string,
   };
-  geometry: {
-    geometry_json: any,
-    properties: any
-  };
+  geometry: any;
   lang: string;
 }
 
 const PlaceMap = (props: Props) => {
   const { t } = useTranslations();
 
-  const buffer = useMemo(() => (
-    kilometersToMiles(props.geometry.properties?.certainty_radius)
-  ), [props.geometry.properties?.certainty_radius]);
+  const buffer = useMemo(() => {
+    const maxRadius = Math.max(
+      props.geometry.features.map(f => f.properties?.originalProperties?.certainty_radius ?? 0)
+    );
+
+    if (maxRadius) {
+      return kilometersToMiles(maxRadius);
+    }
+
+    return undefined;
+  }, [props.geometry.features]);
+
+  const mapGeometry = useMemo(() => {
+    if (props.geometry) {
+      return {
+        ...props.geometry,
+        features: props.geometry.features.map((feature) => {
+          const certaintyRadius = feature.properties?.originalProperties?.certainty_radius
+
+          if (certaintyRadius) {
+            return MapUtils.toCertaintyCircle(
+              feature,
+              certaintyRadius
+            )
+          }
+
+          return feature;
+        })
+      }
+    }
+  }, [props.geometry])
 
   return (
     <TranslationContext.Provider
@@ -42,11 +67,7 @@ const PlaceMap = (props: Props) => {
                 animate: false
               }}
               buffer={buffer}
-              data={props.geometry.geometry_json}
-            />
-            <CertaintyLayer
-              data={[{ geometry: props.geometry.geometry_json }]}
-              getProperties={() => props.geometry.properties?.certainty_radius}
+              data={mapGeometry}
             />
           </Map>
         </Peripleo>
