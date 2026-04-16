@@ -6,10 +6,9 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { createMediaHandler } from 'next-tinacms-s3/dist/handlers';
 import ServerlessHttp from 'serverless-http';
-import authConfig from '@root/auth.config';
-import { Session } from '@auth/core/types';
-import { Auth } from '@auth/core';
 import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs';
+import { Clerk } from '@clerk/backend';
+import type { IncomingMessage, ServerResponse } from 'http';
 
 dotenv.config();
 
@@ -22,50 +21,138 @@ app.use(express.json());
 app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
-const useSSO = process.env.TINA_PUBLIC_AUTH_USE_KEYCLOAK === 'true';
+const useSSO = process.env.TINA_PUBLIC_AUTH_USE_SSO === 'true';
 
-async function getSession(req: Request, options = authConfig): Promise<Session | null> {
-  // @ts-ignore
-  options.secret ??= process.env.AUTH_SECRET
-  options.trustHost ??= true
-  options.providers[0].options.clientId = process.env.AUTH_KEYCLOAK_ID
-  options.providers[0].options.clientSecret = process.env.AUTH_KEYCLOAK_SECRET
-  options.providers[0].options.issuer = process.env.AUTH_KEYCLOAK_ISSUER
+const ClerkBackendAuthentication = ({
+  secretKey,
+  allowList,
+  orgId,
+}: {
+  secretKey: string;
+  // Ensure the user is the in allowList
+  allowList?: string[];
+  // Ensure the user is a member of the provided orgId
+  orgId?: string;
+}) => {
+  const clerk = Clerk({
+    secretKey,
+  });
 
-  const url = new URL(`/api/auth/session`, process.env.PUBLIC_BASE_URL)
-  const response = await Auth(new Request(url, { headers: req.headers }), options)
-  const { status = 200 } = response
-
-  const data = await response.json()
-
-  if (!data || !Object.keys(data).length) return null
-  if (status === 200) return data
-  throw new Error(data.message)
-}
-
-const CustomBackendAuth = () => {
   return {
-    isAuthorized: async (req, res) : Promise<{ isAuthorized: true } | { isAuthorized: false, errorCode: number, errorMessage: string }> => {
-      // Validate the token here
-      const session = await getSession(req, authConfig);
-      if (!session || !session.user) {
-        return {
-          errorCode: 401,
-          errorMessage: "User is unauthenticated",
-          isAuthorized: false
+    isAuthorized: async (req: IncomingMessage, _res: ServerResponse) => {
+      const token = req.headers['authorization'];
+      const tokenWithoutBearer = token?.replace('Bearer ', '').trim();
+      const requestState = await clerk.authenticateRequest({
+        headerToken: tokenWithoutBearer,
+      });
+
+      if (requestState.status === 'signed-in') {
+        const user = await clerk.users.getUser(requestState.toAuth().userId);
+        if (orgId) {
+          // Get the list of member id's for the organization
+          const membershipList = (
+            await clerk.organizations.getOrganizationMembershipList({
+              organizationId: orgId,
+              limit: 100 //come back to this when we have orgs with more than 100 members
+            })
+          );
+          const orgUser = membershipList?.find((mem) => (mem.publicUserData?.userId === user.id));
+          // if the user is not in the list, they are not authorized
+          if (!orgUser) {
+            return {
+              isAuthorized: false as const,
+              errorMessage:
+                `User ${user.id} not authorized. Not a member of the provided organization (${orgId}).`,
+              errorCode: 401,
+            };
+          }
+          // otherwise, add the role to the user object
+          user.role = orgUser.role;
+        }
+        // if the user's email is not in the allowList, they are not authorized
+        const primaryEmail = user.emailAddresses.find(
+          ({ id }) => id === user.primaryEmailAddressId
+        );
+
+        if ((primaryEmail && !allowList) || (primaryEmail && allowList?.includes(primaryEmail.emailAddress))) {
+          // now we've passed the first hurdle and it's time to check the specific permissions
+          // if the user is an admin, this is all we needed to know
+          if (user.role === 'org:admin') {
+            return { isAuthorized: true as const };
+          }
+          // non-admin users cannot delete
+          if (req.body?.query?.includes('DeleteDocument')) {
+            return {
+              isAuthorized: false as const,
+              errorMessage: 'You do not have permission to delete documents.',
+              errorCode: 401,
+            };           
+          }
+          // non-admin users cannot delete
+          if (req.body?.query?.includes('RenameDocument')) {
+            return {
+              isAuthorized: false as const,
+              errorMessage: 'You do not have permission to rename documents.',
+              errorCode: 401,
+            };           
+          }
+          // non-admin users can only edit paths and posts
+          if (req.body?.variables?.collection && !(req.body?.variables?.collection === 'post' || req.body?.variables?.collection === 'path')) {
+            return {
+              isAuthorized: false as const,
+              errorMessage: 'You do not have access to this collection.',
+              errorCode: 401,
+            };
+          }
+          for (const collection of ['path', 'post']) {
+            if (
+              req.body?.variables?.params 
+            ) {
+              // non-admin users can only edit paths and posts they created
+              if (req.body?.variables?.params[collection]?.creator?.id 
+                && req.body?.variables?.params[collection]?.creator?.id !== user.id
+              ) {
+                return {
+                  isAuthorized: false as const,
+                  errorMessage: 'You may only edit content you created.',
+                  errorCode: 401,
+                };
+              }
+
+              // non-admin users cannot publish posts or edit published posts
+              if (req.body?.variables?.params[collection]?.published) {
+                return {
+                  isAuthorized: false as const,
+                  errorMessage: 'You may not edit published content.',
+                  errorCode: 401,
+                }
+              }
+            }
+          }
+          // non-admin users cannot publish posts or edit published posts
+          return { isAuthorized: true as const };
         }
       }
-      return {
-        isAuthorized: true,
+
+      if (requestState.reason === 'unexpected-error') {
+        console.error(requestState.message);
       }
+      return {
+        isAuthorized: false as const,
+        errorMessage: 'User not authorized',
+        errorCode: 401,
+      };
     },
-  }
-}
+  };
+};
 
 const authProvider = isLocal
   ? LocalBackendAuthProvider()
   : useSSO
-    ? CustomBackendAuth()
+    ? ClerkBackendAuthentication({
+      secretKey: process.env.CLERK_SECRET,
+      orgId: process.env.TINA_PUBLIC_CLERK_ORG_ID
+    })
     : AuthJsBackendAuthProvider({
       authOptions: TinaAuthJSOptions({
         databaseClient,

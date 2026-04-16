@@ -20,6 +20,10 @@ const DEFAULT_INTERVAL = 10;
 const EventsByYear = (props: Props) => {
   const { interval = DEFAULT_INTERVAL } = props;
 
+  if (!props.data) {
+    return null;
+  }
+
   /**
    * Memo-izes the data as parsed JSON.
   */
