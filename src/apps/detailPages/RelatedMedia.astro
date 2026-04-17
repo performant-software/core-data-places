@@ -1,6 +1,7 @@
 ---
 import MediaContents from '@apps/detailPages/MediaContents';
 import ServiceFactory from '@services/coreData/factory';
+import _ from 'underscore';
 
 interface Props {
   model: string;
@@ -11,6 +12,9 @@ const { model, uuid } = Astro.props;
 
 const service = ServiceFactory.getService(model);
 const manifests = await service.getRelatedManifests(uuid);
+const { mediaContents } = await service.getRelatedMedia(uuid);
+const showContentWarning = _.some(mediaContents, (img) => (img.content_warning));
+
 ---
 {manifests && manifests?.items?.length > 0 && (
   <MediaContents
@@ -18,5 +22,6 @@ const manifests = await service.getRelatedManifests(uuid);
     data={manifests}
     model={model}
     uuid={uuid}
+    showContentWarning={showContentWarning}
   />
 )}
