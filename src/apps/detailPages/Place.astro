@@ -3,13 +3,16 @@ import RecordDetail from '@apps/detailPages/RecordDetail.astro';
 import PageStoreProvider from '@components/PageStoreProvider';
 import config from '@config';
 import PlacesService from '@services/coreData/places';
+import { CoreData as CoreDataUtils } from '@performant-software/core-data/ssr';
 
 const { lang, uuid } = Astro.props;
 
 const { place } = await PlacesService.getOne(uuid);
 const excludes = config.result_filtering?.places?.exclude || [];
 
-const geometry = excludes.includes('place_geometry') ? null : place?.place_geometry;
+const geometry = excludes.includes('place_geometry')
+  ? null
+  : CoreDataUtils.toFeatureCollection([place]);
 ---
 
 <RecordDetail
