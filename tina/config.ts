@@ -16,7 +16,7 @@ const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 const localContentPath = process.env.TINA_LOCAL_CONTENT_PATH;
 const useSSO = process.env.TINA_PUBLIC_AUTH_USE_SSO === 'true';
 
-const clerk = new Clerk(process.env.TINA_PUBLIC_CLERK_PUBLIC_KEY)
+const clerk = (useSSO && process.env.TINA_PUBLIC_CLERK_PUBLIC_KEY) ? new Clerk(process.env.TINA_PUBLIC_CLERK_PUBLIC_KEY) : null;
 
 export default defineConfig({
   authProvider: isLocal
