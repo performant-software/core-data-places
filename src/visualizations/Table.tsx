@@ -15,17 +15,17 @@ const Table = (props: DataVisualizationProps) => {
   /**
    * Memo-izes the data as JSON.
    */
-  const { data } = useMemo(() => JSON.parse(props.data), [props.data]);
+  const { data } = useMemo(() => props.data ? JSON.parse(props.data) : null, [props.data]);
 
   /**
    * Memo-izes the table columns and labels.
    */
-  const columns = useMemo(() => _.map(data.columns, (column) => ({
+  const columns = useMemo(() => _.map(data?.columns, (column) => ({
     name: column,
     label: t(column)
   })), [data, t]);
 
-  return (
+  return data && (
     <VisualizationContainer
       title={props.title}
     >

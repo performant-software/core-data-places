@@ -26,10 +26,10 @@ const EventsByYear = (props: Props) => {
 
   /**
    * Memo-izes the data as parsed JSON.
-   */
-  const data = useMemo(() => JSON.parse(props.data), [props.data]);
+  */
+  const data = useMemo(() => props.data ? JSON.parse(props.data) : null, [props.data]);
 
-  return (
+  return data && (
     <VisualizationContainer
       title={props.title}
     >

@@ -144,7 +144,9 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
       _.extend(options, { geometries });
     }
 
-    setFeatures(TypesenseUtils.getFeatures(features, hits, config.map.geometry, options));
+    const { geometry, properties } = config.map;
+
+    setFeatures(TypesenseUtils.getFeatures(features, hits, geometry, properties, options));
   }, [geometries, hits]);
 
   /**
