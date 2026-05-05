@@ -76,13 +76,17 @@ export const fetchPathResponse = async (slug: string) => {
   return response;
 };
 
-export const fetchPaths = async () => {
+export const fetchPaths = async (params = {}) => {
   if (!client.queries.pathConnection) {
     return null;
   }
 
-  const response = await client.queries.pathConnection();
-  return response.data?.pathConnection?.edges?.map((item) => item?.node);
+  const response = await client.queries.pathConnection(params);
+
+  return {
+    metadata: response.data?.pathConnection?.pageInfo,
+    paths: response.data?.pathConnection?.edges?.map((item) => item?.node)
+  }
 };
 
 export const fetchPost = async (slug: string) => {

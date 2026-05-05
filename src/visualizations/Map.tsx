@@ -11,6 +11,10 @@ import _ from 'underscore';
 const Map = (props: DataVisualizationProps) => {
   const [features, setFeatures] = useState([]);
 
+  if (!props.data) {
+    return null;
+  }
+
   const runtimeConfig = useRuntimeConfig<Configuration>();
 
   /**

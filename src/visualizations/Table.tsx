@@ -8,6 +8,10 @@ import _ from 'underscore';
 const Table = (props: DataVisualizationProps) => {
   const { t } = useContext(TranslationContext);
 
+  if (!props.data) {
+    return null;
+  }
+
   /**
    * Memo-izes the data as JSON.
    */
