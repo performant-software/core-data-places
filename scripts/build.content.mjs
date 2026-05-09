@@ -13,9 +13,13 @@ export const fetchContent = async () => {
     fs.rmSync(TEMP_DIR, { recursive: true });
   }
 
-  // Clone the content repo into the temporary directory
+  // Clone the content repo into the temporary directory.
+  // Honor GITHUB_BRANCH so each Netlify env can read content from its own branch
+  // (e.g. staging from `develop`, prod from `main`). Default to `main` when unset.
   const url = `https://github.com/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}.git`;
-  child_process.execSync(`git clone ${url} ${TEMP_DIR}`);
+  const branch = process.env.GITHUB_BRANCH || 'main';
+  console.log(`Cloning ${process.env.GITHUB_REPO}#${branch}`);
+  child_process.execFileSync('git', ['clone', '--branch', branch, '--single-branch', url, TEMP_DIR], { stdio: 'inherit' });
 
   // Copy the "content" folder to the current directory
   fs.cpSync(`${TEMP_DIR}/content`, './content', { recursive: true });
