@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import TranslationContext from '@contexts/TranslationContext';
 import SortBy from '@apps/search/list/SortBy';
 import Stats from '@apps/search/list/Stats';
+import SensitiveContentToggle from './SensitiveContentToggle';
 
 interface Props {
   lang: string;
@@ -42,7 +43,9 @@ const ListLayout = (props: Props) => {
             className='py-0'
             config={config}
             open
-          />
+          >
+            <SensitiveContentToggle />
+          </Facets>
         </div>
         <div className='flex-1 pb-6'>
           <div className='flex justify-between items-center py-5'>
