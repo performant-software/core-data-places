@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { createMediaHandler } from 'next-tinacms-s3/dist/handlers';
 import ServerlessHttp from 'serverless-http';
-import { AuthJsBackendAuthProvider, TinaAuthJSOptions } from 'tinacms-authjs';
 import { Clerk } from '@clerk/backend';
 import type { IncomingMessage, ServerResponse } from 'http';
 
@@ -21,7 +20,12 @@ app.use(express.json());
 app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
-const useSSO = process.env.TINA_PUBLIC_AUTH_USE_SSO === 'true';
+
+if (!isLocal && !process.env.CLERK_SECRET) {
+  throw new Error(
+    'Clerk SSO is required for deployed CDP sites (since v1.9.0). Set CLERK_SECRET (plus TINA_PUBLIC_CLERK_PUBLIC_KEY and TINA_PUBLIC_CLERK_ORG_ID). See docs/upgrade-notes.md.'
+  );
+}
 
 const ClerkBackendAuthentication = ({
   secretKey,
@@ -146,20 +150,13 @@ const ClerkBackendAuthentication = ({
   };
 };
 
+// Clerk SSO is required for deployed CDP sites as of v1.9.0 — see docs/upgrade-notes.md.
 const authProvider = isLocal
   ? LocalBackendAuthProvider()
-  : useSSO
-    ? ClerkBackendAuthentication({
-      secretKey: process.env.CLERK_SECRET,
-      orgId: process.env.TINA_PUBLIC_CLERK_ORG_ID
-    })
-    : AuthJsBackendAuthProvider({
-      authOptions: TinaAuthJSOptions({
-        databaseClient,
-        secret: process.env.NEXTAUTH_SECRET!,
-        debug: true
-      })
-    })
+  : ClerkBackendAuthentication({
+    secretKey: process.env.CLERK_SECRET,
+    orgId: process.env.TINA_PUBLIC_CLERK_ORG_ID
+  })
 
 const tinaBackend = TinaNodeBackend({
   authProvider,
