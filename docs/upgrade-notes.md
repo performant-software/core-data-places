@@ -2,6 +2,25 @@
 
 Describes the breaking changes and steps required to upgrade to a more recent version of Core Data Places.
 
+## 1.9.0
+
+### Clerk SSO is required for deployed sites
+
+`1.9.0` makes Clerk SSO the only supported authentication for deployed CDP sites. The Keycloak and username/password (`tinacms-authjs`) auth paths have been removed.
+
+Background: the username/password path was broken by an upstream incompatibility (`tinacms-authjs@20.0.1` bundles a React-19 JSX runtime that crashes against our React 18). Re-enabling it depends on a React 19 upgrade, which is blocked on `@performant-software/shared-components`. See the project issue for details and the path back.
+
+**Before upgrading**, every deployed environment must be set up with Clerk:
+
+- Create a Clerk organization for the site (or reuse the shared org), and invite the editors.
+- Set these env vars on the Netlify site (per deploy context):
+  - `TINA_PUBLIC_CLERK_PUBLIC_KEY` — the Clerk publishable key (`pk_live_...` for production).
+  - `TINA_PUBLIC_CLERK_ORG_ID` — the Clerk organization id (`org_...`).
+  - `CLERK_SECRET` — the Clerk secret key (`sk_live_...`).
+- Remove the now-unused Keycloak / next-auth env vars: `AUTH_KEYCLOAK_ID`, `AUTH_KEYCLOAK_ISSUER`, `AUTH_KEYCLOAK_SECRET`, `AUTH_SECRET`, `AUTH_TRUST_HOST`, `TINA_PUBLIC_AUTH_USE_KEYCLOAK`, `NEXTAUTH_SECRET`, and `TINA_PUBLIC_AUTH_USE_SSO` (auth is no longer conditional).
+
+If the Clerk env vars are missing, the build fails fast with a clear error. Local development is unchanged: set `TINA_PUBLIC_IS_LOCAL=true` and no Clerk config is needed.
+
 ## 1.6.0
 
 ### Embedded maps
