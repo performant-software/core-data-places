@@ -7,6 +7,10 @@ import React, { useMemo } from 'react';
 const PlaceInsert = (props: any) => {
   const { selection, setSelection } = useSelectionState();
 
+  if (!props.place?.uuid) {
+    return null;
+  }
+
   /**
    * Memo-izes the properties of the selected feature.
    */
