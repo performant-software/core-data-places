@@ -15,7 +15,14 @@ export const fetchContent = async () => {
 
   // Clone the content repo into the temporary directory
   const url = `https://github.com/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}.git`;
-  child_process.execSync(`git clone ${url} ${TEMP_DIR}`);
+  const branch = process.env.GITHUB_BRANCH;
+  const branchArg = branch ? `--branch ${branch} --single-branch` : '';
+  child_process.execSync(`git clone ${branchArg} ${url} ${TEMP_DIR}`);
+
+  // Remove existing content to prevent merge artifacts from previous projects
+  if (fs.existsSync('./content')) {
+    fs.rmSync('./content', { recursive: true });
+  }
 
   // Copy the "content" folder to the current directory
   fs.cpSync(`${TEMP_DIR}/content`, './content', { recursive: true });
