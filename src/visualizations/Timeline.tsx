@@ -5,7 +5,11 @@ import React, { useMemo } from 'react';
 import _ from 'underscore';
 
 const TimelineVisualization = (props: DataVisualizationProps) => {
-  
+
+  if (!props.data) {
+    return null;
+  }
+
   /**
    * Memo-izes the "data" prop as JSON.
    */
