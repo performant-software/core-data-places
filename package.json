@@ -84,6 +84,6 @@
     "typescript": "^5.9.3",
     "typesense-instantsearch-adapter": "^2.7.1",
     "underscore": "^1.13.6",
-    "uuid": "^11.1.0"
+    "uuid": "^14.0.0"
   }
 }
