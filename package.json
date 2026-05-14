@@ -22,15 +22,15 @@
     "@types/node": "^22.13.5",
     "@types/underscore": "^1.11.15",
     "@vitest/browser-playwright": "^4.0.16",
-    "astro": "^5.9.4",
+    "astro": "^6.3.3",
     "prettier-plugin-astro": "^0.13.0",
     "ts-node": "^10.9.2",
     "vite": "^6.1.1",
     "vitest": "^4.0.16"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.0",
-    "@astrojs/netlify": "^6.4.0",
+    "@astrojs/mdx": "^5.0.6",
+    "@astrojs/netlify": "^7.0.9",
     "@astrojs/react": "^4.3.0",
     "@astrojs/sitemap": "^3.4.1",
     "@astrojs/ts-plugin": "^1.10.4",
