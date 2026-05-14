@@ -35,3 +35,5 @@ export const parseFeature = (feature) => {
     properties
   };
 };
+
+export const kilometersToMiles = (km) => km * 0.621371;

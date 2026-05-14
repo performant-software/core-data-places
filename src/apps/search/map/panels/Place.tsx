@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { useCallback, useContext } from 'react';
 import _ from 'underscore';
 import { hasDetailPage } from '@utils/detailPagePaths';
+import { Map as MapUtils } from '@performant-software/geospatial';
 
 type Place = {
   place_layers: Array<any>;
@@ -31,6 +32,21 @@ const Place = (props: Props) => {
     }
   }, [lang]);
 
+  const resolveGeometry = useCallback((place) => {
+    if (place?.place_geometry) {
+      let feature = CoreDataUtils.toFeature(place);
+
+      const certaintyRadius = feature.properties.originalProperties.certainty_radius;
+      if (certaintyRadius) {
+        feature = MapUtils.toCertaintyCircle(feature, certaintyRadius);
+      }
+
+      return feature
+    }
+
+    return null;
+  }, []);
+
   return (
     <BasePanel
       className={clsx('place', props.className)}
@@ -49,7 +65,7 @@ const Place = (props: Props) => {
         </>
       )}
       resolveDetailPageUrl={resolveDetailPageUrl}
-      resolveGeometry={(place) => place?.place_geometry && CoreDataUtils.toFeatureCollection([place])}
+      resolveGeometry={resolveGeometry}
       service={PlacesService}
     />
   );

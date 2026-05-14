@@ -29,6 +29,10 @@ export const fetchI18ns = async () => {
 };
 
 export const fetchNavbar = async (language: string) => {
+  if (!client.queries.navbar) {
+    return null;
+  }
+  
   const response = await client.queries.navbar({ relativePath: `${language}.json` });
   return response.data?.navbar;
 }
@@ -63,13 +67,26 @@ export const fetchPath = async (slug: string) => {
   return response.data?.path;
 };
 
-export const fetchPaths = async () => {
+export const fetchPathResponse = async (slug: string) => {
+  if (!client.queries.path) {
+    return null;
+  }
+
+  const response = await client.queries.path({ relativePath: `${slug}.mdx`});
+  return response;
+};
+
+export const fetchPaths = async (params = {}) => {
   if (!client.queries.pathConnection) {
     return null;
   }
 
-  const response = await client.queries.pathConnection();
-  return response.data?.pathConnection?.edges?.map((item) => item?.node);
+  const response = await client.queries.pathConnection(params);
+
+  return {
+    metadata: response.data?.pathConnection?.pageInfo,
+    paths: response.data?.pathConnection?.edges?.map((item) => item?.node)
+  }
 };
 
 export const fetchPost = async (slug: string) => {
@@ -80,6 +97,15 @@ export const fetchPost = async (slug: string) => {
   const response = await client.queries.post({ relativePath: `${slug}.mdx`});
   return response.data?.post;
 };
+
+export const fetchPostResponse = async (slug: string) => {
+  if (!client.queries.post) {
+    return null;
+  }
+
+  const response = await client.queries.post({ relativePath: `${slug}.mdx`});
+  return response;
+}
 
 export const fetchPosts = async (params = {}) => {
   if (!client.queries.postConnection) {

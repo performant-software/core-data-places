@@ -1,10 +1,10 @@
 ---
-import Paths from '@apps/paths/Paths.astro';
+import Paths from '@apps/paths/Paths';
+import Container from '@components/Container.astro';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
 import { hasPathsContent } from '@utils/config';
 import _ from 'underscore';
-
 
 export const getStaticPaths = () => {
   if (!hasPathsContent(config)) {
@@ -20,8 +20,13 @@ export const getStaticPaths = () => {
   footer
   titleKey='paths'
 >
-  <Paths
-    lang={Astro.currentLocale}
-    server:defer
-  />
+  <Container
+    className='pb-16 w-full'
+  >
+    <Paths
+      lang={Astro.currentLocale}
+      sort={config.content?.paths_config?.sort_by}
+      client:only='react'
+    />
+  </Container>
 </Layout>

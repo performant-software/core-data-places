@@ -520,6 +520,18 @@ const staticSectionTemplates: Template<false>[] = [{
           name: 'rounded',
           label: 'Rounded Corners?',
           type: 'boolean'
+        }, {
+          name: 'image_alt',
+          label: 'Image Alt',
+          type: 'string'
+        }, {
+          name: 'citation',
+          label: 'Image Citation/Caption Text',
+          type: 'string'
+        }, {
+          name: 'citation_link',
+          label: 'Image Citation Link',
+          type: 'string'
         }]
       }, {
         name: 'basic',

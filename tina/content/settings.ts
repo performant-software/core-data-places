@@ -2,6 +2,9 @@ import { Collection, TinaField } from '@tinacms/schema-tools';
 import TinaMapLayerDefaultSwitch from '../components/TinaMapLayerDefaultSwitch';
 import TinaMapLayerOverlaySwitch from '../components/TinaMapLayerOverlaySwitch';
 import TinaMapLayerURLField from '../components/TinaMapLayerURLField';
+import RebuildSiteButton from '../components/RebuildSiteButton';
+import { postMetadata } from './posts';
+import _ from 'underscore';
 
 const editioncrafterConfigFields: TinaField<false>[] = [{
   name: 'xml_id_field',
@@ -29,7 +32,12 @@ const editioncrafterConfigFields: TinaField<false>[] = [{
     label: 'Label',
     type: 'string'
   }]
-}]
+}];
+
+const sortOptions = _.map(postMetadata, (field) => ({
+  label: field.label,
+  value: field.name
+}));
 
 const attributeParserOptions = [{
   label: 'fuzzyDate',
@@ -67,6 +75,84 @@ const Settings: Collection = {
         name: 'drafts',
         label: 'Use Draft Workflow?',
         type: 'boolean'
+      }, {
+        name: 'sort_by',
+        label: 'Post display order',
+        type: 'object',
+        fields: [{
+          name: 'name',
+          label: 'Field to sort by',
+          type: 'string',
+          options: sortOptions
+        }, {
+          name: 'direction',
+          label: 'Sort direction (ascending or descending)',
+          type: 'string',
+          options: [{
+            label: 'Ascending',
+            value: 'asc'
+          }, {
+            label: 'Descending',
+            value: 'desc'
+          }]
+        }]
+      }, {
+        name: 'layout',
+        label: 'Layout',
+        type: 'string',
+        options: [{
+          label: 'List',
+          value: 'list'
+        }, {
+          label: 'Grid',
+          value: 'grid'
+        }]
+      }]
+    }, {
+      name: 'paths_config',
+      label: 'Paths configuration',
+      type: 'object',
+      fields: [{
+        name: 'categories',
+        label: 'Categories',
+        type: 'string',
+        list: true
+      }, {
+        name: 'drafts',
+        label: 'Use Draft Workflow?',
+        type: 'boolean'
+      }, {
+        name: 'sort_by',
+        label: 'Path display order',
+        type: 'object',
+        fields: [{
+          name: 'name',
+          label: 'Field to sort by',
+          type: 'string',
+          options: sortOptions
+        }, {
+          name: 'direction',
+          label: 'Sort direction (ascending or descending)',
+          type: 'string',
+          options: [{
+            label: 'Ascending',
+            value: 'asc'
+          }, {
+            label: 'Descending',
+            value: 'desc'
+          }]
+        }]
+      }, {
+        name: 'layout',
+        label: 'Layout',
+        type: 'string',
+        options: [{
+          label: 'List',
+          value: 'list'
+        }, {
+          label: 'Grid',
+          value: 'grid'
+        }]
       }]
     }]
   }, {
@@ -701,6 +787,13 @@ const Settings: Collection = {
         }]
       }]
     }]
+  }, {
+    name: 'rebuild_site',
+    label: 'Rebuild site',
+    type: 'boolean',
+    ui: {
+      component: RebuildSiteButton
+    }
   }],
   ui: {
     allowedActions: {

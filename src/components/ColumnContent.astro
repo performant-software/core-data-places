@@ -6,6 +6,7 @@ import Spacer from '@components/Spacer.astro';
 import { toBorderClass, toBackgroundClass } from '@root/src/utils/pageBuilder';
 import clsx from 'clsx';
 import _ from 'underscore';
+import ImageWithCitation from './ImageWithCitation.astro';
 
 const { item, t } = Astro.props;
 
@@ -22,12 +23,24 @@ const BlockTypes = {
 }
 
 ---
-{ item.__typename.endsWith(BlockTypes.image) && ( 
-  <img src={item.image} class={clsx(
-    'w-full object-cover',
-    { 'h-full': item.full_height },
-    { 'rounded-md': item.rounded }
-  )} />
+{ item.__typename.endsWith(BlockTypes.image) && (
+  <ImageWithCitation
+    alt={item.image_alt}
+    citation={item.citation}
+    citationLink={item.citation_link}
+    src={item.image}
+    classNames={{
+      root: clsx(
+        'w-full',
+        item.full_height && 'h-full'
+      ),
+      image: clsx(
+        'w-full object-cover',
+        item.rounded && 'rounded-md',
+        item.full_height && 'h-full'
+      )
+    }}
+  />
 )}
 
 { item.__typename.endsWith(BlockTypes.text) && ( 

@@ -26,6 +26,8 @@ import {
 import _ from 'underscore';
 import PanelHistoryContext from '@apps/search/map/PanelHistoryContext';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import { kilometersToMiles } from '@utils/map';
+import { Map as MapUtils } from '@performant-software/geospatial';
 
 interface Props {
   className?: string;
@@ -210,17 +212,36 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
   /**
    * Memo-izes the geometry.
    */
-  const geometry = useMemo(() => {
+  const geometryData = useMemo(() => {
     if (props.resolveGeometry && item) {
       return props.resolveGeometry(item);
     }
 
-    return !_.isEmpty(places.filter((place) => place.place_geometry)) &&
-      CoreDataUtils.toFeatureCollection(
-        places.filter((place) => place.place_geometry)
-      );
-  }, [item, places, props.resolveGeometry]);
-  
+    if (!_.isEmpty(places.filter((place) => place.place_geometry))) {
+      const result = {
+        geometry: CoreDataUtils.toFeatureCollection(
+          places.filter((place) => place.place_geometry)
+        ),
+        properties: {
+          certainty_radius: Math.max(places.map(p => p.place_geometry?.properties?.certainty_radius || 0))
+        }
+      };
+
+      for (let i = 0; i < result.geometry.features.length; i++) {
+        const feature = result.geometry.features[i];
+        const certaintyRadius = feature.properties?.originalProperties?.certainty_radius;
+
+        if (certaintyRadius) {
+          result.geometry.features[i] = MapUtils.toCertaintyCircle(feature, certaintyRadius);
+        }
+      }
+
+      return result;
+    }
+
+    return null;
+  }, [item, places]);
+
   /**
    * Memo-izes the related media items.
    */
@@ -450,11 +471,14 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
           />
         )}
       </RecordDetailPanel>
-      { geometry && (
+      { geometryData && (
         <LocationMarkers
-          animate
+          animate={!geometryData.properties?.certainty_radius}
           boundingBoxOptions={boundingBoxOptions}
-          data={geometry}
+          buffer={geometryData.properties?.certainty_radius
+            ? kilometersToMiles(geometryData.properties?.certainty_radius)
+            : undefined}
+          data={geometryData.geometry}
           fillStyle={{
             type: 'fill',
             paint: {

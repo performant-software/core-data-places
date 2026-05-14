@@ -1,8 +1,7 @@
 import { buildResponse } from '@utils/api';
 import { APIRoute } from 'astro';
-import { getPosts } from '@services/posts';
+import { getPaths } from '@services/paths';
 import { convertToNumber } from '@utils/url';
-import config from '@config';
 
 export const GET: APIRoute = async (req) => {
   const params = req.url.searchParams.keys().reduce((acc, key) => ({
@@ -19,7 +18,7 @@ export const GET: APIRoute = async (req) => {
     filter['category'] = { eq: params.category };
   }
 
-  const data = await getPosts({...params, filter});
+  const data = await getPaths({...params, filter});
 
   return buildResponse(data);
 };

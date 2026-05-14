@@ -1,7 +1,7 @@
 import LabelPlaceholder from '@components/LabelPlaceholder';
 import _ from 'underscore';
 import { useCallback, useEffect, useState } from 'react';
-import { fetchPosts } from '@backend/api/posts';
+import { fetchPaths } from '@backend/api/paths';
 import { Button } from '@performant-software/core-data';
 import { useTranslations } from '@i18n/useTranslations';
 import config from '@config';
@@ -21,16 +21,16 @@ interface Props {
 
 const PER_PAGE = 25;
 
-const PostList = (props: Props) => {
+const PathList = (props: Props) => {
   const { t } = useTranslations();
   const { sort, lang } = props;
 
   const [cursor, setCursor] = useState<string | null>(null);
-  const [posts, setPosts] = useState<any[]>([]);
+  const [paths, setPaths] = useState<any[]>([]);
   const [category, setCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const onLoadPosts = useCallback(async (cursor?: string) => {
+  const onLoadPaths = useCallback(async (cursor?: string) => {
     setLoading(true);
     const params = sort?.direction === 'desc'
       ? {
@@ -53,20 +53,20 @@ const PostList = (props: Props) => {
       params['category'] = category;
     }
 
-    const res = await fetchPosts(params);
+    const res = await fetchPaths(params);
 
-    setPosts(prev => prev.concat(res.posts));
+    setPaths(prev => prev.concat(res.paths));
     const next = sort?.direction === 'desc' ? 'hasPreviousPage' : 'hasNextPage';
     setCursor((res.metadata && res.metadata[next]) ? res.metadata?.endCursor : null);
     setLoading(false);
   }, [category]);
 
   useEffect(() => {
-    setPosts([]);
-    onLoadPosts();
+    setPaths([]);
+    onLoadPaths();
   }, [category]);
 
-  const layout = config.content?.posts_config?.layout || 'list';
+  const layout = config.content?.paths_config?.layout || 'list';
 
   return (
     <div>
@@ -74,12 +74,12 @@ const PostList = (props: Props) => {
         <h1
           className='text-4xl my-8 font-header'
         >
-          { t('posts') || (
+          { t('paths') || (
             <LabelPlaceholder />
           )}
         </h1>
         {
-          config.content?.posts_config?.categories && ( 
+          config.content?.paths_config?.categories && ( 
             <div className='flex flex-row gap-4 items-center'>
               <Listbox value={category} onChange={setCategory}>
                 <ListboxButton className='min-w-[250px] h-12 bg-white rounded-md px-4.5 py-2.5 flex flex-row justify-between items-center'>
@@ -92,7 +92,7 @@ const PostList = (props: Props) => {
                   <ListboxOption key='all' value={null} className='data-focus:bg-gray-100 px-4 py-2 text-sm cursor-pointer'>
                     { t('all') }
                   </ListboxOption>
-                  { _.map(config.content.posts_config.categories, (cat) => (
+                  { _.map(config.content.paths_config.categories, (cat) => (
                     <ListboxOption key={cat} value={cat} className='data-focus:bg-gray-100 px-4 py-2 text-sm cursor-pointer'>
                       {cat}
                     </ListboxOption>
@@ -108,14 +108,14 @@ const PostList = (props: Props) => {
         <div className='flex flex-col text-lg divide-y divide-secondary text-[#222222]'>
           { layout === 'list' && (
             <>
-              { _.map(posts, (post) => (
+              { _.map(paths, (path) => (
                 <a
                   className='hover:underline hover:font-semibold py-4 font-header italic'
-                  href={getRelativeLocaleUrl(lang, `posts/${post?._sys?.filename}`)}
-                  key={post?._sys?.filename}
+                  href={getRelativeLocaleUrl(lang, `paths/${path?._sys?.filename}`)}
+                  key={path?._sys?.filename}
                 >
                   <p>
-                    { post?.title }
+                    { path?.title }
                   </p>
                 </a>
               )) }
@@ -123,16 +123,16 @@ const PostList = (props: Props) => {
           )}
           { layout === 'grid' && (
             <Cards>
-              { _.map(posts, (post) => (
+              { _.map(paths, (path) => (
                 <Card
-                  imageUrl={post?.cardImage}
-                  alt={post?.imageAlt}
-                  slug={getRelativeLocaleUrl(lang, `posts/${post._sys.filename}`)}
-                  title={post.title}
-                  date={post.date}
-                  key={post?._sys?.filename}
+                  imageUrl={path?.cardImage}
+                  alt={path?.imageAlt}
+                  slug={getRelativeLocaleUrl(lang, `paths/${path._sys.filename}`)}
+                  title={path.title}
+                  date={path.date}
+                  key={path?._sys?.filename}
                   labels={{
-                    byline: t('by', { author: post.author, date: post.date }),
+                    byline: t('by', { author: path.author, date: path.date }),
                     readMore: t('readMore')
                   }}
                 />
@@ -144,7 +144,7 @@ const PostList = (props: Props) => {
       { cursor && !loading && (
         <div className='w-full flex justify-center items-center py-6'>
           <Button
-            onClick={() => onLoadPosts(cursor)}
+            onClick={() => onLoadPaths(cursor)}
             primary='true'
             rounded='true'
             type='button'
@@ -157,4 +157,4 @@ const PostList = (props: Props) => {
   );
 };
 
-export default PostList;
+export default PathList;

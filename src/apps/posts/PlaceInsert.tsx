@@ -5,19 +5,19 @@ import { parseFeature } from '@utils/map';
 import React, { useMemo } from 'react';
 
 const PlaceInsert = (props: any) => {
-  const { selected, setSelected } = useSelectionState();
+  const { selection, setSelection } = useSelectionState();
 
   /**
    * Memo-izes the properties of the selected feature.
    */
-  const place = useMemo(() => parseFeature(selected), [selected]);
+  const place = useMemo(() => parseFeature(selection), [selection]);
 
-  return (
+  return props.place?.uuid && (
     <div
       className='flex flex-col gap-y-2 my-8 w-full'
     >
       <div
-        className='h-[400px] w-3/4 flex w-full'
+        className='h-[400px] w-full lg:w-3/4 flex mx-auto'
       >
         <PlacesMap
           layer={props.place?.layer}
@@ -40,7 +40,7 @@ const PlaceInsert = (props: any) => {
       { place && (
         <PlaceDetailModal
           place={place.properties}
-          onClose={() => setSelected(null)}
+          onClose={() => setSelection(null)}
           open
         />
       )}

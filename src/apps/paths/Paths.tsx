@@ -1,6 +1,6 @@
 import { useTranslations } from '@i18n/useTranslations';
 import TranslationContext from '@contexts/TranslationContext';
-import PostList from '@apps/posts/PostList';
+import PathList from '@apps/paths/PathList';
 
 interface Props {
   lang: string;
@@ -10,14 +10,14 @@ interface Props {
   };
 }
 
-const Posts = (props: Props) => {
+const Paths = (props: Props) => {
   const { t } = useTranslations();
 
   return (
     <TranslationContext.Provider
       value={{ lang: props.lang, t }}
     >
-      <PostList
+      <PathList
         sort={props.sort}
         lang={props.lang}
       />
@@ -25,4 +25,4 @@ const Posts = (props: Props) => {
   );
 };
 
-export default Posts;
+export default Paths;

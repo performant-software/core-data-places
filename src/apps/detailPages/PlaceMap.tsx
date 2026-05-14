@@ -4,6 +4,9 @@ import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import Map from '@components/Map';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
+import { useMemo } from 'react';
+import { kilometersToMiles } from '@utils/map';
+import { Map as MapUtils } from '@performant-software/geospatial';
 
 interface Props {
   classNames?: {
@@ -16,6 +19,38 @@ interface Props {
 
 const PlaceMap = (props: Props) => {
   const { t } = useTranslations();
+
+  const buffer = useMemo(() => {
+    const maxRadius = Math.max(
+      props.geometry.features.map(f => f.properties?.originalProperties?.certainty_radius ?? 0)
+    );
+
+    if (maxRadius) {
+      return kilometersToMiles(maxRadius);
+    }
+
+    return undefined;
+  }, [props.geometry.features]);
+
+  const mapGeometry = useMemo(() => {
+    if (props.geometry) {
+      return {
+        ...props.geometry,
+        features: props.geometry.features.map((feature) => {
+          const certaintyRadius = feature.properties?.originalProperties?.certainty_radius
+
+          if (certaintyRadius) {
+            return MapUtils.toCertaintyCircle(
+              feature,
+              certaintyRadius
+            )
+          }
+
+          return feature;
+        })
+      }
+    }
+  }, [props.geometry])
 
   return (
     <TranslationContext.Provider
@@ -31,7 +66,8 @@ const PlaceMap = (props: Props) => {
               boundingBoxOptions={{
                 animate: false
               }}
-              data={props.geometry}
+              buffer={buffer}
+              data={mapGeometry}
             />
           </Map>
         </Peripleo>

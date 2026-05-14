@@ -22,3 +22,7 @@
 
 [build.environment]
   NODE_VERSION = "22.13.0"
+  # TinaCMS content indexing (in `tinacms build`) and `astro build` both grow
+  # with content volume; on larger content repos they hit Node's ~2 GB default
+  # heap limit. Raise it so those steps don't OOM (V8 OOMs with "JavaScript heap out of memory", exit 134).
+  NODE_OPTIONS = "--max-old-space-size=4096"
