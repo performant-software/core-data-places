@@ -69,7 +69,7 @@
     "module-error": "^1.0.2",
     "mongodb": "^6.9.0",
     "nanostores": "^0.11.4",
-    "netlify-cli": "^17.38.1",
+    "netlify-cli": "^26.0.1",
     "next-tinacms-s3": "^20.0.1",
     "prop-types": "^15.8.1",
     "radix-ui": "^1.1.3",
