@@ -27,6 +27,7 @@ import _ from 'underscore';
 import PanelHistoryContext from '@apps/search/map/PanelHistoryContext';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import { kilometersToMiles } from '@utils/map';
+import { Map as MapUtils } from '@performant-software/geospatial';
 
 interface Props {
   className?: string;
@@ -217,18 +218,29 @@ const { data: { people = [] } = {}, loading: peopleLoading } = useLoader(onLoadP
     }
 
     if (!_.isEmpty(places.filter((place) => place.place_geometry))) {
-      return {
+      const result = {
         geometry: CoreDataUtils.toFeatureCollection(
           places.filter((place) => place.place_geometry)
         ),
         properties: {
           certainty_radius: Math.max(places.map(p => p.place_geometry?.properties?.certainty_radius || 0))
         }
+      };
+
+      for (let i = 0; i < result.geometry.features.length; i++) {
+        const feature = result.geometry.features[i];
+        const certaintyRadius = feature.properties?.originalProperties?.certainty_radius;
+
+        if (certaintyRadius) {
+          result.geometry.features[i] = MapUtils.toCertaintyCircle(feature, certaintyRadius);
+        }
       }
+
+      return result;
     }
 
     return null;
-  }, [item, places, props.resolveGeometry]);
+  }, [item, places]);
 
   /**
    * Memo-izes the related media items.

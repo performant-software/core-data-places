@@ -1,6 +1,76 @@
+import _ from 'underscore';
+import Creator from '../components/Creator';
+import NotEditableNotice from '../components/NotEditableNotice';
+import PublishToggle from '../components/PublishToggle';
 import TinaMediaPicker from '../components/TinaMediaPicker';
 import TinaPlacePicker from '../components/TinaPlacePicker';
-import { Collection } from '@tinacms/schema-tools';
+import { Collection, TinaField } from '@tinacms/schema-tools';
+import config from '@config';
+import { getUserRole } from '../utils/getUserRole';
+
+export const pathMetadata: TinaField<false>[] = _.compact([
+  {
+    type: 'object',
+    name: 'creator',
+    label: 'Creator',
+    fields: [{
+      name: 'id',
+      label: 'ID',
+      type: 'string'
+    }, {
+      name: 'email',
+      label: 'Email',
+      type: 'string'
+    }],
+    ui: {
+      component: Creator
+    }
+  },
+  {
+    name: 'title',
+    label: 'Title',
+    type: 'string',
+    required: true,
+    isTitle: true,
+  },
+  {
+    name: 'image',
+    label: 'Cover Image',
+    type: 'image'
+  },
+  {
+    name: 'imageAlt',
+    label: 'Cover Image alt text',
+    type: 'string'
+  },
+  {
+    name: 'author',
+    label: 'Author',
+    type: 'string'
+  },
+  {
+    name: 'date',
+    label: 'Date',
+    type: 'datetime'
+  },
+  config.content?.paths_config?.categories && {
+    name: 'category',
+    label: 'Category',
+    type: 'string',
+    options: _.map(config.content?.paths_config?.categories, (cat) => ({
+      label: cat,
+      value: cat
+    }))
+  },
+  {
+    name: 'published',
+    label: 'Published',
+    type: 'boolean',
+    ui: {
+      component: PublishToggle
+    }
+  }]
+);
 
 const Paths: Collection = {
   name: 'path',
@@ -18,35 +88,34 @@ const Paths: Collection = {
         .join('');      
       return `/en/paths/${hashHex}/preview/${document._sys.filename}`;
     },
+    beforeSubmit: (arg: { values, form, cms }) => {
+      const { isAdmin, userId } = getUserRole(arg.cms);
+
+      // Block saves for non-owners
+      if (!isAdmin && arg.values.creator?.id && arg.values.creator.id !== userId) {
+        throw new Error('You can only edit content you created.');
+      }
+
+      // Auto-populate creator on first save
+      const user = arg.cms?.api?.tina?.authProvider?.clerk?.user;
+      if (!arg.values.creator && user) {
+        arg.values.creator = {
+          id: user.id,
+          email: user.primaryEmailAddress?.emailAddress
+        };
+      }
+      return arg.values;
+    }
   },
   fields: [
     {
-      name: 'title',
-      label: 'Title',
+      name: '_notEditableNotice',
       type: 'string',
-      required: true,
-      isTitle: true,
+      ui: {
+        component: NotEditableNotice
+      }
     },
-    {
-      name: 'image',
-      label: 'Cover Image',
-      type: 'image'
-    },
-    {
-      name: 'imageAlt',
-      label: 'Cover Image alt text',
-      type: 'string'
-    },
-    {
-      name: 'author',
-      label: 'Author',
-      type: 'string'
-    },
-    {
-      name: 'date',
-      label: 'Date',
-      type: 'datetime'
-    },
+    ...pathMetadata,
     {
       name: 'description',
       label: 'Description',

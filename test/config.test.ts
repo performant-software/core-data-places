@@ -61,6 +61,14 @@ describe('content', () => {
   test('posts_config.drafts matches allowed values', () => {
     expect(config.content?.posts_config?.drafts).toBeBoolean();
   });
+
+  test('paths_config.categories matches allowed values', () => {
+    expect(config.content?.paths_config?.categories).toBeArrayOf(String);
+  });
+
+  test('paths_config.drafts matches allowed values', () => {
+    expect(config.content?.paths_config?.drafts).toBeBoolean();
+  });
 });
 
 describe('core_data', () => {

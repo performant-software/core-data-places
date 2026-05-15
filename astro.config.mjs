@@ -4,7 +4,6 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, envField } from 'astro/config';
-import auth from 'auth-astro';
 import { loadEnv } from 'vite';
 import config from './public/config.json';
 
@@ -22,7 +21,7 @@ export default defineConfig({
   },
   output: STATIC_BUILD === 'true' ? 'static' : 'server',
   adapter: netlify(),
-  integrations: [mdx(), sitemap(), react(), auth()],
+  integrations: [mdx(), sitemap(), react()],
   vite: {
     optimizeDeps: {
       esbuildOptions: {
