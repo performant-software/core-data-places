@@ -46,10 +46,6 @@ const CustomTooltip = ({ active, payload, label }: TooltipContentProps<string | 
 const StackedTimeline = (props: Props) => {
   const { link, model, filter } = props;
 
-  if (!props.data) {
-    return null;
-  }
-  
   /**
    * Memo-izes the data as parsed JSON.
   */
