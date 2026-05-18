@@ -14,16 +14,16 @@ const ExportButton = () => {
   const { name } = useSearchConfig();
   const { t } = useContext(TranslationContext);
 
-  const { features } = useContext(MapSearchContext);
+  const { features, hits } = useContext(MapSearchContext);
 
   /**
    * Exports the current search results in the passed format.
    */
   const onSelection = useCallback((option) => {
     if (option === Options.json) {
-      exportAsJSON({ name, data: { features } });
+      exportAsJSON({ name, data: { features, hits } });
     }
-  }, [name, features]);
+  }, [name, features, hits]);
 
   return (
     <Listbox
