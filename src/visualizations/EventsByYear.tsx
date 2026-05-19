@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
+import { parseVisualizationData } from './parseData';
 
 interface Props extends DataVisualizationProps {
   interval: number;
@@ -20,14 +21,10 @@ const DEFAULT_INTERVAL = 10;
 const EventsByYear = (props: Props) => {
   const { interval = DEFAULT_INTERVAL } = props;
 
-  if (!props.data) {
-    return null;
-  }
-
   /**
    * Memo-izes the data as parsed JSON.
   */
-  const data = useMemo(() => props.data ? JSON.parse(props.data) : null, [props.data]);
+  const data = useMemo(() => parseVisualizationData(props.data), [props.data]);
 
   return data && (
     <VisualizationContainer

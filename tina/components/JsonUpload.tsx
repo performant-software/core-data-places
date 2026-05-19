@@ -7,7 +7,7 @@ interface Props {
 
 const JsonUpload = (props: Props) => {
   const [error, setError] = useState(null);
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   /**
    * Memo-izes the value as JSON.
@@ -28,6 +28,8 @@ const JsonUpload = (props: Props) => {
     const { current: instance } = inputRef;
 
     if (instance) {
+      // Reset the value so re-selecting the same file still fires onChange
+      instance.value = '';
       instance.click();
     }
   }, []);
