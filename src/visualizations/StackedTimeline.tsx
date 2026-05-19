@@ -16,6 +16,7 @@ import {
 import config from '@config' with { type: 'json' };
 import _ from 'underscore';
 import { hasDetailPage } from '@utils/detailPagePaths';
+import { parseVisualizationData } from './parseData';
 
 interface Props extends DataVisualizationProps {
   link?: string;
@@ -49,7 +50,7 @@ const StackedTimeline = (props: Props) => {
   /**
    * Memo-izes the data as parsed JSON.
   */
- const data = useMemo(() => props.data ? JSON.parse(props.data) : null, [props.data]);
+ const data = useMemo(() => parseVisualizationData(props.data), [props.data]);
 
  const language = useMemo(() => getLanguageFromUrl(window.location.pathname), [window.location.pathname]);
 

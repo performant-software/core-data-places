@@ -3,12 +3,13 @@ import { Timeline, Typesense as TypesenseUtils } from '@performant-software/core
 import type { DataVisualizationProps } from '@types';
 import React, { useMemo } from 'react';
 import _ from 'underscore';
+import { parseVisualizationData } from './parseData';
 
 const TimelineVisualization = (props: DataVisualizationProps) => {
   /**
    * Memo-izes the "data" prop as JSON.
    */
-  const data = useMemo(() => props.data ? JSON.parse(props.data) : null, [props.data]);
+  const data = useMemo(() => parseVisualizationData(props.data), [props.data]);
 
   /**
    * Memo-izes the events and sets the "date" attribute.

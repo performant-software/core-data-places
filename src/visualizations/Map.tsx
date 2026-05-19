@@ -7,6 +7,7 @@ import { useRuntimeConfig } from '@peripleo/peripleo';
 import type { Configuration, DataVisualizationProps } from '@types';
 import React, { useEffect, useId, useMemo, useState } from 'react';
 import _ from 'underscore';
+import { parseVisualizationData } from './parseData';
 
 const Map = (props: DataVisualizationProps) => {
   const [features, setFeatures] = useState([]);
@@ -16,7 +17,7 @@ const Map = (props: DataVisualizationProps) => {
   /**
    * Memo-izes the "data" prop as JSON.
    */
-  const parsed = useMemo(() => props.data ? JSON.parse(props.data) : null, [props.data]);
+  const parsed = useMemo(() => parseVisualizationData(props.data), [props.data]);
 
   /**
    * Memo-izes the search config based on the data set.
