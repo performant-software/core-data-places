@@ -41,38 +41,38 @@ describe('PostEmbedErrorBoundary.getDerivedStateFromError', () => {
 describe('PostEmbedErrorBoundary.getDerivedStateFromProps', () => {
   const propsFor = (resetKeys: ReadonlyArray<unknown>) => ({ children: null, resetKeys });
 
-  it('clears the error and adopts new keys when resetKeys change after a crash', () => {
+  it('clears the error and replenishes the retry budget when resetKeys change after a crash', () => {
     const next = ['v2'];
     const result = PostEmbedErrorBoundary.getDerivedStateFromProps(
       propsFor(next),
-      { hasError: true, resetKeys: ['v1'] }
+      { hasError: true, resetKeys: ['v1'], retryCount: 1 }
     );
-    expect(result).toEqual({ hasError: false, resetKeys: next });
+    expect(result).toEqual({ hasError: false, resetKeys: next, retryCount: 0 });
   });
 
-  it('stays in the error state while resetKeys are unchanged', () => {
+  it('stays in the error state while resetKeys are unchanged (no extra retries handed out)', () => {
     const keys = ['v1'];
     const result = PostEmbedErrorBoundary.getDerivedStateFromProps(
       propsFor(keys),
-      { hasError: true, resetKeys: keys }
+      { hasError: true, resetKeys: keys, retryCount: 1 }
     );
     expect(result).toBeNull();
   });
 
-  it('tracks new keys without resetting when there is no error', () => {
+  it('tracks new keys and replenishes the retry budget when there is no error', () => {
     const next = ['v2'];
     const result = PostEmbedErrorBoundary.getDerivedStateFromProps(
       propsFor(next),
-      { hasError: false, resetKeys: ['v1'] }
+      { hasError: false, resetKeys: ['v1'], retryCount: 1 }
     );
-    expect(result).toEqual({ resetKeys: next });
+    expect(result).toEqual({ resetKeys: next, retryCount: 0 });
   });
 
   it('is a no-op when there is no error and keys are unchanged', () => {
     const keys = ['v1'];
     const result = PostEmbedErrorBoundary.getDerivedStateFromProps(
       propsFor(keys),
-      { hasError: false, resetKeys: keys }
+      { hasError: false, resetKeys: keys, retryCount: 0 }
     );
     expect(result).toBeNull();
   });

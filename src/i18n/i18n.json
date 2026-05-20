@@ -463,6 +463,10 @@
     "tinaLabel": "Post embed render error message",
     "defaultValue": "This content could not be displayed."
   },
+  "embedRenderErrorEditing": {
+    "tinaLabel": "Post embed render error message (visual editor)",
+    "defaultValue": "This content could not be previewed. Your edits are safe — the preview will refresh as you keep editing."
+  },
   "contactForm.name": {
     "tinaLabel": "Contact Form > Name",
     "defaultValue": "Name"

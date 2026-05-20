@@ -30,6 +30,16 @@ const PostContent = (props: PostContentProps) => {
     data: props.data,
   });
 
+  // The embed fallback is, in practice, only hit in the TinaCMS visual editor
+  // (the preview renders inside its iframe). Reassure the editor that edits are
+  // safe; show a neutral message on a normally-loaded published page.
+  const isEditing = typeof window !== 'undefined' && window.self !== window.top;
+  const embedFallback = (
+    <p className='italic text-sm'>
+      { t(isEditing ? 'embedRenderErrorEditing' : 'embedRenderError') }
+    </p>
+  );
+
   return (
     <RuntimeConfig
       path='/config.json'
@@ -48,7 +58,7 @@ const PostContent = (props: PostContentProps) => {
             >
               <PostEmbedErrorBoundary
                 resetKeys={[data?.post?.body]}
-                fallback={<p className='italic text-sm'>{t('embedRenderError')}</p>}
+                fallback={embedFallback}
               >
                 <TinaMarkdown
                   components={{
