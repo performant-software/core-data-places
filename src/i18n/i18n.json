@@ -459,6 +459,10 @@
     "tinaLabel": "All Posts",
     "defaultValue": "All Posts"
   },
+  "embedRenderError": {
+    "tinaLabel": "Post embed render error message",
+    "defaultValue": "This content could not be displayed."
+  },
   "contactForm.name": {
     "tinaLabel": "Contact Form > Name",
     "defaultValue": "Name"

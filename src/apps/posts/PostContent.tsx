@@ -1,6 +1,7 @@
 import PlaceInsert from '@apps/posts/PlaceInsert';
 import IframeEmbed from '@components/IframeEmbed';
 import MediaInsert from '@components/MediaInsert'
+import PostEmbedErrorBoundary from '@components/PostEmbedErrorBoundary';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
 import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
@@ -45,19 +46,24 @@ const PostContent = (props: PostContentProps) => {
               className='prose prose-lg max-w-none w-full'
               data-tina-field={tinaField(data?.post)}
             >
-              <TinaMarkdown
-                components={{
-                  data_table: Table,
-                  events_by_year: EventsByYear,
-                  iframe: IframeEmbed,
-                  map: Map,
-                  media: MediaInsert,
-                  place: PlaceInsert,
-                  stacked_timeline: StackedTimeline,
-                  timeline: Timeline
-                }}
-                content={data?.post?.body}
-              />
+              <PostEmbedErrorBoundary
+                resetKeys={[data?.post?.body]}
+                fallback={<p className='italic text-sm'>{t('embedRenderError')}</p>}
+              >
+                <TinaMarkdown
+                  components={{
+                    data_table: Table,
+                    events_by_year: EventsByYear,
+                    iframe: IframeEmbed,
+                    map: Map,
+                    media: MediaInsert,
+                    place: PlaceInsert,
+                    stacked_timeline: StackedTimeline,
+                    timeline: Timeline
+                  }}
+                  content={data?.post?.body}
+                />
+              </PostEmbedErrorBoundary>
             </article>
           </div>
         </TranslationContext.Provider>
