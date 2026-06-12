@@ -53,6 +53,16 @@ export const pathMetadata: TinaField<false>[] = _.compact([
     label: 'Date',
     type: 'datetime'
   },
+  {
+    name: 'view',
+    label: 'View',
+    type: 'string',
+    description: '"Zoom" (default) will focus on each point as you progress through the path. "Full" will keep the entire path visible at all times.',
+    options: [
+      { label: 'Zoom', value: 'zoom' },
+      { label: 'Full', value: 'full' },
+    ]
+  },
   config.content?.paths_config?.categories && {
     name: 'category',
     label: 'Category',
