@@ -22,10 +22,10 @@ import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import Byline from '@components/Byline';
 import { PathQuery, PathQueryVariables } from '@root/tina/__generated__/types';
 import { tinaField, useTina } from 'tinacms/dist/react';
-import { useHoverState } from '@peripleo/maplibre';
 import usePlacesFeatures from '@root/src/hooks/usePlacesFeatures';
 import Map from '@components/Map';
 import { LocationMarkers } from '@performant-software/geospatial';
+import PathHover from '@apps/paths/PathHover';
 
 export interface PathViewerProps {
   variables: PathQueryVariables;
@@ -47,8 +47,6 @@ const PathViewer = (props: PathViewerProps) => {
   const contentDiv = useRef(null);
   const { t } = useContext(TranslationContext);
 
-  const { hover, setHover } = useHoverState();
-
   /**
    * Memo-izes the current place.
    */
@@ -62,20 +60,6 @@ const PathViewer = (props: PathViewerProps) => {
     : path.path.map(({ place: { uuid }}) => uuid), [place, view]);
 
   const mapData = usePlacesFeatures(placeIds);
-
-  useEffect(() => {
-    if (place) {
-      const feature = mapData.features.find(f => f.properties?.uuid === place.uuid);
-      if (feature) {
-        console.log(feature)
-        setHover({ hovered: [feature] });
-      }
-    } else {
-      setHover(undefined);
-    }
-  }, [place]);
-
-  console.log(hover)
 
   /**
    * Scrolls to the top of the content div when the current path changes.
@@ -151,6 +135,7 @@ const PathViewer = (props: PathViewerProps) => {
             layer={place?.layer}
             interactive
           />
+          <PathHover placeUuid={place?.uuid} mapData={mapData} />
         </Map>
       </div>
       <div
