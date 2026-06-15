@@ -55,9 +55,15 @@ const PathViewer = (props: PathViewerProps) => {
   /**
    * Memo-izes the array of place IDs.
    */
-  const placeIds = useMemo(() => place && place.uuid && view === 'zoom'
-    ? [place.uuid]
-    : path.path.map(({ place: { uuid }}) => uuid), [place, view]);
+  const allPlaceIds = useMemo(
+    () => path.path.map(({ place: { uuid } }) => uuid),
+    [path.path]
+  );
+
+  const placeIds = useMemo(
+    () => (view === 'zoom' && place?.uuid ? [place.uuid] : allPlaceIds),
+    [view, place?.uuid, allPlaceIds]
+  );
 
   const mapData = usePlacesFeatures(placeIds);
 
@@ -71,6 +77,8 @@ const PathViewer = (props: PathViewerProps) => {
       instance.scroll({ top: 0, behavior: 'smooth' });
     }
   }, [current]);
+
+  const layerId = useMemo(() => (view === 'zoom' ? `markers-${place?.uuid || 'cover'}` : 'markers'), [view, place?.uuid]);
 
   return (
     <div
@@ -128,12 +136,11 @@ const PathViewer = (props: PathViewerProps) => {
       >
         <Map>
           <LocationMarkers
-            animate={place?.animate}
-            buffer={place?.buffer || undefined}
+            id='markers'
+            buffer={view === 'zoom' ? place?.buffer : undefined}
             data={mapData}
-            layerId={view === 'zoom' ? `markers-${place?.uuid || 'cover'}` : 'markers'}
-            layer={place?.layer}
-            interactive
+            layerId={layerId}
+            layer={view === 'zoom' ? place?.layer : undefined}
           />
           <PathHover placeUuid={place?.uuid} mapData={mapData} />
         </Map>

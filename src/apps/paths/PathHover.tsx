@@ -1,5 +1,5 @@
-import { useHoverState, useLoadedMap } from '@peripleo/maplibre';
-import { useEffect } from 'react';
+import { useLoadedMap } from '@peripleo/maplibre';
+import { useEffect, useState } from 'react';
 
 interface Props {
   placeUuid?: string;
@@ -8,30 +8,35 @@ interface Props {
 
 const PathHover: React.FC<Props> = ({ placeUuid, mapData }) => {
   const map = useLoadedMap();
-  const { hover, setHover } = useHoverState();
+  const [prevFeature, setPrevFeature] = useState<any>(null);
 
   useEffect(() => {
-    if (placeUuid) {
-      const feature = mapData.features.find(f => f.properties?.uuid === placeUuid);
-      if (feature) {
-        const apply = () => setHover({ hovered: [feature] });
+    if (!placeUuid) {
+      return;
+    }
 
-        if (map.loaded() && !map.isMoving()) {
-          apply();
-        } else {
-          map.once('idle', apply);
-        }
-        return
-      } else {
-        setHover(undefined);
+    const feature = mapData?.features.find(f => f.properties?.uuid === placeUuid);
+
+    if (!feature) {
+      return
+    }
+
+    const apply = () => {
+      if (prevFeature) {
+        map.setFeatureState({ source: 'source-markers', id: prevFeature.id }, { selected: false });
       }
-    } else {
-      setHover(undefined);
 
+      map.setFeatureState({ source: 'source-markers', id: feature.id }, { selected: true });
+      setPrevFeature(feature);
+    }
+
+    if (map.loaded()) {
+      apply();
+    } else {
+      map.once('idle', apply);
+      return () => map.off('idle', apply);
     }
   }, [placeUuid, mapData, map]);
-
-  console.log(hover)
 
   return null;
 };
