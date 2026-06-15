@@ -26,6 +26,7 @@ import { useHoverState } from '@peripleo/maplibre';
 import usePlacesFeatures from '@root/src/hooks/usePlacesFeatures';
 import Map from '@components/Map';
 import { LocationMarkers } from '@performant-software/geospatial';
+import { LocationMarkers } from '@performant-software/geospatial/dist/index.es';
 
 export interface PathViewerProps {
   variables: PathQueryVariables;
@@ -147,7 +148,7 @@ const PathViewer = (props: PathViewerProps) => {
             animate={place?.animate}
             buffer={place?.buffer || undefined}
             data={mapData}
-            layerId={`markers-${place?.uuid || 'cover'}`}
+            layerId={view === 'zoom' ? `markers-${place?.uuid || 'cover'}` : 'markers'}
             layer={place?.layer}
           />
         </Map>
