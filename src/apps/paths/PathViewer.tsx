@@ -24,14 +24,18 @@ import { PathQuery, PathQueryVariables } from '@root/tina/__generated__/types';
 import { tinaField, useTina } from 'tinacms/dist/react';
 import usePlacesFeatures from '@root/src/hooks/usePlacesFeatures';
 import Map from '@components/Map';
-import { LocationMarkers } from '@performant-software/geospatial';
-import PathHover from '@apps/paths/PathHover';
+import { LocationMarkers, Map as MapUtils } from '@performant-software/geospatial';
+import PathSelectionManager from '@apps/paths/PathSelectionManager';
+import { GeoJSONLayer } from '@peripleo/maplibre';
+import { dottedLine } from '@utils/mapStyles';
 
 export interface PathViewerProps {
   variables: PathQueryVariables;
   data: PathQuery;
   query: string;
 }
+
+const FULL_VIEW_BUFFER = 0.2;
 
 const PathViewer = (props: PathViewerProps) => {
   const [current, setCurrent] = useState(-1);
@@ -79,6 +83,8 @@ const PathViewer = (props: PathViewerProps) => {
   }, [current]);
 
   const layerId = useMemo(() => (view === 'zoom' ? `markers-${place?.uuid || 'cover'}` : 'markers'), [view, place?.uuid]);
+
+  const arcs = useMemo(() => MapUtils.toArcs(mapData.features), [mapData.features]);
 
   return (
     <div
@@ -137,12 +143,17 @@ const PathViewer = (props: PathViewerProps) => {
         <Map>
           <LocationMarkers
             id='markers'
-            buffer={view === 'zoom' ? place?.buffer : undefined}
+            buffer={view === 'zoom' ? place?.buffer : FULL_VIEW_BUFFER}
             data={mapData}
             layerId={layerId}
             layer={view === 'zoom' ? place?.layer : undefined}
           />
-          <PathHover placeUuid={place?.uuid} mapData={mapData} />
+          <PathSelectionManager placeUuid={place?.uuid} mapData={mapData} />
+          <GeoJSONLayer
+            data={arcs}
+            id='arcs'
+            strokeStyle={dottedLine}
+          />
         </Map>
       </div>
       <div

@@ -6,7 +6,7 @@ interface Props {
   mapData?: any;
 }
 
-const PathHover: React.FC<Props> = ({ placeUuid, mapData }) => {
+const PathSelectionManager: React.FC<Props> = ({ placeUuid, mapData }) => {
   const map = useLoadedMap();
   const [prevFeature, setPrevFeature] = useState<any>(null);
 
@@ -41,4 +41,4 @@ const PathHover: React.FC<Props> = ({ placeUuid, mapData }) => {
   return null;
 };
 
-export default PathHover;
+export default PathSelectionManager;
