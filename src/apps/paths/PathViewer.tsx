@@ -27,7 +27,7 @@ import Map from '@components/Map';
 import { LocationMarkers, Map as MapUtils } from '@performant-software/geospatial';
 import PathSelectionManager from '@apps/paths/PathSelectionManager';
 import { GeoJSONLayer } from '@peripleo/maplibre';
-import { dottedLine } from '@utils/mapStyles';
+import { dottedLine, noFill, selectablePoint, selectablePolygon } from '@utils/mapStyles';
 
 export interface PathViewerProps {
   variables: PathQueryVariables;
@@ -147,12 +147,15 @@ const PathViewer = (props: PathViewerProps) => {
             data={mapData}
             layerId={layerId}
             layer={view === 'zoom' ? place?.layer : undefined}
+            pointStyle={selectablePoint}
+            fillStyle={selectablePolygon}
           />
           <PathSelectionManager placeUuid={place?.uuid} mapData={mapData} />
           <GeoJSONLayer
             data={arcs}
             id='arcs'
             strokeStyle={dottedLine}
+            fillStyle={noFill}
           />
         </Map>
       </div>
