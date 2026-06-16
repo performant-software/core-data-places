@@ -12,7 +12,6 @@ import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, RuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
 import React, {
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -28,6 +27,7 @@ import { LocationMarkers, Map as MapUtils } from '@performant-software/geospatia
 import PathSelectionManager from '@apps/paths/PathSelectionManager';
 import { GeoJSONLayer } from '@peripleo/maplibre';
 import { dottedLine, noFill, selectablePoint, selectablePolygon } from '@utils/mapStyles';
+import { Button } from '@headlessui/react';
 
 export interface PathViewerProps {
   variables: PathQueryVariables;
@@ -49,7 +49,7 @@ const PathViewer = (props: PathViewerProps) => {
   const view = useMemo(() => (data?.path?.view || 'zoom'), [data?.path?.view]);
   const path = useMemo(() => (data?.path), [data]);
   const contentDiv = useRef(null);
-  const { t } = useContext(TranslationContext);
+  const { t } = useTranslations();
 
   /**
    * Memo-izes the current place.
@@ -111,30 +111,39 @@ const PathViewer = (props: PathViewerProps) => {
             transition
           `}
         >
-          <ArrowUturnLeftIcon
-            className={clsx(
-              'h-8 w-8',
-              { 'text-gray-500 cursor-default': current < 0 },
-              { 'cursor-pointer hover:scale-105 transition': current >= 0 }
-            )}
+          <Button
             onClick={() => setCurrent(-1)}
-          />
-          <ArrowLeftCircleIcon
-            className={clsx(
-              'h-8 w-8',
-              { 'text-gray-500 cursor-default': current === 0 },
-              { 'cursor-pointer hover:scale-105 transition': current !== 0 }
-            )}
-            onClick={() => current > 0 && setCurrent((i) => i - 1)}
-          />
-          <ArrowRightCircleIcon
-            className={clsx(
-              'h-8 w-8',
-              { 'text-gray-500 cursor-default': current === path.path.length - 1 },
-              { 'cursor-pointer hover:scale-105 transition': current !== path.path.length - 1 }
-            )}
+          >
+            <ArrowUturnLeftIcon
+              className={clsx(
+                'h-8 w-8',
+                { 'text-gray-500 cursor-default': current < 0 },
+                { 'cursor-pointer hover:scale-105 transition': current >= 0 }
+              )}
+            />
+          </Button>
+          <Button
+            onClick={() => current > -1 && setCurrent((i) => i - 1)}
+          >
+            <ArrowLeftCircleIcon
+              className={clsx(
+                'h-8 w-8',
+                { 'text-gray-500 cursor-default': current === -1 },
+                { 'cursor-pointer hover:scale-105 transition': current !== 0 }
+              )}
+            />
+          </Button>
+          <Button
             onClick={() => current < path.path.length - 1 && setCurrent((i) => i + 1)}
-          />
+          >
+            <ArrowRightCircleIcon
+              className={clsx(
+                'h-8 w-8',
+                { 'text-gray-500 cursor-default': current === path.path.length - 1 },
+                { 'cursor-pointer hover:scale-105 transition': current !== path.path.length - 1 }
+              )}
+            />
+          </Button>
         </div>
       )}
       <div
@@ -207,7 +216,7 @@ const PathViewer = (props: PathViewerProps) => {
                     components={{ iframe: IframeEmbed }}
                   />
                 </article>
-                <div
+                <Button
                   className={`
                     cursor-pointer 
                     bg-white 
@@ -229,7 +238,7 @@ const PathViewer = (props: PathViewerProps) => {
                   <ArrowRightIcon
                     className='h-8 w-8'
                   />
-                </div>
+                </Button>
               </>
             )}
           </div>

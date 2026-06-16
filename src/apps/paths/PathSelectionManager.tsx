@@ -12,6 +12,10 @@ const PathSelectionManager: React.FC<Props> = ({ placeUuid, mapData }) => {
 
   useEffect(() => {
     if (!placeUuid) {
+      if (prevFeature) {
+        map.setFeatureState({ source: 'source-markers', id: prevFeature.id }, { selected: false });
+        setPrevFeature(null);
+      }
       return;
     }
 
