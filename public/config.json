@@ -1,14 +1,4 @@
 {
-  "detail_pages": {
-    "models": {
-      "people": {},
-      "places": {},
-      "works": {}
-    }
-  },
-  "branding": {
-    "footer_login": true
-  },
   "content": {
     "collections": [
       "paths",
@@ -18,112 +8,44 @@
   "core_data": {
     "url": "https://staging.coredata.cloud",
     "project_ids": [
-      "43",
-      "44",
-      "45"
+      "1",
+      "2",
+      "3"
     ]
   },
   "i18n": {
     "default_locale": "en",
-    "locales": [
-      "en"
-    ]
+    "locales": ["en"]
   },
-  "layers": [
-    {
-      "name": "Johnson's map of New York and the adjacent cities",
-      "layer_type": "georeference",
-      "url": "https://core-data-map-library.s3.us-east-1.amazonaws.com/01.json",
-      "overlay": true,
-      "default": true
+  "layers": [{
+    "name": "Maptiler DataViz Style",
+    "layer_type": "vector",
+    "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
+  }],
+  "search": [{
+    "name": "places",
+    "route": "/places",
+    "geosearch": true,
+    "map": {
+      "clusterRadius": 6,
+      "geometry": "geometry",
+      "max_zoom": 14,
+      "zoom_to_place": true
     },
-    {
-      "name": "Maptiler DataViz Style",
-      "layer_type": "vector",
-      "url": "https://api.maptiler.com/maps/dataviz/style.json?key=DICl11L0kocVzMWdoynh"
+    "result_card": {
+      "title": "name"
     },
-    {
-      "name": "USGS Imagery Topo (MapServer)",
-      "layer_type": "raster",
-      "url": "https://basemap.nationalmap.gov/arcgis/services/USGSImageryTopo/MapServer/WMSServer?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0&styles=default"
-    },
-    {
-      "name": "USGS Topo (MapServer)",
-      "layer_type": "raster",
-      "url": "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0&styles=default"
-    },
-    {
-      "name": "New Jersey Natural Earth (WMS)",
-      "layer_type": "raster",
-      "url": "https://img.nj.gov/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015",
-      "overlay": true
-    },
-    {
-      "name": "US States",
-      "layer_type": "geojson",
-      "url": "gz_2010_us_040_00_20m.json",
-      "overlay": true
-    }
-  ],
-  "search": [
-    {
-      "name": "places",
-      "route": "/places",
-      "geosearch": true,
-      "facets": [
-        {
-          "name": "8677bf89-b2c2-4ced-816b-be388460c043.name_facet",
-          "icon": "info",
-          "type": "select"
-        }
-      ],
-      "map": {
-        "geometry": "geometry",
-        "max_zoom": 14,
-        "zoom_to_place": true
-      },
-      "result_card": {
-        "title": "name"
-      },
-      "timeline": {
-        "date_range_facet": "event_range_facet",
-        "event_path": "4020453e-2a71-4759-b133-625071449e17"
-      },
-      "typesense": {
-        "host": "i74olkjcuy69ze2vp-1.a1.typesense.net",
-        "port": 443,
-        "protocol": "https",
-        "api_key": "PSNp8MUfQBInjahcHQ3l76jChrHZHqmj",
-        "index_name": "scavenger_hunt",
-        "query_by": "name"
+    "typesense": {
+      "host": "example.typesense.com",
+      "port": 443,
+      "protocol": "https",
+      "api_key": "abcdefg",
+      "index_name": "core_data_places",
+      "query_by": "name",
+      "default_sort": "name",
+      "overrides": {
+        "geoLocationField": "coordinates"
       }
-    },
-    {
-      "name": "events",
-      "route": "/events",
-      "geosearch": true,
-      "map": {
-        "geometry": "4020453e-2a71-4759-b133-625071449e17.geometry",
-        "max_zoom": 14,
-        "zoom_to_place": true
-      },
-      "result_card": {
-        "title": "name"
-      },
-      "timeline": {
-        "date_range_facet": "start_year_facet"
-      },
-      "typesense": {
-        "host": "i74olkjcuy69ze2vp-1.a1.typesense.net",
-        "port": 443,
-        "protocol": "https",
-        "api_key": "59CsiCMRHLQRnqLLSEBnf6pCllF5F2ee",
-        "index_name": "scavenger_hunt_events",
-        "query_by": "name"
-      },
-      "visualizations": [{
-        "name": "events_by_year"
-      }]
     }
-  ]
+  }]
 }
