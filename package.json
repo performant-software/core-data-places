@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
-    "@astrojs/netlify": "^6.4.0",
+    "@astrojs/netlify": "^7.0.13",
     "@astrojs/react": "^4.3.0",
     "@astrojs/sitemap": "^3.4.1",
     "@astrojs/ts-plugin": "^1.10.4",
