@@ -19,7 +19,8 @@ export const fetchConfig = async () => {
     fs.copyFileSync('./public/config.dev.json', './public/config.json');
     console.info('Copying config.dev.json');
   } else {
-    console.info('Using local config.json');
+    fs.copyFileSync('./public/config.example.json', './public/config.json');
+    console.info('Copying config.example.json');
   }
 
   const data = fs.readFileSync('./public/config.json');

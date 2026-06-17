@@ -23,10 +23,6 @@ To start, run:
 npm install && netlify dev
 ```
 
-**Note:** Do not commit any project specific changes to `/public/config.json` in this repository.
-
-**Note:** Changes to `config.json` will require a re-build of the site.
-
 ## Testing
 
 #### Unit tests
