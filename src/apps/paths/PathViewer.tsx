@@ -24,6 +24,7 @@ import { tinaField, useTina } from 'tinacms/dist/react';
 import usePlacesFeatures from '@root/src/hooks/usePlacesFeatures';
 import Map from '@components/Map';
 import { LocationMarkers, Map as MapUtils } from '@performant-software/geospatial';
+import { OverlayLayer } from '@performant-software/core-data';
 import PathSelectionManager from '@apps/paths/PathSelectionManager';
 import { GeoJSONLayer } from '@peripleo/maplibre';
 import { dottedLine, noFill, selectablePoint, selectablePolygon } from '@utils/mapStyles';
@@ -33,6 +34,7 @@ export interface PathViewerProps {
   variables: PathQueryVariables;
   data: PathQuery;
   query: string;
+  overlayLayer?: any
 }
 
 const FULL_VIEW_BUFFER = 0.2;
@@ -166,6 +168,11 @@ const PathViewer = (props: PathViewerProps) => {
             strokeStyle={dottedLine}
             fillStyle={noFill}
           />
+          {props.overlayLayer && (
+            <OverlayLayer
+              overlay={props.overlayLayer}
+            />
+          )}
         </Map>
       </div>
       <div

@@ -7,6 +7,7 @@ import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection, TinaField } from '@tinacms/schema-tools';
 import config from '@config';
 import { getUserRole } from '../utils/getUserRole';
+import TinaLayerSelect from '../components/TinaLayerSelect';
 
 export const pathMetadata: TinaField<false>[] = _.compact([
   {
@@ -292,6 +293,15 @@ const Paths: Collection = {
           ]
         }
       ]
+    },
+    {
+      name: 'overlay_layer',
+      label: 'Overlay layer',
+      type: 'string',
+      description: 'Optional map overlay to display for this path. Options are pulled from Settings > Layers.',
+      ui: {
+        component: TinaLayerSelect
+      }
     }
   ]
 };
