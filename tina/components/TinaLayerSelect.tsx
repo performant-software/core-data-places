@@ -1,36 +1,24 @@
 import { wrapFieldsWithMeta } from 'tinacms';
-import { useEffect, useMemo, useState } from 'react';
-import { client } from '@tina/client';
+import { useMemo } from 'react';
+import config from '@config';
 
 const TinaLayerSelect = wrapFieldsWithMeta((props) => {
-  const [options, setOptions] = useState([]);
+  const options = useMemo(() => {
+    const layers = config.layers || [];
 
-  useEffect(() => {
-    let active = true;
-    client.queries
-      .settings({ relativePath: 'config.json' })
-      .then((res) => {
-        if (active) {
-          const layers = res.data?.settings?.layers || [];
-          let result = []
+    let result = []
 
-          layers.forEach(l => {
-            if (l.overlay) {
-              result.push({
-                label: l.name,
-                value: l.url
-              })
-            }
-          })
+    layers.forEach(l => {
+      if (l.overlay) {
+        result.push({
+          label: l.name,
+          value: l.url
+        })
+      }
+    })
 
-          setOptions(result);
-        };
-      })
-      .catch((err) => console.error('Failed to load layer settings', err));
-    return () => {
-      active = false;
-    };
-  }, []);
+    return result;
+  }, [])
 
   return (
     <select
