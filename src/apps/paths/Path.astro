@@ -2,6 +2,7 @@
 import PathViewer from '@apps/paths/PathViewer';
 import { fetchPathResponse } from '@backend/tina';
 import PageStoreProvider from '@components/PageStoreProvider';
+import config from '@config';
 
 const { slug, publishedOnly } = Astro.props;
 const pathResponse = await fetchPathResponse(slug);
@@ -10,10 +11,24 @@ if (publishedOnly && !pathResponse.data?.path?.published) {
   return new Response(null, { status: 404 });
 }
 
+let overlayLayer = null;
+
+if (pathResponse.data?.path.overlay_layer) {
+  const match = config.layers.find(l =>
+    l.overlay &&
+    l.url === pathResponse.data?.path.overlay_layer
+  );
+
+  if (match) {
+    overlayLayer = match;
+  }
+}
+
 ---
 
 <PathViewer
   {...pathResponse}
+  overlayLayer={overlayLayer}
   client:only='react'
 />
 
