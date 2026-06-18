@@ -1,10 +1,10 @@
 export const dottedLine = {
   type: 'line',
   paint: {
-    'line-color': '#ff623b',
+    'line-color': '#000000',
     'line-opacity': 0.6,
-    "line-width": 4,
-    "line-dasharray": [2, 2, 2, 2]
+    "line-width": 2,
+    "line-dasharray": [1, 1, 1, 1]
   }
 }
 
@@ -32,11 +32,9 @@ export const selectablePoint = {
   type: 'circle',
   paint: {
     'circle-radius': [
-      'interpolate',
-      ['linear'],
-      ['number', ['get', 'point_count'], 1],
-      0, 4,
-      10, 14
+      '*',
+      ['case', ['boolean', ['feature-state', 'selected'], false], 2, 1],
+      ['interpolate', ['linear'], ['number', ['get', 'point_count'], 1], 0, 4, 10, 14]
     ],
     'circle-stroke-width': 1,
     'circle-color': [
@@ -45,6 +43,6 @@ export const selectablePoint = {
       '#3b62ff',
       '#ff623b'
     ],
-    'circle-stroke-color': '#8d260c'
+    'circle-stroke-color': '#000000'
   }
 }
