@@ -1,0 +1,13 @@
+diff --git a/node_modules/@tinacms/cli/dist/index.js b/node_modules/@tinacms/cli/dist/index.js
+index e237e9f..de76ab1 100644
+--- a/node_modules/@tinacms/cli/dist/index.js
++++ b/node_modules/@tinacms/cli/dist/index.js
+@@ -1546,7 +1546,7 @@ var devHTML = (port) => `<!DOCTYPE html>
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <title>TinaCMS</title>
++    <title>FairData</title>
+   </head>
+ 
+   <!-- if development -->
