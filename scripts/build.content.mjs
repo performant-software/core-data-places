@@ -5,6 +5,11 @@ const TEMP_DIR = './tmp';
 
 export const fetchContent = async () => {
   if (!(process.env.GITHUB_OWNER && process.env.GITHUB_REPO)) {
+    // Copy the branding file to the public directory
+    if (fs.existsSync('./content/branding/branding.json')) {
+      fs.cpSync('./content/branding/branding.json', './public/branding.json');
+    }
+
     return;
   }
 
@@ -23,6 +28,9 @@ export const fetchContent = async () => {
 
   // Copy the "content" folder to the current directory
   fs.cpSync(`${TEMP_DIR}/content`, './content', { recursive: true });
+
+  // Copy the branding file to the public directory
+  fs.cpSync(`${TEMP_DIR}/content/branding/branding.json`, './public/branding.json');
 
   // Append any custom Netlify config to the main one
   // (mainly used for redirecting the admin site to a Performant Studio subdomain)
