@@ -1,10 +1,8 @@
 ---
 import PathViewer from '@apps/paths/PathViewer';
-import { fetchBranding, fetchPathResponse } from '@backend/tina';
+import { fetchPathResponse } from '@backend/tina';
 import PageStoreProvider from '@components/PageStoreProvider';
 import config from '@config';
-
-const branding = await fetchBranding();
 
 const { slug, publishedOnly } = Astro.props;
 const pathResponse = await fetchPathResponse(slug);
@@ -30,10 +28,6 @@ if (pathResponse.data?.path.overlay_layer) {
 
 <PathViewer
   {...pathResponse}
-  colors={{
-    geometry: branding?.map?.geometry_color,
-    selected: branding?.map?.selected_color,
-  }}
   overlayLayer={overlayLayer}
   client:only='react'
 />

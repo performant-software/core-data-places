@@ -1,3 +1,12 @@
+import branding from '@branding';
+
+const { maps: mapStyles } = branding;
+
+const colors = {
+  geometry: mapStyles?.geometry_color ?? '#ff623b',
+  selected: mapStyles?.selected_geometry_color ?? '#3b62ff',
+}
+
 export const dottedLine = {
   type: 'line',
   paint: {
@@ -22,8 +31,8 @@ export const selectablePolygon = {
     'fill-color': [
       'case',
       ['boolean', ['feature-state', 'selected'], false],
-      '#3b62ff',
-      '#ff623b'
+      colors.selected,
+      colors.geometry
     ]
   }
 }
@@ -40,8 +49,8 @@ export const selectablePoint = {
     'circle-color': [
       'case',
       ['boolean', ['feature-state', 'selected'], false],
-      '#3b62ff',
-      '#ff623b'
+      colors.selected,
+      colors.geometry
     ],
     'circle-stroke-color': '#000000'
   }

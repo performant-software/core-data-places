@@ -1,15 +1,6 @@
 import client from '@tina/databaseClient';
 import { fetchOne, filterAll } from './i18n';
 
-export const fetchBranding = async () => {
-  if (!client.queries.branding) {
-    return null;
-  }
-
-  const response = await client.queries.branding({ relativePath: 'branding.json' });
-  return response.data?.branding;
-}
-
 export const fetchI18n = async (language: string) => {
   if (!client.queries.i18n) {
     return null;
