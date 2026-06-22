@@ -35,6 +35,10 @@ export interface PathViewerProps {
   data: PathQuery;
   query: string;
   overlayLayer?: any
+  colors: {
+    geometry: string;
+    selected: string
+  }
 }
 
 const FULL_VIEW_BUFFER = 0.2;

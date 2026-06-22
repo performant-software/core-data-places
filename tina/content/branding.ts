@@ -170,6 +170,25 @@ const Branding: Collection = {
       component: 'color'
     }
   }, {
+    name: 'maps',
+    label: 'Maps',
+    type: 'object',
+    fields: [{
+      name: 'geometry_color',
+      label: 'Geometry Color',
+      type: 'string',
+      ui: {
+        component: 'color'
+      }
+    }, {
+      name: 'selected_geometry_color',
+      label: 'Selected Geometry Color',
+      type: 'string',
+      ui: {
+        component: 'color'
+      }
+    }]
+  }, {
     name: 'header',
     label: 'Header',
     type: 'object',

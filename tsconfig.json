@@ -12,6 +12,7 @@
     "paths": {
       "@apps/*": ["src/apps/*"],
       "@backend/*": ["src/backend/*"],
+      "@branding": ["public/branding.json"],
       "@components/*": ["src/components/*"],
       "@config": ["public/config.json"],
       "@contexts/*": ["src/contexts/*"],

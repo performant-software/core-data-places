@@ -1,5 +1,4 @@
 ---
-import { fetchBranding } from '@backend/tina';
 import NotificationPanel from '@components/NotificationPanel';
 import Title from '@components/Title';
 import { getLanguageFromUrl } from '@i18n/utils';
@@ -9,7 +8,6 @@ import HeaderContainer from '@layouts/HeaderContainer';
 import { useBlackText } from '@utils/layout';
 import { setCacheControl } from '@utils/url';
 import { STATIC_BUILD } from 'astro:env/client';
-import clsx from 'clsx';
 import _ from 'underscore';
 
 import '@performant-software/core-data/style.css';
@@ -17,10 +15,10 @@ import '@performant-software/geospatial/style.css';
 import '@styles/index.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import branding from '@branding';
 
 setCacheControl(Astro.response.headers);
 
-const branding = await fetchBranding();
 const { header, footer } = branding;
 
 const { font_header: fontHeader, font_body: fontBody } = branding;
