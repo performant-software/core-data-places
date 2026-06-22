@@ -48,6 +48,7 @@ interface Props {
     controls?: string
     root?: string,
   };
+  showLayerMenu?: boolean;
 }
 
 const Map = (props: Props) => {
@@ -58,6 +59,10 @@ const Map = (props: Props) => {
   const [overlays, setOverlays] = useState([]);
 
   const { t } = useContext(TranslationContext);
+
+  const showLayerMenu = typeof props.showLayerMenu === 'boolean'
+    ? props.showLayerMenu
+    : true;
 
   /**
    * Memo-izes the class to apply to the map control buttons.
@@ -96,7 +101,7 @@ const Map = (props: Props) => {
             zoomOut={<Icon name='zoom_out' />}
             zoomOutProps={{ className: buttonClass }}
           />
-          { [...baseLayers, ...dataLayers].length > 1 && (
+          { showLayerMenu && [...baseLayers, ...dataLayers].length > 1 && (
             <LayerMenu
               baseLayer={baseLayer?.name}
               baseLayers={baseLayers}

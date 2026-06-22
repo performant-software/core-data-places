@@ -151,7 +151,7 @@ const PathViewer = (props: PathViewerProps) => {
       <div
         className='w-1/2'
       >
-        <Map>
+        <Map showLayerMenu={false}>
           <LocationMarkers
             id='markers'
             buffer={view === 'zoom' ? place?.buffer : FULL_VIEW_BUFFER}
