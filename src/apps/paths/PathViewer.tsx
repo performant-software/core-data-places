@@ -87,8 +87,8 @@ const PathViewer = (props: PathViewerProps) => {
   const arcs = useMemo(() => MapUtils.toArcs(mapData.features), [mapData.features]);
 
   const boundingBox = useMemo(() => {
-    if (view === 'zoom') {
-      const match = mapData.features.find(f => f.properties?.uuid === place?.uuid);
+    if (view === 'zoom' && place?.uuid) {
+      const match = mapData.features.find(f => f.properties?.uuid === place.uuid);
       if (match) {
         return bbox(match);
       }
