@@ -25,21 +25,12 @@ const PathSelectionManager: React.FC<Props> = ({ placeUuid, mapData }) => {
       return
     }
 
-    const apply = () => {
-      if (prevFeature) {
-        map.setFeatureState({ source: 'source-markers', id: prevFeature.id }, { selected: false });
-      }
-
-      map.setFeatureState({ source: 'source-markers', id: feature.id }, { selected: true });
-      setPrevFeature(feature);
+    if (prevFeature) {
+      map.setFeatureState({ source: 'source-markers', id: prevFeature.id }, { selected: false });
     }
 
-    if (map.loaded()) {
-      apply();
-    } else {
-      map.once('idle', apply);
-      return () => map.off('idle', apply);
-    }
+    map.setFeatureState({ source: 'source-markers', id: feature.id }, { selected: true });
+    setPrevFeature(feature);
   }, [placeUuid, mapData, map]);
 
   return null;
