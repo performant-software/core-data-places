@@ -719,7 +719,7 @@ const Settings: Collection = {
         label: 'Default end year',
         type: 'number'
       }, {
-        name: 'show_by_default',
+        name: 'default_open',
         label: 'Show by default',
         type: 'boolean'
       }]
