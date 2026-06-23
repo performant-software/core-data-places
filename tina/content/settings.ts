@@ -710,6 +710,18 @@ const Settings: Collection = {
         name: 'event_path',
         label: 'Event path',
         type: 'string'
+      }, {
+        name: 'default_start',
+        label: 'Default start year',
+        type: 'number'
+      }, {
+        name: 'default_end',
+        label: 'Default end year',
+        type: 'number'
+      }, {
+        name: 'show_by_default',
+        label: 'Show by default',
+        type: 'boolean'
       }]
     }, {
       name: 'typesense',
