@@ -51,7 +51,7 @@
     "@samvera/clover-iiif": "^2.9.1",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.4",
-    "@tinacms/cli": "^2.1.9",
+    "@tinacms/cli": "^2.5.1",
     "@tinacms/datalayer": "^2.0.12",
     "@turf/bbox": "^7.3.3",
     "@turf/helpers": "^7.3.3",
