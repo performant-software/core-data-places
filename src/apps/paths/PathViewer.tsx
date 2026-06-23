@@ -29,6 +29,7 @@ import PathSelectionManager from '@apps/paths/PathSelectionManager';
 import { GeoJSONLayer } from '@peripleo/maplibre';
 import { dottedLine, noFill, selectablePoint, selectablePolygon } from '@utils/mapStyles';
 import { Button } from '@headlessui/react';
+import { bbox } from '@turf/turf';
 
 export interface PathViewerProps {
   variables: PathQueryVariables;
@@ -65,14 +66,9 @@ const PathViewer = (props: PathViewerProps) => {
   /**
    * Memo-izes the array of place IDs.
    */
-  const allPlaceIds = useMemo(
+  const placeIds = useMemo(
     () => path.path.map(({ place: { uuid } }) => uuid),
     [path.path]
-  );
-
-  const placeIds = useMemo(
-    () => (view === 'zoom' && place?.uuid ? [place.uuid] : allPlaceIds),
-    [view, place?.uuid, allPlaceIds]
   );
 
   const mapData = usePlacesFeatures(placeIds);
@@ -88,9 +84,16 @@ const PathViewer = (props: PathViewerProps) => {
     }
   }, [current]);
 
-  const layerId = useMemo(() => (view === 'zoom' ? `markers-${place?.uuid || 'cover'}` : 'markers'), [view, place?.uuid]);
-
   const arcs = useMemo(() => MapUtils.toArcs(mapData.features), [mapData.features]);
+
+  const boundingBox = useMemo(() => {
+    if (view === 'zoom' && place?.uuid) {
+      const match = mapData.features.find(f => f.properties?.uuid === place.uuid);
+      if (match) {
+        return bbox(match);
+      }
+    }
+  }, [view, mapData.features, place?.uuid])
 
   return (
     <div
@@ -160,7 +163,8 @@ const PathViewer = (props: PathViewerProps) => {
             id='markers'
             buffer={view === 'zoom' ? place?.buffer : FULL_VIEW_BUFFER}
             data={mapData}
-            layerId={layerId}
+            boundingBox={boundingBox}
+            layerId='markers'
             layer={view === 'zoom' ? place?.layer : undefined}
             pointStyle={selectablePoint}
             fillStyle={selectablePolygon}
