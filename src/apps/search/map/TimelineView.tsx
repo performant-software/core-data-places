@@ -21,8 +21,9 @@ const TimelineView = (props: Props) => {
   });
   const { min, max } = range;
   const [value, setValue] = useState([min, max]);
-  const from = Math.max(min, Number.isFinite(start[0]) ? start[0] : min);
-  const to = Math.min(max, Number.isFinite(start[1]) ? start[1] : max);
+
+  const from = config?.timeline?.default_start ?? Math.max(min, Number.isFinite(start[0]) ? start[0] : min);
+  const to = config?.timeline?.default_end ?? Math.min(max, Number.isFinite(start[1]) ? start[1] : max);
 
   /**
    * Sets the value on the state when the from/to values change.

@@ -41,13 +41,14 @@ const TIMELINE_PAD_OFFSET = -30;
 const PATH_SELECT = 'select';
 
 const MapLayout = () => {
+  const config = useSearchConfig();
+
   const [filters, setFilters] = useState<boolean>(false);
-  const [timeline, setTimeline] = useState<boolean>(false);
+  const [timeline, setTimeline] = useState<boolean>(config.timeline?.default_open || false);
   const [view, setView] = useState<string>(Views.list);
   const [panelHistory, setPanelHistory] = useState<PanelHistoryEntryType[]>([]);
 
   const { setBoundingBoxOptions, setControlsClass } = useContext(MapSearchContext);
-  const config = useSearchConfig();
 
   const route = useCurrentRoute();
   const id = getCurrentId(route);
