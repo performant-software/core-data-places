@@ -48,6 +48,20 @@ interface Props {
     controls?: string
     root?: string,
   };
+  /**
+   * When `true` (the default), the map is wrapped in its own `MapProvider` so it
+   * gets an isolated `MapContext`. This is required when several maps are mounted
+   * under the same Peripleo root (e.g. a post body with multiple map blocks),
+   * where a shared context would let each `PeripleoMap` overwrite the previous
+   * one's `setMap(...)`.
+   *
+   * Set to `false` when the consumer renders a single map and has ancestor
+   * components (outside `<Map>`) that need to read the map via `useLoadedMap()` —
+   * e.g. map search, where `MapView`/`MapSearchContext` compute the bounding box.
+   * Those ancestors read the root `MapProvider` supplied by `<Peripleo>`, so the
+   * map must register there rather than in a nested provider.
+   */
+  isolate?: boolean;
   showLayerMenu?: boolean;
 }
 
@@ -79,50 +93,57 @@ const Map = (props: Props) => {
     'hover:opacity-90'
   ].join(' '), []);
 
-  // Each BaseMap gets its own MapProvider. Peripleo ships a single shared
-  // `MapContext` at the app root, so when a post body contains more than one
-  // map (e.g. a `<place>` block and a `<map>` block), each PeripleoMap mount
-  // overwrites the previous one's `setMap(...)` and `useLoadedMap()` returns
-  // the wrong instance for the earlier subtree. Isolating the context per
-  // BaseMap avoids the cross-contamination.
-  return (
-    <MapProvider>
-      <PeripleoMap
-        attributionControl={false}
-        className={clsx('grow', props.classNames?.root)}
-        style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
+  const { isolate = true } = props;
+
+  const map = (
+    <PeripleoMap
+      attributionControl={false}
+      className={clsx('grow', props.classNames?.root)}
+      style={PeripleoUtils.toLayerStyle(baseLayer, baseLayer.name)}
+    >
+      <div
+        className={clsx('absolute top-0 right-0 flex flex-col py-3 px-3 gap-y-2', props.classNames?.controls)}
       >
-        <div
-          className={clsx('absolute top-0 right-0 flex flex-col py-3 px-3 gap-y-2', props.classNames?.controls)}
-        >
-          <ZoomControl
-            zoomIn={<Icon name='zoom_in' />}
-            zoomInProps={{ className: buttonClass }}
-            zoomOut={<Icon name='zoom_out' />}
-            zoomOutProps={{ className: buttonClass }}
+        <ZoomControl
+          zoomIn={<Icon name='zoom_in' />}
+          zoomInProps={{ className: buttonClass }}
+          zoomOut={<Icon name='zoom_out' />}
+          zoomOutProps={{ className: buttonClass }}
+        />
+        { showLayerMenu && [...baseLayers, ...dataLayers].length > 1 && (
+          <LayerMenu
+            baseLayer={baseLayer?.name}
+            baseLayers={baseLayers}
+            baseLayersLabel={t('baseLayers')}
+            className={buttonClass}
+            dataLayers={dataLayers}
+            onChangeBaseLayer={setBaseLayer}
+            onChangeOverlays={setOverlays}
+            overlaysLabel={t('overlays')}
           />
-          { showLayerMenu && [...baseLayers, ...dataLayers].length > 1 && (
-            <LayerMenu
-              baseLayer={baseLayer?.name}
-              baseLayers={baseLayers}
-              baseLayersLabel={t('baseLayers')}
-              className={buttonClass}
-              dataLayers={dataLayers}
-              onChangeBaseLayer={setBaseLayer}
-              onChangeOverlays={setOverlays}
-              overlaysLabel={t('overlays')}
-            />
-          )}
-        </div>
-        <WhenStyleLoaded>
-          <OverlayLayers
-            overlays={overlays}
-          />
-          { props.children }
-        </WhenStyleLoaded>
-      </PeripleoMap>
-    </MapProvider>
+        )}
+      </div>
+      <WhenStyleLoaded>
+        <OverlayLayers
+          overlays={overlays}
+        />
+        { props.children }
+      </WhenStyleLoaded>
+    </PeripleoMap>
   );
+
+  // By default each BaseMap gets its own MapProvider. Peripleo ships a single
+  // shared `MapContext` at the app root, so when a post body contains more than
+  // one map (e.g. a `<place>` block and a `<map>` block), each PeripleoMap mount
+  // overwrites the previous one's `setMap(...)` and `useLoadedMap()` returns the
+  // wrong instance for the earlier subtree. Isolating the context per BaseMap
+  // avoids the cross-contamination.
+  //
+  // When `isolate` is `false`, we skip the nested provider so the map registers
+  // into the root `MapProvider` from `<Peripleo>`. This lets ancestor components
+  // (e.g. `MapView`/`MapSearchContext`) read the map via `useLoadedMap()` — they
+  // live outside `<Map>` and otherwise never see the instance.
+  return isolate ? <MapProvider>{ map }</MapProvider> : map;
 };
 
 export default Map;

@@ -57,6 +57,7 @@ const MapView = () => {
       classNames={{
         controls: controlsClass
       }}
+      isolate={false}
     >
       { layerType === LayerTypes.single && (
         <SingleLayer
