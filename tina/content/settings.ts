@@ -623,6 +623,10 @@ const Settings: Collection = {
         label: 'Geometry',
         type: 'string'
       }, {
+        name: 'properties',
+        label: 'Properties',
+        type: 'string'
+      }, {
         name: 'max_zoom',
         label: 'Max zoom',
         type: 'number'
