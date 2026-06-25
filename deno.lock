@@ -11,11 +11,11 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
-        "npm:@astrojs/mdx@^4.3.0",
-        "npm:@astrojs/netlify@^6.4.0",
-        "npm:@astrojs/react@^4.3.0",
-        "npm:@astrojs/sitemap@^3.4.1",
-        "npm:@astrojs/ts-plugin@^1.10.4",
+        "npm:@astrojs/mdx@7",
+        "npm:@astrojs/netlify@8",
+        "npm:@astrojs/react@6",
+        "npm:@astrojs/sitemap@^3.7.3",
+        "npm:@astrojs/ts-plugin@^1.10.9",
         "npm:@axe-core/playwright@^4.11.0",
         "npm:@clerk/backend@~0.31.3",
         "npm:@clerk/clerk-js@^6.3.0",
@@ -47,7 +47,7 @@
         "npm:@types/underscore@^1.11.15",
         "npm:@vitest/browser-playwright@^4.0.16",
         "npm:abstract-level@^1.0.4",
-        "npm:astro@^5.18.2",
+        "npm:astro@^7.0.2",
         "npm:clsx@^2.1.0",
         "npm:cookie-parser@^1.4.6",
         "npm:cors@^2.8.5",
