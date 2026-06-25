@@ -11,7 +11,7 @@ import EventsByYear from '@visualizations/EventsByYear';
 import Map from '@visualizations/Map';
 import Table from '@visualizations/Table';
 import Timeline from '@visualizations/Timeline';
-import { TinaMarkdown, TinaMarkdownContent } from 'tinacms/dist/rich-text';
+import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import { PostQuery, PostQueryVariables } from '@root/tina/__generated__/types';
 import { tinaField, useTina } from "tinacms/dist/react";
 
