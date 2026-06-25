@@ -41,7 +41,6 @@
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.1.1",
     "@nanostores/react": "^0.7.3",
-    "@netlify/functions": "^2.8.2",
     "@octokit/rest": "^21.0.2",
     "@performant-software/core-data": "^3.1.25",
     "@performant-software/geospatial": "^3.1.25",
@@ -80,7 +79,6 @@
     "tailwindcss": "^4.1.4",
     "tinacms": "^3.6.1",
     "typescript": "^5.9.3",
-    "typesense-instantsearch-adapter": "^2.7.1",
     "underscore": "^1.13.8",
     "uuid": "^14.0.0"
   }
