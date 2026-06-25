@@ -2,6 +2,9 @@ import _ from 'underscore';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 interface Item {
   description?: string;
   image?: string;
