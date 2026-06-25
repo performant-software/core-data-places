@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import { fetchConfig } from './build.config.mjs';
 import { fetchContent } from './build.content.mjs';
 import { buildUserDefinedFields } from './build.fields.mjs';
@@ -7,7 +6,7 @@ import { copyComponents } from './build.components.mjs';
 
 (async function() {
   // Pull in environment variables
-  dotenv.config();
+  process.loadEnvFile();
 
   console.log('Fetching config.json...');
   const config = await fetchConfig();

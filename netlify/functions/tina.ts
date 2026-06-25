@@ -2,14 +2,13 @@ import { databaseClient } from '@tina/databaseClient';
 import { TinaNodeBackend, LocalBackendAuthProvider } from '@tinacms/datalayer';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import { createMediaHandler } from 'next-tinacms-s3/dist/handlers';
 import ServerlessHttp from 'serverless-http';
 import { Clerk } from '@clerk/backend';
 import type { IncomingMessage, ServerResponse } from 'http';
 
-dotenv.config();
+try { process.loadEnvFile(); } catch {}
 
 const app = express();
 

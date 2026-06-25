@@ -1,6 +1,8 @@
 import _ from 'underscore';
 import { expect } from 'vitest';
 
+process.loadEnvFile();
+
 interface Options {
   allowEmpty?: boolean;
 }
