@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import { expect } from 'vitest';
 
-process.loadEnvFile();
+try { process.loadEnvFile() } catch {}
 
 interface Options {
   allowEmpty?: boolean;

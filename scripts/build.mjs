@@ -6,7 +6,7 @@ import { copyComponents } from './build.components.mjs';
 
 (async function() {
   // Pull in environment variables
-  process.loadEnvFile();
+  try { process.loadEnvFile() } catch {};
 
   console.log('Fetching config.json...');
   const config = await fetchConfig();

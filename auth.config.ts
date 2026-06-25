@@ -1,7 +1,7 @@
 import Keycloak from '@auth/core/providers/keycloak';
 import { defineConfig } from 'auth-astro';
 
-process.loadEnvFile();
+try { process.loadEnvFile() } catch {}
 
 export default defineConfig({
   providers: [
