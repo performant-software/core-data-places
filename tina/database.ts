@@ -1,9 +1,8 @@
 import { createDatabase, createLocalDatabase } from '@tinacms/datalayer';
 import { MongodbLevel } from './db-provider';
 import { GitHubProvider } from './git-provider';
-import dotenv from 'dotenv';
 
-dotenv.config();
+try { process.loadEnvFile() } catch {}
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 

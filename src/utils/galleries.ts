@@ -27,12 +27,14 @@ export const truncateManifestId = (manifestId: string) => {
 export const getManifests = async () => {
   const data = [];
 
-  const json = await fetchJson(config.gallery);
-  const items = json.items || []
+  if (config.gallery) {
+    const json = await fetchJson(config.gallery);
+    const items = json.items || []
 
-  for (const item of items) {
-    const manifest = await fetchJson(item.id);
-    data.push(manifest);
+    for (const item of items) {
+      const manifest = await fetchJson(item.id);
+      data.push(manifest);
+    }
   }
 
   return data

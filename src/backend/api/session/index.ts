@@ -1,5 +1,4 @@
 import { buildUrl } from '@utils/url';
-import { v4 as uuid } from 'uuid';
 import _ from 'underscore';
 
 const SESSION_HEADER = 'x-session-id';
@@ -85,7 +84,7 @@ export const getSessionId = () => {
   let sessionId = localStorage.getItem(SESSION_KEY);
 
   if (!sessionId) {
-    sessionId = uuid();
+    sessionId = crypto.randomUUID();
     localStorage.setItem(SESSION_KEY, sessionId);
   }
 
@@ -102,7 +101,7 @@ export const saveSession = async (key: string, data: any) => {
   const payload = {
     ...data,
     created: new Date().toLocaleString(),
-    id: uuid()
+    id: crypto.randomUUID()
   };
 
   const options = {

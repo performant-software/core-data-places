@@ -16,7 +16,8 @@ export default defineConfig({
     defaultLocale,
     locales,
     routing: {
-      prefixDefaultLocale: true
+      prefixDefaultLocale: true,
+      redirectToDefaultLocale: true
     }
   },
   output: STATIC_BUILD === 'true' ? 'static' : 'server',
