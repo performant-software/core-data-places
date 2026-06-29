@@ -29,7 +29,6 @@ export const fetchI18n = async (language: string) => {
   }
 
   if (caches.i18n.has(language)) {
-    console.log('i18n cache hit');
     return caches.i18n.get(language);
   }
 
@@ -45,7 +44,6 @@ export const fetchI18ns = async () => {
   }
 
   if (caches.i18ns) {
-    console.log('i18ns cache hit');
     return caches.i18ns;
   }
 
@@ -61,7 +59,6 @@ export const fetchNavbar = async (language: string) => {
   }
 
   if (caches.navbar.has(language)) {
-    console.log('navbar cache hit');
     return caches.navbar.get(language);
   }
 
@@ -77,7 +74,6 @@ export const fetchPage = async (locale: string, slug: string) => {
   }
 
   if (caches.pages.has(`${locale}-${slug}`)) {
-    console.log('page cache hit');
     return caches.pages.get(`${locale}-${slug}`);
   }
 
@@ -95,7 +91,6 @@ export const fetchPages = async (locale: string, params?: any) => {
   const paramsStr = JSON.stringify(params);
 
   if (caches.pages.has(`${locale}-${paramsStr}`)) {
-    console.log('pages cache hit');
     return caches.pages.get(`${locale}-${paramsStr}`);
   }
 
@@ -111,7 +106,6 @@ export const fetchPathResponse = async (slug: string) => {
   }
 
   if (caches.pathsResponse.has(slug)) {
-    console.log('path cache hit');
     return caches.pathsResponse.get(slug);
   }
 
@@ -128,7 +122,6 @@ export const fetchPaths = async (params = {}) => {
   const paramsStr = JSON.stringify(params);
 
   if (caches.paths.has(paramsStr)) {
-    console.log('paths cache hit');
     return caches.paths.get(paramsStr);
   }
 
@@ -147,7 +140,6 @@ export const fetchPostResponse = async (slug: string) => {
   }
 
   if (caches.postsResponse.has(slug)) {
-    console.log('post cache hit');
     return caches.postsResponse.get(slug);
   }
 
@@ -163,7 +155,6 @@ export const fetchPosts = async (params = {}) => {
 
   const paramsStr = JSON.stringify(params);
   if (caches.posts.has(paramsStr)) {
-    console.log('posts cache hit');
     return caches.posts.get(paramsStr);
   }
 
