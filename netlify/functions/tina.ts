@@ -5,7 +5,7 @@ import cors from 'cors';
 import express from 'express';
 import { createMediaHandler } from 'next-tinacms-s3/dist/handlers';
 import ServerlessHttp from 'serverless-http';
-import { Clerk } from '@clerk/backend';
+import { createClerkClient } from '@clerk/backend'
 import type { IncomingMessage, ServerResponse } from 'http';
 
 try { process.loadEnvFile(); } catch {}
@@ -37,7 +37,7 @@ const ClerkBackendAuthentication = ({
   // Ensure the user is a member of the provided orgId
   orgId?: string;
 }) => {
-  const clerk = Clerk({
+  const clerk = createClerkClient({
     secretKey,
   });
 
@@ -179,11 +179,11 @@ const mediaHandler = createMediaHandler({
   }
 });
 
-app.post('/api/tina/*', async (req, res) => {
+app.post('/api/tina/*splat', async (req, res) => {
   tinaBackend(req, res);
 });
 
-app.get('/api/tina/*', async (req, res) => {
+app.get('/api/tina/*splat', async (req, res) => {
   tinaBackend(req, res);
 });
 
@@ -193,9 +193,10 @@ app.get('/api/s3/media', mediaHandler);
 
 // This route is necessary currently as a workaround for a bug in next-tinacms-s3 
 // where the folder is not prepended to the file name when uploading
-app.get('/api/s3/media/*', (req, res, next) => {
+app.get('/api/s3/media/*splat', (req, res, next) => {
   if (req.query.key) {
-    req.query.key = process.env.S3_FOLDER + '/' + req.query.key;
+    const query = { ...req.query, key: process.env.S3_FOLDER + '/' + req.query.key };
+    Object.defineProperty(req, 'query', { value: query, writable: true, configurable: true });
   }
   next();
 }, mediaHandler);
@@ -203,7 +204,8 @@ app.get('/api/s3/media/*', (req, res, next) => {
 app.post('/api/s3/media', mediaHandler);
 
 app.delete('/api/s3/media/:media', (req, res) => {
-  req.query.media = ['media', req.params.media]
+  const query = { ...req.query, media: ['media', req.params.media] };
+  Object.defineProperty(req, 'query', { value: query, writable: true, configurable: true });
   return mediaHandler(req, res);
 });
 
