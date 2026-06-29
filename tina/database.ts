@@ -1,6 +1,6 @@
 import { createDatabase, createLocalDatabase } from '@tinacms/datalayer';
-import { MongodbLevel } from './db-provider';
 import { GitHubProvider } from './git-provider';
+import { MongodbLevel } from 'mongodb-level'
 
 try { process.loadEnvFile() } catch {}
 
