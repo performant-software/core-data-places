@@ -17,7 +17,7 @@ import {
   AbstractKeyIterator,
   AbstractLevel,
   AbstractOpenOptions,
-  AbstractValueIterator,
+  AbstractValueIterator, NodeCallback,
 } from 'abstract-level'
 import {
   Collection,
@@ -27,10 +27,13 @@ import {
   FindCursor,
   Filter,
 } from 'mongodb'
-import ModuleError from 'module-error'
+import {NextCallback} from 'abstract-level/types/abstract-iterator'
+import ModuleError from 'module-error';
+
+// const ModuleError = require('module-error')
 
 declare interface MongodbLevelOptions<K, V>
-    extends AbstractDatabaseOptions<K, V> {
+  extends AbstractDatabaseOptions<K, V> {
   mongoUri: string
   dbName: string
   collectionName: string
@@ -105,7 +108,7 @@ declare interface IteratorOptions<KDefault> extends FilterOptions<KDefault> {
 }
 
 const buildFilter = <KDefault>(
-    options: FilterOptions<KDefault>
+  options: FilterOptions<KDefault>
 ) => {
   const filter: Filter<Document> = {}
   if (options.lte !== undefined) {
@@ -122,14 +125,14 @@ const buildFilter = <KDefault>(
 }
 
 const buildCursor = <KDefault>(
-    collection: Collection,
-    projection: Document,
-    options: IteratorOptions<KDefault>
+  collection: Collection,
+  projection: Document,
+  options: IteratorOptions<KDefault>
 ) => {
   let cursor: FindCursor | undefined
   cursor = collection
-      .find(buildFilter(options), projection)
-      .sort({ key: options.reverse ? -1 : 1 })
+    .find(buildFilter(options), projection)
+    .sort({ key: options.reverse ? -1 : 1 })
   if (options.limit > 0) {
     cursor = cursor.limit(options.limit)
   }
@@ -137,33 +140,33 @@ const buildCursor = <KDefault>(
 }
 
 class MongodbIterator<KDefault, VDefault> extends AbstractIterator<
-    MongodbLevel<KDefault, VDefault>,
-    KDefault,
-    VDefault
+  MongodbLevel<KDefault, VDefault>,
+  KDefault,
+  VDefault
 > {
   private cursor: FindCursor
   constructor(db: MongodbLevel<KDefault, VDefault>, collection: Collection, options: IteratorOptions<KDefault>) {
     super(db, options)
     this.cursor = buildCursor<KDefault>(
-        collection,
-        { key: 1, value: 1 },
-        options
+      collection,
+      { key: 1, value: 1 },
+      options
     )
   }
 
-  async _next(): Promise<[KDefault, VDefault] | undefined> {
+  async _next(callback: NextCallback<KDefault, VDefault>) {
     if (await this.cursor.hasNext()) {
       const result = await this.cursor.next()
-      return [result!.key, result!.value]
+      callback(null, result.key, result.value)
+    } else {
+      this.db.nextTick(callback)
     }
-    // Returning undefined signals that the iterator is exhausted.
-    return undefined
   }
 }
 
 class MongodbKeyIterator<KDefault, VDefault> extends AbstractKeyIterator<
-    MongodbLevel<KDefault, VDefault>,
-    KDefault
+  MongodbLevel<KDefault, VDefault>,
+  KDefault
 > {
   private cursor: FindCursor
   constructor(db: MongodbLevel<KDefault, VDefault>, collection: Collection, options: IteratorOptions<KDefault>) {
@@ -172,19 +175,20 @@ class MongodbKeyIterator<KDefault, VDefault> extends AbstractKeyIterator<
     this.cursor = buildCursor<KDefault>(collection, { key: 1 }, options)
   }
 
-  async _next(): Promise<KDefault | undefined> {
+  async _next(callback: NodeCallback<KDefault>) {
     if (await this.cursor.hasNext()) {
       const result = await this.cursor.next()
-      return result!.key
+      callback(null, result.key)
+    } else {
+      this.db.nextTick(callback)
     }
-    return undefined
   }
 }
 
 class MongodbValueIterator<KDefault, VDefault> extends AbstractValueIterator<
-    MongodbLevel<KDefault, VDefault>,
-    KDefault,
-    VDefault
+  MongodbLevel<KDefault, VDefault>,
+  KDefault,
+  VDefault
 > {
   private cursor: FindCursor
   constructor(db: MongodbLevel<KDefault, VDefault>, collection: Collection, options: IteratorOptions<KDefault>) {
@@ -193,18 +197,19 @@ class MongodbValueIterator<KDefault, VDefault> extends AbstractValueIterator<
     this.cursor = buildCursor<KDefault>(collection, { value: 1 }, options)
   }
 
-  async _next(): Promise<VDefault | undefined> {
+  async _next(callback: NextCallback<KDefault, VDefault>) {
     if (await this.cursor.hasNext()) {
       const result = await this.cursor.next()
-      return result!.value
+      callback(null, result.value)
+    } else {
+      this.db.nextTick(callback)
     }
-    return undefined
   }
 }
 
 export class MongodbLevel<
-    KDefault = string,
-    VDefault = string
+  KDefault = string,
+  VDefault = string
 > extends AbstractLevel<Buffer | Uint8Array | string, KDefault, VDefault> {
   private readonly collectionName: string
   private readonly dbName: string
@@ -228,85 +233,151 @@ export class MongodbLevel<
     return 'mongodb-level'
   }
 
-  async _open(options: MongodbLevelOpenOptions): Promise<void> {
+  async _open(
+    options: MongodbLevelOpenOptions,
+    callback: (error?: Error) => void
+  ): Promise<void> {
     if (!this.mongoUri) {
-      throw new ModuleError('mongoUri is required', { code: 'MONGO_URI_REQUIRED' })
+      return this.nextTick(
+        callback,
+        new ModuleError('mongoUri is required', { code: 'MONGO_URI_REQUIRED' })
+      )
     }
     if (!this.dbName) {
-      throw new ModuleError('dbName is required', { code: 'DB_NAME_REQUIRED' })
+      return this.nextTick(
+        callback,
+        new ModuleError('dbName is required', { code: 'DB_NAME_REQUIRED' })
+      )
     }
     if (!this.collectionName) {
-      throw new ModuleError('collectionName is required', { code: 'COLLECTION_NAME_REQUIRED' })
+      return this.nextTick(
+        callback,
+        new ModuleError('collectionName is required', { code: 'COLLECTION_NAME_REQUIRED' })
+      )
     }
     this.client = new MongoClient(this.mongoUri)
     await this.client.connect()
     this.db = this.client.db(this.dbName)
     this.collection = this.db.collection(this.collectionName)
     await this.collection.createIndex(
-        {
-          key: 1,
-        },
-        {
-          unique: true,
-        }
+      {
+        key: 1,
+      },
+      {
+        unique: true,
+      }
     )
+    this.nextTick(callback)
   }
 
-  async _close(): Promise<void> {
+  async _close(callback: (error?: Error) => void): Promise<void> {
     if (this.client) {
       await this.client.close()
       this.collection = undefined
       this.db = undefined
     }
+    this.nextTick(callback)
   }
 
-  async _put(key: Buffer, value: Buffer, options: any): Promise<void> {
-    await this.collection!.updateOne(
+  async _put(
+    key: Buffer,
+    value: Buffer,
+    options: any,
+    callback: (error?: Error) => void
+  ): Promise<void> {
+    try {
+      await this.collection!.updateOne(
         { key },
         { $set: { value } },
         { upsert: true, hint: 'key_1' }
-    ) // TODO do not hardcode index name
+      ) // TODO do not hardcode index name
+    } catch (e: any) {
+      return callback(new ModuleError(e.message))
+    }
+
+    this.nextTick(callback)
   }
 
-  async _get(key: Buffer, options: any): Promise<Buffer | undefined> {
-    const result = await this.collection!.findOne({ key })
-    // abstract-level >= 2.0.0: return undefined for a missing key
-    // instead of throwing a LEVEL_NOT_FOUND error.
-    return result ? result.value : undefined
+  async _get(
+    key: Buffer,
+    options: any,
+    callback: (error?: Error, value?: Buffer) => void
+  ): Promise<void> {
+    try {
+      const result = await this.collection!.findOne({ key: key })
+      if (result) {
+        this.nextTick(callback, null, result.value)
+      } else {
+        return this.nextTick(
+          callback,
+          new ModuleError(`Key ${key} was not found`, {
+            code: 'LEVEL_NOT_FOUND',
+          })
+        )
+      }
+    } catch (e: any) {
+      return callback(new ModuleError(e.message))
+    }
   }
 
-  async _del(key: Buffer, options: any): Promise<void> {
-    await this.collection!.deleteOne({ key })
+  async _del(
+    key: Buffer,
+    options: any,
+    callback: (error?: Error) => void
+  ): Promise<void> {
+    try {
+      await this.collection!.deleteOne({ key })
+    } catch (e: any) {
+      return callback(new ModuleError(e.message))
+    }
+
+    this.nextTick(callback)
   }
 
-  async _batch(batch: BatchOperation[], options: any): Promise<void> {
+  async _batch(
+    batch: BatchOperation[],
+    options: any,
+    callback: (error?: Error) => void
+  ): Promise<void> {
     const bulk = this.collection!.initializeOrderedBulkOp()
 
     for (const op of batch) {
       if (op.type === 'put') {
         bulk
-            .find({ key: op.key })
-            .upsert()
-            .updateOne({ $set: { value: op.value } })
+          .find({ key: op.key })
+          .upsert()
+          .updateOne({ $set: { value: op.value } })
       } else if (op.type === 'del') {
         bulk.find({ key: op.key }).deleteOne()
       }
     }
 
-    await bulk.execute()
+    try {
+      await bulk.execute()
+    } catch (e: any) {
+      return callback(new ModuleError(e.message))
+    }
+
+    this.nextTick(callback)
   }
 
-  async _clear(options: FilterOptions<KDefault>): Promise<void> {
-    await this.collection!.deleteMany(buildFilter(options))
+  async _clear(options: FilterOptions<KDefault>, callback: (error?: Error) => void): Promise<void> {
+    try {
+      await this.collection!.deleteMany(buildFilter(options))
+    } catch (e: any) {
+      return callback(new ModuleError(e.message))
+    }
+
+    this.nextTick(callback)
   }
 
   _iterator(
-      options: IteratorOptions<KDefault>
+    options: IteratorOptions<KDefault>
   ): MongodbIterator<KDefault, VDefault> {
     return new MongodbIterator<KDefault, VDefault>(
-        this,
-        this.collection!,
-        options
+      this,
+      this.collection!,
+      options
     )
   }
 
@@ -315,12 +386,12 @@ export class MongodbLevel<
   }
 
   _values(
-      options: IteratorOptions<KDefault>
+    options: IteratorOptions<KDefault>
   ): MongodbValueIterator<KDefault, VDefault> {
     return new MongodbValueIterator<KDefault, VDefault>(
-        this,
-        this.collection!,
-        options
+      this,
+      this.collection!,
+      options
     )
   }
 }
