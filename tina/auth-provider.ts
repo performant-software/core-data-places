@@ -96,6 +96,13 @@ export class ClerkAuthProvider extends AbstractAuthProvider {
         return false;
       }
 
+      // Switch active org to match the site's org if needed
+      // (This fixes the rebuild button as it relies on the active org
+      // to check permissions)
+      if (this.orgId && this.clerk.organization?.id !== this.orgId) {
+        await this.clerk.setActive({ organization: this.orgId });
+      }
+
       return true;
     }
     // Handle when a user is logged in outside of the org
