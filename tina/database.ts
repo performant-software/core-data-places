@@ -1,6 +1,6 @@
 import { createDatabase, createLocalDatabase } from '@tinacms/datalayer';
-import { MongodbLevel } from './db-provider';
 import { GitHubProvider } from './git-provider';
+import MongodbLevel from 'mongodb-level'
 
 try { process.loadEnvFile() } catch {}
 
@@ -21,7 +21,7 @@ export default isLocal
       repo: process.env.GITHUB_REPO!,
       token: process.env.GITHUB_PERSONAL_ACCESS_TOKEN!,
     }),
-    databaseAdapter: new MongodbLevel<string, Record<string, unknown>>({
+    databaseAdapter: new MongodbLevel.MongodbLevel<string, Record<string, unknown>>({
       collectionName: process.env.MONGODB_COLLECTION_NAME || `${process.env.GITHUB_REPO}-${branch}`,
       dbName: process.env.MONGODB_NAME!,
       mongoUri: process.env.MONGODB_URI!,
