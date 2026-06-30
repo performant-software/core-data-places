@@ -69,7 +69,10 @@ const ClerkBackendAuthentication = ({
 
   return {
     isAuthorized: async (req: { body: any} & IncomingMessage, _res: ServerResponse) => {
-      const requestState = await clerk.authenticateRequest(toFetchRequest(req));
+      const requestState = await clerk.authenticateRequest(
+          toFetchRequest(req),
+          { publishableKey: process.env.TINA_PUBLIC_CLERK_PUBLIC_KEY! }
+      );
 
       if (requestState.status === 'signed-in') {
         const user = await clerk.users.getUser(requestState.toAuth().userId);

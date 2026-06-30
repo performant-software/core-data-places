@@ -16,7 +16,9 @@ function buildResponse(statusCode: number, body: any | null): Response {
 }
 
 async function authenticate(req: Request): Promise<boolean> {
-  const { toAuth } = await clerkClient.authenticateRequest(req);
+  const { toAuth } = await clerkClient.authenticateRequest(req, {
+    publishableKey: Netlify.env.get('TINA_PUBLIC_CLERK_PUBLIC_KEY')
+  });
 
   const { sessionClaims } = toAuth();
 
