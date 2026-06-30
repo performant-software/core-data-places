@@ -20,11 +20,7 @@ async function authenticate(req: Request): Promise<boolean> {
     publishableKey: Netlify.env.get('TINA_PUBLIC_CLERK_PUBLIC_KEY')
   });
 
-  console.log('sessionClaims:')
-
   const { sessionClaims } = toAuth();
-
-  console.log(sessionClaims)
 
   const isMember = sessionClaims.o.id === Netlify.env.get('TINA_PUBLIC_CLERK_ORG_ID')
   const isAdmin = sessionClaims.o.rol === 'admin'
@@ -82,7 +78,6 @@ const handler = async (req: Request, context: Context): Promise<Response> => {
   try {
     isAdmin = await authenticate(req);
   } catch (e) {
-    console.log(e)
     return buildResponse(401, { message: e.message ||  'Authentication failed' });
   }
 
