@@ -15,7 +15,6 @@ const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
-app.use(express.json());
 app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
@@ -24,6 +23,33 @@ if (!isLocal && !process.env.CLERK_SECRET) {
   throw new Error(
     'Clerk SSO is required for deployed CDP sites (since v1.9.0). Set CLERK_SECRET (plus TINA_PUBLIC_CLERK_PUBLIC_KEY and TINA_PUBLIC_CLERK_ORG_ID). See docs/upgrade-notes.md.'
   );
+}
+
+// convert an IncomingMessage to a Request to make Clerk happy
+function toFetchRequest(req: IncomingMessage): Request {
+  const protocol = req.headers['x-forwarded-proto'] || 'https';
+  const host = req.headers.host || 'localhost';
+  const url = `${protocol}://${host}${req.url || '/'}`;
+
+  const headers = new Headers();
+  for (const [key, value] of Object.entries(req.headers)) {
+    if (value != null) {
+      headers.set(key, Array.isArray(value) ? value.join(', ') : value);
+    }
+  }
+
+  return new Request(url, { method: req.method || 'GET', headers });
+}
+
+// next-tinacms-s3 expects a modified request object, but Express 5 officially removed
+// the ability to mutate the request directly. this is a fairly ugly workaround.
+function patchQuery(req: express.Request, overrides: Record<string, unknown>) {
+  const query = { ...req.query, ...overrides };
+  Object.defineProperty(req, 'query', {
+    value: query,
+    writable: true,
+    configurable: true,
+  });
 }
 
 const ClerkBackendAuthentication = ({
@@ -42,12 +68,8 @@ const ClerkBackendAuthentication = ({
   });
 
   return {
-    isAuthorized: async (req: IncomingMessage, _res: ServerResponse) => {
-      const token = req.headers['authorization'];
-      const tokenWithoutBearer = token?.replace('Bearer ', '').trim();
-      const requestState = await clerk.authenticateRequest({
-        headerToken: tokenWithoutBearer,
-      });
+    isAuthorized: async (req: { body: any} & IncomingMessage, _res: ServerResponse) => {
+      const requestState = await clerk.authenticateRequest(toFetchRequest(req));
 
       if (requestState.status === 'signed-in') {
         const user = await clerk.users.getUser(requestState.toAuth().userId);
@@ -59,7 +81,7 @@ const ClerkBackendAuthentication = ({
               limit: 100 //come back to this when we have orgs with more than 100 members
             })
           );
-          const orgUser = membershipList?.find((mem) => (mem.publicUserData?.userId === user.id));
+          const orgUser = membershipList?.data?.find((mem) => (mem.publicUserData?.userId === user.id));
           // if the user is not in the list, they are not authorized
           if (!orgUser) {
             return {
@@ -153,7 +175,7 @@ const ClerkBackendAuthentication = ({
 const authProvider = isLocal
   ? LocalBackendAuthProvider()
   : ClerkBackendAuthentication({
-    secretKey: process.env.CLERK_SECRET,
+    secretKey: process.env.CLERK_SECRET!,
     orgId: process.env.TINA_PUBLIC_CLERK_ORG_ID
   })
 
@@ -165,13 +187,13 @@ const tinaBackend = TinaNodeBackend({
 const mediaHandler = createMediaHandler({
   config: {
     credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY,
-      secretAccessKey: process.env.S3_SECRET_KEY,
+      accessKeyId: process.env.S3_ACCESS_KEY!,
+      secretAccessKey: process.env.S3_SECRET_KEY!,
     },
 
     region: process.env.S3_REGION,
   },
-  bucket: process.env.S3_BUCKET,
+  bucket: process.env.S3_BUCKET!,
   mediaRoot: process.env.S3_FOLDER,
   authorized: async (req, _res) => {
     const { isAuthorized } = await authProvider.isAuthorized(req, _res);
@@ -195,8 +217,7 @@ app.get('/api/s3/media', mediaHandler);
 // where the folder is not prepended to the file name when uploading
 app.get('/api/s3/media/*splat', (req, res, next) => {
   if (req.query.key) {
-    const query = { ...req.query, key: process.env.S3_FOLDER + '/' + req.query.key };
-    Object.defineProperty(req, 'query', { value: query, writable: true, configurable: true });
+    patchQuery(req, { key: process.env.S3_FOLDER + '/' + req.query.key });
   }
   next();
 }, mediaHandler);
@@ -204,8 +225,7 @@ app.get('/api/s3/media/*splat', (req, res, next) => {
 app.post('/api/s3/media', mediaHandler);
 
 app.delete('/api/s3/media/:media', (req, res) => {
-  const query = { ...req.query, media: ['media', req.params.media] };
-  Object.defineProperty(req, 'query', { value: query, writable: true, configurable: true });
+  patchQuery(req, { media: ['media', req.params.media] });
   return mediaHandler(req, res);
 });
 
