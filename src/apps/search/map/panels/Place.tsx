@@ -36,7 +36,7 @@ const Place = (props: Props) => {
     if (place?.place_geometry) {
       let feature = CoreDataUtils.toFeature(place);
 
-      const certaintyRadius = feature.properties.originalProperties.certainty_radius;
+      const certaintyRadius = feature.properties?.originalProperties?.certainty_radius;
       if (certaintyRadius) {
         feature = MapUtils.toCertaintyCircle(feature, certaintyRadius);
       }

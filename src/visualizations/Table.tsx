@@ -4,18 +4,15 @@ import { SearchResultsTable } from '@performant-software/core-data';
 import type { DataVisualizationProps } from '@types';
 import { useContext, useMemo } from 'react';
 import _ from 'underscore';
+import { parseVisualizationData } from './parseData';
 
 const Table = (props: DataVisualizationProps) => {
   const { t } = useContext(TranslationContext);
 
-  if (!props.data) {
-    return null;
-  }
-
   /**
    * Memo-izes the data as JSON.
    */
-  const { data } = useMemo(() => props.data ? JSON.parse(props.data) : null, [props.data]);
+  const { data } = useMemo(() => parseVisualizationData(props.data) ?? { data: null }, [props.data]);
 
   /**
    * Memo-izes the table columns and labels.

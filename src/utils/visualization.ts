@@ -21,11 +21,24 @@ export const buildMapData = (config: SearchConfig, data: any) => {
   return {
     data: {
       features,
-      hits
+      hits: _.map(hits, sanitizeHit)
     },
     name: config.name
   };
 };
+
+/**
+ * Strips Algolia-style decoration fields (`_highlightResult`, `_snippetResult`,
+ * `_rankingInfo`) from a hit. These fields store HTML-pre-escaped snippets
+ * containing literal entity strings like `&quot;`; TinaCMS's MDX attribute
+ * serializer encodes `"` as `&#x22;` but does not encode `&`, so any `&quot;`
+ * in saved JSON round-trips to an unescaped `"`, corrupting the JSON. Beyond
+ * the round-trip safety, the decoration fields are not used by any
+ * visualization renderer and roughly triple the saved payload size.
+ */
+const sanitizeHit = (hit: any) => (
+  _.omit(hit, '_highlightResult', '_snippetResult', '_rankingInfo')
+);
 
 /**
  * Returns the data for the table visualization.

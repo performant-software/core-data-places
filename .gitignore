@@ -40,6 +40,8 @@ tmp/
 
 # Development config
 /public/config.dev*.json
+/public/config.json
+/public/branding.json
 
 # Workspaces
 *.code-workspace

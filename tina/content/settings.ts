@@ -623,6 +623,10 @@ const Settings: Collection = {
         label: 'Geometry',
         type: 'string'
       }, {
+        name: 'properties',
+        label: 'Properties',
+        type: 'string'
+      }, {
         name: 'max_zoom',
         label: 'Max zoom',
         type: 'number'
@@ -710,6 +714,18 @@ const Settings: Collection = {
         name: 'event_path',
         label: 'Event path',
         type: 'string'
+      }, {
+        name: 'default_start',
+        label: 'Default start year',
+        type: 'number'
+      }, {
+        name: 'default_end',
+        label: 'Default end year',
+        type: 'number'
+      }, {
+        name: 'default_open',
+        label: 'Show by default',
+        type: 'boolean'
       }]
     }, {
       name: 'typesense',

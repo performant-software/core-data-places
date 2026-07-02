@@ -1,5 +1,4 @@
-import { getTranslations } from '@backend/i18n';
-import { fetchNavbar, fetchPages } from '@backend/tina';
+import { fetchPages } from '@backend/tina';
 import config from '@config';
 import { Navbar, NavbarItem } from '@types';
 import { STATIC_BUILD } from 'astro:env/client';

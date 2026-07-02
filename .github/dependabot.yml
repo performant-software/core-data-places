@@ -1,0 +1,26 @@
+# Dependabot configuration.
+#
+# This repo previously ran with no config file, so it took GitHub's default
+# behavior: one PR per security advisory, unbatched. That produced a large
+# volume of overlapping PRs (e.g. several netlify-cli lockfile bumps that each
+# carried one extra advisory and conflicted with each other).
+#
+# This config keeps the security safety net but consolidates it:
+#   - security updates are grouped into a single weekly PR per ecosystem
+#   - version-bump PRs are turned off (open-pull-requests-limit: 0) so we are
+#     not chasing non-security upgrades on Dependabot's schedule
+#
+# To also receive batched version-bump PRs later, raise the limit and add a
+# second group with `applies-to: version-updates`.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
+    groups:
+      npm-security:
+        applies-to: security-updates
+        patterns:
+          - "*"

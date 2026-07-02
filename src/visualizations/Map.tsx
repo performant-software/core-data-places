@@ -5,22 +5,19 @@ import { Typesense as TypesenseUtils } from '@performant-software/core-data';
 import { LocationMarkers, Map as MapUtils } from '@performant-software/geospatial';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import type { Configuration, DataVisualizationProps } from '@types';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useId, useMemo, useState } from 'react';
 import _ from 'underscore';
+import { parseVisualizationData } from './parseData';
 
 const Map = (props: DataVisualizationProps) => {
   const [features, setFeatures] = useState([]);
-
-  if (!props.data) {
-    return null;
-  }
-
   const runtimeConfig = useRuntimeConfig<Configuration>();
+  const layerId = useId();
 
   /**
    * Memo-izes the "data" prop as JSON.
    */
-  const parsed = useMemo(() => props.data ? JSON.parse(props.data) : null, [props.data]);
+  const parsed = useMemo(() => parseVisualizationData(props.data), [props.data]);
 
   /**
    * Memo-izes the search config based on the data set.
@@ -70,6 +67,7 @@ const Map = (props: DataVisualizationProps) => {
             <LocationMarkers
               boundingBoxOptions={{ padding: 20 }}
               data={MapUtils.toFeatureCollection(features)}
+              layerId={layerId}
             />
           </BaseMap> 
         )}

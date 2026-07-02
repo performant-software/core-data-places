@@ -43,6 +43,7 @@ interface SearchContextType {
   features: Feature[];
   getBoundingBox(): Promise<LngLatBoundsLike>;
   getGeometry(id: string): Feature;
+  hits: any[];
   layerType: typeof LayerTypes.single | typeof LayerTypes.multiple;
   setBoundingBoxOptions(boundingBoxOptions: BoundingBoxOptions): void;
   setControlsClass(controlsClass: string): void;
@@ -171,6 +172,7 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
         features,
         getBoundingBox,
         getGeometry,
+        hits,
         layerType,
         setBoundingBoxOptions,
         setControlsClass
