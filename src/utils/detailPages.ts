@@ -7,7 +7,11 @@ import { hasDetailPage } from '@utils/detailPagePaths';
 export const getDetailPagePaths = async (model: Models) => {
   let routes = [];
 
-  if (hasDetailPage(model)) {
+  // PoC fix (poc/static-build branch): this condition was inverted — models
+  // WITH configured detail pages returned zero routes, so static builds
+  // emitted detail pages for exactly the wrong set of models. Invisible in
+  // SSR, where getStaticPaths is not used.
+  if (!hasDetailPage(model)) {
     return routes;
   }
 
