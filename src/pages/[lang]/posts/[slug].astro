@@ -16,9 +16,11 @@ export const getStaticPaths = async () => {
   const staticPaths = [];
 
   const locales = config.i18n.locales;
+  // PoC (poc/static-build): `published` must ride inside `filter:` — at the
+  // top level Tina ignores it, so unpublished posts got public routes.
   const { posts } = await fetchPosts({
     first: -1,
-    published: { eq: true }
+    filter: { published: { eq: true } }
   });
 
   _.each(locales, (lang) => {
