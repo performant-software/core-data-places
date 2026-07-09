@@ -18,6 +18,14 @@ Copy the `.env.example` file to `.env` and enter required variables. For a local
 
 Add a `/public/config.dev.json` file, which will be ignored by Git, to copy local config settings when starting the application. Use the `config.json` table below to configure your project.
 
+#### MapTiler API key
+
+Map layers reference a MapTiler style URL (`layers[].url`) that embeds an API key. `config.json` is served publicly, so treat the key as visible to every visitor:
+
+1. Generate a **new key for each site** in [MapTiler Cloud](https://cloud.maptiler.com/account/keys/) — don't reuse a key across sites.
+2. Restrict the key to the site's domains under **Allowed HTTP origins** (include `localhost` for local development). An unrestricted key can be copied from the public config and used by anyone, consuming your quota.
+3. Replace the `MAPTILER_KEY` placeholder in your config with the new key.
+
 To start, run:
 ```
 npm install && netlify dev

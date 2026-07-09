@@ -20,7 +20,7 @@
   "layers": [{
     "name": "Maptiler DataViz Style",
     "layer_type": "vector",
-    "url": "https://api.maptiler.com/maps/dataviz/style.json?key=WLMbLZP1AwK3zUFTeheB"
+    "url": "https://api.maptiler.com/maps/dataviz/style.json?key=MAPTILER_KEY"
   }],
   "search": [{
     "name": "places",
