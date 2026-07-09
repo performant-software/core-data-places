@@ -21,7 +21,9 @@ export default defineConfig({
     }
   },
   output: STATIC_BUILD === 'true' ? 'static' : 'server',
-  adapter: netlify(),
+  // PoC (poc/static-build): no adapter in static mode, so no SSR function is
+  // emitted alongside the static output.
+  ...(STATIC_BUILD === 'true' ? {} : { adapter: netlify() }),
   integrations: [mdx(), sitemap(), react()],
   vite: {
     optimizeDeps: {

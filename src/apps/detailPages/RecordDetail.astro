@@ -81,7 +81,6 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
     model={model}
     name={name}
     record={record}
-    server:defer
   />
 )}
 { manifest && (
@@ -90,7 +89,6 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
     relatedModel={manifest.model}
     relationshipUuid={manifest.relationship}
     uuid={record.uuid}
-    server:defer
   />
 ) }
 <div class='py-6 divide-y divide-solid divide-[#e5e5e5]'>
@@ -108,56 +106,47 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
     <RelatedMedia
       model={model}
       uuid={record.uuid}
-      server:defer
     />
     <RelatedEvents
       excludes={excludes}
       model={model}
       uuid={record.uuid}
-      server:defer
     />
     <RelatedInstances
       excludes={excludes}
       model={model}
       uuid={record.uuid}
-      server:defer
     />
     <RelatedItems
       excludes={excludes}
       model={model}
       uuid={record.uuid}
       resourceField={resourceField}
-      server:defer
     />
     <RelatedOrganizations
       excludes={excludes}
       model={model}
       uuid={record.uuid}
-      server:defer
     />
     <RelatedPlaces
       excludes={excludes}
       model={model}
       uuid={record.uuid}
-      server:defer
     />
     <RelatedPeople
       excludes={excludes}
       model={model}
       uuid={record.uuid}
-      server:defer
     />
     <RelatedTaxonomies
       excludes={excludes}
       model={model}
       uuid={record.uuid}
-      server:defer
     />
     <RelatedWorks
       excludes={excludes}
       model={model}
       uuid={record.uuid}
-      server:defer
     />
   </Container>
 </div>
