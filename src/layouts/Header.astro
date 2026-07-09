@@ -5,13 +5,15 @@ import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
 import NavBar from '@layouts/NavBar.astro';
 import { getCustomNavbar, getDefaultNavbar, getPages } from '@utils/nav';
-import { getCurrentURL, setCacheControl } from '@utils/url';
+import { setCacheControl } from '@utils/url';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
 
 const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
-const currentUrl = getCurrentURL(Astro.request.headers);
+// PoC (poc/static-build): islands removed, so Astro.url is the real page URL
+// and works at prerender time (the Referer trick was island-only).
+const currentUrl = Astro.url;
 
 const {
   fullscreen,

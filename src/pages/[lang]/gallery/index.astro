@@ -4,7 +4,12 @@ import config from '@config';
 import Layout from '@layouts/Layout.astro';
 import _ from 'underscore';
 
-export const getStaticPaths = () => _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}));
+// PoC (poc/static-build): don't build the gallery when the site has no
+// gallery config — fetchJson(config.gallery) crashes the prerender. The
+// server island hid this failure at request time.
+export const getStaticPaths = () => (config.gallery
+  ? _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}))
+  : []);
 
 ---
 

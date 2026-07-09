@@ -8,7 +8,7 @@ import config from '@config';
 import NavBar from '@layouts/NavBar.astro';
 import { getCustomNavbar, getDefaultNavbar, getPages } from '@utils/nav';
 import { toBackgroundClass } from '@utils/pageBuilder';
-import { getCurrentURL, setCacheControl } from '@utils/url';
+import { setCacheControl } from '@utils/url';
 import clsx from 'clsx';
 import _ from 'underscore';
 
@@ -26,7 +26,9 @@ const {
 const year = new Date().getFullYear();
 
 const currentLocale = Astro.currentLocale;
-const currentUrl = getCurrentURL(Astro.request.headers);
+// PoC (poc/static-build): islands removed, so Astro.url is the real page URL
+// and works at prerender time (the Referer trick was island-only).
+const currentUrl = Astro.url;
 
 const [{ t }, navbar, pages] = await Promise.all([
   getTranslations(currentLocale),
