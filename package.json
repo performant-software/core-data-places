@@ -67,6 +67,7 @@
     "mongodb-level": "^0.0.4",
     "nanostores": "^1.4.0",
     "next-tinacms-s3": "^23.0.3",
+    "pmtiles": "^4.4.1",
     "prop-types": "^15.8.1",
     "radix-ui": "^1.6.0",
     "react": "^18.2.0",

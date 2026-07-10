@@ -6,6 +6,20 @@ import {
   Peripleo as PeripleoUtils
 } from '@performant-software/core-data';
 import { Map as PeripleoMap, useLoadedMap, ZoomControl } from '@peripleo/maplibre';
+import { Protocol as PMTilesProtocol } from 'pmtiles';
+// PoC (poc/static-build): teach MapLibre the pmtiles:// scheme so the
+// rewritten static config's self-hosted basemap loads. @peripleo/maplibre
+// INLINES its own maplibre-gl copy (protocol registries are per-copy, so
+// registering on the hoisted 'maplibre-gl' would miss the map that renders);
+// this relative import resolves to the same chunk Peripleo's code imports,
+// hence the same module instance. The real fix is upstream: Peripleo should
+// export addProtocol the way it exports setRTLTextPlugin.
+// @ts-ignore — deep dist import, no types
+import { m as peripleoMaplibre } from '../../node_modules/@peripleo/maplibre/dist/peripleo-maplibre.es24.js';
+
+if (typeof window !== 'undefined') {
+  peripleoMaplibre.addProtocol('pmtiles', new PMTilesProtocol().tile);
+}
 import { MapProvider, useRuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
 import { type ReactNode, useContext, useEffect, useMemo, useState } from 'react';
