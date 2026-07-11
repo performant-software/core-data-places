@@ -23,6 +23,17 @@ const getLabel = (field) => {
  * @returns {Promise<void>}
  */
 export const buildUserDefinedFields = async (config) => {
+  // The descriptor fetch is the only prebuild step that needs the network.
+  // With FROZEN_BUILD set, reuse the fields file from an earlier build so the
+  // whole prebuild can run with no live backend.
+  if (process.env.FROZEN_BUILD === 'true') {
+    if (fs.existsSync('./src/i18n/userDefinedFields.json')) {
+      console.info('FROZEN_BUILD: reusing src/i18n/userDefinedFields.json; descriptor fetch skipped');
+      return;
+    }
+    throw new Error('FROZEN_BUILD is set but src/i18n/userDefinedFields.json is missing. Run one build without FROZEN_BUILD first.');
+  }
+
   const fields = {};
 
   for (const projectId of config.core_data.project_ids) {
