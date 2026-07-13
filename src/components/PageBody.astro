@@ -9,7 +9,8 @@ import LinksBanner from '@apps/pages/LinksBanner.astro';
 import MultiColumn from '@apps/pages/MultiColumn.astro';
 import Spacer from '@components/Spacer.astro';
 import Tabs from '@apps/pages/Tabs.astro';
-import TextImage from '@apps/pages/TextImage';
+import TextImageReact from '@apps/pages/TextImage';
+import TextImageAstro from '@apps/pages/TextImage.astro';
 import Container from '@components/Container.astro';
 import { toBackgroundClass } from '@utils/pageBuilder';
 import clsx from 'clsx';
@@ -34,8 +35,10 @@ const SectionTypes = {
   media: 'Media'
 };
 
+const TextImage = isTinaPreview ? TextImageAstro : TextImageReact;
+
 ---
-{ _.map(sections, (section, idx) => (
+{ _.map(sections, (section: any, idx: number) => (
   <section
     class={clsx(
       'page-builder',
@@ -49,38 +52,54 @@ const SectionTypes = {
     data-tina-field={tinaField(section)}
   >
     { section?.__typename?.endsWith(SectionTypes.carousel) && (
-      // <Container>
-      //   <Carousel
-      //     items={section.items}
-      //     client:only='react'
-      //   />
-      // </Container>
-      <p>Carousel</p>
+      <Container>
+        {
+          !isTinaPreview && (
+            <Carousel
+              items={section.items}
+              client:only='react'
+            />
+          )
+        }
+        {
+          isTinaPreview && (
+            // replace with preview image
+            <p>Carousel</p>
+          )
+        }
+      </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.contactForm) && (
-      // <Container>
-      //   <ContactForm
-      //     client:load
-      //   />
-      // </Container>
-      <p>Contact</p>
+      <Container>
+        {
+          !isTinaPreview && (
+            <ContactForm
+              client:load
+            />
+          )
+        }
+        {
+          isTinaPreview && (
+            // replace with preview image or plain html form
+            <p>Contact</p>
+          )
+        }
+      </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.freeText) && (
-      // <Container>
-      //   <FreeText
-      //     content={section.body}
-      //   />
-      // </Container>
-      <p>Free Text</p>
+      <Container>
+        <FreeText
+          content={section.body}
+        />
+      </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.images) && (
-      // <Container>
-      //   <Images
-      //     items={section.items}
-      //     title={section.title}
-      //   />
-      // </Container>
-      <p>Images</p>
+      <Container>
+        <Images
+          items={section.items}
+          title={section.title}
+        />
+      </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.spacer) && (
       <Container>
@@ -94,10 +113,8 @@ const SectionTypes = {
     { section?.__typename?.endsWith(SectionTypes.textImage) && (
       <Container>
         {
-          isTinaPreview ? (
-            <p>Text images</p>
-          ) : (
-            <TextImage
+          !isTinaPreview && (
+            <TextImageReact
               backgroundPosition={section.background_position}
               buttonText={section.button_text}
               citation={section.citation}
@@ -112,21 +129,36 @@ const SectionTypes = {
             />
           )
         }
+        {
+          isTinaPreview && (
+            <TextImageAstro
+              backgroundPosition={section.background_position}
+              buttonText={section.button_text}
+              citation={section.citation}
+              citationLink={section.citation_link}
+              description={section.description}
+              image={section.image}
+              imageAlt={section.image_alt}
+              textPosition={section.text_position}
+              title={section.title}
+              url={section.url}
+            />
+          )
+        }
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.multiColumn) && (
-      // <MultiColumn
-      //   background={section.background}
-      //   backgroundImage={section.background_image}
-      //   buttonText={section.button_text}
-      //   darken={section.darken}
-      //   textAlignment={section.text_alignment}
-      //   title={section.title}
-      //   url={section.url}
-      //   content={section.columns}
-      //   gap={section.gap}
-      // />
-      <p>Multicolumn</p>
+      <MultiColumn
+        background={section.background}
+        backgroundImage={section.background_image}
+        buttonText={section.button_text}
+        darken={section.darken}
+        textAlignment={section.text_alignment}
+        title={section.title}
+        url={section.url}
+        content={section.columns}
+        gap={section.gap}
+      />
     )}
     { section?.__typename?.endsWith(SectionTypes.banner) && (
       <Banner
@@ -149,39 +181,45 @@ const SectionTypes = {
         section={section}
       />
     )}
-    { section?.__typename?.endsWith(SectionTypes.tabs) && ( 
-        // <Tabs
-        //   tabs={section.tabs}
-        //   raise={section.top_margin && section.top_margin.startsWith('-')}
-        //   activeBg={section.active_bg}
-        //   inactiveBg={section.inactive_bg}
-        //   textStyle={section.text_style}
-        //   invertText={section.invert_text}
-        // />
-        <p>tabs</p>
+    { section?.__typename?.endsWith(SectionTypes.tabs) && !isTinaPreview && (
+        <Tabs
+          tabs={section.tabs}
+          raise={section.top_margin && section.top_margin.startsWith('-')}
+          activeBg={section.active_bg}
+          inactiveBg={section.inactive_bg}
+          textStyle={section.text_style}
+          invertText={section.invert_text}
+        />
     )}
     { section?.__typename?.endsWith(SectionTypes.featureQuote) && ( 
-      // <FeatureQuote
-      //   {...section}
-      //   backgroundImage={section.background_image}
-      // />
-      <p>Quote</p>
+      <FeatureQuote
+        {...section}
+        backgroundImage={section.background_image}
+      />
     )}
     { section?.__typename?.endsWith(SectionTypes.linkBanner) && ( 
-      // <LinksBanner
-      //   {...section}
-      //   linkBackground={section.link_background}
-      // />
-      <p>Link banner</p>
+      <LinksBanner
+        {...section}
+        linkBackground={section.link_background}
+      />
     )}
     { section?.__typename?.endsWith(SectionTypes.media) && (
-      // <Container>
-      //   <MediaInsert
-      //     media={section.media}
-      //     client:only='react'
-      //   />
-      // </Container>
-      <p>Media</p>
+      <Container>
+        {
+          !isTinaPreview && (
+            <MediaInsert
+              media={section.media}
+              client:only='react'
+            />
+          )
+        }
+        {
+          isTinaPreview && (
+            // replace with placeholder image
+            <p>Media</p>
+          )
+        }
+      </Container>
     )}
   </section>
 ))}

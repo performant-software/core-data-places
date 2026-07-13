@@ -939,7 +939,7 @@ const Pages: Collection = {
   format: 'mdx',
   ui: {
     router: ({ document }) => {      
-      return `/en/pages/${document._sys.filename}`;
+      return `/en/pages/preview/${document._sys.filename}`;
     }
   },
   fields: [{

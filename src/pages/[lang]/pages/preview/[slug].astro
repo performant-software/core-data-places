@@ -1,0 +1,51 @@
+---
+import Page from '@apps/pages/Page.astro';
+import { fetchPageResponse, fetchPages } from '@backend/tina';
+import config from '@config';
+import Layout from '@layouts/Layout.astro';
+import TinaIsland from '@tinacms/astro/TinaIsland.astro';
+import { islands } from '@lib/islands';
+import PageStoreProvider from '@components/PageStoreProvider';
+
+const { slug, lang } = Astro.params;
+
+export const getStaticPaths = async () => {
+  const paths = [];
+
+  for (const lang of config.i18n.locales) {
+    const pages = await fetchPages(lang);
+
+    for (const page of pages) {
+      paths.push({ params: { lang, slug: page._sys.filename } });
+    }
+  }
+
+  return paths;
+};
+
+const ignoreCache = import.meta.env.PUBLIC_IGNORE_PAGE_CACHE === 'true';
+
+const pageResp = await fetchPageResponse(lang, slug, ignoreCache);
+
+const page = pageResp.data.pages;
+
+---
+
+<Layout
+  footer
+  fullscreen
+  title={slug}
+  transparent={page.transparent}
+  isTinaPreview
+>
+  <TinaIsland name="page" wrapper={islands.page.wrapper} params={{ lang, slug }} primary>
+    <Page
+      page={page}
+    />
+  </TinaIsland>
+  <PageStoreProvider
+    title={page.title}
+    transparent={page.transparent}
+    client:load
+  />
+</Layout>

@@ -17,6 +17,7 @@ const {
   fullscreen,
   image,
   imageAlt,
+  isTinaPreview,
   title,
   transparent
 } = Astro.props;
@@ -68,26 +69,35 @@ setCacheControl(Astro.response.headers);
     className='flex flex-row gap-x-12 align-baseline justify-around'
     items={items}
   >
-    <LanguagePicker
-      locales={locales}
-      currentLocale={currentLocale}
-      currentUrl={currentUrl.pathname}
-      client:only='react'
-    />
+    {
+      !isTinaPreview && (
+        <LanguagePicker
+          locales={locales}
+          currentLocale={currentLocale}
+          currentUrl={currentUrl.pathname}
+          client:only='react'
+        />
+      )
+    }
   </NavBar>
 </div>
 
-<MobileHeader
-  image={image}
-  items={items}
-  title={title}
-  transparent={transparent}
-  client:load
->
-  <LanguagePicker
-    locales={locales}
-    currentLocale={currentLocale}
-    currentUrl={currentUrl.pathname}
-    client:load
-  />
-</MobileHeader>
+{
+  !isTinaPreview && (
+    <MobileHeader
+      image={image}
+      items={items}
+      title={title}
+      transparent={transparent}
+      client:load
+    >
+      <LanguagePicker
+        locales={locales}
+        currentLocale={currentLocale}
+        currentUrl={currentUrl.pathname}
+        client:load
+      />
+    </MobileHeader>
+  )
+}
+
