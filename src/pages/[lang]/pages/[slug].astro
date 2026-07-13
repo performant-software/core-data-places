@@ -1,10 +1,13 @@
 ---
 import Page from '@apps/pages/Page.astro';
-import { fetchPages } from '@backend/tina';
+import { fetchPageResponse, fetchPages } from '@backend/tina';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
+import TinaIsland from '@tinacms/astro/TinaIsland.astro';
+import { islands } from '@lib/islands';
+import PageStoreProvider from '@components/PageStoreProvider';
 
-const { slug } = Astro.params;
+const { slug, lang } = Astro.params;
 
 export const getStaticPaths = async () => {
   const paths = [];
@@ -20,15 +23,28 @@ export const getStaticPaths = async () => {
   return paths;
 };
 
+const ignoreCache = import.meta.env.PUBLIC_IGNORE_PAGE_CACHE === 'true';
+
+const pageResp = await fetchPageResponse(lang, slug, ignoreCache);
+
+const page = pageResp.data.pages;
+
 ---
 
 <Layout
   footer
   fullscreen
   title={slug}
+  transparent={page.transparent}
 >
-  <Page
-    slug={slug}
-    server:defer
+  <TinaIsland name="page" wrapper={islands.page.wrapper} params={{ lang, slug }} primary>
+    <Page
+      page={page}
+    />
+  </TinaIsland>
+  <PageStoreProvider
+    title={page.title}
+    transparent={page.transparent}
+    client:load
   />
 </Layout>

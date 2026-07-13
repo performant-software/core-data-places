@@ -15,8 +15,9 @@ import { toBackgroundClass } from '@utils/pageBuilder';
 import clsx from 'clsx';
 import _ from 'underscore';
 import MediaInsert from '@components/MediaInsert';
+import { tinaField } from '@tinacms/astro/tina-field';
 
-const { sections, transparent, home } = Astro.props;
+const { sections, transparent, home, isTinaPreview } = Astro.props;
 
 const SectionTypes = {
   banner: 'Banner',
@@ -45,36 +46,41 @@ const SectionTypes = {
       section.bottom_margin,
       { '-mt-[72px]': transparent && idx === 0 }
     )}
+    data-tina-field={tinaField(section)}
   >
     { section?.__typename?.endsWith(SectionTypes.carousel) && (
-      <Container>
-        <Carousel
-          items={section.items}
-          client:only='react'
-        />
-      </Container>
+      // <Container>
+      //   <Carousel
+      //     items={section.items}
+      //     client:only='react'
+      //   />
+      // </Container>
+      <p>Carousel</p>
     )}
     { section?.__typename?.endsWith(SectionTypes.contactForm) && (
-      <Container>
-        <ContactForm
-          client:load
-        />
-      </Container>
+      // <Container>
+      //   <ContactForm
+      //     client:load
+      //   />
+      // </Container>
+      <p>Contact</p>
     )}
     { section?.__typename?.endsWith(SectionTypes.freeText) && (
-      <Container>
-        <FreeText
-          content={section.body}
-        />
-      </Container>
+      // <Container>
+      //   <FreeText
+      //     content={section.body}
+      //   />
+      // </Container>
+      <p>Free Text</p>
     )}
     { section?.__typename?.endsWith(SectionTypes.images) && (
-      <Container>
-        <Images
-          items={section.items}
-          title={section.title}
-        />
-      </Container>
+      // <Container>
+      //   <Images
+      //     items={section.items}
+      //     title={section.title}
+      //   />
+      // </Container>
+      <p>Images</p>
     )}
     { section?.__typename?.endsWith(SectionTypes.spacer) && (
       <Container>
@@ -87,33 +93,40 @@ const SectionTypes = {
     )}
     { section?.__typename?.endsWith(SectionTypes.textImage) && (
       <Container>
-        <TextImage
-          backgroundPosition={section.background_position}
-          buttonText={section.button_text}
-          citation={section.citation}
-          citationLink={section.citation_link}
-          description={section.description}
-          image={section.image}
-          imageAlt={section.image_alt}
-          textPosition={section.text_position}
-          title={section.title}
-          url={section.url}
-          client:load
-        />
+        {
+          isTinaPreview ? (
+            <p>Text images</p>
+          ) : (
+            <TextImage
+              backgroundPosition={section.background_position}
+              buttonText={section.button_text}
+              citation={section.citation}
+              citationLink={section.citation_link}
+              description={section.description}
+              image={section.image}
+              imageAlt={section.image_alt}
+              textPosition={section.text_position}
+              title={section.title}
+              url={section.url}
+              client:load
+            />
+          )
+        }
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.multiColumn) && (
-      <MultiColumn
-        background={section.background}
-        backgroundImage={section.background_image}
-        buttonText={section.button_text}
-        darken={section.darken}
-        textAlignment={section.text_alignment}
-        title={section.title}
-        url={section.url}
-        content={section.columns}
-        gap={section.gap}
-      />
+      // <MultiColumn
+      //   background={section.background}
+      //   backgroundImage={section.background_image}
+      //   buttonText={section.button_text}
+      //   darken={section.darken}
+      //   textAlignment={section.text_alignment}
+      //   title={section.title}
+      //   url={section.url}
+      //   content={section.columns}
+      //   gap={section.gap}
+      // />
+      <p>Multicolumn</p>
     )}
     { section?.__typename?.endsWith(SectionTypes.banner) && (
       <Banner
@@ -133,37 +146,42 @@ const SectionTypes = {
         textAlignment={section.text_alignment}
         title={section.title}
         url={section.url}
+        section={section}
       />
     )}
     { section?.__typename?.endsWith(SectionTypes.tabs) && ( 
-        <Tabs
-          tabs={section.tabs}
-          raise={section.top_margin && section.top_margin.startsWith('-')}
-          activeBg={section.active_bg}
-          inactiveBg={section.inactive_bg}
-          textStyle={section.text_style}
-          invertText={section.invert_text}
-        />
+        // <Tabs
+        //   tabs={section.tabs}
+        //   raise={section.top_margin && section.top_margin.startsWith('-')}
+        //   activeBg={section.active_bg}
+        //   inactiveBg={section.inactive_bg}
+        //   textStyle={section.text_style}
+        //   invertText={section.invert_text}
+        // />
+        <p>tabs</p>
     )}
     { section?.__typename?.endsWith(SectionTypes.featureQuote) && ( 
-      <FeatureQuote
-        {...section}
-        backgroundImage={section.background_image}
-      />
+      // <FeatureQuote
+      //   {...section}
+      //   backgroundImage={section.background_image}
+      // />
+      <p>Quote</p>
     )}
     { section?.__typename?.endsWith(SectionTypes.linkBanner) && ( 
-      <LinksBanner
-        {...section}
-        linkBackground={section.link_background}
-      />
+      // <LinksBanner
+      //   {...section}
+      //   linkBackground={section.link_background}
+      // />
+      <p>Link banner</p>
     )}
     { section?.__typename?.endsWith(SectionTypes.media) && (
-      <Container>
-        <MediaInsert
-          media={section.media}
-          client:only='react'
-        />
-      </Container>
+      // <Container>
+      //   <MediaInsert
+      //     media={section.media}
+      //     client:only='react'
+      //   />
+      // </Container>
+      <p>Media</p>
     )}
   </section>
 ))}

@@ -1,26 +1,18 @@
 ---
-import { fetchPage } from '@backend/tina';
 import PageBody from '@components/PageBody.astro';
-import PageStoreProvider from '@components/PageStoreProvider';
 import { setCacheControl } from '@utils/url';
+import { tinaField } from '@tinacms/astro/tina-field';
 
-const { slug } = Astro.props;
-const locale = Astro.currentLocale;
-
-const page = await fetchPage(locale, slug);
+const { page, isTinaPreview } = Astro.props;
 
 setCacheControl(Astro.response.headers);
 
 ---
-
-<PageBody
-  sections={page?.sections}
-  transparent={page?.transparent}
-  home={page?.home_page}
-/>
-
-<PageStoreProvider
-  title={page.title}
-  transparent={page.transparent}
-  client:load
-/>
+<div data-tina-field={tinaField(page)}>
+  <PageBody
+    sections={page?.sections}
+    transparent={page?.transparent}
+    home={page?.home_page}
+    isTinaPreview={isTinaPreview}
+  />
+</div>

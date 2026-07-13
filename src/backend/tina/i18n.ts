@@ -1,5 +1,6 @@
 import config from '@config' with { type: 'json' };
 import _ from 'underscore';
+import { QueryResult, requestWithMetadata } from '@tinacms/astro/data';
 
 /**
  * Filters the passed array of items to include the correct localized content.
@@ -54,14 +55,14 @@ export const fetchOne = async (locale: string, slug: string, query: any) => {
   let response;
 
   if (!config.content.localize_pages) {
-    response = await query({ relativePath: `${slug}.mdx` });
+    response = await requestWithMetadata(query({ relativePath: `${slug}.mdx` }));
   } else {
-    response = await query({ relativePath: `${locale}/${slug}.mdx` });
+    response = await requestWithMetadata(query({ relativePath: `${locale}/${slug}.mdx` }));
 
     if (!response.data && locale !== config.i18n.default_locale) {
-      response = await query({ relativePath: `${config.i18n.default_locale}/${slug}.mdx` });
+      response = await requestWithMetadata(query({ relativePath: `${config.i18n.default_locale}/${slug}.mdx` }));
     }
   }
 
-  return response;
+  return response as QueryResult<any>;
 };

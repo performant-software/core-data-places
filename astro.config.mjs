@@ -6,6 +6,8 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, envField } from 'astro/config';
 import { loadEnv } from 'vite';
 import config from './public/config.json';
+import tina from '@tinacms/astro/integration';
+import { tinaAdminDevRedirect } from '@tinacms/astro/vite';
 
 const { locales, default_locale: defaultLocale } = config.i18n;
 const { STATIC_BUILD } = loadEnv(process.env.STATIC_BUILD, process.cwd(), '');
@@ -22,7 +24,7 @@ export default defineConfig({
   },
   output: STATIC_BUILD === 'true' ? 'static' : 'server',
   adapter: netlify(),
-  integrations: [mdx(), sitemap(), react()],
+  integrations: [mdx(), sitemap(), react(), tina()],
   vite: {
     optimizeDeps: {
       esbuildOptions: {
@@ -35,7 +37,7 @@ export default defineConfig({
         noExternal: ['clsx', '@phosphor-icons/*', '@radix-ui/*']
       }
     },
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), tinaAdminDevRedirect()],
     resolve: {
       preserveSymlinks: true,
       mainFields: [

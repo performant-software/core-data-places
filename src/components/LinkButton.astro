@@ -1,0 +1,32 @@
+---
+import { toBackgroundClass, toBorderClass, toTextClass } from '@utils/pageBuilder';
+import clsx from 'clsx';
+
+const { color, border, text, href, content, arrow, className, ...props } = Astro.props;
+---
+
+  <a
+    class={clsx(
+      'link-button inline-flex mt-4 rounded-md hover:bg-opacity-95 cursor-pointer flex-row gap-4 items-center no-underline',
+      { 'px-6 py-3 hover:bg-[linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15))] transition duration-300': color || border },
+      'focus:outline-none',
+      color && 'focus:shadow-[0_1px_2px_0_rgba(0,0,0,0.05),0_0_0_2px_var(--color-layout),0_0_0_4px_var(--color-secondary)]',
+      { 'hover:underline hover:underline-offset-[6px] hover:decoration-2': !color && !border },
+      { 'hover:no-underline': color || border },
+      toBackgroundClass(color),
+      text && toTextClass(text),
+      toBorderClass(border),
+      className
+    )}
+    href={href}
+    {...props}
+  >
+    <div>
+      { content }
+    </div>
+    { arrow && ( 
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+      </svg>
+    ) }
+  </a>

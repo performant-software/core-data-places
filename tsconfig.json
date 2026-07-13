@@ -18,6 +18,7 @@
       "@contexts/*": ["src/contexts/*"],
       "@i18n/*": ["src/i18n/*"],
       "@layouts/*": ["src/layouts/*"],
+      "@lib/*": ["src/lib/*"],
       "@loaders/*": ["src/loaders/*"],
       "@root/*": ["*"],
       "@services/*": ["src/services/*"],

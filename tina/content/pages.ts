@@ -937,6 +937,11 @@ const Pages: Collection = {
   label: 'Pages',
   path: 'content/pages',
   format: 'mdx',
+  ui: {
+    router: ({ document }) => {      
+      return `/en/pages/${document._sys.filename}`;
+    }
+  },
   fields: [{
     name: 'title',
     label: 'Title',
