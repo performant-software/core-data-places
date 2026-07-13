@@ -9,6 +9,8 @@ declare module '@performant-software/shared-components';
 declare module 'underscore';
 
 declare module "astro:env/client" {
+  export const CACHE_CDN_MAX_AGE: number;
+  export const CACHE_STALE_WHILE_REVALIDATE: number;
   export const DISABLE_CACHE: boolean;
   export const PRELOAD_MAP: boolean;
   export const STATIC_BUILD: boolean;
