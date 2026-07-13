@@ -8,7 +8,6 @@ import config from '@config';
 import NavBar from '@layouts/NavBar.astro';
 import { getCustomNavbar, getDefaultNavbar, getPages } from '@utils/nav';
 import { toBackgroundClass } from '@utils/pageBuilder';
-import { getCurrentURL, setCacheControl } from '@utils/url';
 import clsx from 'clsx';
 import _ from 'underscore';
 
@@ -18,6 +17,7 @@ const {
   customContent,
   login,
   logos,
+  pathname,
   privacyUrl,
   termsUrl,
   title
@@ -26,7 +26,6 @@ const {
 const year = new Date().getFullYear();
 
 const currentLocale = Astro.currentLocale;
-const currentUrl = getCurrentURL(Astro.request.headers);
 
 const [{ t }, navbar, pages] = await Promise.all([
   getTranslations(currentLocale),
@@ -37,12 +36,10 @@ const [{ t }, navbar, pages] = await Promise.all([
 let items;
 
 if (navbar && navbar.items) {
-  items = getCustomNavbar(navbar, currentLocale, currentUrl.pathname);
+  items = getCustomNavbar(navbar, currentLocale, pathname);
 } else {
-  items = getDefaultNavbar(pages, currentLocale, currentUrl.pathname, t);
+  items = getDefaultNavbar(pages, currentLocale, pathname, t);
 }
-
-setCacheControl(Astro.response.headers);
 
 ---
 

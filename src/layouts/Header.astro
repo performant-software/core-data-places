@@ -5,18 +5,17 @@ import LanguagePicker from '@components/LanguagePicker';
 import MobileHeader from '@components/MobileHeader';
 import NavBar from '@layouts/NavBar.astro';
 import { getCustomNavbar, getDefaultNavbar, getPages } from '@utils/nav';
-import { getCurrentURL, setCacheControl } from '@utils/url';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
 
 const locales = getRelativeLocaleUrlList();
 const currentLocale = Astro.currentLocale;
-const currentUrl = getCurrentURL(Astro.request.headers);
 
 const {
   fullscreen,
   image,
   imageAlt,
+  pathname,
   title,
   transparent
 } = Astro.props;
@@ -30,12 +29,10 @@ const [{ t }, navbar, pages] = await Promise.all([
 let items;
 
 if (navbar && navbar.items) {
-  items = getCustomNavbar(navbar, currentLocale, currentUrl.pathname);
+  items = getCustomNavbar(navbar, currentLocale, pathname);
 } else {
-  items = getDefaultNavbar(pages, currentLocale, currentUrl.pathname, t);
+  items = getDefaultNavbar(pages, currentLocale, pathname, t);
 }
-
-setCacheControl(Astro.response.headers);
 
 ---
 
@@ -71,7 +68,7 @@ setCacheControl(Astro.response.headers);
     <LanguagePicker
       locales={locales}
       currentLocale={currentLocale}
-      currentUrl={currentUrl.pathname}
+      currentUrl={pathname}
       client:only='react'
     />
   </NavBar>
@@ -87,6 +84,6 @@ setCacheControl(Astro.response.headers);
   <LanguagePicker
     locales={locales}
     currentLocale={currentLocale}
-    currentUrl={currentUrl.pathname}
+    currentUrl={pathname}
   />
 </MobileHeader>
