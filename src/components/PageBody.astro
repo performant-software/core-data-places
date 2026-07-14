@@ -18,7 +18,7 @@ import _ from 'underscore';
 import MediaInsert from '@components/MediaInsert';
 import { tinaField } from '@tinacms/astro/tina-field';
 
-const { sections, transparent, home, isTinaPreview } = Astro.props;
+const { sections, transparent, home, isTinaPreview, t } = Astro.props;
 
 const SectionTypes = {
   banner: 'Banner',
@@ -156,6 +156,9 @@ const SectionTypes = {
         url={section.url}
         content={section.columns}
         gap={section.gap}
+        section={section}
+        isTinaPreview={isTinaPreview}
+        t={t}
       />
     )}
     { section?.__typename?.endsWith(SectionTypes.banner) && (
@@ -177,6 +180,7 @@ const SectionTypes = {
         title={section.title}
         url={section.url}
         section={section}
+        isTinaPreview={isTinaPreview}
       />
     )}
     { section?.__typename?.endsWith(SectionTypes.tabs) && (

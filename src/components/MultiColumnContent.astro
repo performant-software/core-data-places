@@ -4,6 +4,7 @@ import _ from 'underscore';
 import LinkButton from '@components/LinkButton.astro';
 import Column from '@components/Column.astro';
 import { toBackgroundClass, toBorderClass } from '@utils/pageBuilder';
+import { tinaField } from '@tinacms/astro/tina-field';
 
 const { 
   buttonText,
@@ -13,7 +14,9 @@ const {
   t,
   textAlignment,
   title,
-  url
+  url,
+  section,
+  isTinaPreview
 } = Astro.props;
 
 const TOTAL_COLUMNS = 12;
@@ -40,6 +43,7 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
         'py-8',
         { 'flex justify-center text-center': textAlignment === 'center' }
       )}
+      data-tina-field={tinaField(section, 'title')}
     >
       { title }
     </h2>
@@ -53,7 +57,7 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
       { 'gap-4 xl:gap-8': gap === 'small' || !gap }
     )}
   >
-    { _.map(content, (col: any) => (
+    { _.map(content, (col: any, idx: number) => (
         <Column
           className={clsx(
             { [col.width] : total === TOTAL_COLUMNS },
@@ -66,6 +70,7 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
           items={col.content}
           t={t}
           url={col.url}
+          isTinaPreview={isTinaPreview}
         />
     )) }
   </div>
@@ -75,6 +80,7 @@ const gridCols = total === TOTAL_COLUMNS ? 'lg:grid-cols-12' : 'lg:auto-cols-fr 
         'py-4',
         { 'flex justify-center': textAlignment === 'center' }
       )}
+      data-tina-field={tinaField(section, 'button_text')}
     >
       <LinkButton
         color='secondary'

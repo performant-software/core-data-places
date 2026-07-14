@@ -6,6 +6,7 @@ import Layout from '@layouts/Layout.astro';
 import TinaIsland from '@tinacms/astro/TinaIsland.astro';
 import { islands } from '@lib/islands';
 import PageStoreProvider from '@components/PageStoreProvider';
+import { getTranslations } from '@backend/i18n';
 
 const { slug, lang } = Astro.params;
 
@@ -29,6 +30,8 @@ const pageResp = await fetchPageResponse(lang, slug, ignoreCache);
 
 const page = pageResp.data.pages;
 
+const { t } = await getTranslations(Astro.currentLocale);
+
 ---
 
 <Layout
@@ -40,6 +43,7 @@ const page = pageResp.data.pages;
   <TinaIsland name="page" wrapper={islands.page.wrapper} params={{ lang, slug }} primary>
     <Page
       page={page}
+      t={t}
     />
   </TinaIsland>
   <PageStoreProvider

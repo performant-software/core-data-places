@@ -9,6 +9,7 @@ import PageStoreProvider from '@components/PageStoreProvider';
 import Header from '@layouts/Header.astro';
 import branding from '@branding';
 import clsx from 'clsx';
+import { getTranslations } from '@backend/i18n';
 
 const { slug, lang } = Astro.params;
 
@@ -32,6 +33,8 @@ const pageResp = await fetchPageResponse(lang, slug, ignoreCache);
 
 const page = pageResp.data.pages;
 
+const { t } = await getTranslations(Astro.currentLocale);
+
 ---
 
 <Layout
@@ -45,6 +48,7 @@ const page = pageResp.data.pages;
     <Page
       page={page}
       isTinaPreview
+      t={t}
     />
   </TinaIsland>
   <PageStoreProvider

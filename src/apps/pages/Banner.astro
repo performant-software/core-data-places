@@ -30,7 +30,8 @@ const {
   textAlignment,
   title,
   url,
-  section
+  section,
+  isTinaPreview
 } = Astro.props;
 
 ---
@@ -118,7 +119,7 @@ const {
             <RichText content={content} />
           </div> 
         ) : null }
-        { search && ( 
+        { search && !isTinaPreview && ( 
           <SearchBar 
             buttonText={search.button_text}
             searchName={search.search_name}

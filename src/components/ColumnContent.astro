@@ -7,8 +7,9 @@ import { toBorderClass, toBackgroundClass } from '@root/src/utils/pageBuilder';
 import clsx from 'clsx';
 import _ from 'underscore';
 import ImageWithCitation from './ImageWithCitation.astro';
+import { tinaField } from '@tinacms/astro/tina-field';
 
-const { item, t } = Astro.props;
+const { item, t, isTinaPreview } = Astro.props;
 
 const BlockTypes = {
   basic: 'Basic',
@@ -40,15 +41,19 @@ const BlockTypes = {
         item.full_height && 'h-full'
       )
     }}
+    item={item}
   />
 )}
 
 { item.__typename.endsWith(BlockTypes.text) && ( 
-  <div class={clsx(
-    'prose max-w-none py-8 lg:py-4 text-inherit',
-    item.padding && 'px-4',
-    item.size
-  )}>
+  <div 
+    class={clsx(
+      'prose max-w-none py-8 lg:py-4 text-inherit',
+      item.padding && 'px-4',
+      item.size
+    )}
+    data-tina-field={tinaField(item, 'text')}
+  >
     <RichText content={item.text} />
   </div>
 )}
@@ -59,11 +64,13 @@ const BlockTypes = {
   >
     <h4
       class='text-3xl font-bold'
+      data-tina-field={tinaField(item, 'title')}
     >
       { item?.title }
     </h4>
     <p
       class='font-light'
+      data-tina-field={tinaField(item, 'description')}
     >
       { item?.description }
     </p>
@@ -85,10 +92,11 @@ const BlockTypes = {
       readMore: t('readMore')
     }}
     title={item.title}
+    item={item}
   />
 )}
 
-{ item.__typename.endsWith(BlockTypes.contactForm) && (
+{ !isTinaPreview && item.__typename.endsWith(BlockTypes.contactForm) && (
   <ContactForm
     client:load
   />
@@ -103,25 +111,25 @@ const BlockTypes = {
     toBackgroundClass(item.bg_color),
     { 'items-center text-center': item.text_alignment === 'center' }
   )}>
-    <img src={item.icon} class={clsx(
+    <img src={item.icon} data-tina-field={tinaField(item, 'icon')} class={clsx(
       'w-12 h-12',
       item.icon_background && 'absolute top-4 left-4 opacity-20'
      )} />
-    <p class='font-serif text-xl'>
+    <p class='font-serif text-xl' data-tina-field={tinaField(item, 'quote')}>
       { item.quote }
     </p>
     { item.border_color && <Spacer size='none' color={item.border_color} /> }
-    <p class='font-semibold -indent-2 pl-2 italic text-sm lg:max-w-[80%]'>
+    <p class='font-semibold -indent-2 pl-2 italic text-sm lg:max-w-[80%]' data-tina-field={tinaField(item, 'attribution')}>
       { item.attribution }
     </p>
   </div>
 )}
 
 { item.__typename.endsWith(BlockTypes.imageLink) && ( 
-  <a href={item.link} class='relative cursor-pointer group overflow-hidden'>
+  <a href={item.link} class='relative cursor-pointer group overflow-hidden' data-tina-field={tinaField(item, 'link')}>
     <img src={item.image} class='w-full h-full object-contain transition-transform duration-500 ease-in-out transform group-hover:scale-110'/>
     { item.overlay && ( 
-      <div class='absolute h-full w-full inset-0 bg-gradient-to-b to-black/60 p-6 flex flex-col justify-end'>
+      <div class='absolute h-full w-full inset-0 bg-gradient-to-b to-black/60 p-6 flex flex-col justify-end' data-tina-field={tinaField(item, 'overlay')}>
         <h3 class='!text-text-inverse font-serif'>{ item.overlay }</h3>
       </div> 
     )}
@@ -129,7 +137,7 @@ const BlockTypes = {
 )}
 
 { item.__typename.endsWith(BlockTypes.counter) && ( 
-  <div class='flex flex-col py-4 px-2 xl:px-4 gap-3 font-serif font-semibold bg-layout-alt items-center w-full h-full'>
+  <div class='flex flex-col py-4 px-2 xl:px-4 gap-3 font-serif font-semibold bg-layout-alt items-center w-full h-full' data-tina-field={tinaField(item)}>
     <div class='flex flex-col'>
       <p class='text-secondary text-5xl'>{ item.count }</p>
       <p class='italic'>{ item.type || 'records' }</p>
@@ -139,7 +147,7 @@ const BlockTypes = {
 )}
 
 { item.__typename.endsWith(BlockTypes.linkRow) && ( 
-  <div class={clsx(
+  <div data-tina-field={tinaField(item)} class={clsx(
     'flex flex-wrap font-semibold font-sans py-1.5 justify-center',
     { 'flex-row gap-5': item.orientation === 'row' || !item.orientation },
     { 'flex-col gap-2 text-left': item.orientation === 'column' }

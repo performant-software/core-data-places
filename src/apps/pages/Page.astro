@@ -6,7 +6,7 @@ import Header from '@layouts/Header.astro';
 import clsx from 'clsx';
 import branding from '@branding';
 
-const { page, isTinaPreview } = Astro.props;
+const { page, isTinaPreview, t } = Astro.props;
 
 setCacheControl(Astro.response.headers);
 
@@ -36,5 +36,6 @@ setCacheControl(Astro.response.headers);
     transparent={page?.transparent}
     home={page?.home_page}
     isTinaPreview={isTinaPreview}
+    t={t}
   />
 </div>

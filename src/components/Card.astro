@@ -1,6 +1,7 @@
 ---
+import { tinaField } from '@tinacms/astro/tina-field';
 
-const { alt, category, date, dateOptions, title, slug, imageUrl, blurb, labels } = Astro.props;
+const { alt, category, date, dateOptions, title, slug, imageUrl, blurb, labels, item } = Astro.props;
 
 const dateString = date ? new Date(date).toLocaleDateString(undefined, dateOptions) : null;
 
@@ -8,6 +9,7 @@ const dateString = date ? new Date(date).toLocaleDateString(undefined, dateOptio
 
 <article
   class='flex max-w-xl flex-col items-start justify-between bg-neutral-light'
+  data-tina-field={tinaField(item)}
 >
   <div
     class='relative w-full'
@@ -20,6 +22,7 @@ const dateString = date ? new Date(date).toLocaleDateString(undefined, dateOptio
         loading='lazy'
         height={256}
         width={384}
+        data-tina-field={tinaField(item, 'image')}
       />
     )}
     {!imageUrl && (
@@ -67,6 +70,7 @@ const dateString = date ? new Date(date).toLocaleDateString(undefined, dateOptio
     {blurb && (
       <p
         class='mt-5 line-clamp-3 text-sm leading-6 text-gray-600'
+        data-tina-field={tinaField(item, 'blurb')}
       >
         {blurb}
       </p>
