@@ -2,6 +2,9 @@
 import PageBody from '@components/PageBody.astro';
 import { setCacheControl } from '@utils/url';
 import { tinaField } from '@tinacms/astro/tina-field';
+import Header from '@layouts/Header.astro';
+import clsx from 'clsx';
+import branding from '@branding';
 
 const { page, isTinaPreview } = Astro.props;
 
@@ -9,6 +12,25 @@ setCacheControl(Astro.response.headers);
 
 ---
 <div data-tina-field={tinaField(page)}>
+  {
+    isTinaPreview && (
+      <div
+        class={clsx(
+          'flex flex-row justify-center w-full z-10 text-text-primary h-[72px]',
+          { 'bg-primary': !page.transparent }
+        )}
+      >
+        <Header
+          fullscreen
+          image={branding?.header?.logo}
+          imageAlt={branding.title}
+          title={branding?.header?.hide_title ? undefined : branding.title}
+          transparent={page.transparent}
+          isTinaPreview
+        />
+      </div>
+    )
+  }
   <PageBody
     sections={page?.sections}
     transparent={page?.transparent}

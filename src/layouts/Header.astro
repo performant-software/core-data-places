@@ -8,10 +8,10 @@ import { getCustomNavbar, getDefaultNavbar, getPages } from '@utils/nav';
 import { getCurrentURL, setCacheControl } from '@utils/url';
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
 import clsx from 'clsx';
+import config from '@config';
 
 const locales = getRelativeLocaleUrlList();
-const currentLocale = Astro.currentLocale;
-const currentUrl = getCurrentURL(Astro.request.headers);
+const currentLocale = Astro.currentLocale || config?.i18n?.default_locale;
 
 const {
   fullscreen,
@@ -21,6 +21,13 @@ const {
   title,
   transparent
 } = Astro.props;
+
+let currentUrl: URL;
+if (!isTinaPreview) {
+  currentUrl = getCurrentURL(Astro.request.headers);
+} else {
+  currentUrl = Astro.url;
+}
 
 const [{ t }, navbar, pages] = await Promise.all([
   getTranslations(currentLocale),
@@ -68,6 +75,7 @@ setCacheControl(Astro.response.headers);
   <NavBar
     className='flex flex-row gap-x-12 align-baseline justify-around'
     items={items}
+    isTinaPreview={isTinaPreview}
   >
     {
       !isTinaPreview && (

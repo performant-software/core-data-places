@@ -42,23 +42,9 @@ const page = pageResp.data.pages;
   isTinaPreview
 >
   <TinaIsland name="page" wrapper={islands.page.wrapper} params={{ lang, slug }} primary>
-    <div
-      class={clsx(
-        'flex flex-row justify-center w-full z-10 text-text-primary h-[72px]',
-        { 'bg-primary': !page.transparent }
-      )}
-    >
-      <Header
-        fullscreen
-        image={branding?.header?.logo}
-        imageAlt={branding.title}
-        title={branding?.header?.hide_title ? undefined : branding.title}
-        transparent={page.transparent}
-        isTinaPreview
-      />
-    </div>
     <Page
       page={page}
+      isTinaPreview
     />
   </TinaIsland>
   <PageStoreProvider
