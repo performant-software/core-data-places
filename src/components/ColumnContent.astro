@@ -96,6 +96,8 @@ const BlockTypes = {
   />
 )}
 
+
+<!-- TODO: Deal with this in tina preview mode -->
 { !isTinaPreview && item.__typename.endsWith(BlockTypes.contactForm) && (
   <ContactForm
     client:load

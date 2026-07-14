@@ -88,6 +88,7 @@ const SectionTypes = {
       <Container>
         <FreeText
           content={section.body}
+          section={section}
         />
       </Container>
     )}
@@ -96,6 +97,7 @@ const SectionTypes = {
         <Images
           items={section.items}
           title={section.title}
+          section={section}
         />
       </Container>
     )}
@@ -140,6 +142,7 @@ const SectionTypes = {
               textPosition={section.text_position}
               title={section.title}
               url={section.url}
+              section={section}
             />
           )
         }
