@@ -35,8 +35,6 @@ const SectionTypes = {
   media: 'Media'
 };
 
-const TextImage = isTinaPreview ? TextImageAstro : TextImageReact;
-
 ---
 { _.map(sections, (section: any, idx: number) => (
   <section
@@ -181,7 +179,7 @@ const TextImage = isTinaPreview ? TextImageAstro : TextImageReact;
         section={section}
       />
     )}
-    { section?.__typename?.endsWith(SectionTypes.tabs) && !isTinaPreview && (
+    { section?.__typename?.endsWith(SectionTypes.tabs) && (
         <Tabs
           tabs={section.tabs}
           raise={section.top_margin && section.top_margin.startsWith('-')}
@@ -189,6 +187,7 @@ const TextImage = isTinaPreview ? TextImageAstro : TextImageReact;
           inactiveBg={section.inactive_bg}
           textStyle={section.text_style}
           invertText={section.invert_text}
+          isTinaPreview={isTinaPreview}
         />
     )}
     { section?.__typename?.endsWith(SectionTypes.featureQuote) && ( 
