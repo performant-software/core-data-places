@@ -16,7 +16,7 @@ setCacheControl(Astro.response.headers);
     isTinaPreview && (
       <div
         class={clsx(
-          'flex flex-row justify-center w-full z-10 text-text-primary h-[72px]',
+          'flex flex-row justify-center w-full z-10 text-text-primary h-[72px] relative',
           { 'bg-primary': !page.transparent }
         )}
       >
