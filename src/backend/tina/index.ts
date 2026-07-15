@@ -4,6 +4,7 @@ import { QueryResult, requestWithMetadata } from '@tinacms/astro/data';
 import { PagesQuery } from '@root/tina/__generated__/types';
 
 interface Caches {
+  footer: any;
   i18n: Map<string, any>;
   i18ns: any;
   navbar: Map<string, any>;
@@ -16,6 +17,7 @@ interface Caches {
 }
 
 const caches: Caches = {
+  footer: undefined,
   i18n: new Map(),
   i18ns: undefined,
   navbar: new Map(),
@@ -25,6 +27,21 @@ const caches: Caches = {
   pathsResponse: new Map(),
   posts: new Map(),
   postsResponse: new Map()
+}
+
+export const fetchFooter = async () => {
+  if (!client.queries.branding) {
+    return null;
+  }
+
+  if (caches.footer) {
+    return caches.footer;
+  }
+
+  const response = await client.queries.branding({ relativePath: 'branding.json' });
+  const footer = response.data.branding.footer;
+  caches.footer = footer;
+  return footer;
 }
 
 export const fetchI18n = async (language: string) => {

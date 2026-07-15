@@ -15,10 +15,13 @@ import '@performant-software/geospatial/style.css';
 import '@styles/index.css';
 import branding from '@branding';
 import clsx from 'clsx';
+import { fetchFooter } from '@backend/tina';
 
 setCacheControl(Astro.response.headers);
 
-const { header, footer } = branding;
+const { header } = branding;
+
+const footer = await fetchFooter();
 
 const { font_header: fontHeader, font_body: fontBody } = branding;
 
