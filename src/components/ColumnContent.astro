@@ -1,5 +1,5 @@
 ---
-import Card from '@components/Card.astro';
+import Card from '@components/Card/index.astro';
 import ContactForm from '@components/ContactForm';
 import RichText from '@components/RichText.astro';
 import Spacer from '@components/Spacer.astro';
@@ -155,7 +155,7 @@ const BlockTypes = {
     { 'flex-col gap-2 text-left': item.orientation === 'column' }
   )}>
     {
-      _.map(item.links, (link) => (
+      _.map(item.links, (link: { url: string, label: string }) => (
         <a href={link.url} class='no-underline hover:underline underline-offset-4 decoration-2'>
           { link.label }
         </a>

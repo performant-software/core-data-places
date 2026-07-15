@@ -1,5 +1,6 @@
 ---
 import { tinaField } from '@tinacms/astro/tina-field';
+import { classNames } from './styles';
 
 const { alt, category, date, dateOptions, title, slug, imageUrl, blurb, labels, item } = Astro.props;
 
@@ -8,17 +9,17 @@ const dateString = date ? new Date(date).toLocaleDateString(undefined, dateOptio
 ---
 
 <article
-  class='flex max-w-xl flex-col items-start justify-between bg-neutral-light'
+  class={classNames.root}
   data-tina-field={tinaField(item)}
 >
   <div
-    class='relative w-full'
+    class={classNames.imageContainer}
   >
     {imageUrl && (
       <img
         alt={alt || ''}
         src={imageUrl}
-        class='aspect-[16/9] w-full bg-neutral-light object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
+        class={classNames.image}
         loading='lazy'
         height={256}
         width={384}
@@ -27,50 +28,46 @@ const dateString = date ? new Date(date).toLocaleDateString(undefined, dateOptio
     )}
     {!imageUrl && (
       <div
-        class='aspect-[16/9] w-full bg-neutral-light object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
+        class={classNames.image}
       />
     )}
     <div
-      class='absolute inset-0 ring-1 ring-inset ring-gray-900/10'
+      class={classNames.imageRing}
     />
   </div>
   <div
-    class='flex items-center gap-x-4 text-xs p-2'
+    class={classNames.infoHeader}
   >
     <time
       datetime={date}
-      class='text-gray-500'
     >
       {dateString}
     </time>
     {category && (
       <a
         href='#'
-        class='relative z-10 rounded-full bg-gray-200 px-3 py-1.5 font-medium text-gray-600 hover:bg-white'
+        class={classNames.category}
       >
         {category}
       </a>
     )}
   </div>
   <div
-    class='group relative p-6'
+    class={classNames.infoMain}
   >
     <h3
-      class='mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600'
+      class={classNames.title}
       data-tina-field={tinaField(item, 'title')}
     >
       <a
         href={slug}
       >
-    <span
-      class='absolute inset-0'
-    />
         {title}
       </a>
     </h3>
     {blurb && (
       <p
-        class='mt-5 line-clamp-3 text-sm leading-6 text-gray-600'
+        class={classNames.blurb}
         data-tina-field={tinaField(item, 'blurb')}
       >
         {blurb}
@@ -79,21 +76,15 @@ const dateString = date ? new Date(date).toLocaleDateString(undefined, dateOptio
   </div>
   {labels.byline && (
     <div
-      class='relative mt-8 flex items-center gap-x-4 p-6'
+      class={classNames.byline}
     >
-      <div
-        class='text-sm leading-6'
-      >
-        <p
-          class='font-semibold text-gray-900'
-        >
-          {labels.byline}
-        </p>
-      </div>
+      <p>
+        {labels.byline}
+      </p>
     </div>
   )}
   <a
-    class='flex justify-end p-8 w-full'
+    class={classNames.readMore}
     href={slug}
   >
     {labels.readMore} &rarr;
