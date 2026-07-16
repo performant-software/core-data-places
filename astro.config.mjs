@@ -8,6 +8,7 @@ import { loadEnv } from 'vite';
 import config from './public/config.json';
 import tina from '@tinacms/astro/integration';
 import { tinaAdminDevRedirect } from '@tinacms/astro/vite';
+import fdsToolbar from './integrations/fds-toolbar/index.mjs';
 
 const { locales, default_locale: defaultLocale } = config.i18n;
 const { STATIC_BUILD } = loadEnv(process.env.STATIC_BUILD, process.cwd(), '');
@@ -24,7 +25,7 @@ export default defineConfig({
   },
   output: STATIC_BUILD === 'true' ? 'static' : 'server',
   adapter: netlify(),
-  integrations: [mdx(), sitemap(), react(), tina()],
+  integrations: [mdx(), sitemap(), react(), tina(), fdsToolbar()],
   vite: {
     optimizeDeps: {
       esbuildOptions: {
