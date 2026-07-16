@@ -3,12 +3,14 @@
  * on every page, all session long — with a persistent warning when the env
  * is production-tier (local TinaCMS edits write to production data).
  *
- * Dev-only: the toolbar exists only under `astro dev`, and both hooks below
- * no-op everywhere else. Site identity comes from the state `fds dev` writes
- * (.fds-dev.json), falling back to the Netlify link and injected env vars,
- * so the panel degrades gracefully when the server was started by hand.
+ * Dev-only: the toolbar exists only under `astro dev` (never in builds,
+ * static or SSR), and both hooks below no-op everywhere else. Site identity
+ * comes from the state `fds dev` writes (.fds-dev.json), falling back to the
+ * Netlify link and injected env vars; FAIR endpoints come from the site's
+ * own config.json and env, so the panel degrades gracefully when the server
+ * was started by hand.
  */
-import { execFileSync } from 'node:child_process';
+import { spawn, execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -24,12 +26,18 @@ const git = (root, args) => {
   try { return execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }).trim(); } catch { return null; }
 };
 
+const originOf = (url) => {
+  try { return new URL(url).origin; } catch { return null; }
+};
+
 function collectState(root) {
   const fds = readJson(join(root, '.fds-dev.json'));
   const link = readJson(join(root, '.netlify', 'state.json'));
+  const config = readJson(join(root, 'public', 'config.json'));
   const branch = git(root, ['rev-parse', '--abbrev-ref', 'HEAD']);
   const sha = git(root, ['rev-parse', '--short', 'HEAD']);
   const env = fds?.env ?? null;
+  const { GITHUB_OWNER, GITHUB_REPO, GITHUB_BRANCH, ADMIN_DOMAIN, PUBLIC_DOMAIN, STATIC_BUILD, CONFIG_URL } = process.env;
   return {
     project: fds?.project ?? null,
     env,
@@ -37,8 +45,16 @@ function collectState(root) {
     mode: fds?.mode ?? null,
     startedAt: fds?.startedAt ?? null,
     siteId: fds?.siteId ?? link?.siteId ?? null,
-    publicDomain: process.env.PUBLIC_DOMAIN ?? null,
+    output: STATIC_BUILD === 'true' ? 'static' : 'server',
     ref: sha === null ? null : branch === 'HEAD' ? `detached @ ${sha}` : `${branch} @ ${sha}`,
+    content: GITHUB_OWNER && GITHUB_REPO
+      ? { repo: `${GITHUB_OWNER}/${GITHUB_REPO}`, branch: GITHUB_BRANCH ?? null }
+      : null,
+    // FAIR endpoints, as the site itself knows them.
+    fairData: config?.core_data?.url ?? originOf(CONFIG_URL),
+    fairDataProjects: config?.core_data?.project_ids ?? [],
+    publicDomain: PUBLIC_DOMAIN ?? null,
+    adminDomain: ADMIN_DOMAIN ?? null,
   };
 }
 
@@ -57,11 +73,33 @@ export default function fdsToolbar() {
           entrypoint: new URL('./app.mjs', import.meta.url),
         });
       },
-      'astro:server:setup': ({ toolbar }) => {
+      'astro:server:setup': ({ server, toolbar }) => {
         if (!toolbar) return;
         const send = () => toolbar.send('fds-toolbar:state', collectState(root));
         toolbar.onAppInitialized('fds', send);
         toolbar.on('fds-toolbar:refresh', send);
+
+        // Push updates when the session or checkout changes underneath us:
+        // a new fds dev session rewrites .fds-dev.json, a branch switch
+        // rewrites .git/HEAD. Vite's watcher is already running — subscribe
+        // it to both and debounce the burst a git checkout produces.
+        const watched = [join(root, '.fds-dev.json'), join(root, '.git', 'HEAD')];
+        server.watcher.add(watched);
+        let timer = null;
+        server.watcher.on('all', (_event, path) => {
+          if (!watched.includes(path)) return;
+          clearTimeout(timer);
+          timer = setTimeout(send, 100);
+        });
+
+        // Stop button: hand the whole thing to `dhtools fds dev stop`, which
+        // owns the cleanup (.env restore, state file, process group — this
+        // process included). Detached so it survives the group it kills.
+        toolbar.on('fds-toolbar:stop', () => {
+          try {
+            spawn('dhtools', ['fds', 'dev', 'stop'], { cwd: root, detached: true, stdio: 'ignore' }).unref();
+          } catch { /* dhtools not installed — the button is only shown for fds dev sessions */ }
+        });
       },
     },
   };
