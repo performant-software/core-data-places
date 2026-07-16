@@ -58,10 +58,26 @@ function render(win, state) {
       ${domains ? row('Domains', domains) : ''}
       ${state.siteId ? row('Netlify', esc(state.siteId)) : ''}
     </section>
-    ${state.mode ? `
-    <footer style="margin-top: 10px; display: flex; gap: 8px;">
-      <astro-dev-toolbar-button size="small" button-style="red" id="fds-stop">Stop dev server</astro-dev-toolbar-button>
-    </footer>` : ''}`;
+    <section style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 10px;">
+      <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+        <div>
+          <div style="font-size: 11px; opacity: 0.6; margin-bottom: 6px;">THIS DEV SERVER</div>
+          <div style="display: flex; gap: 8px;">
+            ${state.mode ? '<astro-dev-toolbar-button size="small" button-style="red" id="fds-stop">Stop</astro-dev-toolbar-button>' : ''}
+            <astro-dev-toolbar-button size="small" button-style="gray" disabled title="Planned: re-run scripts/build.mjs — refetch config, content, and search without a restart">Rebuild content</astro-dev-toolbar-button>
+            <astro-dev-toolbar-button size="small" button-style="gray" disabled title="Planned: clear the content cache (USE_CONTENT_CACHE) and reload">Clear cache</astro-dev-toolbar-button>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 11px; opacity: 0.6; margin-bottom: 6px;">STAGING (${state.project ? esc(state.project) : 'site'})</div>
+          <div style="display: flex; gap: 8px;">
+            <astro-dev-toolbar-button size="small" button-style="gray" disabled title="Planned: trigger a Netlify rebuild of the staging deploy (the deployed rebuild function already exists)">Trigger rebuild</astro-dev-toolbar-button>
+            <astro-dev-toolbar-button size="small" button-style="gray" disabled title="Planned: re-index the staging Typesense collections">Reindex search</astro-dev-toolbar-button>
+          </div>
+        </div>
+      </div>
+      <div style="font-size: 11px; opacity: 0.45; margin-top: 8px;">Grayed actions are stubs — hover for what each will do.</div>
+    </section>`;
 }
 
 export default defineToolbarApp({
