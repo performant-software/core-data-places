@@ -11,6 +11,7 @@
     "outDir": "dist",
     "paths": {
       "@apps/*": ["src/apps/*"],
+      "@assets/*": ["src/assets/*"],
       "@backend/*": ["src/backend/*"],
       "@branding": ["public/branding.json"],
       "@components/*": ["src/components/*"],

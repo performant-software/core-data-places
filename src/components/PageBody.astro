@@ -16,6 +16,10 @@ import clsx from 'clsx';
 import _ from 'underscore';
 import MediaInsert from '@components/MediaInsert';
 import { tinaField } from '@tinacms/astro/tina-field';
+import carousel from '@assets/pages/image_carousel.png';
+import form from '@assets/pages/contact_form.png';
+import media from '@assets/pages/media_viewer.png';
+import { Image } from 'astro:assets';
 
 const { sections, transparent, home, isTinaPreview, t } = Astro.props;
 
@@ -60,8 +64,7 @@ const SectionTypes = {
         }
         {
           isTinaPreview && (
-            // replace with preview image
-            <p>Carousel</p>
+            <Image src={carousel} class="w-full object-cover" alt="Image carousel preview" />
           )
         }
       </Container>
@@ -77,8 +80,7 @@ const SectionTypes = {
         }
         {
           isTinaPreview && (
-            // replace with preview image or plain html form
-            <p>Contact</p>
+            <Image src={form} class="w-full object-cover" alt="Contact form preview" />
           )
         }
       </Container>
@@ -87,7 +89,6 @@ const SectionTypes = {
       <Container>
         <FreeText
           content={section.body}
-          section={section}
         />
       </Container>
     )}
@@ -179,6 +180,7 @@ const SectionTypes = {
       <FeatureQuote
         {...section}
         backgroundImage={section.background_image}
+        section={section}
       />
     )}
     { section?.__typename?.endsWith(SectionTypes.linkBanner) && ( 
@@ -200,7 +202,7 @@ const SectionTypes = {
         {
           isTinaPreview && (
             // replace with placeholder image
-            <p>Media</p>
+            <Image src={media} class="w-full object-cover" alt="Media viewer preview" />
           )
         }
       </Container>
