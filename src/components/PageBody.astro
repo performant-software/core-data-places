@@ -9,8 +9,7 @@ import LinksBanner from '@apps/pages/LinksBanner.astro';
 import MultiColumn from '@apps/pages/MultiColumn.astro';
 import Spacer from '@components/Spacer.astro';
 import Tabs from '@apps/pages/Tabs/index.astro';
-import TextImageReact from '@apps/pages/TextImage';
-import TextImageAstro from '@apps/pages/TextImage.astro';
+import TextImage from '@apps/pages/TextImage.astro';
 import Container from '@components/Container.astro';
 import { toBackgroundClass } from '@utils/pageBuilder';
 import clsx from 'clsx';
@@ -112,40 +111,19 @@ const SectionTypes = {
     )}
     { section?.__typename?.endsWith(SectionTypes.textImage) && (
       <Container>
-        {
-          !isTinaPreview && (
-            <TextImageReact
-              backgroundPosition={section.background_position}
-              buttonText={section.button_text}
-              citation={section.citation}
-              citationLink={section.citation_link}
-              description={section.description}
-              image={section.image}
-              imageAlt={section.image_alt}
-              textPosition={section.text_position}
-              title={section.title}
-              url={section.url}
-              client:load
-            />
-          )
-        }
-        {
-          isTinaPreview && (
-            <TextImageAstro
-              backgroundPosition={section.background_position}
-              buttonText={section.button_text}
-              citation={section.citation}
-              citationLink={section.citation_link}
-              description={section.description}
-              image={section.image}
-              imageAlt={section.image_alt}
-              textPosition={section.text_position}
-              title={section.title}
-              url={section.url}
-              section={section}
-            />
-          )
-        }
+        <TextImage
+          backgroundPosition={section.background_position}
+          buttonText={section.button_text}
+          citation={section.citation}
+          citationLink={section.citation_link}
+          description={section.description}
+          image={section.image}
+          imageAlt={section.image_alt}
+          textPosition={section.text_position}
+          title={section.title}
+          url={section.url}
+          section={section}
+        />
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.multiColumn) && (

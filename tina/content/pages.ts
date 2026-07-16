@@ -851,6 +851,7 @@ const staticSectionTemplates: Template<false>[] = [{
     }
   }, {
     name: 'image',
+    description: 'Please Note: Image size may not be accurate in preview mode. On the published site the image will resize to the same height as the text.',
     label: 'Image',
     type: 'image'
   }, {

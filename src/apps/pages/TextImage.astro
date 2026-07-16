@@ -18,7 +18,13 @@ const TextPosition = {
   right: 'right'
 };
 
-const textPosition = props.textPosition || TextPosition.left;
+//Position the text to match the background if applicable, otherwise default to the passed prop,
+//otherwise default to left
+const textPosition = props.backgroundPosition === BackgroundPosition.right 
+  ? TextPosition.right 
+  : props.backgroundPosition === BackgroundPosition.left 
+  ? TextPosition.left 
+  : (props.textPosition || TextPosition.left);
 
 ---
 
@@ -29,6 +35,9 @@ const textPosition = props.textPosition || TextPosition.left;
     { 'text-text-primary': !!props.backgroundPosition },
     { 'py-16 lg:py-24': !!props.backgroundPosition }
   )}
+  data-text-image-root
+  data-text-image-key={props.id || crypto.randomUUID()}
+  data-background-position={props.backgroundPosition || ''}
 >
   { props.backgroundPosition && (
     <div
@@ -39,6 +48,7 @@ const textPosition = props.textPosition || TextPosition.left;
         { 'top-0 bottom-0 left-0 w-full lg:w-[65%]': props.backgroundPosition === BackgroundPosition.left },
         { 'top-0 bottom-0 right-0 w-full lg:w-[65%]': props.backgroundPosition === BackgroundPosition.right }
       )}
+      data-text-image-background
     />
   )}
   <div
@@ -47,7 +57,7 @@ const textPosition = props.textPosition || TextPosition.left;
       { 'flex flex-row items-end': props.backgroundPosition === BackgroundPosition.bottom }
     )}
   >
-    <div>
+    <div data-text-image-content>
       { props.title && (
         <h2
           class='text-4xl font-bold'
@@ -80,7 +90,7 @@ const textPosition = props.textPosition || TextPosition.left;
   <div
     class='z-10 lg:w-[50%]'
   >
-    <div>
+    <div data-text-image-image>
       <ImageWithCitation
         alt={props.imageAlt}
         classNames={{ image: 'w-full h-full object-cover', root: 'w-full h-full', citation: `text-xs text-gray-400${props.citationLink ? ' underline' : ''}` }}
@@ -91,3 +101,64 @@ const textPosition = props.textPosition || TextPosition.left;
     </div>
   </div>
 </div>
+
+<script lang="ts">
+  const IMAGE_SCALE = 1.75;
+  const BACKGROUND_SCALE = 1.65;
+  const SCREEN_WIDTH_LG = 1024;
+  const instanceState = new WeakMap();
+
+  /**
+   * @param {HTMLElement} root
+   */
+  const applyTextImageLayout = (root) => {
+    const key = root.dataset.textImageKey || 'default';
+
+    if (instanceState.has(root)) {
+      return;
+    }
+
+    const background = root.querySelector('[data-text-image-background]');
+    const content = root.querySelector('[data-text-image-content]');
+    const image = root.querySelector('[data-text-image-image]');
+
+    if (!content || !image) {
+      return;
+    }
+
+    const updateLayout = () => {
+      if (window.innerWidth < SCREEN_WIDTH_LG) {
+        if (background) { background.style.height = ''; }
+        image.style.height = '';
+        return;
+      }
+
+      const contentHeight = content.clientHeight;
+      const backgroundPosition = root.dataset.backgroundPosition;
+
+      if (backgroundPosition === 'top' || backgroundPosition === 'bottom') {
+        if (background) { background.style.height = `${Math.round(contentHeight * BACKGROUND_SCALE)}px`; }
+        image.style.height = `${Math.round(contentHeight * IMAGE_SCALE)}px`;
+      } else {
+        if (background) { background.style.height = ''; }
+        image.style.height = `${Math.round(contentHeight)}px`;
+      }
+    };
+
+    const observer = new ResizeObserver(() => updateLayout());
+    observer.observe(content);
+
+    const handleResize = () => updateLayout();
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('load', handleResize);
+    updateLayout();
+
+    instanceState.set(root, { key, observer, handleResize });
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-text-image-root]').forEach((root) => {
+      applyTextImageLayout(root);
+    });
+  });
+</script>
