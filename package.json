@@ -45,6 +45,7 @@
     "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
     "@nanostores/react": "^1.1.0",
+    "@netlify/functions": "^5.3.0",
     "@octokit/rest": "^22.0.1",
     "@performant-software/core-data": "^3.1.25",
     "@performant-software/geospatial": "^3.1.25",
