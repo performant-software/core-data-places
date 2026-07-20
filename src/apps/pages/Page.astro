@@ -24,6 +24,7 @@ setCacheControl(Astro.response.headers);
           fullscreen
           image={branding?.header?.logo}
           imageAlt={branding.title}
+          pathname={Astro.url.pathname}
           title={branding?.header?.hide_title ? undefined : branding.title}
           transparent={page.transparent}
           isTinaPreview
