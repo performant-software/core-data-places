@@ -7,12 +7,20 @@ import NavBar from "@layouts/NavBar.astro";
 import { getCustomNavbar, getDefaultNavbar, getPages } from "@utils/nav";
 import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from "astro:i18n";
 import clsx from "clsx";
+import config from '@config';
 
 const locales = getRelativeLocaleUrlList();
-const currentLocale = Astro.currentLocale;
+const currentLocale = Astro.currentLocale || config?.i18n?.default_locale;
 
-const { fullscreen, image, imageAlt, pathname, title, transparent } =
-  Astro.props;
+const {
+  fullscreen,
+  image,
+  imageAlt,
+  isTinaPreview,
+  pathname,
+  title,
+  transparent
+} = Astro.props;
 
 const [{ t }, navbar, pages] = await Promise.all([
   getTranslations(currentLocale),
@@ -45,27 +53,37 @@ if (navbar && navbar.items) {
   <NavBar
     className="flex flex-row gap-x-12 align-baseline justify-around"
     items={items}
+    isTinaPreview={isTinaPreview}
   >
-    <LanguagePicker
-      locales={locales}
-      currentLocale={currentLocale}
-      currentUrl={pathname}
-      client:only="react"
-    />
+    {
+      !isTinaPreview && (
+        <LanguagePicker
+          locales={locales}
+          currentLocale={currentLocale}
+          currentUrl={pathname}
+          client:only="react"
+        />
+      )
+    }
   </NavBar>
 </div>
 
-<MobileHeader
-  image={image}
-  items={items}
-  title={title}
-  transparent={transparent}
-  client:load
->
-  <LanguagePicker
-    locales={locales}
-    currentLocale={currentLocale}
-    currentUrl={pathname}
-    client:load
-  />
-</MobileHeader>
+{
+  !isTinaPreview && (
+    <MobileHeader
+      image={image}
+      items={items}
+      title={title}
+      transparent={transparent}
+      client:load
+    >
+      <LanguagePicker
+        locales={locales}
+        currentLocale={currentLocale}
+        currentUrl={pathname}
+        client:load
+      />
+    </MobileHeader>
+  )
+}
+

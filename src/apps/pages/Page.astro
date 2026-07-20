@@ -1,26 +1,41 @@
 ---
-import { fetchPage } from '@backend/tina';
 import PageBody from '@components/PageBody.astro';
-import PageStoreProvider from '@components/PageStoreProvider';
 import { setCacheControl } from '@utils/url';
+import { tinaField } from '@tinacms/astro/tina-field';
+import Header from '@layouts/Header.astro';
+import clsx from 'clsx';
+import branding from '@branding';
 
-const { slug } = Astro.props;
-const locale = Astro.currentLocale;
-
-const page = await fetchPage(locale, slug);
+const { page, isTinaPreview, t } = Astro.props;
 
 setCacheControl(Astro.response.headers);
 
 ---
-
-<PageBody
-  sections={page?.sections}
-  transparent={page?.transparent}
-  home={page?.home_page}
-/>
-
-<PageStoreProvider
-  title={page.title}
-  transparent={page.transparent}
-  client:load
-/>
+<div data-tina-field={tinaField(page)}>
+  {
+    isTinaPreview && (
+      <div
+        class={clsx(
+          'flex flex-row justify-center w-full z-10 text-text-primary h-[72px] relative',
+          { 'bg-primary': !page.transparent }
+        )}
+      >
+        <Header
+          fullscreen
+          image={branding?.header?.logo}
+          imageAlt={branding.title}
+          title={branding?.header?.hide_title ? undefined : branding.title}
+          transparent={page.transparent}
+          isTinaPreview
+        />
+      </div>
+    )
+  }
+  <PageBody
+    sections={page?.sections}
+    transparent={page?.transparent}
+    home={page?.home_page}
+    isTinaPreview={isTinaPreview}
+    t={t}
+  />
+</div>

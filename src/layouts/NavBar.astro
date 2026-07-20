@@ -1,16 +1,17 @@
 ---
 import NavDropdown from '@components/NavDropdown';
 import NavLink from '@components/NavLink';
+import clsx from 'clsx';
 import _ from 'underscore';
 
-const { className, items } = Astro.props;
+const { className, items, isTinaPreview } = Astro.props;
 
 ---
 
 <div
   class={className}
 >
-  { _.map(items, (item) => (
+  {!isTinaPreview && _.map(items, (item) => (
     <>
       { item.options && (
         <NavDropdown
@@ -29,5 +30,23 @@ const { className, items } = Astro.props;
       )}
     </>
   ))}
+  {
+    isTinaPreview && _.map(items, (item) => (
+      <a
+        class='flex p-y-4 justify-center gap-2 items-center'
+        href={item.href || item.options[0].href}
+      >
+        <div
+          class={clsx(
+            'flex',
+            'font-light',
+            { 'border-b border-text-primary': item.active }
+          )}
+        >
+          { item.label }
+        </div>
+      </a>
+    ))
+  }
   <slot />
 </div>

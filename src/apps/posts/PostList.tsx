@@ -8,7 +8,7 @@ import config from '@config';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import Cards from '@components/Cards';
-import Card from '@components/Card';
+import Card from '@components/Card/index';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 interface Props {

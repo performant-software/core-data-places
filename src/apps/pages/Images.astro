@@ -1,8 +1,9 @@
 ---
 import ImageWithCitation from '@components/ImageWithCitation.astro';
+import { tinaField } from '@tinacms/astro/tina-field';
 import _ from 'underscore';
 
-const { items, title } = Astro.props;
+const { items, title, section } = Astro.props;
 ---
 
 <div
@@ -11,6 +12,7 @@ const { items, title } = Astro.props;
   { title && (
     <h2
       class='text-4xl font-bold uppercase py-8'
+      data-tina-field={tinaField(section, 'title')}
     >
       { title }
     </h2>
@@ -18,10 +20,11 @@ const { items, title } = Astro.props;
   <div
     class='flex justify-around w-full flex-wrap px-8'
   >
-    { _.map(items, (item) => (
+    { _.map(items, (item: any) => (
       <a
         class='flex justify-center py-8 w-full max-h-[400px] lg:w-[375px] lg:max-h-[400px]'
         href={item.url}
+        data-tina-field={tinaField(item)}
       >
         <ImageWithCitation
           alt={item.image_alt}

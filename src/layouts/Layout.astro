@@ -14,10 +14,14 @@ import '@performant-software/core-data/style.css';
 import '@performant-software/geospatial/style.css';
 import '@styles/index.css';
 import branding from '@branding';
+import clsx from 'clsx';
+import { fetchFooter } from '@backend/tina';
 
 setCacheControl(Astro.response.headers);
 
-const { header, footer } = branding;
+const { header } = branding;
+
+const footer = await fetchFooter();
 
 const { font_header: fontHeader, font_body: fontBody } = branding;
 
@@ -56,7 +60,8 @@ const {
   footer: includeFooter,
   fullscreen,
   titleKey,
-  transparent
+  transparent,
+  isTinaPreview
 } = Astro.props;
 
 ---
@@ -106,21 +111,27 @@ const {
     class='flex h-full sm:min-h-screen flex-col bg-layout text-neutral-dark mx-auto font-sans'
     transition:animate='initial'
   >
-    <HeaderContainer
-      client:load
-    >
-      <Header
-        fullscreen={fullscreen}
-        image={header?.logo}
-        imageAlt={branding.title}
-        pathname={Astro.url.pathname}
-        title={header?.hide_title ? undefined : branding.title}
-        transparent={transparent}
-      />
-    </HeaderContainer>
-    <NotificationPanel
-      client:only='react'
-    />
+    {
+      !isTinaPreview && (
+        <>
+          <HeaderContainer
+            client:load
+          >
+            <Header
+              fullscreen={fullscreen}
+              image={header?.logo}
+              imageAlt={branding.title}
+              pathname={Astro.url.pathname}
+              title={header?.hide_title ? undefined : branding.title}
+              transparent={transparent}
+            />
+          </HeaderContainer>
+          <NotificationPanel
+            client:only='react'
+          />
+        </>
+      )
+    }
     <main
       class='w-full relative flex flex-col grow'
     >

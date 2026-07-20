@@ -1,6 +1,26 @@
 ---
-import SpacerComponent from '@components/Spacer';
+import clsx from 'clsx';
+import { toBackgroundClass } from '@utils/pageBuilder';
+
 const { size, color, thick } = Astro.props;
+
 ---
 
-<SpacerComponent size={size} color={color} thick={thick} />
+<div
+  class={clsx(
+    'w-full flex items-center',
+    { 'h-[1px]': size === 'none' && !thick },
+    { 'h-[2px]': size === 'none' && thick },
+    { 'h-3 lg:h-5': size === 'xs'},
+    { 'h-4 lg:h-8': size === 'small' },
+    { 'h-8 lg:h-16': size === 'medium' },
+    { 'h-16 lg:h-24': size === 'large' },
+  )}
+  >
+  <div class={clsx(
+    'w-full',
+    { 'h-[1px]': !!color && !thick },
+    { 'h-[2px]': !!color && thick },
+    toBackgroundClass(color)
+  )} />
+</div>

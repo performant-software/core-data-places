@@ -1,0 +1,164 @@
+---
+import ImageWithCitation from "@components/ImageWithCitation.astro";
+import LinkButton from "@components/LinkButton.astro";
+import clsx from "clsx";
+import _ from "underscore";
+
+const props = Astro.props;
+
+const BackgroundPosition = {
+  top: 'top',
+  bottom: 'bottom',
+  left: 'left',
+  right: 'right'
+};
+
+const TextPosition = {
+  left: 'left',
+  right: 'right'
+};
+
+//Position the text to match the background if applicable, otherwise default to the passed prop,
+//otherwise default to left
+const textPosition = props.backgroundPosition === BackgroundPosition.right 
+  ? TextPosition.right 
+  : props.backgroundPosition === BackgroundPosition.left 
+  ? TextPosition.left 
+  : (props.textPosition || TextPosition.left);
+
+---
+
+<div
+  class={clsx(
+    'flex flex-col lg:flex-row gap-y-8 lg:gap-x-20',
+    { 'flex-col-reverse lg:flex-row-reverse': textPosition === TextPosition.right },
+    { 'text-text-primary': !!props.backgroundPosition },
+    { 'py-16 lg:py-24': !!props.backgroundPosition }
+  )}
+  data-text-image-root
+  data-text-image-key={props.id || crypto.randomUUID()}
+  data-background-position={props.backgroundPosition || ''}
+>
+  { props.backgroundPosition && (
+    <div
+      class={clsx(
+        'absolute bg-primary',
+        { 'top-0 left-0 right-0 h-full': props.backgroundPosition === BackgroundPosition.top },
+        { 'bottom-0 left-0 right-0 h-full': props.backgroundPosition === BackgroundPosition.bottom },
+        { 'top-0 bottom-0 left-0 w-full lg:w-[65%]': props.backgroundPosition === BackgroundPosition.left },
+        { 'top-0 bottom-0 right-0 w-full lg:w-[65%]': props.backgroundPosition === BackgroundPosition.right }
+      )}
+      data-text-image-background
+    />
+  )}
+  <div
+    class={clsx(
+      'lg:w-[50%] z-10',
+      { 'flex flex-row items-end': props.backgroundPosition === BackgroundPosition.bottom }
+    )}
+  >
+    <div data-text-image-content>
+      { props.title && (
+        <h2
+          class='text-4xl font-bold'
+        >
+          { props.title }
+        </h2>
+      )}
+      { props.description && (
+        <p
+          class={clsx(
+            'font-light',
+            { 'mt-5': !!props.title }
+          )}
+        >
+          { props.description }
+        </p>
+      )}
+      { !_.isEmpty(props.url) && (
+        <div>
+          <LinkButton
+            class='mt-8'
+            color='secondary'
+            content={props.buttonText}
+            href={props.url}
+          />
+        </div>
+      )}
+    </div>
+  </div>
+  <div
+    class='z-10 lg:w-[50%]'
+  >
+    <div data-text-image-image>
+      <ImageWithCitation
+        alt={props.imageAlt}
+        classNames={{ image: 'w-full h-full object-cover', root: 'w-full h-full', citation: `text-xs text-gray-400${props.citationLink ? ' underline' : ''}` }}
+        src={props.image}
+        citation={props.citation}
+        citationLink={props.citationLink}
+      />
+    </div>
+  </div>
+</div>
+
+<script lang="ts">
+  const IMAGE_SCALE = 1.75;
+  const BACKGROUND_SCALE = 1.65;
+  const SCREEN_WIDTH_LG = 1024;
+  const instanceState = new WeakMap();
+
+  /**
+   * @param {HTMLElement} root
+   */
+  const applyTextImageLayout = (root) => {
+    const key = root.dataset.textImageKey || 'default';
+
+    if (instanceState.has(root)) {
+      return;
+    }
+
+    const background = root.querySelector('[data-text-image-background]');
+    const content = root.querySelector('[data-text-image-content]');
+    const image = root.querySelector('[data-text-image-image]');
+
+    if (!content || !image) {
+      return;
+    }
+
+    const updateLayout = () => {
+      if (window.innerWidth < SCREEN_WIDTH_LG) {
+        if (background) { background.style.height = ''; }
+        image.style.height = '';
+        return;
+      }
+
+      const contentHeight = content.clientHeight;
+      const backgroundPosition = root.dataset.backgroundPosition;
+
+      if (backgroundPosition === 'top' || backgroundPosition === 'bottom') {
+        if (background) { background.style.height = `${Math.round(contentHeight * BACKGROUND_SCALE)}px`; }
+        image.style.height = `${Math.round(contentHeight * IMAGE_SCALE)}px`;
+      } else {
+        if (background) { background.style.height = ''; }
+        image.style.height = `${Math.round(contentHeight)}px`;
+      }
+    };
+
+    const observer = new ResizeObserver(() => updateLayout());
+    observer.observe(content);
+
+    const handleResize = () => updateLayout();
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('load', handleResize);
+    updateLayout();
+
+    instanceState.set(root, { key, observer, handleResize });
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-text-image-root]').forEach((root) => {
+      applyTextImageLayout(root);
+    });
+  });
+</script>
