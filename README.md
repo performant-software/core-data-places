@@ -5,7 +5,7 @@ A map-centric website backed by a Core Data project and Typesense index.
 ## Getting Started
 
 #### Requirements
-- Node 20.x
+- Node 24.x
 - Netlify CLI
 - Core Data Project
 - Typesense Index
@@ -78,10 +78,6 @@ content
 ├── users
 │   ├── index.json
 ```
-
-###### Users
-
-Copy the `/data/users.json` file into your content repository to `/content/users/index.json`. This will seed TinaCMS with the initial set of user accounts, which can be used to setup accounts for other users, then removed. Skip this step if you are using an SSO provider or institutional IdP to manage users instead.
 
 ###### Branding
 
@@ -235,9 +231,17 @@ After the user is created, use the "Security Credentials" tab to create an acces
 
 Create a new site on Netlify deployed from the `core-data-places` repository. Set all of the environment variables in .env.example as appropriate. Currently, Core Data Places can only be hosted on Netlify in "server" mode, as the TinaCMS functions are dependent on Netlify functions.
 
-#### Single Sign On
+#### Single Sign On (Clerk)
 
-See [Keycloak](docs/sso/keycloak-setup.md) documentation for single sign on.
+As of v1.9.0, deployed sites authenticate the TinaCMS admin via **Clerk SSO**. The previous Keycloak and username/password (`tinacms-authjs`) paths have been removed — a non-local build now fails fast if the Clerk variables are missing. Set three environment variables on the Netlify site:
+
+- `TINA_PUBLIC_CLERK_PUBLIC_KEY` — Clerk publishable key (`pk_live_…`)
+- `TINA_PUBLIC_CLERK_ORG_ID` — the Clerk organization whose members may edit this site
+- `CLERK_SECRET` — Clerk secret key (`sk_live_…`); used by the `tina` Netlify function for token verification and RBAC (mark it secret)
+
+Editor access is membership in the org named by `TINA_PUBLIC_CLERK_ORG_ID`: role `org:admin` grants full access, `org:member` is restricted (per-collection rules are enforced in `netlify/functions/tina.ts`). Because Clerk's frontend API rejects bare `*.netlify.app` origins, the admin must be served from a domain the Clerk app trusts (typically a `*.performant.studio` custom domain).
+
+For local development, set `TINA_PUBLIC_IS_LOCAL=true` to use the local auth provider instead — no Clerk required.
 
 #### Static Build
 

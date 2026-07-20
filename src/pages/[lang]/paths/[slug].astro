@@ -16,7 +16,7 @@ export const getStaticPaths = async () => {
   const staticPaths = [];
 
   const locales = config.i18n.locales;
-  const paths = await fetchPaths({
+  const { paths } = await fetchPaths({
     published: { eq: true }
   });
 

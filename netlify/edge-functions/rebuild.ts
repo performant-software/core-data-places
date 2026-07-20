@@ -1,10 +1,10 @@
 import type { Context } from '@netlify/edge-functions';
-import { Clerk } from '@clerk/backend';
+import { createClerkClient } from '@clerk/backend';
 
 const BASE_URL = 'https://api.netlify.com/api/v1';
 const NETLIFY_TOKEN = Netlify.env.get('NETLIFY_TOKEN')!;
 
-const clerkClient = Clerk({
+const clerkClient = createClerkClient({
   secretKey: Netlify.env.get('CLERK_SECRET')!,
 });
 
@@ -16,11 +16,8 @@ function buildResponse(statusCode: number, body: any | null): Response {
 }
 
 async function authenticate(req: Request): Promise<boolean> {
-  const token = req.headers.get('authorization');
-  const tokenWithoutBearer = token?.replace('Bearer ', '').trim();
-
-  const { toAuth } = await clerkClient.authenticateRequest({
-    headerToken: tokenWithoutBearer
+  const { toAuth } = await clerkClient.authenticateRequest(req, {
+    publishableKey: Netlify.env.get('TINA_PUBLIC_CLERK_PUBLIC_KEY')
   });
 
   const { sessionClaims } = toAuth();

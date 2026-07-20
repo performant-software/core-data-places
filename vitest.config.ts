@@ -9,7 +9,6 @@ export default getViteConfig({
       'test/browser/*'
     ],
     setupFiles: [
-      'dotenv/config',
       './test/setup.ts'
     ]
   }

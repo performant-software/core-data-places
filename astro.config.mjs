@@ -16,7 +16,8 @@ export default defineConfig({
     defaultLocale,
     locales,
     routing: {
-      prefixDefaultLocale: true
+      prefixDefaultLocale: true,
+      redirectToDefaultLocale: true
     }
   },
   output: STATIC_BUILD === 'true' ? 'static' : 'server',
@@ -48,6 +49,18 @@ export default defineConfig({
   },
   env: {
     schema: {
+      CACHE_CDN_MAX_AGE: envField.number({
+        access: 'public',
+        context: 'client',
+        default: 300,
+        optional: true
+      }),
+      CACHE_STALE_WHILE_REVALIDATE: envField.number({
+        access: 'public',
+        context: 'client',
+        default: 604800,
+        optional: true
+      }),
       DISABLE_CACHE: envField.boolean({
         access: 'public',
         context: 'client',

@@ -2,21 +2,19 @@ import { databaseClient } from '@tina/databaseClient';
 import { TinaNodeBackend, LocalBackendAuthProvider } from '@tinacms/datalayer';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import { createMediaHandler } from 'next-tinacms-s3/dist/handlers';
 import ServerlessHttp from 'serverless-http';
-import { Clerk } from '@clerk/backend';
+import { createClerkClient } from '@clerk/backend'
 import type { IncomingMessage, ServerResponse } from 'http';
 
-dotenv.config();
+try { process.loadEnvFile(); } catch {}
 
 const app = express();
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
-app.use(express.json());
 app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
@@ -25,6 +23,33 @@ if (!isLocal && !process.env.CLERK_SECRET) {
   throw new Error(
     'Clerk SSO is required for deployed CDP sites (since v1.9.0). Set CLERK_SECRET (plus TINA_PUBLIC_CLERK_PUBLIC_KEY and TINA_PUBLIC_CLERK_ORG_ID). See docs/upgrade-notes.md.'
   );
+}
+
+// convert an IncomingMessage to a Request to make Clerk happy
+function toFetchRequest(req: IncomingMessage): Request {
+  const protocol = req.headers['x-forwarded-proto'] || 'https';
+  const host = req.headers.host || 'localhost';
+  const url = `${protocol}://${host}${req.url || '/'}`;
+
+  const headers = new Headers();
+  for (const [key, value] of Object.entries(req.headers)) {
+    if (value != null) {
+      headers.set(key, Array.isArray(value) ? value.join(', ') : value);
+    }
+  }
+
+  return new Request(url, { method: req.method || 'GET', headers });
+}
+
+// next-tinacms-s3 expects a modified request object, but Express 5 officially removed
+// the ability to mutate the request directly. this is a fairly ugly workaround.
+function patchQuery(req: express.Request, overrides: Record<string, unknown>) {
+  const query = { ...req.query, ...overrides };
+  Object.defineProperty(req, 'query', {
+    value: query,
+    writable: true,
+    configurable: true,
+  });
 }
 
 const ClerkBackendAuthentication = ({
@@ -38,17 +63,16 @@ const ClerkBackendAuthentication = ({
   // Ensure the user is a member of the provided orgId
   orgId?: string;
 }) => {
-  const clerk = Clerk({
+  const clerk = createClerkClient({
     secretKey,
   });
 
   return {
-    isAuthorized: async (req: IncomingMessage, _res: ServerResponse) => {
-      const token = req.headers['authorization'];
-      const tokenWithoutBearer = token?.replace('Bearer ', '').trim();
-      const requestState = await clerk.authenticateRequest({
-        headerToken: tokenWithoutBearer,
-      });
+    isAuthorized: async (req: { body: any} & IncomingMessage, _res: ServerResponse) => {
+      const requestState = await clerk.authenticateRequest(
+          toFetchRequest(req),
+          { publishableKey: process.env.TINA_PUBLIC_CLERK_PUBLIC_KEY! }
+      );
 
       if (requestState.status === 'signed-in') {
         const user = await clerk.users.getUser(requestState.toAuth().userId);
@@ -60,7 +84,7 @@ const ClerkBackendAuthentication = ({
               limit: 100 //come back to this when we have orgs with more than 100 members
             })
           );
-          const orgUser = membershipList?.find((mem) => (mem.publicUserData?.userId === user.id));
+          const orgUser = membershipList?.data?.find((mem) => (mem.publicUserData?.userId === user.id));
           // if the user is not in the list, they are not authorized
           if (!orgUser) {
             return {
@@ -154,7 +178,7 @@ const ClerkBackendAuthentication = ({
 const authProvider = isLocal
   ? LocalBackendAuthProvider()
   : ClerkBackendAuthentication({
-    secretKey: process.env.CLERK_SECRET,
+    secretKey: process.env.CLERK_SECRET!,
     orgId: process.env.TINA_PUBLIC_CLERK_ORG_ID
   })
 
@@ -166,13 +190,13 @@ const tinaBackend = TinaNodeBackend({
 const mediaHandler = createMediaHandler({
   config: {
     credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY,
-      secretAccessKey: process.env.S3_SECRET_KEY,
+      accessKeyId: process.env.S3_ACCESS_KEY!,
+      secretAccessKey: process.env.S3_SECRET_KEY!,
     },
 
     region: process.env.S3_REGION,
   },
-  bucket: process.env.S3_BUCKET,
+  bucket: process.env.S3_BUCKET!,
   mediaRoot: process.env.S3_FOLDER,
   authorized: async (req, _res) => {
     const { isAuthorized } = await authProvider.isAuthorized(req, _res);
@@ -180,11 +204,11 @@ const mediaHandler = createMediaHandler({
   }
 });
 
-app.post('/api/tina/*', async (req, res) => {
+app.post('/api/tina/*splat', async (req, res) => {
   tinaBackend(req, res);
 });
 
-app.get('/api/tina/*', async (req, res) => {
+app.get('/api/tina/*splat', async (req, res) => {
   tinaBackend(req, res);
 });
 
@@ -194,9 +218,9 @@ app.get('/api/s3/media', mediaHandler);
 
 // This route is necessary currently as a workaround for a bug in next-tinacms-s3 
 // where the folder is not prepended to the file name when uploading
-app.get('/api/s3/media/*', (req, res, next) => {
+app.get('/api/s3/media/*splat', (req, res, next) => {
   if (req.query.key) {
-    req.query.key = process.env.S3_FOLDER + '/' + req.query.key;
+    patchQuery(req, { key: process.env.S3_FOLDER + '/' + req.query.key });
   }
   next();
 }, mediaHandler);
@@ -204,7 +228,7 @@ app.get('/api/s3/media/*', (req, res, next) => {
 app.post('/api/s3/media', mediaHandler);
 
 app.delete('/api/s3/media/:media', (req, res) => {
-  req.query.media = ['media', req.params.media]
+  patchQuery(req, { media: ['media', req.params.media] });
   return mediaHandler(req, res);
 });
 
