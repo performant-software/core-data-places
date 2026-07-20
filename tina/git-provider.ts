@@ -1,6 +1,21 @@
+import { purgeCache } from '@netlify/functions'
 import { Octokit } from '@octokit/rest'
 import { Base64 } from 'js-base64'
 import type { GitProvider } from '@tinacms/datalayer'
+
+// Must match CACHE_TAG_CONTENT in src/utils/url.ts (not importable here — it uses astro:env).
+const CACHE_TAG_CONTENT = 'tina-content'
+
+// Purge every CDN-cached page tagged with the content tag so a publish is visible
+// immediately, regardless of the site's CACHE_CDN_MAX_AGE. A failed purge must never
+// fail the content save — stale pages still expire via the normal TTL.
+const purgeContentCache = async () => {
+  try {
+    await purgeCache({ tags: [CACHE_TAG_CONTENT] })
+  } catch (e) {
+    console.error('Cache purge failed (content saved; pages refresh on TTL expiry):', e)
+  }
+}
 
 type OctokitOptions = ConstructorParameters<typeof Octokit>[0]
 export interface GitHubProviderOptions {
@@ -58,6 +73,8 @@ export class GitHubProvider implements GitProvider {
       branch: this.branch,
       sha,
     })
+
+    await purgeContentCache()
   }
 
   async onDelete(key: string) {
@@ -85,6 +102,8 @@ export class GitHubProvider implements GitProvider {
         branch: this.branch,
         sha,
       })
+
+      await purgeContentCache()
     } else {
       throw new Error(
         `Could not find file ${path} in repo ${this.owner}/${this.repo}`
