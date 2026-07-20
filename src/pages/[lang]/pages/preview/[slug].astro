@@ -27,9 +27,7 @@ export const getStaticPaths = async () => {
   return paths;
 };
 
-const ignoreCache = import.meta.env.PUBLIC_IGNORE_PAGE_CACHE === 'true';
-
-const pageResp = await fetchPageResponse(lang, slug, ignoreCache);
+const pageResp = await fetchPageResponse(lang, slug, true);
 
 const page = pageResp.data.pages;
 

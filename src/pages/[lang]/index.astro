@@ -4,6 +4,8 @@ import config from '@config';
 import Layout from '@layouts/Layout.astro';
 import _ from 'underscore';
 
+export const prerender = true;
+
 export const getStaticPaths = () => _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}));
 
 ---
@@ -12,7 +14,5 @@ export const getStaticPaths = () => _.map(config.i18n.locales, (lang: string) =>
   footer
   fullscreen
 >
-  <HomePage
-    server:defer
-  />
+  <HomePage/>
 </Layout>

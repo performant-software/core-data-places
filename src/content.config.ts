@@ -5,10 +5,10 @@ import i18nLoader from '@loaders/i18n';
 import { PRELOAD_MAP, STATIC_BUILD, USE_CONTENT_CACHE } from "astro:env/client";
 import _ from 'underscore';
 
-const collections = {};
+const collections = {i18nLoader};
 
 if (STATIC_BUILD && !USE_CONTENT_CACHE) {
-  _.extend(collections, { ...coreDataLoader, ...i18nLoader, ...galleryLoader });
+  _.extend(collections, { ...coreDataLoader, ...galleryLoader });
 }
 
 if (PRELOAD_MAP && !USE_CONTENT_CACHE) {
