@@ -113,9 +113,9 @@ const {
         fullscreen={fullscreen}
         image={header?.logo}
         imageAlt={branding.title}
+        pathname={Astro.url.pathname}
         title={header?.hide_title ? undefined : branding.title}
         transparent={transparent}
-        server:defer
       />
     </HeaderContainer>
     <NotificationPanel
@@ -133,10 +133,10 @@ const {
         customContent={footer?.custom_content}
         login={footer?.allow_login && !STATIC_BUILD}
         logos={footer?.logos}
+        pathname={Astro.url.pathname}
         privacyUrl={footer?.privacy_url}
         termsUrl={footer?.terms_url}
         title={branding?.title}
-        server:defer
       />
     )}
   </body>
