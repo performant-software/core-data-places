@@ -6,7 +6,6 @@ import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
 import { useBlackText } from '@utils/layout';
 import { setCacheControl } from '@utils/url';
-import { fetchNavbar } from '@backend/tina';
 import { STATIC_BUILD } from 'astro:env/client';
 import _ from 'underscore';
 import '@performant-software/core-data/style.css';
@@ -14,13 +13,14 @@ import '@performant-software/geospatial/style.css';
 import '@styles/index.css';
 import branding from '@branding';
 import { fetchFooter } from '@backend/tina';
+import { getNavbar } from '@services/navbar';
 
 setCacheControl(Astro.response.headers);
 
 const { header } = branding;
 
 const footer = await fetchFooter();
-const navbar = await fetchNavbar(Astro.currentLocale);
+const navbar = await getNavbar(Astro.currentLocale);
 
 const { font_header: fontHeader, font_body: fontBody } = branding;
 
