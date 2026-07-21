@@ -1,18 +1,29 @@
 ---
-import HomePage from '@apps/pages/HomePage.astro';
+import Page from '@apps/pages/Page.astro';
+import { getTranslations } from '@backend/i18n';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
+import { getHomepage } from '@root/src/utils/nav';
 import _ from 'underscore';
 
+export const prerender = true;
+
 export const getStaticPaths = () => _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}));
+
+const { lang } = Astro.params;
+
+const page = await getHomepage(lang);
+const { t } = await getTranslations(lang);
 
 ---
 
 <Layout
   footer
   fullscreen
+  transparent={page.transparent}
 >
-  <HomePage
-    server:defer
+  <Page
+    page={page}
+    t={t}
   />
 </Layout>

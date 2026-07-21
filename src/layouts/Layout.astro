@@ -4,24 +4,23 @@ import Title from '@components/Title';
 import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
-import HeaderContainer from '@layouts/HeaderContainer';
 import { useBlackText } from '@utils/layout';
 import { setCacheControl } from '@utils/url';
 import { STATIC_BUILD } from 'astro:env/client';
 import _ from 'underscore';
-
 import '@performant-software/core-data/style.css';
 import '@performant-software/geospatial/style.css';
 import '@styles/index.css';
 import branding from '@branding';
-import clsx from 'clsx';
 import { fetchFooter } from '@backend/tina';
+import { getNavbar } from '@services/navbar';
 
 setCacheControl(Astro.response.headers);
 
 const { header } = branding;
 
 const footer = await fetchFooter();
+const navbar = await getNavbar(Astro.currentLocale);
 
 const { font_header: fontHeader, font_body: fontBody } = branding;
 
@@ -114,18 +113,15 @@ const {
     {
       !isTinaPreview && (
         <>
-          <HeaderContainer
-            client:load
-          >
-            <Header
-              fullscreen={fullscreen}
-              image={header?.logo}
-              imageAlt={branding.title}
-              pathname={Astro.url.pathname}
-              title={header?.hide_title ? undefined : branding.title}
-              transparent={transparent}
-            />
-          </HeaderContainer>
+          <Header
+            fullscreen={fullscreen}
+            image={header?.logo}
+            imageAlt={branding.title}
+            navbar={navbar}
+            pathname={Astro.url.pathname}
+            title={header?.hide_title ? undefined : branding.title}
+            transparent={transparent}
+          />
           <NotificationPanel
             client:only='react'
           />
@@ -144,6 +140,7 @@ const {
         customContent={footer?.custom_content}
         login={footer?.allow_login && !STATIC_BUILD}
         logos={footer?.logos}
+        navbar={navbar}
         pathname={Astro.url.pathname}
         privacyUrl={footer?.privacy_url}
         termsUrl={footer?.terms_url}

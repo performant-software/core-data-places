@@ -10,6 +10,8 @@ import { getTranslations } from '@backend/i18n';
 
 const { slug, lang } = Astro.params;
 
+export const prerender = true;
+
 export const getStaticPaths = async () => {
   const paths = [];
 
@@ -24,9 +26,7 @@ export const getStaticPaths = async () => {
   return paths;
 };
 
-const ignoreCache = import.meta.env.PUBLIC_IGNORE_PAGE_CACHE === 'true';
-
-const pageResp = await fetchPageResponse(lang, slug, ignoreCache);
+const pageResp = await fetchPageResponse(lang, slug);
 
 const page = pageResp.data.pages;
 

@@ -8,6 +8,7 @@ interface Caches {
   i18n: Map<string, any>;
   i18ns: any;
   navbar: Map<string, any>;
+  navbars: any;
   pages: Map<string, any>;
   pagesResponse: Map<string, any>;
   paths: Map<string, any>;
@@ -21,6 +22,7 @@ const caches: Caches = {
   i18n: new Map(),
   i18ns: undefined,
   navbar: new Map(),
+  navbars: undefined,
   pages: new Map(),
   pagesResponse: new Map(),
   paths: new Map(),
@@ -86,6 +88,21 @@ export const fetchNavbar = async (language: string) => {
   const response = await requestWithMetadata(client.queries.navbar({ relativePath: `${language}.json` }));
   const data = response.data?.navbar;
   caches.navbar.set(language, data);
+  return data;
+}
+
+export const fetchNavbars = async () => {
+  if (!client.queries.navbarConnection) {
+    return null;
+  }
+
+  if (caches.navbars) {
+    return caches.navbars;
+  }
+
+  const response = await client.queries.navbarConnection();
+  const data = response.data?.navbarConnection?.edges?.map((item) => (item?.node));
+  caches.navbars = data;
   return data;
 }
 

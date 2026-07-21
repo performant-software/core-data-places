@@ -7,6 +7,9 @@
 
 @source '../../node_modules/@performant-software/core-data';
 
+@view-transition {
+  navigation: auto;
+}
 
 :root {
   --font-sizes-page-header: 48px;
