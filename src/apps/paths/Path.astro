@@ -1,15 +1,12 @@
 ---
 import PathViewer from '@apps/paths/PathViewer';
 import { fetchPathResponse } from '@backend/tina';
-import PageStoreProvider from '@components/PageStoreProvider';
 import config from '@config';
 
-const { slug, publishedOnly } = Astro.props;
+const { slug } = Astro.props;
 const pathResponse = await fetchPathResponse(slug);
 
-if (publishedOnly && !pathResponse.data?.path?.published) {
-  return new Response(null, { status: 404 });
-}
+const pageTitle = pathResponse?.data?.path.title;
 
 let overlayLayer = null;
 
@@ -32,7 +29,8 @@ if (pathResponse.data?.path.overlay_layer) {
   client:only='react'
 />
 
-<PageStoreProvider
-  title={pathResponse?.data?.path.title}
-  client:load
-/>
+<script is:inline define:vars={{ pageTitle }}>
+  if (pageTitle) {
+    document.title = pageTitle;
+  }
+</script>

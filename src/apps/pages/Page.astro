@@ -5,10 +5,15 @@ import { tinaField } from '@tinacms/astro/tina-field';
 import Header from '@layouts/Header.astro';
 import clsx from 'clsx';
 import branding from '@branding';
+import { getNavbar } from '@services/navbar';
+import { getPages } from '@utils/nav';
 
 const { page, isTinaPreview, t } = Astro.props;
 
 setCacheControl(Astro.response.headers);
+
+const navbar = await getNavbar(Astro.currentLocale);
+const pages = await getPages(Astro.currentLocale);
 
 ---
 <div data-tina-field={tinaField(page)}>
@@ -24,7 +29,10 @@ setCacheControl(Astro.response.headers);
           fullscreen
           image={branding?.header?.logo}
           imageAlt={branding.title}
+          navbar={navbar}
+          pages={pages}
           pathname={Astro.url.pathname}
+          t={t}
           title={branding?.header?.hide_title ? undefined : branding.title}
           transparent={page.transparent}
           isTinaPreview

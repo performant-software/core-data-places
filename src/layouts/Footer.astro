@@ -1,11 +1,10 @@
 ---
-import { getTranslations } from '@backend/i18n';
 import Container from '@components/Container.astro';
 import LinkButton from '@components/LinkButton.astro';
 import MultiColumnContent from '@components/MultiColumnContent.astro';
 import config from '@config';
 import NavBar from '@layouts/NavBar.astro';
-import { getCustomNavbar, getDefaultNavbar, getPages } from '@utils/nav';
+import { getCustomNavbar, getDefaultNavbar } from '@utils/nav';
 import { toBackgroundClass } from '@utils/pageBuilder';
 import clsx from 'clsx';
 import _ from 'underscore';
@@ -17,8 +16,10 @@ const {
   login,
   logos,
   navbar,
+  pages,
   pathname,
   privacyUrl,
+  t,
   termsUrl,
   title
 } = Astro.props;
@@ -26,11 +27,6 @@ const {
 const year = new Date().getFullYear();
 
 const currentLocale = Astro.currentLocale;
-
-const [{ t }, pages] = await Promise.all([
-  getTranslations(currentLocale),
-  getPages(currentLocale)
-]);
 
 let items;
 
