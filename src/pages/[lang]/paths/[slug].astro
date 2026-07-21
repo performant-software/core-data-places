@@ -19,7 +19,9 @@ export const getStaticPaths = async () => {
 
   const locales = config.i18n.locales;
   const { paths } = await fetchPaths({
-    published: { eq: true }
+    filter: {
+      published: { eq: true }
+    }
   });
 
   _.each(locales, (lang) => {

@@ -1,6 +1,5 @@
 ---
 import { getTranslations } from "@backend/i18n";
-import { fetchNavbar } from "@backend/tina";
 import LanguagePicker from "@components/LanguagePicker";
 import MobileHeader from "@components/MobileHeader";
 import NavBar from "@layouts/NavBar.astro";
@@ -17,14 +16,14 @@ const {
   image,
   imageAlt,
   isTinaPreview,
+  navbar,
   pathname,
   title,
   transparent
 } = Astro.props;
 
-const [{ t }, navbar, pages] = await Promise.all([
+const [{ t }, pages] = await Promise.all([
   getTranslations(currentLocale),
-  fetchNavbar(currentLocale),
   getPages(currentLocale),
 ]);
 

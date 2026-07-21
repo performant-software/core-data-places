@@ -1,6 +1,5 @@
 ---
 import { getTranslations } from '@backend/i18n';
-import { fetchNavbar } from '@backend/tina';
 import Container from '@components/Container.astro';
 import LinkButton from '@components/LinkButton.astro';
 import MultiColumnContent from '@components/MultiColumnContent.astro';
@@ -17,6 +16,7 @@ const {
   customContent,
   login,
   logos,
+  navbar,
   pathname,
   privacyUrl,
   termsUrl,
@@ -27,9 +27,8 @@ const year = new Date().getFullYear();
 
 const currentLocale = Astro.currentLocale;
 
-const [{ t }, navbar, pages] = await Promise.all([
+const [{ t }, pages] = await Promise.all([
   getTranslations(currentLocale),
-  fetchNavbar(currentLocale),
   getPages(currentLocale)
 ]);
 
