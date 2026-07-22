@@ -36,7 +36,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 <Layout
   footer
   fullscreen
-  title={slug}
+  title={page.title}
   transparent={page.transparent}
 >
   <TinaIsland name="page" wrapper={islands.page.wrapper} params={{ lang, slug }} primary>
