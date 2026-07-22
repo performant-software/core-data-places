@@ -68,7 +68,13 @@ const {
   isTinaPreview
 } = Astro.props;
 
-const pageTitle = title || t(titleKey) || branding.title;
+let pageTitle = branding.title;
+
+if (title) {
+  pageTitle = title;
+} else if (titleKey) {
+  pageTitle = t(titleKey);
+}
 
 ---
 
