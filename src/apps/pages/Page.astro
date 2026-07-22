@@ -7,13 +7,17 @@ import clsx from 'clsx';
 import branding from '@branding';
 import { getNavbar } from '@services/navbar';
 import { getPages } from '@utils/nav';
+import { getDefaultLocale } from '@utils/i18n';
 
 const { page, isTinaPreview, t } = Astro.props;
 
 setCacheControl(Astro.response.headers);
 
-const navbar = await getNavbar(Astro.currentLocale);
-const pages = await getPages(Astro.currentLocale);
+const defaultLocale = getDefaultLocale();
+
+// Default is necessary for tina visual editor islands
+const navbar = await getNavbar(Astro.currentLocale || defaultLocale);
+const pages = await getPages(Astro.currentLocale || defaultLocale);
 
 ---
 <div data-tina-field={tinaField(page)}>
