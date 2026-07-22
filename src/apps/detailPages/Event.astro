@@ -1,7 +1,6 @@
 ---
 import RecordDetail from '@apps/detailPages/RecordDetail.astro';
 import { getTranslations } from '@backend/i18n';
-import PageStoreProvider from '@components/PageStoreProvider';
 import config from '@config';
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
 import EventsService from '@services/coreData/events';
@@ -38,8 +37,3 @@ const { t } = await getTranslations(lang);
     }
   })}
 </RecordDetail>
-
-<PageStoreProvider
-  title={event.name}
-  client:load
-/>

@@ -4,7 +4,6 @@ import { fetchPageResponse } from '@backend/tina';
 import Layout from '@layouts/Layout.astro';
 import TinaIsland from '@tinacms/astro/TinaIsland.astro';
 import { islands } from '@lib/islands';
-import PageStoreProvider from '@components/PageStoreProvider';
 import { getTranslations } from '@backend/i18n';
 
 const { slug, lang } = Astro.params;
@@ -22,7 +21,7 @@ const { t } = await getTranslations(Astro.currentLocale);
 <Layout
   footer
   fullscreen
-  title={slug}
+  title={page.title}
   transparent={page.transparent}
   isTinaPreview
 >
@@ -33,9 +32,4 @@ const { t } = await getTranslations(Astro.currentLocale);
       t={t}
     />
   </TinaIsland>
-  <PageStoreProvider
-    title={page.title}
-    transparent={page.transparent}
-    client:load
-  />
 </Layout>

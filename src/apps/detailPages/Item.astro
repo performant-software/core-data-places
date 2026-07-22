@@ -1,6 +1,5 @@
 ---
 import RecordDetail from '@apps/detailPages/RecordDetail.astro';
-import PageStoreProvider from '@components/PageStoreProvider';
 import config from '@config';
 import ItemsService from '@services/coreData/items';
 
@@ -17,9 +16,4 @@ const excludes = config.result_filtering?.items?.exclude || [];
   model='items'
   name={item.name}
   record={item}
-/>
-
-<PageStoreProvider
-  title={item.name}
-  client:load
 />

@@ -2,7 +2,6 @@
 import SearchItem from '@apps/session/SearchItem';
 import BackButton from '@components/BackButton';
 import Container from '@components/Container.astro';
-import PageStoreProvider from '@components/PageStoreProvider';
 import Layout from '@layouts/Layout.astro';
 import { getSessionItem } from '@services/session';
 
@@ -17,6 +16,7 @@ export const getStaticPaths = () => [];
 
 <Layout
   footer
+  title={item?.name}
 >
   <Container
     className='py-6 relative w-full'
@@ -37,8 +37,3 @@ export const getStaticPaths = () => [];
     </div>
   </Container>
 </Layout>
-
-<PageStoreProvider
-  title={item?.name}
-  client:load
-/>
