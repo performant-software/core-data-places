@@ -19,9 +19,11 @@ import TranslationContext from '@contexts/TranslationContext';
 interface Props {
   className?: string;
   filters?: boolean;
+  mobileView?: string;
   onFiltersChange: (filters: boolean) => void;
   onTimelineChange: (timeline: boolean) => void;
   onViewChange: (view: string) => void;
+  onMobileViewChange: (view: string) => void;
   timeline?: boolean;
   view?: string;
   tableView?: boolean;
@@ -29,6 +31,7 @@ interface Props {
 
 const Views = {
   list: 'list',
+  map: 'map',
   table: 'table'
 };
 
@@ -53,19 +56,10 @@ const Header = (props: Props) => {
   const facetCount = useMemo(() => _.reduce(items, (memo, item) => memo + item.refinements.length, 0), [items]);
 
   return (
-    <div
-      className={clsx('bg-neutral-100 flex items-center justify-between px-6 shadow-sm', props.className)}
-    >
-      <h2
-        className='text-2xl font-bold text-nowrap'
-      >
-        { t(`index_${config.name}`) || t('root') }
-      </h2>
-      <div
-        className='flex items-center gap-x-4 w-3/6'
-      >
+    <>
+      <div className='bg-neutral-100 flex items-center justify-center flex-wrap gap-4 p-4 md:hidden'>
         <Input
-          className='bg-white grow'
+          className='bg-white grow min-w-40'
           clearable
           disabled={!allowSearchChange}
           icon='search'
@@ -88,19 +82,19 @@ const Header = (props: Props) => {
           { facetCount > 0 && (
             <div
               className={`
-                  absolute
-                  flex
-                  items-center
-                  justify-center
-                  -top-1
-                  -right-2
-                  w-[20px]
-                  h-[20px]
-                  bg-red-600
-                  text-white
-                  text-xs
-                  rounded-full
-                `}
+                absolute
+                flex
+                items-center
+                justify-center
+                -top-1
+                -right-2
+                w-[20px]
+                h-[20px]
+                bg-red-600
+                text-white
+                text-xs
+                rounded-full
+              `}
             >
               { facetCount }
             </div>
@@ -109,56 +103,118 @@ const Header = (props: Props) => {
         { allowSave && (
           <SaveButton />
         )}
+        <ExportButton />
+        <Button className='relative z-30' onClick={() => props.onMobileViewChange(props.mobileView === Views.map ? Views.list : Views.map)}>
+          <p>{ props.mobileView === Views.map ? t('viewResultsList') : t('viewMap') }</p>
+        </Button>
       </div>
       <div
-        className='flex items-stretch'
+        className={clsx('hidden md:flex bg-neutral-100 items-center justify-between px-6 shadow-sm', props.className)}
       >
-        { tableView && (
-          <ButtonGroup
-            className='text-sm'
-            icon
-          >
-            <Button
-              onClick={() => props.onViewChange(Views.list)}
-              primary={props.view === Views.list}
-            >
-              <Icon
-                name='list'
-              />
-              { t('list') }
-            </Button>
-            <Button
-              disabled={props.timeline}
-              onClick={() => props.onViewChange(Views.table)}
-              primary={props.view === Views.table}
-            >
-              <Icon
-                name='table'
-              />
-              { t('table') }
-            </Button>
-          </ButtonGroup>
-        )}
+        <h2
+          className='text-2xl font-bold text-nowrap'
+        >
+          { t(`index_${config.name}`) || t('root') }
+        </h2>
         <div
-          className='w-[1px] bg-neutral-300 mx-4'
-        />
-        { config.timeline?.date_range_facet && (
+          className='flex items-center gap-x-4 w-3/6'
+        >
+          <Input
+            className='bg-white grow'
+            clearable
+            disabled={!allowSearchChange}
+            icon='search'
+            onChange={(value) => refine(value)}
+            placeholder={t('search')}
+            value={query}
+          />
           <Button
-            className='text-sm px-3'
-            disabled={props.view === Views.table}
+            aria-label={t('filters')}
+            className='relative'
+            disabled={!allowSearchChange}
             icon
-            onClick={() => props.onTimelineChange(!props.timeline)}
-            primary={props.timeline}
+            onClick={() => props.onFiltersChange(!props.filters)}
+            primary={props.filters}
           >
             <Icon
-              name='timeline'
+              name='filters'
+              size={24}
             />
-            { t('timeline') }
+            { facetCount > 0 && (
+              <div
+                className={`
+                    absolute
+                    flex
+                    items-center
+                    justify-center
+                    -top-1
+                    -right-2
+                    w-[20px]
+                    h-[20px]
+                    bg-red-600
+                    text-white
+                    text-xs
+                    rounded-full
+                  `}
+              >
+                { facetCount }
+              </div>
+            )}
           </Button>
-        )}
+          { allowSave && (
+            <SaveButton />
+          )}
+        </div>
+        <div
+          className='flex items-stretch'
+        >
+          { tableView && (
+            <ButtonGroup
+              className='text-sm'
+              icon
+            >
+              <Button
+                onClick={() => props.onViewChange(Views.list)}
+                primary={props.view === Views.list}
+              >
+                <Icon
+                  name='list'
+                />
+                { t('list') }
+              </Button>
+              <Button
+                disabled={props.timeline}
+                onClick={() => props.onViewChange(Views.table)}
+                primary={props.view === Views.table}
+              >
+                <Icon
+                  name='table'
+                />
+                { t('table') }
+              </Button>
+            </ButtonGroup>
+          )}
+          <div
+            className='w-[1px] bg-neutral-300 mx-4'
+          />
+          { config.timeline?.date_range_facet && (
+            <Button
+              className='text-sm px-3'
+              disabled={props.view === Views.table}
+              icon
+              onClick={() => props.onTimelineChange(!props.timeline)}
+              primary={props.timeline}
+            >
+              <Icon
+                name='timeline'
+              />
+              { t('timeline') }
+            </Button>
+          )}
+        </div>
+        <ExportButton />
       </div>
-      <ExportButton />
-    </div>
+    </>
   );
 };
 

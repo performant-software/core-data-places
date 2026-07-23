@@ -51,6 +51,14 @@
     "tinaLabel": "Map Layers",
     "defaultValue": "Map Layers"
   },
+  "viewResultsList": {
+    "tinaLabel": "View Results List",
+    "defaultValue": "View Results List"
+  },
+  "viewMap": {
+    "tinaLabel": "View Map",
+    "defaultValue": "View Map"
+  },
   "events": {
     "tinaLabel": "Events",
     "defaultValue": "Events"
