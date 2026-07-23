@@ -1,0 +1,92 @@
+---
+import { tinaField } from '@tinacms/astro/tina-field';
+import { classNames } from './styles';
+
+const { alt, category, date, dateOptions, title, slug, imageUrl, blurb, labels, item } = Astro.props;
+
+const dateString = date ? new Date(date).toLocaleDateString(undefined, dateOptions) : null;
+
+---
+
+<article
+  class={classNames.root}
+  data-tina-field={tinaField(item)}
+>
+  <div
+    class={classNames.imageContainer}
+  >
+    {imageUrl && (
+      <img
+        alt={alt || ''}
+        src={imageUrl}
+        class={classNames.image}
+        loading='lazy'
+        height={256}
+        width={384}
+        data-tina-field={tinaField(item, 'image')}
+      />
+    )}
+    {!imageUrl && (
+      <div
+        class={classNames.image}
+      />
+    )}
+    <div
+      class={classNames.imageRing}
+    />
+  </div>
+  <div
+    class={classNames.infoHeader}
+  >
+    <time
+      datetime={date}
+    >
+      {dateString}
+    </time>
+    {category && (
+      <a
+        href='#'
+        class={classNames.category}
+      >
+        {category}
+      </a>
+    )}
+  </div>
+  <div
+    class={classNames.infoMain}
+  >
+    <h3
+      class={classNames.title}
+      data-tina-field={tinaField(item, 'title')}
+    >
+      <a
+        href={slug}
+      >
+        {title}
+      </a>
+    </h3>
+    {blurb && (
+      <p
+        class={classNames.blurb}
+        data-tina-field={tinaField(item, 'blurb')}
+      >
+        {blurb}
+      </p>
+    )}
+  </div>
+  {labels.byline && (
+    <div
+      class={classNames.byline}
+    >
+      <p>
+        {labels.byline}
+      </p>
+    </div>
+  )}
+  <a
+    class={classNames.readMore}
+    href={slug}
+  >
+    {labels.readMore} &rarr;
+  </a>
+</article>

@@ -1,4 +1,6 @@
 ---
+import { tinaField } from '@tinacms/astro/tina-field';
+
 interface Props {
   alt?: string;
   citation?: string;
@@ -9,14 +11,15 @@ interface Props {
     citation?: string;
   };
   src: string;
+  item?: any;
 }
 
-const { alt, citation, citationLink, classNames, src } = Astro.props;
+const { alt, citation, citationLink, classNames, src, item } = Astro.props;
 ---
 
 {
   citation ? (
-    <div class={classNames?.root}>
+    <div class={classNames?.root} data-tina-field={tinaField(item)}>
       <img alt={alt} src={src} class={classNames?.image} />
       {citationLink ? (
         <a href={citationLink} class={classNames?.citation}>
@@ -27,6 +30,6 @@ const { alt, citation, citationLink, classNames, src } = Astro.props;
       )}
     </div>
   ) : (
-    <img alt={alt} src={src} class={classNames?.image} />
+    <img alt={alt} src={src} class={classNames?.image} data-tina-field={tinaField(item)}/>
   )
 }

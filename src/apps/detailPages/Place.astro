@@ -1,6 +1,5 @@
 ---
 import RecordDetail from '@apps/detailPages/RecordDetail.astro';
-import PageStoreProvider from '@components/PageStoreProvider';
 import config from '@config';
 import PlacesService from '@services/coreData/places';
 import { CoreData as CoreDataUtils } from '@performant-software/core-data/ssr';
@@ -22,9 +21,4 @@ const geometry = excludes.includes('place_geometry')
   model='places'
   name={place.name}
   record={place}
-/>
-
-<PageStoreProvider
-  title={place.name}
-  client:load
 />

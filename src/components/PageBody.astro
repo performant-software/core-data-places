@@ -8,15 +8,20 @@ import Images from '@apps/pages/Images.astro';
 import LinksBanner from '@apps/pages/LinksBanner.astro';
 import MultiColumn from '@apps/pages/MultiColumn.astro';
 import Spacer from '@components/Spacer.astro';
-import Tabs from '@apps/pages/Tabs.astro';
-import TextImage from '@apps/pages/TextImage';
+import Tabs from '@apps/pages/Tabs/index.astro';
+import TextImage from '@apps/pages/TextImage.astro';
 import Container from '@components/Container.astro';
 import { toBackgroundClass } from '@utils/pageBuilder';
 import clsx from 'clsx';
 import _ from 'underscore';
 import MediaInsert from '@components/MediaInsert';
+import { tinaField } from '@tinacms/astro/tina-field';
+import carousel from '@assets/pages/image_carousel.png';
+import form from '@assets/pages/contact_form.png';
+import media from '@assets/pages/media_viewer.png';
+import { Image } from 'astro:assets';
 
-const { sections, transparent, home } = Astro.props;
+const { sections, transparent, home, isTinaPreview, t } = Astro.props;
 
 const SectionTypes = {
   banner: 'Banner',
@@ -34,7 +39,7 @@ const SectionTypes = {
 };
 
 ---
-{ _.map(sections, (section, idx) => (
+{ _.map(sections, (section: any, idx: number) => (
   <section
     class={clsx(
       'page-builder',
@@ -45,20 +50,39 @@ const SectionTypes = {
       section.bottom_margin,
       { '-mt-[72px]': transparent && idx === 0 }
     )}
+    data-tina-field={tinaField(section)}
   >
     { section?.__typename?.endsWith(SectionTypes.carousel) && (
       <Container>
-        <Carousel
-          items={section.items}
-          client:only='react'
-        />
+        {
+          !isTinaPreview && (
+            <Carousel
+              items={section.items}
+              client:only='react'
+            />
+          )
+        }
+        {
+          isTinaPreview && (
+            <Image src={carousel} class="w-full object-cover" alt="Image carousel preview" />
+          )
+        }
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.contactForm) && (
       <Container>
-        <ContactForm
-          client:load
-        />
+        {
+          !isTinaPreview && (
+            <ContactForm
+              client:load
+            />
+          )
+        }
+        {
+          isTinaPreview && (
+            <Image src={form} class="w-full object-cover" alt="Contact form preview" />
+          )
+        }
       </Container>
     )}
     { section?.__typename?.endsWith(SectionTypes.freeText) && (
@@ -73,6 +97,7 @@ const SectionTypes = {
         <Images
           items={section.items}
           title={section.title}
+          section={section}
         />
       </Container>
     )}
@@ -98,7 +123,7 @@ const SectionTypes = {
           textPosition={section.text_position}
           title={section.title}
           url={section.url}
-          client:load
+          section={section}
         />
       </Container>
     )}
@@ -113,6 +138,9 @@ const SectionTypes = {
         url={section.url}
         content={section.columns}
         gap={section.gap}
+        section={section}
+        isTinaPreview={isTinaPreview}
+        t={t}
       />
     )}
     { section?.__typename?.endsWith(SectionTypes.banner) && (
@@ -133,9 +161,11 @@ const SectionTypes = {
         textAlignment={section.text_alignment}
         title={section.title}
         url={section.url}
+        section={section}
+        isTinaPreview={isTinaPreview}
       />
     )}
-    { section?.__typename?.endsWith(SectionTypes.tabs) && ( 
+    { section?.__typename?.endsWith(SectionTypes.tabs) && (
         <Tabs
           tabs={section.tabs}
           raise={section.top_margin && section.top_margin.startsWith('-')}
@@ -143,12 +173,14 @@ const SectionTypes = {
           inactiveBg={section.inactive_bg}
           textStyle={section.text_style}
           invertText={section.invert_text}
+          isTinaPreview={isTinaPreview}
         />
     )}
     { section?.__typename?.endsWith(SectionTypes.featureQuote) && ( 
       <FeatureQuote
         {...section}
         backgroundImage={section.background_image}
+        section={section}
       />
     )}
     { section?.__typename?.endsWith(SectionTypes.linkBanner) && ( 
@@ -159,10 +191,20 @@ const SectionTypes = {
     )}
     { section?.__typename?.endsWith(SectionTypes.media) && (
       <Container>
-        <MediaInsert
-          media={section.media}
-          client:only='react'
-        />
+        {
+          !isTinaPreview && (
+            <MediaInsert
+              media={section.media}
+              client:only='react'
+            />
+          )
+        }
+        {
+          isTinaPreview && (
+            // replace with placeholder image
+            <Image src={media} class="w-full object-cover" alt="Media viewer preview" />
+          )
+        }
       </Container>
     )}
   </section>

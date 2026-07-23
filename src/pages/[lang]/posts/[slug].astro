@@ -8,6 +8,8 @@ import _ from 'underscore';
 
 const { slug } = Astro.params;
 
+export const prerender = true;
+
 export const getStaticPaths = async () => {
   if (!hasPostsContent(config)) {
     return [];
@@ -18,7 +20,9 @@ export const getStaticPaths = async () => {
   const locales = config.i18n.locales;
   const { posts } = await fetchPosts({
     first: -1,
-    published: { eq: true }
+    filter: {
+      published: { eq: true }
+    }
   });
 
   _.each(locales, (lang) => {
@@ -39,7 +43,5 @@ export const getStaticPaths = async () => {
 >
   <Post
     slug={slug}
-    publishedOnly={true}
-    server:defer
   />
 </Layout>

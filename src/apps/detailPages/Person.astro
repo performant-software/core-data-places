@@ -1,6 +1,5 @@
 ---
 import RecordDetail from '@apps/detailPages/RecordDetail.astro';
-import PageStoreProvider from '@components/PageStoreProvider';
 import config from '@config';
 import PeopleService from '@services/coreData/people';
 import { getNameView } from '@utils/people';
@@ -25,8 +24,3 @@ const name = getNameView(person);
     <p class='text-neutral-800 py-6 break-words'>{person.biography}</p>
   )}
 </RecordDetail>
-
-<PageStoreProvider
-  title={name}
-  client:load
-/>

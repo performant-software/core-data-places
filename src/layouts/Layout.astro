@@ -1,23 +1,28 @@
 ---
 import NotificationPanel from '@components/NotificationPanel';
-import Title from '@components/Title';
 import { getLanguageFromUrl } from '@i18n/utils';
 import Footer from '@layouts/Footer.astro';
 import Header from '@layouts/Header.astro';
-import HeaderContainer from '@layouts/HeaderContainer';
 import { useBlackText } from '@utils/layout';
 import { setCacheControl } from '@utils/url';
 import { STATIC_BUILD } from 'astro:env/client';
 import _ from 'underscore';
-
 import '@performant-software/core-data/style.css';
 import '@performant-software/geospatial/style.css';
 import '@styles/index.css';
 import branding from '@branding';
+import { fetchFooter } from '@backend/tina';
+import { getNavbar } from '@services/navbar';
+import { getTranslations } from '@backend/i18n';
+import { getPages } from '@utils/nav';
 
 setCacheControl(Astro.response.headers);
 
-const { header, footer } = branding;
+const { header } = branding;
+
+const footer = await fetchFooter();
+const navbar = await getNavbar(Astro.currentLocale);
+const pages = await getPages(Astro.currentLocale);
 
 const { font_header: fontHeader, font_body: fontBody } = branding;
 
@@ -52,12 +57,24 @@ const layoutAlternateContentAlternate = !branding.background_alternate || useBla
 
 const lang = getLanguageFromUrl(Astro.url.pathname);
 
+const { t } = await getTranslations(lang);
+
 const {
   footer: includeFooter,
   fullscreen,
+  title,
   titleKey,
-  transparent
+  transparent,
+  isTinaPreview
 } = Astro.props;
+
+let pageTitle = branding.title;
+
+if (title) {
+  pageTitle = title;
+} else if (titleKey) {
+  pageTitle = t(titleKey);
+}
 
 ---
 
@@ -66,14 +83,10 @@ const {
   lang={lang}
 >
   <head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-    <Title
-      defaultTitle={branding.title}
-      titleKey={titleKey}
-      client:load
-    />
+    <title>{ pageTitle }</title>
     <style
       is:global
       define:vars={{
@@ -106,21 +119,26 @@ const {
     class='flex h-full sm:min-h-screen flex-col bg-layout text-neutral-dark mx-auto font-sans'
     transition:animate='initial'
   >
-    <HeaderContainer
-      client:load
-    >
-      <Header
-        fullscreen={fullscreen}
-        image={header?.logo}
-        imageAlt={branding.title}
-        title={header?.hide_title ? undefined : branding.title}
-        transparent={transparent}
-        server:defer
-      />
-    </HeaderContainer>
-    <NotificationPanel
-      client:only='react'
-    />
+    {
+      !isTinaPreview && (
+        <>
+          <Header
+            fullscreen={fullscreen}
+            image={header?.logo}
+            imageAlt={branding.title}
+            navbar={navbar}
+            pages={pages}
+            pathname={Astro.url.pathname}
+            t={t}
+            title={header?.hide_title ? undefined : branding.title}
+            transparent={transparent}
+          />
+          <NotificationPanel
+            client:only='react'
+          />
+        </>
+      )
+    }
     <main
       class='w-full relative flex flex-col grow'
     >
@@ -133,10 +151,13 @@ const {
         customContent={footer?.custom_content}
         login={footer?.allow_login && !STATIC_BUILD}
         logos={footer?.logos}
+        navbar={navbar}
+        pages={pages}
+        pathname={Astro.url.pathname}
         privacyUrl={footer?.privacy_url}
+        t={t}
         termsUrl={footer?.terms_url}
         title={branding?.title}
-        server:defer
       />
     )}
   </body>

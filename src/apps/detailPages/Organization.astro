@@ -1,6 +1,5 @@
 ---
 import RecordDetail from '@apps/detailPages/RecordDetail.astro';
-import PageStoreProvider from '@components/PageStoreProvider';
 import config from '@config';
 import OrganizationsService from '@services/coreData/organizations';
 
@@ -22,8 +21,3 @@ const excludes = config.result_filtering?.organizations?.exclude || [];
     <p class='text-neutral-800 py-6 break-words'>{organization.description}</p>
   )}
 </RecordDetail>
-
-<PageStoreProvider
-  title={organization.name}
-  client:load
-/>

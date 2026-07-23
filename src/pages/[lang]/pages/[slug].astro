@@ -1,10 +1,15 @@
 ---
 import Page from '@apps/pages/Page.astro';
-import { fetchPages } from '@backend/tina';
+import { fetchPageResponse, fetchPages } from '@backend/tina';
 import config from '@config';
 import Layout from '@layouts/Layout.astro';
+import TinaIsland from '@tinacms/astro/TinaIsland.astro';
+import { islands } from '@lib/islands';
+import { getTranslations } from '@backend/i18n';
 
-const { slug } = Astro.params;
+const { slug, lang } = Astro.params;
+
+export const prerender = true;
 
 export const getStaticPaths = async () => {
   const paths = [];
@@ -20,15 +25,24 @@ export const getStaticPaths = async () => {
   return paths;
 };
 
+const pageResp = await fetchPageResponse(lang, slug);
+
+const page = pageResp.data.pages;
+
+const { t } = await getTranslations(Astro.currentLocale);
+
 ---
 
 <Layout
   footer
   fullscreen
-  title={slug}
+  title={page.title}
+  transparent={page.transparent}
 >
-  <Page
-    slug={slug}
-    server:defer
-  />
+  <TinaIsland name="page" wrapper={islands.page.wrapper} params={{ lang, slug }} primary>
+    <Page
+      page={page}
+      t={t}
+    />
+  </TinaIsland>
 </Layout>
