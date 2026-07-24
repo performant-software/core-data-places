@@ -22,12 +22,16 @@ const ListLayout = (props: Props) => {
   const { t } = useContext(TranslationContext);
 
   useEffect(() => {
-    if (window.innerWidth < MEDIUM_SCREEN_SIZE) {
-      setFilters(false);
-    } else {
-      setFilters(true);
-    }
-  }, [window.innerWidth]);
+    const handleResize = () => {
+      if (window.innerWidth < MEDIUM_SCREEN_SIZE) {
+        setFilters(false);
+      } else {
+        setFilters(true);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className='px-6 md:px-8 lg:px-12'>
