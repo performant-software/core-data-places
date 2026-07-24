@@ -46,6 +46,7 @@ const MapLayout = () => {
   const [filters, setFilters] = useState<boolean>(false);
   const [timeline, setTimeline] = useState<boolean>(config.timeline?.default_open || false);
   const [view, setView] = useState<string>(Views.list);
+  const [mobileView, setMobileView] = useState<string>(Views.map);
   const [panelHistory, setPanelHistory] = useState<PanelHistoryEntryType[]>([]);
 
   const { setBoundingBoxOptions, setControlsClass } = useContext(MapSearchContext);
@@ -118,16 +119,18 @@ const MapLayout = () => {
       }}
     >
       <div
-        className='absolute left-0 right-0 bottom-0 top-[64px]'
+        className='absolute left-0 right-0 bottom-0 top-32 md:top-[64px]'
       >
         <MapView />
       </div>
       <Header
-        className='h-[64px]'
+        className='md:h-[64px]'
         filters={filters}
+        mobileView={mobileView}
         onFiltersChange={setFilters}
         onTimelineChange={setTimeline}
         onViewChange={setView}
+        onMobileViewChange={setMobileView}
         timeline={timeline}
         view={view}
         tableView={config.table}
@@ -154,7 +157,7 @@ const MapLayout = () => {
               className='flex flex-col'
             >
               <ListView
-                className='w-[350px]'
+                className={clsx('w-full md:w-[350px]', { 'hidden md:flex' : mobileView === Views.map })}
               />
             </div>
           )}
@@ -187,7 +190,7 @@ const MapLayout = () => {
           className='flex justify-end'
         >
           <SearchRoutes
-            className='w-[350px]'
+            className='absolute w-full md:relative h-full md:w-[350px]'
           />
         </div>
       </div>

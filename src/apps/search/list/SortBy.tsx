@@ -48,7 +48,7 @@ const SortBy = () => {
   }, [currentRefinement, sortFields]);
 
   return (
-    <div className='flex w-full items-center justify-end gap-4 pr-4'>
+    <div className='flex w-full items-center justify-center md:justify-end gap-4 pr-4'>
       <span className='font-bold'>
         { t('sortBy') }
       </span>
