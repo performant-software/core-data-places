@@ -15,6 +15,7 @@ import _ from 'underscore';
 import { useSearching } from '@performant-software/core-data';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import TranslationContext from '@contexts/TranslationContext';
+import FilterButton from './FilterButton';
 
 interface Props {
   className?: string;
@@ -67,39 +68,12 @@ const Header = (props: Props) => {
           placeholder={t('search')}
           value={query}
         />
-        <Button
-          aria-label={t('filters')}
-          className='relative'
-          disabled={!allowSearchChange}
-          icon
-          onClick={() => props.onFiltersChange(!props.filters)}
-          primary={props.filters}
-        >
-          <Icon
-            name='filters'
-            size={24}
-          />
-          { facetCount > 0 && (
-            <div
-              className={`
-                absolute
-                flex
-                items-center
-                justify-center
-                -top-1
-                -right-2
-                w-[20px]
-                h-[20px]
-                bg-red-600
-                text-white
-                text-xs
-                rounded-full
-              `}
-            >
-              { facetCount }
-            </div>
-          )}
-        </Button>
+        <FilterButton
+          allowSearchChange={allowSearchChange}
+          facetCount={facetCount}
+          filters={props.filters}
+          onFiltersChange={props.onFiltersChange}
+        />
         { allowSave && (
           <SaveButton />
         )}
