@@ -1,6 +1,6 @@
 import { Collection, RichTextTemplate, Template, TinaField } from '@tinacms/schema-tools';
 import _ from 'underscore';
-import { media } from './common';
+import { commonCollectionFields, media } from './common';
 
 const LABEL_SEPARATOR = ': ';
 
@@ -941,7 +941,22 @@ const Pages: Collection = {
   ui: {
     router: ({ document }) => {      
       return `/en/pages/preview/${document._sys.filename}`;
-    }
+    },
+    beforeSubmit: (arg: { values, form, cms }) => {
+      const user = arg.cms?.api?.tina?.authProvider?.clerk?.user;
+
+      // Log edit history
+      arg.values.history ||= [];
+      arg.values.history = [
+        { 
+          user_id: user.id, 
+          user_email: user.primaryEmailAddress?.emailAddress, 
+          timestamp: new Date().toISOString()
+        },
+        ...arg.values.history
+      ];
+      return arg.values;
+    },
   },
   fields: [{
     name: 'title',
@@ -1059,7 +1074,7 @@ const Pages: Collection = {
         }]
       }]
     }]
-  }]
+  }, ...commonCollectionFields]
 };
 
 export default Pages;

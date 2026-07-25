@@ -8,6 +8,7 @@ import { Collection, TinaField } from '@tinacms/schema-tools';
 import config from '@config';
 import { getUserRole } from '../utils/getUserRole';
 import TinaLayerSelect from '../components/TinaLayerSelect';
+import { commonCollectionFields } from './common';
 
 export const pathMetadata: TinaField<false>[] = _.compact([
   {
@@ -115,6 +116,17 @@ const Paths: Collection = {
           email: user.primaryEmailAddress?.emailAddress
         };
       }
+
+      // Log edit history
+      arg.values.history ||= [];
+      arg.values.history = [
+        { 
+          user_id: user.id, 
+          user_email: user.primaryEmailAddress?.emailAddress, 
+          timestamp: new Date().toISOString()
+        },
+        ...arg.values.history
+      ];
       return arg.values;
     }
   },
@@ -302,7 +314,8 @@ const Paths: Collection = {
       ui: {
         component: TinaLayerSelect
       }
-    }
+    },
+    ...commonCollectionFields
   ]
 };
 

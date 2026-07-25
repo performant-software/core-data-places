@@ -5,7 +5,7 @@ import Creator from '../components/Creator';
 import NotEditableNotice from '../components/NotEditableNotice';
 import _ from 'underscore';
 import config from '@config';
-import { media } from './common';
+import { commonCollectionFields, media } from './common';
 import PublishToggle from '../components/PublishToggle';
 import { getUserRole } from '../utils/getUserRole';
 
@@ -95,6 +95,17 @@ const Posts: Collection = {
           email: user.primaryEmailAddress?.emailAddress
         };
       }
+
+      // Log edit history
+      arg.values.history ||= [];
+      arg.values.history = [
+        { 
+          user_id: user.id, 
+          user_email: user.primaryEmailAddress?.emailAddress, 
+          timestamp: new Date().toISOString()
+        },
+        ...arg.values.history
+      ];
       return arg.values;
     }
   },
@@ -217,6 +228,7 @@ const Posts: Collection = {
         ...Visualizations
       ]
     },
+    ...commonCollectionFields
   ]),
 };
 

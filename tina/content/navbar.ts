@@ -1,4 +1,5 @@
 import { Collection, StringField } from '@tinacms/schema-tools';
+import { commonCollectionFields } from './common';
 
 const labelField: StringField = {
   name: 'label',
@@ -24,6 +25,23 @@ const Navbar: Collection = {
   label: 'Navbar',
   path: 'content/navbar',
   format: 'json',
+  ui: {
+    beforeSubmit: (arg: { values, form, cms }) => {
+      const user = arg.cms?.api?.tina?.authProvider?.clerk?.user;
+
+      // Log edit history
+      arg.values.history ||= [];
+      arg.values.history = [
+        { 
+          user_id: user.id, 
+          user_email: user.primaryEmailAddress?.emailAddress, 
+          timestamp: new Date().toISOString()
+        },
+        ...arg.values.history
+      ];
+      return arg.values;
+    },
+  },
   fields: [
     {
       name: 'items',
@@ -64,7 +82,8 @@ const Navbar: Collection = {
           }
         }
       ],
-    }
+    },
+    ...commonCollectionFields
   ]
 };
 
