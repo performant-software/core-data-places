@@ -97,7 +97,7 @@ function render(win, state) {
       <div style="font-size: 13px; font-family: ui-monospace, monospace; display: flex; gap: 14px; flex-wrap: wrap;">
         ${state.workspace.others.map((w) => w.running
     ? `${link(w.url, w.slug)} <span style="color: #7ee787;">●</span>`
-    : `<span style="opacity: 0.5;">${esc(w.slug)} ○</span>`).join('')}
+    : `<span style="color: #6e7681;">${esc(w.slug)} ●</span>`).join('')}
       </div>
     </section>` : ''}`;
 }

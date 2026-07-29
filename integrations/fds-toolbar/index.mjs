@@ -38,11 +38,19 @@ function readWorkspaces() {
   return Array.isArray(ledger?.workspaces) ? ledger.workspaces : [];
 }
 
-const pidAlive = (pid) => {
-  try { process.kill(pid, 0); return true; } catch { return false; }
-};
+/** Does anything answer on this URL? Any HTTP response counts — a stale
+ *  pid in a state file does not (pids get recycled). */
+async function urlAnswers(url) {
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 400);
+    await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
+    return true;
+  } catch { return false; }
+}
 
-function collectState(root) {
+async function collectState(root) {
   const fds = readJson(join(root, '.fds-dev.json'));
   const link = readJson(join(root, '.netlify', 'state.json'));
   const config = readJson(join(root, 'public', 'config.json'));
@@ -68,7 +76,7 @@ function collectState(root) {
     publicDomain: PUBLIC_DOMAIN ?? null,
     adminDomain: ADMIN_DOMAIN ?? null,
     version: versionOf(root),
-    workspace: workspaceState(root),
+    workspace: await workspaceState(root),
     contentClone: contentCloneState(root),
     datalayer: {
       port: Number(process.env.TINA_DATALAYER_PORT ?? 9000),
@@ -87,16 +95,16 @@ function versionOf(root) {
 
 /** This folder's workspace record and the other workspaces on the machine,
  *  each with its URL and whether its dev server is running right now. */
-function workspaceState(root) {
+async function workspaceState(root) {
   const workspaces = readWorkspaces();
   const mine = workspaces.find((w) => w.sitePath === root) ?? null;
-  const others = workspaces
+  const others = await Promise.all(workspaces
     .filter((w) => w.sitePath !== root)
-    .map((w) => ({
+    .map(async (w) => ({
       slug: w.slug,
       url: `http://localhost:${w.ports.netlify}`,
-      running: pidAlive(readJson(join(w.sitePath, '.fds-dev.json'))?.pid ?? -1),
-    }));
+      running: await urlAnswers(`http://localhost:${w.ports.netlify}`),
+    })));
   return { home: mine ? dirname(mine.sitePath) : null, slug: mine?.slug ?? null, others };
 }
 
@@ -132,7 +140,7 @@ export default function fdsToolbar() {
       },
       'astro:server:setup': ({ server, toolbar }) => {
         if (!toolbar) return;
-        const send = () => toolbar.send('fds-toolbar:state', collectState(root));
+        const send = async () => toolbar.send('fds-toolbar:state', await collectState(root));
         toolbar.onAppInitialized('fds', send);
         toolbar.on('fds-toolbar:refresh', send);
 
