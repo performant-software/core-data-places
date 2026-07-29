@@ -1,0 +1,44 @@
+import { Collection } from "tinacms";
+
+const History: Collection = {
+  name: "editHistory",
+  label: "Edit History",
+  path: "content/edit-history",
+  format: "json",
+  fields: [
+    { 
+      name: "docId", 
+      label: "Document ID", 
+      type: "string" 
+    },
+    { 
+      name: "collection", 
+      label: "Collection", 
+      type: "string" 
+    },
+    { 
+      name: "crudType", 
+      label: "Action", 
+      type: "string" 
+    },
+    { 
+      name: "timestamp", 
+      label: "Timestamp", 
+      type: "datetime" 
+    },
+    { 
+      name: "userEmail", 
+      label: "User Email", 
+      type: "string" 
+    },
+    {
+      name: "snapshot",
+      label: "Snapshot",
+      type: "object",
+      list: false,
+      fields: [],
+    },
+  ],
+};
+
+export default History;
