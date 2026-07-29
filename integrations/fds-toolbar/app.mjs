@@ -37,6 +37,15 @@ function render(win, state) {
     ? link(`https://github.com/${state.content.repo}${state.content.branch ? `/tree/${state.content.branch}` : ''}`,
       `${state.content.repo}${state.content.branch ? ` @ ${state.content.branch}` : ''}`)
     : null;
+  // The content clone's working state: an editing session leaves plain
+  // files there, and pushing them is publishing.
+  const clone = state.contentClone
+    ? state.contentClone.dirty === null
+      ? esc(state.contentClone.path)
+      : state.contentClone.dirty === 0
+        ? 'content clone clean'
+        : `<strong>${esc(state.contentClone.dirty)} uncommitted content edit${state.contentClone.dirty === 1 ? '' : 's'}</strong> — pushing publishes`
+    : null;
   const domains = [
     state.publicDomain ? link(`https://${state.publicDomain}`, state.publicDomain) : null,
     state.adminDomain ? link(`https://${state.adminDomain}`, `${state.adminDomain} (admin)`) : null,
@@ -52,7 +61,11 @@ function render(win, state) {
       ${row('Output', esc(state.output))}
       ${state.mode ? row('Mode', `${esc(state.mode)}${state.startedAt ? ` (since ${esc(state.startedAt.slice(11, 19))})` : ''}`) : ''}
       ${state.ref ? row('Ref', esc(state.ref)) : ''}
+      ${state.version ? row('FDS', esc(state.version)) : ''}
+      ${state.workspace?.home ? row('Home', esc(state.workspace.home)) : ''}
       ${contentRepo ? row('Content', contentRepo) : ''}
+      ${clone ? row('Edits', clone) : ''}
+      ${state.datalayer ? row('Datalayer', `:${esc(state.datalayer.port)} ${state.datalayer.isolated ? 'isolated' : 'shared'}`) : ''}
       ${fairData ? row('FairData', fairData) : ''}
       ${row('Tina', link('/admin/index.html', 'admin'))}
       ${domains ? row('Domains', domains) : ''}
@@ -77,7 +90,16 @@ function render(win, state) {
         </div>
       </div>
       <div style="font-size: 11px; opacity: 0.45; margin-top: 8px;">Grayed actions are stubs — hover for what each will do.</div>
-    </section>`;
+    </section>
+    ${state.workspace?.others?.length ? `
+    <section style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 10px;">
+      <div style="font-size: 11px; opacity: 0.6; margin-bottom: 6px;">OTHER WORKSPACES</div>
+      <div style="font-size: 13px; font-family: ui-monospace, monospace; display: flex; gap: 14px; flex-wrap: wrap;">
+        ${state.workspace.others.map((w) => w.running
+    ? `${link(w.url, w.slug)} <span style="color: #7ee787;">●</span>`
+    : `<span style="opacity: 0.5;">${esc(w.slug)} ○</span>`).join('')}
+      </div>
+    </section>` : ''}`;
 }
 
 export default defineToolbarApp({

@@ -12,7 +12,8 @@
  */
 import { spawn, execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { homedir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /** Envs where local TinaCMS edits write to production data (mirrors fds dev). */
@@ -28,6 +29,17 @@ const git = (root, args) => {
 
 const originOf = (url) => {
   try { return new URL(url).origin; } catch { return null; }
+};
+
+/** The pstudio workspace ledger: which folders serve which site, on which
+ *  ports. Lets the toolbar name this workspace and link to the others. */
+function readWorkspaces() {
+  const ledger = readJson(join(homedir(), '.config', 'pstudio', 'workspaces.json'));
+  return Array.isArray(ledger?.workspaces) ? ledger.workspaces : [];
+}
+
+const pidAlive = (pid) => {
+  try { process.kill(pid, 0); return true; } catch { return false; }
 };
 
 function collectState(root) {
@@ -55,7 +67,52 @@ function collectState(root) {
     fairDataProjects: config?.core_data?.project_ids ?? [],
     publicDomain: PUBLIC_DOMAIN ?? null,
     adminDomain: ADMIN_DOMAIN ?? null,
+    version: versionOf(root),
+    workspace: workspaceState(root),
+    contentClone: contentCloneState(root),
+    datalayer: {
+      port: Number(process.env.TINA_DATALAYER_PORT ?? 9000),
+      isolated: Boolean(process.env.TINA_DATALAYER_PORT),
+    },
   };
+}
+
+/** Nearest version tag plus short commit — what `fds dev status` shows. */
+function versionOf(root) {
+  const sha = git(root, ['rev-parse', '--short=8', 'HEAD']);
+  if (sha === null) return null;
+  const tag = git(root, ['tag', '--sort=-v:refname', '--merged', 'HEAD'])?.split('\n')[0] ?? '';
+  return tag ? `${tag} @ ${sha}` : sha;
+}
+
+/** This folder's workspace record and the other workspaces on the machine,
+ *  each with its URL and whether its dev server is running right now. */
+function workspaceState(root) {
+  const workspaces = readWorkspaces();
+  const mine = workspaces.find((w) => w.sitePath === root) ?? null;
+  const others = workspaces
+    .filter((w) => w.sitePath !== root)
+    .map((w) => ({
+      slug: w.slug,
+      url: `http://localhost:${w.ports.netlify}`,
+      running: pidAlive(readJson(join(w.sitePath, '.fds-dev.json'))?.pid ?? -1),
+    }));
+  return { home: mine ? dirname(mine.sitePath) : null, slug: mine?.slug ?? null, others };
+}
+
+/** The content clone Tina writes to, and how many files an editing session
+ *  has changed there — pushing those is publishing. */
+function contentCloneState(root) {
+  const workspaces = readWorkspaces();
+  const fromLedger = workspaces.find((w) => w.sitePath === root)?.contentPath;
+  const fromEnv = process.env.TINA_LOCAL_CONTENT_PATH
+    ? resolve(join(root, 'tina'), process.env.TINA_LOCAL_CONTENT_PATH)
+    : null;
+  const path = fromLedger ?? fromEnv;
+  if (!path) return null;
+  const status = git(path, ['status', '--porcelain']);
+  if (status === null) return { path, dirty: null };
+  return { path, dirty: status === '' ? 0 : status.split('\n').length };
 }
 
 export default function fdsToolbar() {
@@ -92,13 +149,13 @@ export default function fdsToolbar() {
           timer = setTimeout(send, 100);
         });
 
-        // Stop button: hand the whole thing to `dhtools fds dev stop`, which
+        // Stop button: hand the whole thing to `pstudio fds dev stop`, which
         // owns the cleanup (.env restore, state file, process group — this
         // process included). Detached so it survives the group it kills.
         toolbar.on('fds-toolbar:stop', () => {
           try {
-            spawn('dhtools', ['fds', 'dev', 'stop'], { cwd: root, detached: true, stdio: 'ignore' }).unref();
-          } catch { /* dhtools not installed — the button is only shown for fds dev sessions */ }
+            spawn('pstudio', ['fds', 'dev', 'stop'], { cwd: root, detached: true, stdio: 'ignore' }).unref();
+          } catch { /* pstudio not installed — the button is only shown for fds dev sessions */ }
         });
       },
     },
