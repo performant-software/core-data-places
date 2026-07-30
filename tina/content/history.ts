@@ -32,6 +32,16 @@ const History: Collection = {
       type: "string" 
     },
     {
+      name: "userName",
+      label: "User Name",
+      type: "string"
+    },
+    {
+      name: "userID",
+      label: "User ID",
+      type: "string"
+    },
+    {
       name: "note",
       label: "Note",
       type: "string"

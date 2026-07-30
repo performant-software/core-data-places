@@ -213,6 +213,8 @@ async function createEditHistoryEntry({
   collection,
   crudType,
   userEmail,
+  userName,
+  userID,
   timestamp,
   note,
   authCookie
@@ -220,7 +222,9 @@ async function createEditHistoryEntry({
   docId: string;
   collection: string;
   crudType: string;
-  userEmail: string | null;
+  userEmail?: string;
+  userName?: string;
+  userID: string;
   timestamp: string;
   note?: string;
   authCookie: string;
@@ -234,6 +238,8 @@ async function createEditHistoryEntry({
       $timestamp: String!
       $note: String
       $userEmail: String
+      $userName: String
+      $userID: String!
     ) {
       createEditHistory(
         relativePath: $relativePath
@@ -244,6 +250,8 @@ async function createEditHistoryEntry({
           timestamp: $timestamp
           note: $note
           userEmail: $userEmail
+          userName: $userName
+          userID: $userID
         }
       ) {
         __typename
@@ -257,6 +265,8 @@ async function createEditHistoryEntry({
           timestamp
           note
           userEmail
+          userName
+          userID
         }
       }
     }
@@ -289,6 +299,8 @@ async function createEditHistoryEntry({
         timestamp,
         note,
         userEmail,
+        userName,
+        userID
       },
     }),
   });
@@ -309,6 +321,8 @@ app.post('/api/tina/edit-history', async (req, res) => {
       collection,
       crudType,
       userEmail,
+      userName,
+      userID,
       timestamp,
       note
     } = req.body;
@@ -322,6 +336,8 @@ app.post('/api/tina/edit-history', async (req, res) => {
       collection,
       crudType,
       userEmail,
+      userName,
+      userID,
       timestamp,
       note,
       authCookie: req.headers.cookie || ''
@@ -356,7 +372,9 @@ app.post('/api/tina/*splat', async (req, res) => {
           docId: `content/${req.body.variables?.collection}/${req.body.variables?.relativePath}`,
           collection: req.body.variables?.collection,
           crudType: req.body?.query?.includes('DeleteDocument') ? 'delete' : 'rename',
-          userEmail: user?.primaryEmailAddress?.emailAddress || null,
+          userEmail: user?.primaryEmailAddress?.emailAddress,
+          userName: user?.firstName + ' ' + user?.lastName,
+          userID: user?.id,
           timestamp: new Date().toISOString(),
           authCookie: req.headers?.cookie || '',
           note: req.body?.query?.includes('RenameDocument') ? `Renamed to ${req.body?.variables?.newRelativePath}` : undefined

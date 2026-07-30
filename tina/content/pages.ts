@@ -960,6 +960,8 @@ const Pages: Collection = {
             collection: "pages",
             crudType,
             userEmail: user.primaryEmailAddress?.emailAddress,
+            userID: user.id,
+            userName: user.firstName + ' ' + user.lastName,
             timestamp: new Date().toISOString()
           }),
         });
