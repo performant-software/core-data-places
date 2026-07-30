@@ -9,6 +9,7 @@ import config from '@config';
 import { getUserRole } from '../utils/getUserRole';
 import TinaLayerSelect from '../components/TinaLayerSelect';
 import { commonCollectionFields } from './common';
+import { logEditHistory } from '../utils/content';
 
 export const pathMetadata: TinaField<false>[] = _.compact([
   {
@@ -100,7 +101,7 @@ const Paths: Collection = {
         .join('');      
       return `/en/paths/${hashHex}/preview/${document._sys.filename}`;
     },
-    beforeSubmit: (arg: { values, form, cms }) => {
+    beforeSubmit: async (arg: { values, form, cms }) => {
       const { isAdmin, userId } = getUserRole(arg.cms);
 
       // Block saves for non-owners
@@ -117,17 +118,7 @@ const Paths: Collection = {
         };
       }
 
-      // Log edit history
-      arg.values.history ||= [];
-      arg.values.history = [
-        { 
-          user_id: user.id, 
-          user_email: user.primaryEmailAddress?.emailAddress, 
-          timestamp: new Date().toISOString()
-        },
-        ...arg.values.history
-      ];
-      return arg.values;
+      return await logEditHistory(arg, "paths");
     }
   },
   fields: [

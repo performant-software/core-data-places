@@ -2,6 +2,7 @@ import { Collection } from '@tinacms/schema-tools';
 import { ColorOptionsBg, ColorOptionsBorder, ColorOptionsText, getLabel, richTextTemplates } from './pages';
 import _ from 'underscore';
 import { commonCollectionFields } from './common';
+import { logEditHistory } from '../utils/content';
 
 const Fonts = [{
   label: 'Afacad',
@@ -65,20 +66,8 @@ const Branding: Collection = {
   path: 'content/branding',
   format: 'json',
   ui: {
-    beforeSubmit: (arg: { values, form, cms }) => {
-      const user = arg.cms?.api?.tina?.authProvider?.clerk?.user;
-
-      // Log edit history
-      arg.values.history ||= [];
-      arg.values.history = [
-        { 
-          user_id: user.id, 
-          user_email: user.primaryEmailAddress?.emailAddress, 
-          timestamp: new Date().toISOString()
-        },
-        ...arg.values.history
-      ];
-      return arg.values;
+    beforeSubmit: async (arg: { values, form, cms }) => {
+      return await logEditHistory(arg, "branding");
     },
     allowedActions: {
       create: false,

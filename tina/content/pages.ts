@@ -1,6 +1,7 @@
 import { Collection, RichTextTemplate, Template, TinaField } from '@tinacms/schema-tools';
 import _ from 'underscore';
 import { commonCollectionFields, media } from './common';
+import { logEditHistory } from '../utils/content';
 
 const LABEL_SEPARATOR = ': ';
 
@@ -943,43 +944,7 @@ const Pages: Collection = {
       return `/en/pages/preview/${document._sys.filename}`;
     },
     beforeSubmit: async (arg: { values, form, cms }) => {
-      const user = arg.cms?.api?.tina?.authProvider?.clerk?.user;
-
-      const docId =
-        (arg.values?._sys?.filename as string | undefined) ??
-        (arg.form.id as string);
-      const crudType = (arg.form).crudType ?? "update";
-
-      // add to History collection
-      try {
-        await fetch("/api/tina/edit-history", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            docId,
-            collection: "pages",
-            crudType,
-            userEmail: user.primaryEmailAddress?.emailAddress,
-            userID: user.id,
-            userName: user.firstName + ' ' + user.lastName,
-            timestamp: new Date().toISOString()
-          }),
-        });
-      } catch (e) {
-        throw e;
-      }
-
-      // Log edit history
-      arg.values.history ||= [];
-      arg.values.history = [
-        { 
-          user_id: user.id, 
-          user_email: user.primaryEmailAddress?.emailAddress, 
-          timestamp: new Date().toISOString()
-        },
-        ...arg.values.history
-      ];
-      return arg.values;
+      return await logEditHistory(arg, "pages");
     },
   },
   fields: [{

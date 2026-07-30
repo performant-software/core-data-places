@@ -8,6 +8,7 @@ import config from '@config';
 import { commonCollectionFields, media } from './common';
 import PublishToggle from '../components/PublishToggle';
 import { getUserRole } from '../utils/getUserRole';
+import { logEditHistory } from '../utils/content';
 
 export const postMetadata: TinaField<false>[] = _.compact([
   {
@@ -79,7 +80,7 @@ const Posts: Collection = {
         .join('');      
       return `/en/posts/${hashHex}/preview/${document._sys.filename}`;
     },
-    beforeSubmit: (arg: { values, form, cms }) => {
+    beforeSubmit: async (arg: { values, form, cms }) => {
       const { isAdmin, userId } = getUserRole(arg.cms);
 
       // Block saves for non-owners
@@ -96,17 +97,7 @@ const Posts: Collection = {
         };
       }
 
-      // Log edit history
-      arg.values.history ||= [];
-      arg.values.history = [
-        { 
-          user_id: user.id, 
-          user_email: user.primaryEmailAddress?.emailAddress, 
-          timestamp: new Date().toISOString()
-        },
-        ...arg.values.history
-      ];
-      return arg.values;
+      return await logEditHistory(arg, "posts");
     }
   },
   fields: _.compact([
