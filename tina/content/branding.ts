@@ -80,6 +80,10 @@ const Branding: Collection = {
       ];
       return arg.values;
     },
+    allowedActions: {
+      create: false,
+      delete: false
+    }
   },
   fields: [{
     name: 'title',
@@ -516,13 +520,7 @@ const Branding: Collection = {
         }]
       }]
     }]
-  }, ...commonCollectionFields],
-  ui: {
-    allowedActions: {
-      create: false,
-      delete: false
-    }
-  }
+  }, ...commonCollectionFields]
 };
 
 export default Branding;

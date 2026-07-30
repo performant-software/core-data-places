@@ -32,13 +32,18 @@ const History: Collection = {
       type: "string" 
     },
     {
-      name: "snapshot",
-      label: "Snapshot",
-      type: "object",
-      list: false,
-      fields: [],
-    },
+      name: "note",
+      label: "Note",
+      type: "string"
+    }
   ],
+  ui: {
+    allowedActions: {
+      create: false,
+      delete: false,
+      createNestedFolder: false,
+    }
+  }
 };
 
 export default History;

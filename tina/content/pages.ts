@@ -960,8 +960,7 @@ const Pages: Collection = {
             collection: "pages",
             crudType,
             userEmail: user.primaryEmailAddress?.emailAddress,
-            timestamp: new Date().toISOString(),
-            snapshot: arg.values,
+            timestamp: new Date().toISOString()
           }),
         });
       } catch (e) {

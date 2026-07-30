@@ -108,6 +108,10 @@ const ClerkBackendAuthentication = ({
           if (user.role === 'org:admin') {
             return { isAuthorized: true as const };
           }
+          // if this is an edit to the History collection, pass it through
+          if (req.body?.variables?.collection === 'editHistory') {
+            return { isAuthorized: true as const };
+          }
           // non-admin users cannot delete
           if (req.body?.query?.includes('DeleteDocument')) {
             return {
@@ -204,7 +208,162 @@ const mediaHandler = createMediaHandler({
   }
 });
 
+async function createEditHistoryEntry({
+  docId,
+  collection,
+  crudType,
+  userEmail,
+  timestamp,
+  note,
+  authCookie
+}: {
+  docId: string;
+  collection: string;
+  crudType: string;
+  userEmail: string | null;
+  timestamp: string;
+  note?: string;
+  authCookie: string;
+}) {
+  const ADD_EDIT_HISTORY_MUTATION = `
+    mutation CreateEditHistory(
+      $relativePath: String!
+      $docId: String!
+      $collection: String!
+      $crudType: String!
+      $timestamp: String!
+      $note: String
+      $userEmail: String
+    ) {
+      createEditHistory(
+        relativePath: $relativePath
+        params: {
+          docId: $docId
+          collection: $collection
+          crudType: $crudType
+          timestamp: $timestamp
+          note: $note
+          userEmail: $userEmail
+        }
+      ) {
+        __typename
+        ... on EditHistory {
+          _sys {
+            filename
+          }
+          docId
+          collection
+          crudType
+          timestamp
+          note
+          userEmail
+        }
+      }
+    }
+  `;
+  // Choose a relativePath for the history doc
+  const safeDocId = docId.replace(/[^\w.-]/g, "_");
+  const safeCollection = collection.replace(/[^\w.-]/g, "_");
+  const fileName = `${timestamp}-${safeCollection}-${safeDocId}.json`.replace(
+    /[:]/g,
+    "-"
+  );
+
+  const endpoint =
+    process.env.TINA_GRAPHQL_ENDPOINT ??
+    `${process.env.URL ?? "http://localhost:8888"}/api/tina/gql`;
+
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      cookie: authCookie
+    },
+    body: JSON.stringify({
+      query: ADD_EDIT_HISTORY_MUTATION,
+      variables: {
+        relativePath: fileName,
+        docId,
+        collection,
+        crudType,
+        timestamp,
+        note,
+        userEmail,
+      },
+    }),
+  });
+
+  const json = await res.json();
+  if (!res.ok || json.errors) {
+    console.error("Tina GraphQL error", json.errors);
+    throw new Error("Failed to create edit history document");
+  }
+
+  return json.data;
+}
+
+app.post('/api/tina/edit-history', async (req, res) => {
+  try {
+    const {
+      docId,
+      collection,
+      crudType,
+      userEmail,
+      timestamp,
+      note
+    } = req.body;
+
+    if (!docId || !collection || !timestamp) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    await createEditHistoryEntry({
+      docId,
+      collection,
+      crudType,
+      userEmail,
+      timestamp,
+      note,
+      authCookie: req.headers.cookie || ''
+    });
+
+    return res.status(200).json({ ok: true });
+  } catch (e) {
+    console.error("Error creating edit history entry", e);
+    return res.status(500).json({ message: "Failed to create edit history" });
+  }
+});
+
 app.post('/api/tina/*splat', async (req, res) => {
+  if (req.body?.query?.includes('DeleteDocument') || req.body?.query?.includes('RenameDocument')) {
+    const { isAuthorized } = await authProvider.isAuthorized(req, res);
+    if (isAuthorized) {
+      // In this case we need to make a log in the edit history
+      // First we have to determine the current user
+      const clerk = createClerkClient({
+        secretKey: process.env.CLERK_SECRET
+      });
+  
+      const requestState = await clerk.authenticateRequest(
+        toFetchRequest(req),
+        { publishableKey: process.env.TINA_PUBLIC_CLERK_PUBLIC_KEY! }
+      );
+  
+      if (requestState.status === 'signed-in') {
+        const user = await clerk.users.getUser(requestState.toAuth().userId);
+        // Now we have the user, and we can call the 
+        await createEditHistoryEntry({
+          docId: `content/${req.body.variables?.collection}/${req.body.variables?.relativePath}`,
+          collection: req.body.variables?.collection,
+          crudType: req.body?.query?.includes('DeleteDocument') ? 'delete' : 'rename',
+          userEmail: user?.primaryEmailAddress?.emailAddress || null,
+          timestamp: new Date().toISOString(),
+          authCookie: req.headers?.cookie || '',
+          note: req.body?.query?.includes('RenameDocument') ? `Renamed to ${req.body?.variables?.newRelativePath}` : undefined
+        });
+      }
+    }
+  }
   tinaBackend(req, res);
 });
 
