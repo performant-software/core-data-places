@@ -109,7 +109,7 @@ const ClerkBackendAuthentication = ({
             return { isAuthorized: true as const };
           }
           // if this is an edit to the History collection, pass it through
-          if (req.body?.variables?.collection === 'editHistory') {
+          if (req.body?.query?.includes('createEditHistory')) {
             return { isAuthorized: true as const };
           }
           // non-admin users cannot delete
