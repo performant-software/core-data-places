@@ -7,6 +7,9 @@ const loader = {
   load: async (context: LoaderContext): Promise<void> => {
     const { logger, store } = context;
 
+    logger.info('Clearing the data store...');
+    store.clear();
+
     logger.info('Fetching gallery manifests.');
 
     const data = await getManifests();
