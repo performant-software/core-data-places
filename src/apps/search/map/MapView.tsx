@@ -6,8 +6,10 @@ import Map from '@components/Map';
 import { useGeoSearch, useSearching } from '@performant-software/core-data';
 import { useLoadedMap, useSelectionValue } from '@peripleo/maplibre';
 import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
-import { useContext, useEffect, useMemo } from 'react';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
 import _ from 'underscore';
+
+const DEFAULT_BOUND_RETRIES = 3;
 
 const MapView = () => {
   const config = useSearchConfig();
@@ -34,14 +36,27 @@ const MapView = () => {
     !isRefinedWithMap() && route === '/' && config.map.zoom_to_place
   ), [route, isRefinedWithMap()]);
 
+  const fitMaptoBounds = useCallback((retries: number = DEFAULT_BOUND_RETRIES) => {
+    getBoundingBox().then((bbox) => {
+      if (bbox) {
+        map.fitBounds(bbox, boundingBoxOptions);
+      } else if (retries > 0) {
+        setTimeout(() => {
+          fitMaptoBounds(retries - 1);
+        }, 500);
+      }
+    })
+  }, [getBoundingBox, map, boundingBoxOptions]);
+
   /**
    * Sets the bounding box on the data set.
    */
   useEffect(() => {
     if (fitBoundingBox && !_.isEmpty(features) && map && !searching) {
-      getBoundingBox().then((bbox) => map.fitBounds(bbox, boundingBoxOptions));
+      fitMaptoBounds();
     }
   }, [boundingBoxOptions, fitBoundingBox, features, map, searching]);
+
 
   /**
    * Navigate to the `/select` route when feature is selected.

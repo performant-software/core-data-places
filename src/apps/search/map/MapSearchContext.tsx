@@ -99,7 +99,7 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
           promises.push(Promise.resolve(cached));
         } else if (!preload) {
           promises.push(Promise.resolve(feature));
-        } else {
+        } else if (source) {
           promises.push(source.getData());
         }
       }
