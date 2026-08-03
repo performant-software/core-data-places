@@ -8,6 +8,8 @@ import { Collection, TinaField } from '@tinacms/schema-tools';
 import config from '@config';
 import { getUserRole } from '../utils/getUserRole';
 import TinaLayerSelect from '../components/TinaLayerSelect';
+import { commonCollectionFields } from './common';
+import { logEditHistory } from '../utils/content';
 
 export const pathMetadata: TinaField<false>[] = _.compact([
   {
@@ -99,7 +101,7 @@ const Paths: Collection = {
         .join('');      
       return `/en/paths/${hashHex}/preview/${document._sys.filename}`;
     },
-    beforeSubmit: (arg: { values, form, cms }) => {
+    beforeSubmit: async (arg: { values, form, cms }) => {
       const { isAdmin, userId } = getUserRole(arg.cms);
 
       // Block saves for non-owners
@@ -115,7 +117,8 @@ const Paths: Collection = {
           email: user.primaryEmailAddress?.emailAddress
         };
       }
-      return arg.values;
+
+      return await logEditHistory(arg, "paths");
     }
   },
   fields: [
@@ -302,7 +305,8 @@ const Paths: Collection = {
       ui: {
         component: TinaLayerSelect
       }
-    }
+    },
+    ...commonCollectionFields
   ]
 };
 

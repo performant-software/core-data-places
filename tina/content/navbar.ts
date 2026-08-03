@@ -1,4 +1,6 @@
 import { Collection, StringField } from '@tinacms/schema-tools';
+import { commonCollectionFields } from './common';
+import { logEditHistory } from '../utils/content';
 
 const labelField: StringField = {
   name: 'label',
@@ -24,6 +26,11 @@ const Navbar: Collection = {
   label: 'Navbar',
   path: 'content/navbar',
   format: 'json',
+  ui: {
+    beforeSubmit: async (arg: { values, form, cms }) => {
+      return await logEditHistory(arg, "navbar");
+    },
+  },
   fields: [
     {
       name: 'items',
@@ -64,7 +71,8 @@ const Navbar: Collection = {
           }
         }
       ],
-    }
+    },
+    ...commonCollectionFields
   ]
 };
 

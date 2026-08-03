@@ -8,6 +8,8 @@ import PagesCollection from './content/pages';
 import PathsCollection from './content/paths';
 import PostsCollection from './content/posts';
 import Settings from './content/settings';
+import History from './content/history';
+import HistoryDashboard from './content/historyDashboard';
 import { ClerkAuthProvider } from './auth-provider';
 import { Clerk } from '@clerk/clerk-js';
 
@@ -63,7 +65,9 @@ export default defineConfig({
         : undefined,
       I18n,
       Navbar,
-      Settings
+      Settings,
+      History,
+      HistoryDashboard
     ])
   }
 });

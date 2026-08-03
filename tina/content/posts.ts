@@ -5,9 +5,10 @@ import Creator from '../components/Creator';
 import NotEditableNotice from '../components/NotEditableNotice';
 import _ from 'underscore';
 import config from '@config';
-import { media } from './common';
+import { commonCollectionFields, media } from './common';
 import PublishToggle from '../components/PublishToggle';
 import { getUserRole } from '../utils/getUserRole';
+import { logEditHistory } from '../utils/content';
 
 export const postMetadata: TinaField<false>[] = _.compact([
   {
@@ -79,7 +80,7 @@ const Posts: Collection = {
         .join('');      
       return `/en/posts/${hashHex}/preview/${document._sys.filename}`;
     },
-    beforeSubmit: (arg: { values, form, cms }) => {
+    beforeSubmit: async (arg: { values, form, cms }) => {
       const { isAdmin, userId } = getUserRole(arg.cms);
 
       // Block saves for non-owners
@@ -95,7 +96,8 @@ const Posts: Collection = {
           email: user.primaryEmailAddress?.emailAddress
         };
       }
-      return arg.values;
+
+      return await logEditHistory(arg, "posts");
     }
   },
   fields: _.compact([
@@ -217,6 +219,7 @@ const Posts: Collection = {
         ...Visualizations
       ]
     },
+    ...commonCollectionFields
   ]),
 };
 
