@@ -6,10 +6,8 @@ import Map from '@components/Map';
 import { useGeoSearch, useSearching } from '@performant-software/core-data';
 import { useLoadedMap, useSelectionValue } from '@peripleo/maplibre';
 import { useCurrentRoute, useNavigate } from '@peripleo/peripleo';
-import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import _ from 'underscore';
-
-const DEFAULT_BOUND_RETRIES = 3;
 
 const MapView = () => {
   const config = useSearchConfig();

@@ -86,7 +86,6 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
     _.each(features, (feature) => {
       if (feature.properties.visible) {
         const id = feature.properties.uuid;
-        const source = map.getSource(`source-${id}`) as unknown as GeoJSONSource;
 
         const cached = geometryCache[id];
 
@@ -100,8 +99,6 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
           promises.push(Promise.resolve(cached));
         } else if (!preload) {
           promises.push(Promise.resolve(feature));
-        } else if (source) {
-          promises.push(source.getData());
         } else {
           promises.push(fetch(feature.properties.url).then((res) => (res.json())));
         }
