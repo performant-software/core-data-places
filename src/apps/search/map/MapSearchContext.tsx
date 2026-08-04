@@ -75,9 +75,10 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
   /**
    * Returns a promise that resolves the bounding box for all visible features.
    */
-  const getBoundingBox = useCallback(() => new Promise<LngLatBoundsLike>((resolve) => {
+  const getBoundingBox = useCallback(() => new Promise<LngLatBoundsLike | null>((resolve) => {
     if (!map) {
-      return;
+      resolve(null);
+      return ;
     }
 
     const promises = [];
@@ -101,6 +102,8 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
           promises.push(Promise.resolve(feature));
         } else if (source) {
           promises.push(source.getData());
+        } else {
+          promises.push(fetch(feature.properties.url).then((res) => (res.json())));
         }
       }
     });
@@ -110,7 +113,7 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
         // Set the fetched data in the geometry cache
         setGeometryCache((prevCache) => ({
           ...prevCache,
-          ..._.indexBy(data, (d) => d.properties.uuid)
+          ..._.indexBy(_.compact(data), (d) => d.properties.uuid)
         }));
 
         // Calculate the bounding box
@@ -118,6 +121,9 @@ export const MapSearchContextProvider = ({ allowSave, children, preload }: Props
         const bbox = MapUtils.getBoundingBox(featureCollection);
 
         resolve(bbox);
+      })
+      .catch(() => {
+        resolve(null);
       });
   }), [features, geometryCache, map, preload]);
 
