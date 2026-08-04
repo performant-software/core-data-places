@@ -12,7 +12,7 @@ if (STATIC_BUILD && !USE_CONTENT_CACHE) {
   _.extend(collections, { ...coreDataLoader, ...galleryLoader });
 }
 
-if (PRELOAD_MAP && !USE_CONTENT_CACHE) {
+if ((PRELOAD_MAP || STATIC_BUILD) && !USE_CONTENT_CACHE) {
   _.extend(collections, geometryLoader);
 }
 
