@@ -8,7 +8,9 @@
     "preview": "astro preview",
     "test-config": "vitest run config.test.ts",
     "vitest": "vitest run",
-    "playwright": "npx playwright test"
+    "playwright": "npx playwright test",
+    "test-a11y": "npx playwright test test/browser/a11y.test.ts",
+    "test-rbac": "npx playwright test test/browser/rbac.test.ts"
   },
   "engines": {
     "node": ">=24.14.0 <25.0.0"

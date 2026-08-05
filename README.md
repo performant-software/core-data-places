@@ -36,10 +36,19 @@ npm run vitest
 The accessibility tests must be run against an actual site (either host or local). Set the `A11Y_HOST` environment variable in the `.env` file and then run the following.
 
 ```
-npm run playwright
+npm run test-a11y
 ```
 
 The results will be output to `playwright-report/index.html`.
+
+#### RBAC tests
+
+To test that RBAC is being correctly enforced in the TinaCMS interface, set the `TINA_PUBLIC_TINA_BASE_URL` to the admin URL you want to test (or leave blank to default to `http://localhost:8888/admin`), and set `TINA_PUBLIC_IS_LOCAL=true` and `TINA_PUBLIC_DEV_ROLE=org:member` in the environment you wish to test. Then run:
+```
+npm run test-rbac
+```
+
+These tests will determine whether the cosmetic modifications to the Tina interface are being correctly applied when a non-admin user is logged in. Importantly, this set of tests does *not* look at the Tina backend controls that block edit/delete actions on unauthorized content. That functionality needs to be tested separately.
 
 #### E2E tests
 
