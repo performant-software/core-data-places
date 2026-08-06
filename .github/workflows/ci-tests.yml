@@ -1,0 +1,93 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+    branches: [develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  TINA_LOCAL_CONTENT_PATH: ../test/fixtures/
+  BASE_LOCAL_CONTENT_PATH: test/fixtures/
+
+jobs:
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - run: npm ci
+
+      # Generates public/config.json, public/branding.json, src/i18n/*.json
+      # and src/components/custom/project — all gitignored, all required by
+      # the vitest path aliases (@config, @branding).
+      - name: Build generated assets
+        run: node scripts/build.mjs
+
+      - run: npm run vitest
+
+  rbac:
+    name: TinaCMS RBAC
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TINA_PUBLIC_IS_LOCAL: 'true'
+      TINA_PUBLIC_DEV_ROLE: 'org:member'
+      TINA_PUBLIC_DEV_USER_ID: 'user_test_fixture'
+      TINA_PUBLIC_TINA_BASE_URL: 'http://localhost:8888/admin/'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx playwright install --with-deps chromium
+
+      - run: npm install -g netlify-cli
+
+      # npm start === node scripts/build.mjs && tinacms dev -c "astro dev".
+      # The TINA_PUBLIC_* vars above are inlined into the admin bundle here,
+      # which is why they must be set on this step and not on the test step.
+      - name: Start TinaCMS admin
+        run: nohup npm start > /tmp/dev-server.log 2>&1 &
+
+      - name: Wait for admin
+        run: |
+          for i in $(seq 1 90); do
+            curl -sfo /dev/null http://localhost:4321/admin/index.html && exit 0
+            sleep 2
+          done
+          echo "::error::admin did not come up within 180s"
+          cat /tmp/dev-server.log
+          exit 1
+
+      - run: npm run test-rbac
+
+      - name: Upload report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Dump server log
+        if: failure()
+        run: cat /tmp/dev-server.log

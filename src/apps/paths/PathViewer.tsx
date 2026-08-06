@@ -61,13 +61,13 @@ const PathViewer = (props: PathViewerProps) => {
   /**
    * Memo-izes the current place.
    */
-  const place = useMemo(() => path?.path[current] && path.path[current].place, [current, path]);
+  const place = useMemo(() => path?.path && path?.path[current] && path.path[current].place, [current, path]);
 
   /**
    * Memo-izes the array of place IDs.
    */
   const placeIds = useMemo(
-    () => path.path.map(({ place: { uuid } }) => uuid),
+    () => path?.path?.length ? path.path.map(({ place: { uuid } }) => uuid) : [],
     [path.path]
   );
 
@@ -148,8 +148,8 @@ const PathViewer = (props: PathViewerProps) => {
             <ArrowRightCircleIcon
               className={clsx(
                 'h-8 w-8',
-                { 'text-gray-500 cursor-default': current === path.path.length - 1 },
-                { 'cursor-pointer hover:scale-105 transition': current !== path.path.length - 1 }
+                { 'text-gray-500 cursor-default': !path.path || current === path.path.length - 1 },
+                { 'cursor-pointer hover:scale-105 transition': path.path && current !== path.path.length - 1 }
               )}
             />
           </Button>
