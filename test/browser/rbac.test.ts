@@ -11,7 +11,7 @@ const ADMIN_ONLY_LINKS = [
 
 const VISIBLE_LINKS = ['Posts', 'Paths'];
 
-test.use({ baseURL: process.env.TINA_PUBLIC_TINA_BASE_URL || 'http://localhost:8888/admin/'})
+test.use({ baseURL: process.env.RBAC_BASE_URL || 'http://localhost:8888/admin/'});
 
 test.describe('Tina RBAC restrictions', () => {
   test.beforeEach(async ({ page }) => {
