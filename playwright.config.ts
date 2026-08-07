@@ -41,6 +41,14 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
+  /* Configuration for running tests in any environment, e.g. CI testing. */
+  webServer: {
+    command: 'npx netlify dev',
+    url: 'http://localhost:8888/admin',
+    reuseExistingServer: !process.env.CI,
+    timeout: 300 * 1000, // 5 minutes max to boot up
+  },
+
   /* Configure projects for major browsers */
   projects: [{
     name: 'chromium',
