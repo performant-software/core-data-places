@@ -18,6 +18,7 @@ app.use(cors());
 app.use(cookieParser());
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
+const MEMBER_COLLECTIONS = ['path', 'post'];
 
 if (!isLocal && !process.env.CLERK_SECRET) {
   throw new Error(
@@ -129,14 +130,14 @@ const ClerkBackendAuthentication = ({
             };           
           }
           // non-admin users can only edit paths and posts
-          if (req.body?.variables?.collection && !(req.body?.variables?.collection === 'post' || req.body?.variables?.collection === 'path')) {
+          if (req.body?.variables?.collection && !MEMBER_COLLECTIONS.includes(req.body.variables.collection)) {
             return {
               isAuthorized: false as const,
               errorMessage: 'You do not have access to this collection.',
               errorCode: 401,
             };
           }
-          for (const collection of ['path', 'post']) {
+          for (const collection of MEMBER_COLLECTIONS) {
             if (
               req.body?.variables?.params 
             ) {
