@@ -10,7 +10,7 @@
     "vitest": "vitest run",
     "playwright": "npx playwright test",
     "test-a11y": "npx playwright test test/browser/a11y.test.ts",
-    "test-rbac": "npx playwright test test/browser/rbac.test.ts"
+    "test-rbac": "npx playwright test --config=playwright.rbac.config.ts"
   },
   "engines": {
     "node": ">=24.14.0 <25.0.0"
@@ -30,6 +30,7 @@
     "@types/underscore": "^1.13.0",
     "@vitest/browser-playwright": "^4.1.9",
     "astro": "^7.0.3",
+    "netlify-cli": "^27.1.1",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3",
     "vitest": "^4.1.9"
