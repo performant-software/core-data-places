@@ -39,7 +39,6 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
-  // The admin UI is Chromium-only in practice.
   projects: [{
     name: 'rbac',
     use: {
