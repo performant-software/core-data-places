@@ -14,8 +14,10 @@
   force = true
 
 [dev]
-  command = "npm start"
+  # A dummy command to keep the Netlify process alive without spawning Astro
+  command = "tail -f /dev/null"
   targetPort = 4321
+  port = 8888
 
 [build]
   command = "npm run build"

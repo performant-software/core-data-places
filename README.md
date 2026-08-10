@@ -20,7 +20,7 @@ Add a `/public/config.dev.json` file, which will be ignored by Git, to copy loca
 
 To start, run:
 ```
-npm install && netlify dev
+npm install && npm run dev
 ```
 
 ## Testing

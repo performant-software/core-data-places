@@ -50,6 +50,7 @@
         "npm:@vitest/browser-playwright@^4.1.9",
         "npm:astro@^7.0.3",
         "npm:clsx@^2.1.1",
+        "npm:concurrently@^10.0.4",
         "npm:cookie-parser@^1.4.7",
         "npm:cors@^2.8.6",
         "npm:express@^5.2.1",
@@ -74,7 +75,8 @@
         "npm:ts-node@^10.9.2",
         "npm:typescript@^6.0.3",
         "npm:underscore@^1.13.8",
-        "npm:vitest@^4.1.9"
+        "npm:vitest@^4.1.9",
+        "npm:wait-on@^9.1.0"
       ]
     }
   }
