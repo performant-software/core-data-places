@@ -32,10 +32,12 @@ export default Stories;
 
 ## Admin-Only Collections
 If the new collection should only be accessible by TinaCMS admin users, then...
+
 4. In `tina/role-ui.ts`, add the *label* of your collection to the `ADMIN_ONLY_COLLECTIONS` constant.
 
 ## Editor-created Content Collections
 If the new collection should be editable by all project members, then...
+
 5. In `netlify/functions/tina.ts`, add your new collection name to the `MEMBER_COLLECTIONS` constant.
 6. Make sure that your collection schema includes all of the elements in the example below. Specifically, you should add...
 - A `_notEditableNotice` field using the `NotEditableNotice` component (displays when a member accesses a document they don't have edit access to);
@@ -119,10 +121,12 @@ const Stories: Collection = {
 
 ## Using Your Collection
 Chances are if you made this collection you intend to use content from it somewhere, so you should probably...
+
 7. Add methods to fetch content from your new collection in `src/backend/tina/index.ts`, following the format of the other functions in that file.
 
 ## Visual Editing
 If you want your collection hooked up to the Tina visual editor, there are a couple further steps.
+
 8. Add the `ui.router` property to your collection pointing to the URL of the page you want the visual editor to render, e.g.
 ```
 ...
