@@ -21,6 +21,10 @@ export default defineConfig({
   testDir: 'test/browser',
   testMatch: /rbac\.test\.ts/,
 
+  // netlify's child processes can outlive Playwright's webServer teardown; free
+  // the ports afterwards so the proxy doesn't linger on 8888.
+  globalTeardown: './test/browser/rbac.teardown.ts',
+
   // Serial: all tests share one stateful dev server.
   fullyParallel: false,
   workers: 1,
