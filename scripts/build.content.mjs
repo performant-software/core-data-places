@@ -1,14 +1,23 @@
 import child_process from 'node:child_process';
 import fs from 'node:fs';
+import { contentPath } from './build.paths.mjs';
 
 const TEMP_DIR = './tmp';
-const LOCAL_CONTENT_ROOT = process.env.BASE_LOCAL_CONTENT_PATH || './';
 
 export const fetchContent = async () => {
-  if (!(process.env.GITHUB_OWNER && process.env.GITHUB_REPO)) {
+  // Content already exists locally; don't fetch (cloning would overwrite it).
+  const useLocalContent = !!process.env.TINA_LOCAL_CONTENT_PATH;
+
+  if (useLocalContent || !(process.env.GITHUB_OWNER && process.env.GITHUB_REPO)) {
+    if (useLocalContent) {
+      console.info(`Using local content at ${contentPath()}`);
+    }
+
     // Copy the branding file to the public directory
-    if (fs.existsSync(`${LOCAL_CONTENT_ROOT}content/branding/branding.json`)) {
-      fs.cpSync(`${LOCAL_CONTENT_ROOT}content/branding/branding.json`, './public/branding.json');
+    const branding = contentPath('branding', 'branding.json');
+
+    if (fs.existsSync(branding)) {
+      fs.cpSync(branding, './public/branding.json');
     }
 
     return;
@@ -28,7 +37,7 @@ export const fetchContent = async () => {
   child_process.execFileSync('git', ['clone', '--branch', branch, '--single-branch', url, TEMP_DIR], { stdio: 'inherit' });
 
   // Copy the "content" folder to the current directory
-  fs.cpSync(`${TEMP_DIR}/content`, `${LOCAL_CONTENT_ROOT}content`, { recursive: true });
+  fs.cpSync(`${TEMP_DIR}/content`, contentPath(), { recursive: true });
 
   // Copy the branding file to the public directory
   fs.cpSync(`${TEMP_DIR}/content/branding/branding.json`, './public/branding.json');
