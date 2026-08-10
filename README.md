@@ -23,6 +23,8 @@ To start, run:
 npm install && npm run dev
 ```
 
+`npm run dev` runs Astro and a Netlify proxy as separate processes (Netlify spawning Astro breaks under Node 24). Astro runs via `netlify dev:exec`, so a linked Netlify site's environment variables are injected.
+
 ## Testing
 
 #### Unit tests
@@ -54,6 +56,7 @@ Notes:
 - Use the Node version in `.node-version` (Netlify serves the Tina API, and its function needs that version).
 - To run against a **deployed** admin instead of a local one, set `RBAC_BASE_URL` to that admin URL (e.g. `https://mysite.netlify.app/admin/`); server startup is skipped and the host is tested as-is.
 - Importantly, this set of tests does *not* look at the Tina backend controls that block edit/delete actions on unauthorized content. That functionality needs to be tested separately.
+- When writing tests, use watch mode — `npm run test-rbac -- --ui` (or `--watch`) — so the server stays warm across re-runs and fixture edits are picked up live, instead of paying the startup cost each time.
 
 #### E2E tests
 
