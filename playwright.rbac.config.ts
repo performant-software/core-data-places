@@ -87,7 +87,10 @@ export default defineConfig({
       reuseExistingServer: false,
       timeout: 120_000,
       stdout: 'pipe',
-      stderr: 'pipe'
+      stderr: 'pipe',
+      env: {
+        TINA_PUBLIC_IS_LOCAL: 'true'
+      }
     }
   ] : undefined
 });
