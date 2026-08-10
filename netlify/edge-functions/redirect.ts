@@ -14,6 +14,13 @@ const ignorePaths = [
   '/_astro'
 ]
 
+// The development server answers for every site, so it serves /admin itself.
+const localHostnames = [
+  'localhost',
+  '127.0.0.1',
+  '[::1]'
+]
+
 export default async (request: Request, context: Context) => {
   if (!publicDomain || !adminDomain) {
     return context.next();
@@ -29,14 +36,20 @@ export default async (request: Request, context: Context) => {
     return context.next();
   }
 
-  if (url.hostname === publicDomain && url.pathname.startsWith('/admin')) {
-    url.hostname = adminDomain;
-    url.port = '';
-    return Response.redirect(url.toString(), 301);
+  const admin = url.pathname.startsWith('/admin');
+
+  if (url.hostname === adminDomain) {
+    if (!admin) {
+      url.hostname = publicDomain;
+      return Response.redirect(url.toString(), 301);
+    }
+
+    return context.next();
   }
 
-  if (url.hostname === adminDomain && !url.pathname.startsWith('/admin')) {
-    url.hostname = publicDomain;
+  if (admin && !localHostnames.includes(url.hostname)) {
+    url.hostname = adminDomain;
+    url.port = '';
     return Response.redirect(url.toString(), 301);
   }
 
