@@ -12,9 +12,9 @@ concurrency:
 permissions:
   contents: read
 
+# Serve the committed fixtures instead of a real content repo.
 env:
   TINA_LOCAL_CONTENT_PATH: ../test/fixtures/
-  BASE_LOCAL_CONTENT_PATH: ./test/fixtures/
 
 jobs:
   unit:
@@ -31,9 +31,7 @@ jobs:
 
       - run: npm ci
 
-      # Generates public/config.json, public/branding.json, src/i18n/*.json
-      # and src/components/custom/project — all gitignored, all required by
-      # the vitest path aliases (@config, @branding).
+      # Generates gitignored assets required by the vitest path aliases.
       - name: Build generated assets
         run: node scripts/build.mjs
 
@@ -43,11 +41,7 @@ jobs:
     name: TinaCMS RBAC
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      TINA_PUBLIC_IS_LOCAL: 'true'
-      TINA_PUBLIC_DEV_ROLE: 'org:member'
-      TINA_PUBLIC_DEV_USER_ID: 'user_test_fixture'
-      TINA_PUBLIC_TINA_BASE_URL: 'http://localhost:8888/admin/'
+    # Servers and their env live in playwright.rbac.config.ts's webServer block.
     steps:
       - uses: actions/checkout@v4
 
@@ -59,9 +53,6 @@ jobs:
       - run: npm ci
 
       - run: npx playwright install --with-deps chromium
-
-      - name: Build generated assets
-        run: node scripts/build.mjs
 
       - name: Run RBAC tests
         run: npm run test-rbac

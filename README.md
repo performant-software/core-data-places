@@ -20,8 +20,10 @@ Add a `/public/config.dev.json` file, which will be ignored by Git, to copy loca
 
 To start, run:
 ```
-npm install && netlify dev
+npm install && npm run dev
 ```
+
+`npm run dev` runs Astro and a Netlify proxy as separate processes (Netlify spawning Astro breaks under Node 24). Astro runs via `netlify dev:exec`, so a linked Netlify site's environment variables are injected.
 
 ## Testing
 
@@ -43,12 +45,18 @@ The results will be output to `playwright-report/index.html`.
 
 #### RBAC tests
 
-To test that RBAC is being correctly enforced in the TinaCMS interface, set the `TINA_PUBLIC_TINA_BASE_URL` to the admin URL you want to test (or leave blank to default to `http://localhost:8888/admin`), and set `TINA_PUBLIC_IS_LOCAL=true` and `TINA_PUBLIC_DEV_ROLE=org:member` in the environment you wish to test. Then run:
+The RBAC test suite will determine whether the cosmetic modifications to the Tina interface are being correctly applied when a non-admin user is logged in. Ensure the chromium browser is installed for the test runner: `npx playwright install chromium`. Then run:
+
 ```
 npm run test-rbac
 ```
 
-These tests will determine whether the cosmetic modifications to the Tina interface are being correctly applied when a non-admin user is logged in. Importantly, this set of tests does *not* look at the Tina backend controls that block edit/delete actions on unauthorized content. That functionality needs to be tested separately.
+Notes:
+- Expect a run to take a few minutes. The suite starts a fresh local TinaCMS admin each time and astro compiles the content preview routes on demand, which requires map/IIIF libraries.
+- Use the Node version in `.node-version` (Netlify serves the Tina API, and its function needs that version).
+- To run against a **deployed** admin instead of a local one, set `RBAC_BASE_URL` to that admin URL (e.g. `https://mysite.netlify.app/admin/`); server startup is skipped and the host is tested as-is.
+- Importantly, this set of tests does *not* look at the Tina backend controls that block edit/delete actions on unauthorized content. That functionality needs to be tested separately.
+- When writing tests, use watch mode — `npm run test-rbac -- --ui` (or `--watch`) — so the server stays warm across re-runs and fixture edits are picked up live, instead of paying the startup cost each time.
 
 #### E2E tests
 

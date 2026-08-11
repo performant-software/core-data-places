@@ -13,6 +13,9 @@ const baseURL = `${process.env.A11Y_HOST}/${locale}/`;
 export default defineConfig({
   testDir: 'test/browser',
 
+  /* RBAC tests need a locally served admin and own their setup. See playwright.rbac.config.ts. */
+  testIgnore: /rbac\.test\.ts/,
+
   /* Run tests in files in parallel */
   fullyParallel: true,
 
@@ -39,14 +42,6 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-  },
-
-  /* Configuration for running tests in any environment, e.g. CI testing. */
-  webServer: {
-    command: 'npx netlify dev',
-    url: 'http://localhost:8888/admin',
-    reuseExistingServer: !process.env.CI,
-    timeout: 300 * 1000, // 5 minutes max to boot up
   },
 
   /* Configure projects for major browsers */
