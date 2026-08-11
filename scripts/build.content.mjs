@@ -1,13 +1,25 @@
 import child_process from 'node:child_process';
 import fs from 'node:fs';
+import { contentPath } from './build.paths.mjs';
 
 const TEMP_DIR = './tmp';
 
 export const fetchContent = async () => {
-  if (!(process.env.GITHUB_OWNER && process.env.GITHUB_REPO)) {
+  // Skip the git fetch and use whatever content is already on disk. Kept
+  // separate from TINA_LOCAL_CONTENT_PATH so you can point Tina at a local dir
+  // and still fetch content into it initially.
+  const skipFetch = process.env.SKIP_CONTENT_FETCH === 'true';
+
+  if (skipFetch || !(process.env.GITHUB_OWNER && process.env.GITHUB_REPO)) {
+    if (skipFetch) {
+      console.info(`Skipping content fetch; using ${contentPath()}`);
+    }
+
     // Copy the branding file to the public directory
-    if (fs.existsSync('./content/branding/branding.json')) {
-      fs.cpSync('./content/branding/branding.json', './public/branding.json');
+    const branding = contentPath('branding', 'branding.json');
+
+    if (fs.existsSync(branding)) {
+      fs.cpSync(branding, './public/branding.json');
     }
 
     return;
@@ -27,7 +39,7 @@ export const fetchContent = async () => {
   child_process.execFileSync('git', ['clone', '--branch', branch, '--single-branch', url, TEMP_DIR], { stdio: 'inherit' });
 
   // Copy the "content" folder to the current directory
-  fs.cpSync(`${TEMP_DIR}/content`, './content', { recursive: true });
+  fs.cpSync(`${TEMP_DIR}/content`, contentPath(), { recursive: true });
 
   // Copy the branding file to the public directory
   fs.cpSync(`${TEMP_DIR}/content/branding/branding.json`, './public/branding.json');

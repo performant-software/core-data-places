@@ -25,6 +25,7 @@
         "npm:@heroicons/react@^2.2.0",
         "npm:@nanostores/react@^1.1.0",
         "npm:@netlify/edge-functions@^3.0.8",
+        "npm:@netlify/functions@^5.3.0",
         "npm:@octokit/rest@^22.0.1",
         "npm:@performant-software/core-data@^3.1.25",
         "npm:@performant-software/geospatial@^3.1.25",
@@ -49,6 +50,7 @@
         "npm:@vitest/browser-playwright@^4.1.9",
         "npm:astro@^7.0.3",
         "npm:clsx@^2.1.1",
+        "npm:concurrently@^10.0.4",
         "npm:cookie-parser@^1.4.7",
         "npm:cors@^2.8.6",
         "npm:express@^5.2.1",
@@ -58,6 +60,7 @@
         "npm:mongodb-level@^0.0.4",
         "npm:mongodb@^7.4.0",
         "npm:nanostores@^1.4.0",
+        "npm:netlify-cli@^27.1.1",
         "npm:next-tinacms-s3@^23.0.3",
         "npm:prop-types@^15.8.1",
         "npm:radix-ui@^1.6.0",
@@ -72,7 +75,8 @@
         "npm:ts-node@^10.9.2",
         "npm:typescript@^6.0.3",
         "npm:underscore@^1.13.8",
-        "npm:vitest@^4.1.9"
+        "npm:vitest@^4.1.9",
+        "npm:wait-on@^9.1.0"
       ]
     }
   }

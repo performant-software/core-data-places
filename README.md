@@ -20,8 +20,10 @@ Add a `/public/config.dev.json` file, which will be ignored by Git, to copy loca
 
 To start, run:
 ```
-npm install && netlify dev
+npm install && npm run dev
 ```
+
+`npm run dev` runs Astro and a Netlify proxy as separate processes (Netlify spawning Astro breaks under Node 24). Astro runs via `netlify dev:exec`, so a linked Netlify site's environment variables are injected.
 
 ## Testing
 
@@ -36,10 +38,25 @@ npm run vitest
 The accessibility tests must be run against an actual site (either host or local). Set the `A11Y_HOST` environment variable in the `.env` file and then run the following.
 
 ```
-npm run playwright
+npm run test-a11y
 ```
 
 The results will be output to `playwright-report/index.html`.
+
+#### RBAC tests
+
+The RBAC test suite will determine whether the cosmetic modifications to the Tina interface are being correctly applied when a non-admin user is logged in. Ensure the chromium browser is installed for the test runner: `npx playwright install chromium`. Then run:
+
+```
+npm run test-rbac
+```
+
+Notes:
+- Expect a run to take a few minutes. The suite starts a fresh local TinaCMS admin each time and astro compiles the content preview routes on demand, which requires map/IIIF libraries.
+- Use the Node version in `.node-version` (Netlify serves the Tina API, and its function needs that version).
+- To run against a **deployed** admin instead of a local one, set `RBAC_BASE_URL` to that admin URL (e.g. `https://mysite.netlify.app/admin/`); server startup is skipped and the host is tested as-is.
+- Importantly, this set of tests does *not* look at the Tina backend controls that block edit/delete actions on unauthorized content. That functionality needs to be tested separately.
+- When writing tests, use watch mode — `npm run test-rbac -- --ui` (or `--watch`) — so the server stays warm across re-runs and fixture edits are picked up live, instead of paying the startup cost each time.
 
 #### E2E tests
 

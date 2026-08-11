@@ -13,6 +13,9 @@ const baseURL = `${process.env.A11Y_HOST}/${locale}/`;
 export default defineConfig({
   testDir: 'test/browser',
 
+  /* RBAC tests need a locally served admin and own their setup. See playwright.rbac.config.ts. */
+  testIgnore: /rbac\.test\.ts/,
+
   /* Run tests in files in parallel */
   fullyParallel: true,
 

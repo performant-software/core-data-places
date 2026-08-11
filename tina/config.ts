@@ -37,7 +37,7 @@ export default defineConfig({
     publicFolder: 'public',
   },
   cmsCallback: (cms) => {
-    if (!isLocal) {
+    if (!isLocal || process.env.TINA_PUBLIC_DEV_ROLE) {
       import('./role-ui').then(({ applyRoleRestrictions }) => {
         applyRoleRestrictions(cms);
       });
