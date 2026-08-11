@@ -75,8 +75,10 @@ export default defineConfig({
         TINA_PUBLIC_DEV_ROLE: 'org:member',
         TINA_PUBLIC_DEV_USER_ID: 'dev-user',
 
-        // Serve the committed fixtures instead of any real content repo.
+        // Serve the committed fixtures instead of any real content repo, and
+        // never fetch (a dev's .env GITHUB_* would otherwise clone over them).
         TINA_LOCAL_CONTENT_PATH: '../test/fixtures/',
+        SKIP_CONTENT_FETCH: 'true',
         CONFIG_URL: '',
         CONFIG_FILE: 'test/fixtures/content/settings/config.json'
       }

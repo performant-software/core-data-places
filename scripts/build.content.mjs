@@ -5,12 +5,14 @@ import { contentPath } from './build.paths.mjs';
 const TEMP_DIR = './tmp';
 
 export const fetchContent = async () => {
-  // Content already exists locally; don't fetch (cloning would overwrite it).
-  const useLocalContent = !!process.env.TINA_LOCAL_CONTENT_PATH;
+  // Skip the git fetch and use whatever content is already on disk. Kept
+  // separate from TINA_LOCAL_CONTENT_PATH so you can point Tina at a local dir
+  // and still fetch content into it initially.
+  const skipFetch = process.env.SKIP_CONTENT_FETCH === 'true';
 
-  if (useLocalContent || !(process.env.GITHUB_OWNER && process.env.GITHUB_REPO)) {
-    if (useLocalContent) {
-      console.info(`Using local content at ${contentPath()}`);
+  if (skipFetch || !(process.env.GITHUB_OWNER && process.env.GITHUB_REPO)) {
+    if (skipFetch) {
+      console.info(`Skipping content fetch; using ${contentPath()}`);
     }
 
     // Copy the branding file to the public directory
