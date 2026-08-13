@@ -2,16 +2,17 @@ import coreDataLoader from '@loaders/coreData';
 import galleryLoader from '@loaders/gallery';
 import geometryLoader from '@loaders/geometry';
 import i18nLoader from '@loaders/i18n';
+import navbarLoader from '@loaders/navbar';
 import { PRELOAD_MAP, STATIC_BUILD, USE_CONTENT_CACHE } from "astro:env/client";
 import _ from 'underscore';
 
-const collections = {};
+const collections = {...i18nLoader, ...navbarLoader};
 
 if (STATIC_BUILD && !USE_CONTENT_CACHE) {
-  _.extend(collections, { ...coreDataLoader, ...i18nLoader, ...galleryLoader });
+  _.extend(collections, { ...coreDataLoader, ...galleryLoader });
 }
 
-if (PRELOAD_MAP && !USE_CONTENT_CACHE) {
+if ((PRELOAD_MAP || STATIC_BUILD) && !USE_CONTENT_CACHE) {
   _.extend(collections, geometryLoader);
 }
 

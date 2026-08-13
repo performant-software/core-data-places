@@ -1,92 +1,92 @@
 ---
-import { getTranslations } from '@backend/i18n';
-import { fetchNavbar } from '@backend/tina';
-import LanguagePicker from '@components/LanguagePicker';
-import MobileHeader from '@components/MobileHeader';
-import NavBar from '@layouts/NavBar.astro';
-import { getCustomNavbar, getDefaultNavbar, getPages } from '@utils/nav';
-import { getCurrentURL, setCacheControl } from '@utils/url';
-import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from 'astro:i18n';
-import clsx from 'clsx';
+import LanguagePicker from "@components/LanguagePicker";
+import MobileHeader from "@components/MobileHeader";
+import NavBar from "@layouts/NavBar.astro";
+import { getCustomNavbar, getDefaultNavbar } from "@utils/nav";
+import { getRelativeLocaleUrl, getRelativeLocaleUrlList } from "astro:i18n";
+import clsx from "clsx";
+import config from '@config';
 
 const locales = getRelativeLocaleUrlList();
-const currentLocale = Astro.currentLocale;
-const currentUrl = getCurrentURL(Astro.request.headers);
+const currentLocale = Astro.currentLocale || config?.i18n?.default_locale;
 
 const {
   fullscreen,
   image,
   imageAlt,
+  isTinaPreview,
+  navbar,
+  pages,
+  pathname,
+  t,
   title,
   transparent
 } = Astro.props;
 
-const [{ t }, navbar, pages] = await Promise.all([
-  getTranslations(currentLocale),
-  fetchNavbar(currentLocale),
-  getPages(currentLocale)
-]);
-
 let items;
 
 if (navbar && navbar.items) {
-  items = getCustomNavbar(navbar, currentLocale, currentUrl.pathname);
+  items = getCustomNavbar(navbar, currentLocale, pathname);
 } else {
-  items = getDefaultNavbar(pages, currentLocale, currentUrl.pathname, t);
+  items = getDefaultNavbar(pages, currentLocale, pathname, t);
 }
-
-setCacheControl(Astro.response.headers);
-
 ---
 
 <div
   class={clsx(
-    'hidden xl:flex flex-row justify-between items-center px-12 py-3 w-full',
-    { '3xl:max-w-(--breakpoint-3xl)': !fullscreen }
+    'flex flex-row justify-center w-full z-10 text-text-primary h-[72px]',
+    { 'bg-primary': !transparent }
   )}
 >
-  <a
-    class='flex flex-row items-center gap-6'
-    href={getRelativeLocaleUrl(currentLocale)}
-  >
-    { image && (
-      <img
-        alt={imageAlt}
-        class='h-12'
-        src={image}
-      />
+  <div
+    class={clsx(
+      "hidden xl:flex flex-row justify-between items-center px-12 py-3 w-full",
+      { "3xl:max-w-(--breakpoint-3xl)": !fullscreen },
     )}
-    { title && (
-      <h1
-        class='text-2xl font-medium'
+  >
+    <a
+      class="flex flex-row items-center gap-6"
+      href={getRelativeLocaleUrl(currentLocale)}
+    >
+      {image && <img alt={imageAlt} class="h-12" src={image} height={48} />}
+      {title && <h1 class="text-2xl font-medium">{title}</h1>}
+    </a>
+    <NavBar
+      className="flex flex-row gap-x-12 align-baseline justify-around"
+      items={items}
+      isTinaPreview={isTinaPreview}
+    >
+      {
+        !isTinaPreview && (
+          <LanguagePicker
+            locales={locales}
+            currentLocale={currentLocale}
+            currentUrl={pathname}
+            client:only="react"
+          />
+        )
+      }
+    </NavBar>
+  </div>
+
+  {
+    !isTinaPreview && (
+      <MobileHeader
+        image={image}
+        items={items}
+        title={title}
+        transparent={transparent}
+        client:load
       >
-        { title }
-      </h1>
-    )}
-  </a>
-  <NavBar
-    className='flex flex-row gap-x-12 align-baseline justify-around'
-    items={items}
-  >
-    <LanguagePicker
-      locales={locales}
-      currentLocale={currentLocale}
-      currentUrl={currentUrl.pathname}
-      client:only='react'
-    />
-  </NavBar>
+        <LanguagePicker
+          locales={locales}
+          currentLocale={currentLocale}
+          currentUrl={pathname}
+          client:load
+        />
+      </MobileHeader>
+    )
+  }
+
 </div>
 
-<MobileHeader
-  image={image}
-  items={items}
-  title={title}
-  transparent={transparent}
-  client:load
->
-  <LanguagePicker
-    locales={locales}
-    currentLocale={currentLocale}
-    currentUrl={currentUrl.pathname}
-  />
-</MobileHeader>

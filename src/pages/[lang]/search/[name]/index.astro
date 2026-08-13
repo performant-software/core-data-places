@@ -10,7 +10,7 @@ import _ from 'underscore';
 const { lang, name } = Astro.params;
 
 const searchConfig = config.search.find((s) => s.name === name) as SearchConfig;
-const isListSearch = !!searchConfig.type && searchConfig.type !== 'map';
+const isListSearch = !!searchConfig?.type && searchConfig?.type !== 'map';
 
 export const getStaticPaths = () => {
   const paths = [];

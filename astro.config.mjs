@@ -6,6 +6,8 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, envField } from 'astro/config';
 import { loadEnv } from 'vite';
 import config from './public/config.json';
+import tina from '@tinacms/astro/integration';
+import { tinaAdminDevRedirect } from '@tinacms/astro/vite';
 
 const { locales, default_locale: defaultLocale } = config.i18n;
 const { STATIC_BUILD } = loadEnv(process.env.STATIC_BUILD, process.cwd(), '');
@@ -16,12 +18,13 @@ export default defineConfig({
     defaultLocale,
     locales,
     routing: {
-      prefixDefaultLocale: true
+      prefixDefaultLocale: true,
+      redirectToDefaultLocale: true
     }
   },
   output: STATIC_BUILD === 'true' ? 'static' : 'server',
   adapter: netlify(),
-  integrations: [mdx(), sitemap(), react()],
+  integrations: [mdx(), sitemap(), react(), tina()],
   vite: {
     optimizeDeps: {
       esbuildOptions: {
@@ -34,7 +37,7 @@ export default defineConfig({
         noExternal: ['clsx', '@phosphor-icons/*', '@radix-ui/*']
       }
     },
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), tinaAdminDevRedirect()],
     resolve: {
       preserveSymlinks: true,
       mainFields: [
@@ -48,6 +51,18 @@ export default defineConfig({
   },
   env: {
     schema: {
+      CACHE_CDN_MAX_AGE: envField.number({
+        access: 'public',
+        context: 'client',
+        default: 300,
+        optional: true
+      }),
+      CACHE_STALE_WHILE_REVALIDATE: envField.number({
+        access: 'public',
+        context: 'client',
+        default: 604800,
+        optional: true
+      }),
       DISABLE_CACHE: envField.boolean({
         access: 'public',
         context: 'client',

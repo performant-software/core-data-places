@@ -1,5 +1,5 @@
 import { getAll, getOne } from '@services/geometry';
-import { feature } from '@turf/helpers';
+import { feature } from '@turf/turf';
 import { buildResponse } from '@utils/api';
 import { APIRoute } from 'astro';
 import _ from 'underscore';

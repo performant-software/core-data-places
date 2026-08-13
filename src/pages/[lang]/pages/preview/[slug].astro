@@ -1,0 +1,35 @@
+---
+import Page from '@apps/pages/Page.astro';
+import { fetchPageResponse } from '@backend/tina';
+import Layout from '@layouts/Layout.astro';
+import TinaIsland from '@tinacms/astro/TinaIsland.astro';
+import { islands } from '@lib/islands';
+import { getTranslations } from '@backend/i18n';
+
+const { slug, lang } = Astro.params;
+
+export const prerender = false;
+
+const pageResp = await fetchPageResponse(lang, slug, true);
+
+const page = pageResp.data.pages;
+
+const { t } = await getTranslations(Astro.currentLocale);
+
+---
+
+<Layout
+  footer
+  fullscreen
+  title={page.title}
+  transparent={page.transparent}
+  isTinaPreview
+>
+  <TinaIsland name="page" wrapper={islands.page.wrapper} params={{ lang, slug }} primary>
+    <Page
+      page={page}
+      isTinaPreview
+      t={t}
+    />
+  </TinaIsland>
+</Layout>

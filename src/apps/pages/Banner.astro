@@ -1,10 +1,11 @@
 ---
 import clsx from 'clsx';
 import Container from '@components/Container.astro';
-import LinkButton from '@components/LinkButton';
+import LinkButton from '@components/LinkButton.astro';
 import SearchBar from '@apps/pages/SearchBar';
 import RichText from '@components/RichText.astro';
 import { toBackgroundClass } from '@utils/pageBuilder';
+import { tinaField } from '@tinacms/astro/tina-field';
 
 const Height = {
   small: 'small',
@@ -28,7 +29,9 @@ const {
   subtitle,
   textAlignment,
   title,
-  url
+  url,
+  section,
+  isTinaPreview
 } = Astro.props;
 
 ---
@@ -82,6 +85,7 @@ const {
               hero && 'banner-hero',
               home && 'banner-home'
             )}
+            data-tina-field={tinaField(section, 'title')}
           >
             { title }
           </h1>
@@ -89,6 +93,7 @@ const {
         { subtitle && (
           <p
             class='font-light'
+            data-tina-field={tinaField(section, 'subtitle')}
           >
             { subtitle }
           </p>
@@ -96,6 +101,7 @@ const {
         { url && (
           <div
             class='z-10'
+            data-tina-field={tinaField(section, 'button_text')}
           >
             <LinkButton
               color='secondary'
@@ -109,11 +115,11 @@ const {
             'prose max-w-none z-10 w-full',
             { 'text-center': textAlignment === 'center' },
             { 'text-text-inverse': color !== 'black' }
-          )}>
+          )} data-tina-field={tinaField(section, 'content')}>
             <RichText content={content} />
           </div> 
         ) : null }
-        { search && ( 
+        { search && !isTinaPreview && ( 
           <SearchBar 
             buttonText={search.button_text}
             searchName={search.search_name}

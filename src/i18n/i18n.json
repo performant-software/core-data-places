@@ -51,6 +51,14 @@
     "tinaLabel": "Map Layers",
     "defaultValue": "Map Layers"
   },
+  "viewResultsList": {
+    "tinaLabel": "View Results List",
+    "defaultValue": "View Results List"
+  },
+  "viewMap": {
+    "tinaLabel": "View Map",
+    "defaultValue": "View Map"
+  },
   "events": {
     "tinaLabel": "Events",
     "defaultValue": "Events"
@@ -458,6 +466,14 @@
   "allPosts": {
     "tinaLabel": "All Posts",
     "defaultValue": "All Posts"
+  },
+  "embedRenderError": {
+    "tinaLabel": "Post embed render error message",
+    "defaultValue": "This content could not be displayed."
+  },
+  "embedRenderErrorEditing": {
+    "tinaLabel": "Post embed render error message (visual editor)",
+    "defaultValue": "This content could not be previewed. Your edits are safe — the preview will refresh as you keep editing."
   },
   "contactForm.name": {
     "tinaLabel": "Contact Form > Name",

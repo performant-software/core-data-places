@@ -1,6 +1,8 @@
 import { Collection } from '@tinacms/schema-tools';
 import { ColorOptionsBg, ColorOptionsBorder, ColorOptionsText, getLabel, richTextTemplates } from './pages';
 import _ from 'underscore';
+import { commonCollectionFields } from './common';
+import { logEditHistory } from '../utils/content';
 
 const Fonts = [{
   label: 'Afacad',
@@ -63,6 +65,15 @@ const Branding: Collection = {
   label: 'Branding',
   path: 'content/branding',
   format: 'json',
+  ui: {
+    beforeSubmit: async (arg: { values, form, cms }) => {
+      return await logEditHistory(arg, "branding");
+    },
+    allowedActions: {
+      create: false,
+      delete: false
+    }
+  },
   fields: [{
     name: 'title',
     label: 'Title',
@@ -169,6 +180,25 @@ const Branding: Collection = {
     ui: {
       component: 'color'
     }
+  }, {
+    name: 'maps',
+    label: 'Maps',
+    type: 'object',
+    fields: [{
+      name: 'geometry_color',
+      label: 'Geometry Color',
+      type: 'string',
+      ui: {
+        component: 'color'
+      }
+    }, {
+      name: 'selected_geometry_color',
+      label: 'Selected Geometry Color',
+      type: 'string',
+      ui: {
+        component: 'color'
+      }
+    }]
   }, {
     name: 'header',
     label: 'Header',
@@ -479,13 +509,7 @@ const Branding: Collection = {
         }]
       }]
     }]
-  }],
-  ui: {
-    allowedActions: {
-      create: false,
-      delete: false
-    }
-  }
+  }, ...commonCollectionFields]
 };
 
 export default Branding;

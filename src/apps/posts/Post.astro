@@ -3,16 +3,14 @@ import PostContent from '@apps/posts/PostContent';
 import { getTranslations } from '@backend/i18n';
 import { fetchPostResponse } from '@backend/tina';
 import Container from '@components/Container.astro';
-import PageStoreProvider from '@components/PageStoreProvider';
 import { Icon } from '@performant-software/core-data/ssr';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 
 interface Props {
   slug: string;
-  publishedOnly?: boolean;
 }
 
-const { slug, publishedOnly } = Astro.props;
+const { slug } = Astro.props;
 
 const [{ t }, postResponse] = await Promise.all([
   getTranslations(Astro.currentLocale),
@@ -20,10 +18,7 @@ const [{ t }, postResponse] = await Promise.all([
 ]);
 
 const post = postResponse?.data?.post;
-
-if (publishedOnly && !post.published) {
-  return new Response(null, { status: 404 });
-}
+const pageTitle = post?.title;
 
 const date = post?.date ? new Date(post.date).toLocaleDateString('en-US', {
   month: 'long',
@@ -68,7 +63,8 @@ const date = post?.date ? new Date(post.date).toLocaleDateString('en-US', {
   />
 </Container>
 
-<PageStoreProvider
-  title={post.title}
-  client:load
-/>
+<script is:inline define:vars={{ pageTitle }}>
+  if (pageTitle) {
+    document.title = pageTitle;
+  }
+</script>

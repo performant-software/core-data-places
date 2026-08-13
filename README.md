@@ -5,7 +5,7 @@ A map-centric website backed by a Core Data project and Typesense index.
 ## Getting Started
 
 #### Requirements
-- Node 20.x
+- Node 24.x
 - Netlify CLI
 - Core Data Project
 - Typesense Index
@@ -20,12 +20,10 @@ Add a `/public/config.dev.json` file, which will be ignored by Git, to copy loca
 
 To start, run:
 ```
-npm install && netlify dev
+npm install && npm run dev
 ```
 
-**Note:** Do not commit any project specific changes to `/public/config.json` in this repository.
-
-**Note:** Changes to `config.json` will require a re-build of the site.
+`npm run dev` runs Astro and a Netlify proxy as separate processes (Netlify spawning Astro breaks under Node 24). Astro runs via `netlify dev:exec`, so a linked Netlify site's environment variables are injected.
 
 ## Testing
 
@@ -40,10 +38,25 @@ npm run vitest
 The accessibility tests must be run against an actual site (either host or local). Set the `A11Y_HOST` environment variable in the `.env` file and then run the following.
 
 ```
-npm run playwright
+npm run test-a11y
 ```
 
 The results will be output to `playwright-report/index.html`.
+
+#### RBAC tests
+
+The RBAC test suite will determine whether the cosmetic modifications to the Tina interface are being correctly applied when a non-admin user is logged in. Ensure the chromium browser is installed for the test runner: `npx playwright install chromium`. Then run:
+
+```
+npm run test-rbac
+```
+
+Notes:
+- Expect a run to take a few minutes. The suite starts a fresh local TinaCMS admin each time and astro compiles the content preview routes on demand, which requires map/IIIF libraries.
+- Use the Node version in `.node-version` (Netlify serves the Tina API, and its function needs that version).
+- To run against a **deployed** admin instead of a local one, set `RBAC_BASE_URL` to that admin URL (e.g. `https://mysite.netlify.app/admin/`); server startup is skipped and the host is tested as-is.
+- Importantly, this set of tests does *not* look at the Tina backend controls that block edit/delete actions on unauthorized content. That functionality needs to be tested separately.
+- When writing tests, use watch mode — `npm run test-rbac -- --ui` (or `--watch`) — so the server stays warm across re-runs and fixture edits are picked up live, instead of paying the startup cost each time.
 
 #### E2E tests
 
@@ -82,10 +95,6 @@ content
 ├── users
 │   ├── index.json
 ```
-
-###### Users
-
-Copy the `/data/users.json` file into your content repository to `/content/users/index.json`. This will seed TinaCMS with the initial set of user accounts, which can be used to setup accounts for other users, then removed. Skip this step if you are using an SSO provider or institutional IdP to manage users instead.
 
 ###### Branding
 
@@ -185,7 +194,10 @@ Copy the `/public/config.json` file into your content repository to `/content/se
 | search.table                                                              | Boolean | If `false`, will suppress the table view for search results                                                                                                                                            |
 | search.timeline                                                           | Object  | Timeline configuration                                                                                                                                                                                 |
 | search.timeline.date_range_facet                                          | String  | Path to the date range facet field in the Typesense document that will be used as the basis for the timeline. Required for the timeline to appear.                                                     |
+| search.timeline.default_start                                             | Number  | The default start year for the timeline. If not provided, the timeline will start at the earliest date value in the records.                                                                           |
+| search.timeline.default_end                                               | Number  | The default end year for the timeline. If not provided, the timeline will end at the latest date value in the records.                                                                                 |
 | search.timeline.event_path                                                | String  | Path to the event relation in the Typesense document. Required only if Event is not the primary model of this search index configuration.                                                              |
+| search.timeline.default_open                                              | Boolean | Whether to show the timeline on initial page load. Defaults to `false`.                                                                                                                                |
 | search.type                                                               | String  | If `map`, the map search component will be used. If `image`, `list`, or `grid`, the non-map search component will be used with the corresponding layout. Defaults to `map` when not present.           |
 | search.typesense                                                          | Object  | Typesense index connection information                                                                                                                                                                 |
 | search.typesense.host                                                     | String  | Typesense host URL                                                                                                                                                                                     |
@@ -240,9 +252,17 @@ After the user is created, use the "Security Credentials" tab to create an acces
 
 Create a new site on Netlify deployed from the `core-data-places` repository. Set all of the environment variables in .env.example as appropriate. Currently, Core Data Places can only be hosted on Netlify in "server" mode, as the TinaCMS functions are dependent on Netlify functions.
 
-#### Single Sign On
+#### Single Sign On (Clerk)
 
-See [Keycloak](docs/sso/keycloak-setup.md) documentation for single sign on.
+As of v1.9.0, deployed sites authenticate the TinaCMS admin via **Clerk SSO**. The previous Keycloak and username/password (`tinacms-authjs`) paths have been removed — a non-local build now fails fast if the Clerk variables are missing. Set three environment variables on the Netlify site:
+
+- `TINA_PUBLIC_CLERK_PUBLIC_KEY` — Clerk publishable key (`pk_live_…`)
+- `TINA_PUBLIC_CLERK_ORG_ID` — the Clerk organization whose members may edit this site
+- `CLERK_SECRET` — Clerk secret key (`sk_live_…`); used by the `tina` Netlify function for token verification and RBAC (mark it secret)
+
+Editor access is membership in the org named by `TINA_PUBLIC_CLERK_ORG_ID`: role `org:admin` grants full access, `org:member` is restricted (per-collection rules are enforced in `netlify/functions/tina.ts`). Because Clerk's frontend API rejects bare `*.netlify.app` origins, the admin must be served from a domain the Clerk app trusts (typically a `*.performant.studio` custom domain).
+
+For local development, set `TINA_PUBLIC_IS_LOCAL=true` to use the local auth provider instead — no Clerk required.
 
 #### Static Build
 

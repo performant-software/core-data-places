@@ -1,6 +1,7 @@
 import { Collection, RichTextTemplate, Template, TinaField } from '@tinacms/schema-tools';
 import _ from 'underscore';
-import { media } from './common';
+import { commonCollectionFields, media } from './common';
+import { logEditHistory } from '../utils/content';
 
 const LABEL_SEPARATOR = ': ';
 
@@ -851,6 +852,7 @@ const staticSectionTemplates: Template<false>[] = [{
     }
   }, {
     name: 'image',
+    description: 'Please Note: Image size may not be accurate in preview mode. On the published site the image will resize to the same height as the text.',
     label: 'Image',
     type: 'image'
   }, {
@@ -937,6 +939,14 @@ const Pages: Collection = {
   label: 'Pages',
   path: 'content/pages',
   format: 'mdx',
+  ui: {
+    router: ({ document }) => {      
+      return `/en/pages/preview/${document._sys.filename}`;
+    },
+    beforeSubmit: async (arg: { values, form, cms }) => {
+      return await logEditHistory(arg, "pages");
+    },
+  },
   fields: [{
     name: 'title',
     label: 'Title',
@@ -1053,7 +1063,7 @@ const Pages: Collection = {
         }]
       }]
     }]
-  }]
+  }, ...commonCollectionFields]
 };
 
 export default Pages;

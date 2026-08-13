@@ -4,6 +4,8 @@ import i18n from '../../src/i18n/i18n.json';
 import userDefinedFields from '../../src/i18n/userDefinedFields.json';
 import search from '../../src/i18n/search.json';
 import { getTranslationKey } from '../../src/i18n/utils';
+import { commonCollectionFields } from './common';
+import { logEditHistory } from '../utils/content';
 
 const allFields = {
   ...i18n,
@@ -26,7 +28,12 @@ const I18n: Collection = {
   format: 'json',
   label: 'Internationalization',
   path: 'content/i18n',
-  fields
+  ui: {
+    beforeSubmit: async (arg: { values, form, cms }) => {
+      return await logEditHistory(arg, "i18n");
+    },
+  },
+  fields: [...fields, ...commonCollectionFields]
 };
 
 export default I18n;

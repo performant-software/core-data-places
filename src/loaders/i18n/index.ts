@@ -9,6 +9,9 @@ const loader = {
   load: async (context: LoaderContext): Promise<void> => {
     const { generateDigest, logger, parseData, store } = context;
 
+    logger.info('Clearing the data store...');
+    store.clear();
+
     logger.info('Fetching data.');
 
     const response = await fetchI18ns();

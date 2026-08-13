@@ -2,7 +2,7 @@ import { Disclosure, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from '@i18n/useTranslations';
 import clsx from 'clsx';
-import { ReactNode } from 'react';
+import { Fragment, ReactNode } from 'react';
 import _ from 'underscore';
 
 interface NavItem {
@@ -99,8 +99,8 @@ const MobileHeader = (props: Props) => {
               <div
                 className='flex flex-col items-center space-y-3 pb-4 pt-2'
               >
-                { _.map(props.items, (item) => (
-                  <>
+                { props.items.map((item, idx) => (
+                  <Fragment key={idx}>
                     { item.options && (
                       <Disclosure.Button
                         className='block w-full bg-primary pt-3 text-base text-center font-thin'
@@ -113,6 +113,7 @@ const MobileHeader = (props: Props) => {
                             <a
                               className='font-bold w-full py-3 hover:bg-[linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15))] transition duration-300'
                               href={option.href}
+                              key={option.href}
                             >
                               { option.label }
                             </a>
@@ -129,7 +130,7 @@ const MobileHeader = (props: Props) => {
                         { item.label }
                       </Disclosure.Button>
                     )}
-                  </>
+                  </Fragment>
                 ))}
               </div>
             </Disclosure.Panel>

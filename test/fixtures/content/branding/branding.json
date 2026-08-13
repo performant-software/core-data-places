@@ -1,0 +1,7 @@
+{
+  "title": "Performant Software Testing Site",
+  "tertiary_color": "#B09466",
+  "footer": {
+    "allow_login": true
+  }
+}

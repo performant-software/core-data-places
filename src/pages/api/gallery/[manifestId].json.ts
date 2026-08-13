@@ -13,9 +13,15 @@ export const GET: APIRoute = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const topLevel = await fetchJson(config.gallery);
+  const result = [];
 
-  return topLevel.items.map(({ id }) => ({
-    params: { manifestId: encodeURIComponent(truncateManifestId((id))) }
-  }));
+  if (config.gallery) {
+    const topLevel = await fetchJson(config.gallery);
+
+    result.push(...topLevel.items.map(({ id }) => ({
+      params: { manifestId: encodeURIComponent(truncateManifestId((id))) }
+    })));
+  }
+
+  return result;
 };

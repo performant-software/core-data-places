@@ -7,6 +7,9 @@ import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection, TinaField } from '@tinacms/schema-tools';
 import config from '@config';
 import { getUserRole } from '../utils/getUserRole';
+import TinaLayerSelect from '../components/TinaLayerSelect';
+import { commonCollectionFields } from './common';
+import { logEditHistory } from '../utils/content';
 
 export const pathMetadata: TinaField<false>[] = _.compact([
   {
@@ -53,6 +56,16 @@ export const pathMetadata: TinaField<false>[] = _.compact([
     label: 'Date',
     type: 'datetime'
   },
+  {
+    name: 'view',
+    label: 'View',
+    type: 'string',
+    description: '"Zoom" (default) will focus on each point as you progress through the path. "Full" will keep the entire path visible at all times.',
+    options: [
+      { label: 'Zoom', value: 'zoom' },
+      { label: 'Full', value: 'full' },
+    ]
+  },
   config.content?.paths_config?.categories && {
     name: 'category',
     label: 'Category',
@@ -88,7 +101,7 @@ const Paths: Collection = {
         .join('');      
       return `/en/paths/${hashHex}/preview/${document._sys.filename}`;
     },
-    beforeSubmit: (arg: { values, form, cms }) => {
+    beforeSubmit: async (arg: { values, form, cms }) => {
       const { isAdmin, userId } = getUserRole(arg.cms);
 
       // Block saves for non-owners
@@ -104,7 +117,8 @@ const Paths: Collection = {
           email: user.primaryEmailAddress?.emailAddress
         };
       }
-      return arg.values;
+
+      return await logEditHistory(arg, "paths");
     }
   },
   fields: [
@@ -282,7 +296,17 @@ const Paths: Collection = {
           ]
         }
       ]
-    }
+    },
+    {
+      name: 'overlay_layer',
+      label: 'Overlay layer',
+      type: 'string',
+      description: 'Optional map overlay to display for this path. Options are pulled from Settings > Layers.',
+      ui: {
+        component: TinaLayerSelect
+      }
+    },
+    ...commonCollectionFields
   ]
 };
 

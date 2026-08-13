@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { classNames } from './styles';
 
 interface Props {
   alt?: string;
@@ -25,16 +26,16 @@ const Card = (props: Props) => {
 
   return (
     <article
-      className='flex max-w-xl flex-col items-start justify-between bg-neutral-light'
+      className={classNames.root}
     >
       <div
-        className='relative w-full'
+        className={classNames.imageContainer}
       >
         {imageUrl && (
           <img
             alt={alt || ''}
             src={imageUrl}
-            className='aspect-[16/9] w-full bg-neutral-light object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
+            className={classNames.image}
             loading='lazy'
             height={256}
             width={384}
@@ -42,49 +43,45 @@ const Card = (props: Props) => {
         )}
         {!imageUrl && (
           <div
-            className='aspect-[16/9] w-full bg-neutral-light object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
+            className={classNames.image}
           />
         )}
         <div
-          className='absolute inset-0 ring-1 ring-inset ring-gray-900/10'
+          className={classNames.imageRing}
         />
       </div>
       <div
-        className='flex items-center gap-x-4 text-xs p-2'
+        className={classNames.infoHeader}
       >
         <time
           dateTime={date}
-          className='text-gray-500'
         >
           {dateString}
         </time>
         {category && (
           <a
             href='#'
-            className='relative z-10 rounded-full bg-gray-200 px-3 py-1.5 font-medium text-gray-600 hover:bg-white'
+            className={classNames.category}
           >
             {category}
           </a>
         )}
       </div>
       <div
-        className='group relative p-6'
+        className={classNames.infoMain}
       >
         <h3
-          className='mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600'
+          className={classNames.title}
         >
           <a
             href={slug}
           >
-        <span
-          className='absolute inset-0'
-        />
             {title}
           </a>
         </h3>
         {blurb && (
           <p
-            className='mt-5 line-clamp-3 text-sm leading-6 text-gray-600'
+            className={classNames.blurb}
           >
             {blurb}
           </p>
@@ -92,21 +89,15 @@ const Card = (props: Props) => {
       </div>
       {labels.byline && (
         <div
-          className='relative mt-8 flex items-center gap-x-4 p-6'
+          className={classNames.byline}
         >
-          <div
-            className='text-sm leading-6'
-          >
-            <p
-              className='font-semibold text-gray-900'
-            >
-              {labels.byline}
-            </p>
-          </div>
+          <p>
+            {labels.byline}
+          </p>
         </div>
       )}
       <a
-        className='flex justify-end p-8 w-full'
+        className={classNames.readMore}
         href={slug}
       >
         {labels.readMore} &rarr;

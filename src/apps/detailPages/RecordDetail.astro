@@ -28,7 +28,7 @@ interface Props {
   record: any;
 }
 
-const { excludes, geometry, lang, model, name, record } = Astro.props;
+const { excludes, geometry, lang, model, name: recordName, record } = Astro.props;
 const { t } = await getTranslations(lang);
 
 const manifest = config.detail_pages?.models[model]
@@ -72,7 +72,7 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
       />
       <span class='uppercase font-semibold'>{t('backTo', { label: t(model) })}</span>
     </div>
-    <h1 class='text-5xl font-header'>{name}</h1>
+    <h1 class='text-5xl font-header'>{recordName}</h1>
   </Container>
 </div>
 { faircopyId && ( 
@@ -81,7 +81,7 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
     transcriptionTypes={transcriptionTypes}
     baseURL={ecViewer.faircopy_base_url}
     projectId={ecViewer.faircopy_project_id}
-    name={name}
+    name={recordName}
   />
 )}
 {
@@ -97,7 +97,7 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
     geometry={geometry}
     lang={lang}
     model={model}
-    name={name}
+    name={recordName}
     record={record}
     server:defer
   />
@@ -179,3 +179,9 @@ const faircopyId = ecViewer && record.user_defined ? record.user_defined[ecViewe
     />
   </Container>
 </div>
+
+<script is:inline define:vars={{ recordName }}>
+  if (recordName) {
+    document.title = recordName;
+  }
+</script>

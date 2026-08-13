@@ -2,6 +2,53 @@
 
 Describes the breaking changes and steps required to upgrade to a more recent version of Core Data Places.
 
+## 1.9.0
+
+### Clerk SSO is required for deployed sites
+
+`1.9.0` makes Clerk SSO the only supported authentication for deployed CDP sites. The Keycloak and username/password (`tinacms-authjs`) auth paths have been removed.
+
+Background: the username/password path was broken by an upstream incompatibility (`tinacms-authjs@20.0.1` bundles a React-19 JSX runtime that crashes against our React 18). Re-enabling it depends on a React 19 upgrade, which is blocked on `@performant-software/shared-components`. See the project issue for details and the path back.
+
+**Before upgrading**, every deployed environment must be set up with Clerk:
+
+- Create a Clerk organization for the site (or reuse the shared org), and invite the editors.
+- Set these env vars on the Netlify site (per deploy context):
+  - `TINA_PUBLIC_CLERK_PUBLIC_KEY` — the Clerk publishable key (`pk_live_...` for production).
+  - `TINA_PUBLIC_CLERK_ORG_ID` — the Clerk organization id (`org_...`).
+  - `CLERK_SECRET` — the Clerk secret key (`sk_live_...`).
+- Remove the now-unused Keycloak / next-auth env vars: `AUTH_KEYCLOAK_ID`, `AUTH_KEYCLOAK_ISSUER`, `AUTH_KEYCLOAK_SECRET`, `AUTH_SECRET`, `AUTH_TRUST_HOST`, `TINA_PUBLIC_AUTH_USE_KEYCLOAK`, `NEXTAUTH_SECRET`, and `TINA_PUBLIC_AUTH_USE_SSO` (auth is no longer conditional).
+
+If the Clerk env vars are missing, the build fails fast with a clear error. Local development is unchanged: set `TINA_PUBLIC_IS_LOCAL=true` and no Clerk config is needed.
+
+### Posts and paths need `published: true` in frontmatter
+
+`1.9.0` ties the public posts and paths feeds (`/api/posts`, `/api/paths`) to a draft / published workflow that is shared with the Clerk roles logic — editors see drafts, the public sees only published content. The feeds filter unconditionally by `published: true`, so any existing `.mdx` file in the tenant content repo whose frontmatter predates this rename will stop appearing on the upgraded site until it is migrated.
+
+The migration is a one-line frontmatter change per post and path. Either:
+
+- Rename the old `publish:` key to `published:` (value preserved), or
+- Add `published: true` if no publish key is present.
+
+```yaml
+---
+title: "…"
+published: true   # add this (or rename the old `publish:` key)
+---
+```
+
+For sites with only a handful of posts and paths, edit them in TinaCMS or by hand. For larger content sets, run the included migration script against a checkout of the content repo:
+
+```bash
+node scripts/migrations/v1.9.0-posts-published.mjs \
+  /path/to/content-repo/content/posts \
+  /path/to/content-repo/content/paths
+```
+
+The script does a surgical line-level edit so TinaCMS's frontmatter formatting is preserved exactly. It is idempotent (running twice is a no-op) and handles both the rename case and the add case automatically. Open a PR against the tenant content repo with the result, merge, then redeploy the site.
+
+If a future project genuinely needs Clerk auth without the publish workflow, that is a separate design conversation — out of scope for this release.
+
 ## 1.6.0
 
 ### Embedded maps

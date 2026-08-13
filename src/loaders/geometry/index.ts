@@ -1,6 +1,6 @@
 import config from '@config' with { type: 'json' };
 import { PlacesService } from '@performant-software/core-data/ssr';
-import { truncate } from '@turf/truncate';
+import { truncate } from '@turf/turf';
 import type { LoaderContext } from 'astro/loaders';
 import { defineCollection } from 'astro:content';
 import _ from 'underscore';

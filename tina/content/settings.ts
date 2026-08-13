@@ -5,6 +5,8 @@ import TinaMapLayerURLField from '../components/TinaMapLayerURLField';
 import RebuildSiteButton from '../components/RebuildSiteButton';
 import { postMetadata } from './posts';
 import _ from 'underscore';
+import { commonCollectionFields } from './common';
+import { logEditHistory } from '../utils/content';
 
 const editioncrafterConfigFields: TinaField<false>[] = [{
   name: 'xml_id_field',
@@ -623,6 +625,10 @@ const Settings: Collection = {
         label: 'Geometry',
         type: 'string'
       }, {
+        name: 'properties',
+        label: 'Properties',
+        type: 'string'
+      }, {
         name: 'max_zoom',
         label: 'Max zoom',
         type: 'number'
@@ -710,6 +716,18 @@ const Settings: Collection = {
         name: 'event_path',
         label: 'Event path',
         type: 'string'
+      }, {
+        name: 'default_start',
+        label: 'Default start year',
+        type: 'number'
+      }, {
+        name: 'default_end',
+        label: 'Default end year',
+        type: 'number'
+      }, {
+        name: 'default_open',
+        label: 'Show by default',
+        type: 'boolean'
       }]
     }, {
       name: 'typesense',
@@ -794,11 +812,14 @@ const Settings: Collection = {
     ui: {
       component: RebuildSiteButton
     }
-  }],
+  }, ...commonCollectionFields],
   ui: {
     allowedActions: {
       create: false,
       delete: false
+    },
+    beforeSubmit: async (arg: { values, form, cms }) => {
+      return await logEditHistory(arg, "settings");
     }
   }
 };

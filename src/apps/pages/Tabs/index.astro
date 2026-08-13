@@ -1,0 +1,65 @@
+---
+import _ from 'underscore';
+import TabsComponent from './Tabs';
+import PageBody from '@components/PageBody.astro';
+import { getClassNames } from './style';
+
+const {
+  tabs,
+  raise,
+  activeBg,
+  textStyle,
+  invertText,
+  inactiveBg,
+  isTinaPreview
+} = Astro.props;
+
+const classNames = getClassNames({ raise, activeBg, inactiveBg, invertText, textStyle });
+---
+
+{ !isTinaPreview && ( 
+  <TabsComponent tabs={tabs} raise={raise} activeBg={activeBg} textStyle={textStyle} invertText={invertText} inactiveBg={inactiveBg} client:only='react'>
+    {
+      _.map(tabs, (tab: any) => (
+        <div class={classNames.tabContent} id={`${tab.label}--content`}>
+          <PageBody sections={tab.content} />
+        </div>
+      ))
+    }
+  </TabsComponent>
+)}
+
+{
+  isTinaPreview && (
+    <div>
+      <div class={classNames.tabGroup}>
+        <div aria-label='Tabs' class={classNames.tabList}>
+          {
+            _.map(tabs, (tab: any, idx: number) => ( 
+              <button 
+                class={classNames.button(idx === 0)}
+                id={`tab-${idx}--button`}
+              >
+                { tab.label }
+              </button>
+            ))
+          }
+        </div>
+      </div>
+      <div>
+      {
+        _.map(tabs, (tab: any, idx: number) => (
+          <div 
+            class={classNames.tabContent} 
+            id={`tab-${idx}--content`}
+          >
+            <h3 class="w-full text-center italic border-b border-b-black text-lg">{tab.label} Content Preview</h3>
+            <PageBody sections={tab.content} isTinaPreview />
+          </div>
+        ))
+      }
+      </div>
+    </div>
+  )
+}
+

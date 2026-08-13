@@ -2,6 +2,9 @@ import _ from 'underscore';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 interface Item {
   description?: string;
   image?: string;
@@ -40,31 +43,29 @@ const Carousel = (props: Props) => (
       }}
     >
       { _.map(props.items, (item, index) => (
-        <SwiperSlide
-          href={item.url}
-          key={index}
-          tag='a'
-        >
-          <img
-            alt={item.imageAlt}
-            className='w-full h-[260px] object-cover rounded-t-md'
-            src={item.image}
-          />
-          <div
-            className='bg-primary p-6 rounded-b-md h-[168px]'
-          >
-            <h2
-              className='text-2xl font-bold uppercase'
+        <a href={item.url} key={index}>
+          <SwiperSlide>
+            <img
+              alt={item.imageAlt}
+              className='w-full h-[260px] object-cover rounded-t-md'
+              src={item.image}
+            />
+            <div
+              className='bg-primary p-6 rounded-b-md h-[168px]'
             >
-              { item.title }
-            </h2>
-            <p
-              className='mt-4 line-clamp-3 font-light'
-            >
-              { item.description }
-            </p>
-          </div>
-        </SwiperSlide>
+              <h2
+                className='text-2xl font-bold uppercase'
+              >
+                { item.title }
+              </h2>
+              <p
+                className='mt-4 line-clamp-3 font-light'
+              >
+                { item.description }
+              </p>
+            </div>
+          </SwiperSlide>
+        </a>
       ))}
     </Swiper>
   </div>
