@@ -68,6 +68,7 @@
         "npm:react-instantsearch@^7.37.0",
         "npm:react@^18.2.0",
         "npm:recharts@^3.9.0",
+        "npm:sanitize-html@^2.17.1",
         "npm:serverless-http@4",
         "npm:swiper@^14.0.1",
         "npm:tailwindcss@^4.3.2",
