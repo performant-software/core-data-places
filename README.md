@@ -27,7 +27,7 @@ npm install && npm run dev
 
 ## Testing
 
-#### Unit tests
+#### Unit tests 
 
 ```
 npm run vitest
