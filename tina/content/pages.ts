@@ -1,3 +1,4 @@
+import config from '../../public/config.json';
 import { Collection, RichTextTemplate, Template, TinaField } from '@tinacms/schema-tools';
 import _ from 'underscore';
 import { media } from './common';
@@ -939,8 +940,15 @@ const Pages: Collection = {
   path: 'content/pages',
   format: 'mdx',
   ui: {
-    router: ({ document }) => {      
-      return `/en/pages/preview/${document._sys.filename}`;
+    router: ({ document }) => {
+      // With localized pages the document lives in a locale folder (en/About.mdx);
+      // preview it in that locale, not always in English.
+      const [folder] = document._sys.relativePath.split('/');
+      const locale = config.content?.localize_pages && config.i18n?.locales?.includes(folder)
+        ? folder
+        : (config.i18n?.default_locale || 'en');
+
+      return `/${locale}/pages/preview/${document._sys.filename}`;
     }
   },
   fields: [{
