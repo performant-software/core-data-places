@@ -14,6 +14,12 @@ import Timeline from '@visualizations/Timeline';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import { PostQuery, PostQueryVariables } from '@root/tina/__generated__/types';
 import { tinaField, useTina } from "tinacms/dist/react";
+import EventInsert from './EventInsert';
+import InstanceInsert from './InstanceInsert';
+import ItemInsert from './ItemInsert';
+import PersonInsert from './PersonInsert';
+import OrganizationInsert from './OrganizationInsert';
+import WorkInsert from './WorkInsert';
 
 interface PostContentProps {
   variables: PostQueryVariables;
@@ -64,12 +70,18 @@ const PostContent = (props: PostContentProps) => {
                   components={{
                     data_table: Table,
                     events_by_year: EventsByYear,
+                    event: EventInsert,
                     iframe: IframeEmbed,
+                    instance: InstanceInsert,
+                    item: ItemInsert,
                     map: Map,
                     media: MediaInsert,
+                    organization: OrganizationInsert,
+                    person: PersonInsert,
                     place: PlaceInsert,
                     stacked_timeline: StackedTimeline,
-                    timeline: Timeline
+                    timeline: Timeline,
+                    work: WorkInsert
                   }}
                   content={data?.post?.body}
                 />
