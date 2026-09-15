@@ -5,7 +5,7 @@ import { renderOrganization } from "@root/src/utils/models";
 const OrganizationInsert = (props: any) => {
   return ( 
     <RecordInsert
-      {...props.record}
+      {...props.organization}
       model='organization'
       service={OrganizationsService}
       renderItem={(item) => renderOrganization(item)}

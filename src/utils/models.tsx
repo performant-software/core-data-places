@@ -1,6 +1,7 @@
 import _ from "underscore";
 import { Models } from "../types";
 import { FuzzyDate as FuzzyDateUtils } from '@performant-software/shared-components';
+import PlacesMap from "@components/PlacesMap";
 
 // Helper for automatically pluralizing a model name; currently the only
 // irregular one is person/people, but obviously this would need to be
@@ -61,4 +62,22 @@ export const renderOrganization = (organization: any) => (
   >
     { organization.description }
   </p>
+)
+
+export const renderPlace = (place: any) => ( 
+  <div
+    className='flex flex-col gap-y-2 my-8 w-full'
+  >
+    <div
+      className='h-100 w-full lg:w-3/4 flex mx-auto'
+    >
+      <PlacesMap
+        layer={place?.layer}
+        animate={place?.animate}
+        buffer={place?.buffer}
+        mapId={place.uuid}
+        placeIds={[place.uuid]}
+      />
+    </div>
+  </div>
 )

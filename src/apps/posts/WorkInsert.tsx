@@ -4,7 +4,7 @@ import WorksService from "@backend/api/coreData/works";
 const WorkInsert = (props: any) => {
   return ( 
     <RecordInsert
-      {...props.record}
+      {...props.work}
       model='work'
       service={WorksService}
     />

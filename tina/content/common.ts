@@ -91,7 +91,8 @@ export const fairdataEmbedTemplates = [{
   name: 'event',
   label: 'Event',
   fields: [{
-    name: 'record',
+    name: 'event',
+    label: 'Event',
     type: 'object',
     required: true,
     fields: [{
@@ -119,7 +120,8 @@ export const fairdataEmbedTemplates = [{
   name: 'instance',
   label: 'Instance',
   fields: [{
-    name: 'record',
+    name: 'instance',
+    label: 'Instance',
     type: 'object',
     required: true,
     fields: [{
@@ -147,7 +149,8 @@ export const fairdataEmbedTemplates = [{
   name: 'item',
   label: 'Item',
   fields: [{
-    name: 'record',
+    name: 'item',
+    label: 'Item',
     type: 'object',
     required: true,
     fields: [{
@@ -175,7 +178,8 @@ export const fairdataEmbedTemplates = [{
   name: 'person',
   label: 'Person',
   fields: [{
-    name: 'record',
+    name: 'person',
+    label: 'Person',
     type: 'object',
     required: true,
     fields: [{
@@ -204,23 +208,14 @@ export const fairdataEmbedTemplates = [{
   label: 'Place',
   fields: [
     {
-      name: 'title',
-      label: 'Title',
-      type: 'string',
-      required: true,
-      isTitle: true,
-    },
-    {
       name: 'place',
-      label: 'Place Data',
+      label: 'Place',
       type: 'object',
       fields: [
         {
           name: 'title',
-          label: 'Title',
-          type: 'string',
-          required: true,
-          isTitle: true
+          label: 'Name',
+          type: 'string'
         },
         {
           name: 'uuid',
@@ -248,21 +243,14 @@ export const fairdataEmbedTemplates = [{
         component: TinaPlacePicker,
       },
       required: true,
-    },
-    {
-      name: 'caption',
-      label: 'Caption',
-      type: 'string',
-      ui: {
-        component: 'textarea'
-      }
     }
   ]
 }, {
   name: 'organization',
   label: 'Organization',
   fields: [{
-    name: 'record',
+    name: 'organization',
+    label: 'Organization',
     type: 'object',
     required: true,
     fields: [{
@@ -290,7 +278,8 @@ export const fairdataEmbedTemplates = [{
   name: 'work',
   label: 'Work',
    fields: [{
-    name: 'record',
+    name: 'work',
+    label: 'Work',
     type: 'object',
     required: true,
     fields: [{

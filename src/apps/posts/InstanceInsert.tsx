@@ -4,7 +4,7 @@ import InstancesService from "@backend/api/coreData/instances";
 const InstanceInsert = (props: any) => {
   return ( 
     <RecordInsert
-      {...props.record}
+      {...props.instance}
       model='instance'
       service={InstancesService}
     />

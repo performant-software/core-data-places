@@ -7,7 +7,7 @@ const EventInsert = (props: any) => {
   const { t } = useTranslations();
   return ( 
     <RecordInsert
-      {...props.record}
+      {...props.event}
       model='event'
       service={EventsService}
       renderItem={(item) => renderEvent(item, t)}
