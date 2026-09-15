@@ -99,7 +99,7 @@ const RecordInsert = (props: RecordInsertProps) => {
           }
           {
             detailUrl && ( 
-              <a href={detailUrl} className="px-3 py-2 border border-black rounded-md flex items-center justify-center hover:bg-gray-100">
+              <a href={detailUrl} className="mt-4 px-3 py-2 border border-black rounded-md flex items-center justify-center hover:bg-gray-100 w-max">
                 {t('viewDetails')}
               </a>
             )

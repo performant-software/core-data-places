@@ -13,7 +13,8 @@ interface ModelPickerConfig {
   fetchAll: (params: any) => Promise<any>;
   responseKey: string;
   transformItem?: (item: any) => { name: string, uuid: string };
-  renderExtraFields?: (props: CustomTinaFieldProps, toggle: (key: string, checked: boolean) => void) => ReactNode;
+  getMessage?: (selected: any) => string;
+  renderExtraFields?: (props: CustomTinaFieldProps, setField: (key: string, value: unknown) => void, selected: any) => ReactNode;
 }
 
 const createTinaModelPickerField = (config: ModelPickerConfig) => (
@@ -31,15 +32,16 @@ const createTinaModelPickerField = (config: ModelPickerConfig) => (
       });
     }, [selected]);
 
-    const toggle = (key: string, checked: boolean) => {
+    const setField = (key: string, value: unknown) => {
       props.input.onChange({
         ...props.input.value,
-        [key]: checked
+        [key]: value
       });
     };
 
     return (
       <TinaModelPicker
+        message={config.getMessage?.(selected)}
         onChange={setSelected}
         onLoad={(params) => (
           config
@@ -52,14 +54,14 @@ const createTinaModelPickerField = (config: ModelPickerConfig) => (
         <ToggleField
           checked={props.input.value.media}
           label='Include related media gallery?'
-          onChange={(checked) => toggle('media', checked)}
+          onChange={(checked) => setField('media', checked)}
         />
         <ToggleField
           checked={props.input.value.map}
           label='Include related places map?'
-          onChange={(checked) => toggle('map', checked)}
+          onChange={(checked) => setField('map', checked)}
         />
-        { config.renderExtraFields?.(props, toggle) }
+        { config.renderExtraFields?.(props, setField, selected) }
       </TinaModelPicker>
     );
   })

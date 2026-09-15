@@ -237,6 +237,11 @@ export const fairdataEmbedTemplates = [{
           label: 'Custom Map Layer',
           type: 'number',
           list: true
+        },
+        {
+          name: 'media',
+          label: 'Include media?',
+          type: 'boolean'
         }
       ],
       ui: {

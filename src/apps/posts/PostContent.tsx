@@ -25,9 +25,11 @@ interface PostContentProps {
   variables: PostQueryVariables;
   data: PostQuery;
   query: string;
+  lang: string;
 }
 
 const PostContent = (props: PostContentProps) => {
+  const { lang } = props;
   const { t } = useTranslations();
 
   const { data } = useTina({
@@ -53,7 +55,7 @@ const PostContent = (props: PostContentProps) => {
     >
       <Peripleo>
         <TranslationContext.Provider
-          value={{ t }}
+          value={{ t, lang }}
         >
           <div
             className='w-full'
