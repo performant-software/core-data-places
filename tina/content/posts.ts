@@ -1,11 +1,10 @@
-import TinaPlacePicker from '../components/TinaPlacePicker';
 import { Collection, TinaField } from '@tinacms/schema-tools';
 import Visualizations from '@root/tina/content/visualizations';
 import Creator from '../components/Creator';
 import NotEditableNotice from '../components/NotEditableNotice';
 import _ from 'underscore';
 import config from '@config';
-import { commonCollectionFields, media } from './common';
+import { commonCollectionFields, fairdataEmbedTemplates } from './common';
 import PublishToggle from '../components/PublishToggle';
 import { getUserRole } from '../utils/getUserRole';
 import { logEditHistory } from '../utils/content';
@@ -155,67 +154,7 @@ const Posts: Collection = {
             }
           ]
         },
-        {
-          name: 'place',
-          label: 'Place',
-          fields: [
-            {
-              name: 'title',
-              label: 'Title',
-              type: 'string',
-              required: true,
-              isTitle: true,
-            },
-            {
-              name: 'place',
-              label: 'Place Data',
-              type: 'object',
-              fields: [
-                {
-                  name: 'title',
-                  label: 'Title',
-                  type: 'string',
-                  required: true,
-                  isTitle: true
-                },
-                {
-                  name: 'uuid',
-                  label: 'UUID',
-                  type: 'string',
-                },
-                {
-                  name: 'animate',
-                  label: 'Animate pulsing place marker?',
-                  type: 'boolean'
-                },
-                {
-                  name: 'buffer',
-                  label: 'Map zoom buffer (in miles)',
-                  type: 'number'
-                },
-                {
-                  name: 'layer',
-                  label: 'Custom Map Layer',
-                  type: 'number',
-                  list: true
-                }
-              ],
-              ui: {
-                component: TinaPlacePicker,
-              },
-              required: true,
-            },
-            {
-              name: 'caption',
-              label: 'Caption',
-              type: 'string',
-              ui: {
-                component: 'textarea'
-              }
-            }
-          ],
-        },
-        media,
+        ...fairdataEmbedTemplates,
         ...Visualizations
       ]
     },

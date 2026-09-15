@@ -20,6 +20,11 @@ export const createDataVisualization = ({ name, label, component, fields = [] })
 export const logEditHistory = async (arg: any, collection: string) => {
   const user = arg.cms?.api?.tina?.authProvider?.clerk?.user;
 
+  // No Clerk user in local dev (LocalAuthProvider has no .clerk) — skip history logging rather than crash the save.
+  if (!user) {
+    return arg.values;
+  }
+
   const docId =
     (arg.values?._sys?.filename as string | undefined) ??
     (arg.form.id as string);

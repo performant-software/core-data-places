@@ -4,6 +4,7 @@ import TranslationContext from '@contexts/TranslationContext';
 import { useRuntimeConfig } from '@peripleo/peripleo';
 import { useCallback, useContext } from 'react';
 import { hasDetailPage } from '@utils/detailPagePaths';
+import { renderOrganization } from '@root/src/utils/models';
 
 interface Props {
   className?: string;
@@ -28,13 +29,7 @@ const Organization = (props: Props) => {
       icon='participants'
       name='organization'
       exclusions={config.result_filtering?.organizations?.exclude}
-      renderItem={(organization) => (
-        <p
-          className='text-sm'
-        >
-          { organization.description }
-        </p>
-      )}
+      renderItem={renderOrganization}
       resolveDetailPageUrl={resolveDetailPageUrl}
       service={OrganizationsService}
     />

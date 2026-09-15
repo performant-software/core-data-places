@@ -27,12 +27,14 @@ interface TinaModelPickerProps {
   onLoad: (params: any) => Promise<any>;
   onChange: (item: Item) => void;
   value: Item;
+  transformItem?: (item: any) => Item;
 }
 
 const TinaModelPicker = (props: TinaModelPickerProps) => {
   const [items, setItems] = useState<Array<Item>>();
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
+  const { transformItem = (item: any) => ({name: item.name, uuid: item.uuid})} = props;
 
   const onLoad = useCallback(() => {
     setLoading(true);
@@ -40,7 +42,7 @@ const TinaModelPicker = (props: TinaModelPickerProps) => {
     props
       .onLoad({ search, per_page: 25 })
       .then((data) => {
-        setItems(data);
+        setItems(_.map(data, (item: any) => transformItem(item)));
         setLoading(false);
       });
   }, [search]);

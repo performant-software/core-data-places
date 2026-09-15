@@ -12,6 +12,8 @@ interface Props {
 
 const { slug } = Astro.props;
 
+const lang = Astro.currentLocale;
+
 const [{ t }, postResponse] = await Promise.all([
   getTranslations(Astro.currentLocale),
   fetchPostResponse(slug)
@@ -59,6 +61,7 @@ const date = post?.date ? new Date(post.date).toLocaleDateString('en-US', {
 <Container className='py-12 w-full'>
   <PostContent
     {...postResponse}
+    lang={lang}
     client:only='react'
   />
 </Container>

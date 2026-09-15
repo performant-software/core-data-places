@@ -510,5 +510,9 @@
   "transcription": {
     "tinaLabel": "Transcription",
     "defaultValue": "Transcription"
+  },
+  "viewDetails": {
+    "tinaLabel": "View Details",
+    "defaultValue": "View Details"
   }
 }
