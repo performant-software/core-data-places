@@ -43,11 +43,6 @@ export default defineConfig({
         applyRoleRestrictions(cms);
       });
     }
-    if (useFairDataMedia) {
-      import('./media-ui').then(({ applyMediaRestrictions }) => {
-        applyMediaRestrictions(cms);
-      });
-    }
     return cms;
   },
   contentApiUrlOverride: '/api/tina/gql',

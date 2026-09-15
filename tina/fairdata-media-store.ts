@@ -4,6 +4,8 @@ import MediaContentsService from '@backend/api/coreData/mediaContents';
 export class CustomFairDataStore implements MediaStore {
   accept = 'image/*';
 
+  isStatic = true;
+
   async list(options: MediaListOptions = {}): Promise<MediaList> {
     try {
       const response = await MediaContentsService.fetchAll({ per_page: 0 });
@@ -28,7 +30,7 @@ export class CustomFairDataStore implements MediaStore {
             '1000x1000': previewUrl,
           },
         };
-      });
+      }).sort((a: Media, b: Media) => (a.filename.toLowerCase() > b.filename.toLowerCase() ? 1 : -1));
 
       return { items };
     } catch (error) {
