@@ -12,6 +12,7 @@
     "vitest": "vitest run",
     "playwright": "npx playwright test",
     "test-a11y": "npx playwright test test/browser/a11y.test.ts",
+    "test-static": "npx playwright test test/browser/static.test.ts",
     "test-rbac": "npx playwright test --config=playwright.rbac.config.ts"
   },
   "engines": {
