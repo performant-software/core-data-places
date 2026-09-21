@@ -1,7 +1,7 @@
 import { fetchConfig } from './build.config.mjs';
 import { fetchContent } from './build.content.mjs';
 import { buildUserDefinedFields } from './build.fields.mjs';
-import { buildSearch } from './build.search.mjs';
+import { buildSearch, buildStaticSearch } from './build.search.mjs';
 import { copyComponents } from './build.components.mjs';
 
 (async function() {
@@ -19,6 +19,9 @@ import { copyComponents } from './build.components.mjs';
 
   console.log('Building search.json from configuration...');
   await buildSearch(config);
+
+  console.log('Copying static search indexes...');
+  await buildStaticSearch(config);
 
   console.log('Copying custom components...');
   copyComponents();
