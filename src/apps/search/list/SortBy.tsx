@@ -2,32 +2,46 @@ import { useContext, useMemo } from 'react';
 import TranslationContext from '@contexts/TranslationContext';
 import { useSortBy } from 'react-instantsearch';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
+import { useStaticSearch } from '@apps/search/StaticSearchContext';
+import type { SearchConfig } from '@types';
+import { getSortings } from '@utils/staticSearch';
 import { DropdownMenu } from 'radix-ui';
 import { Icon } from '@performant-software/core-data';
 
 const SortBy = () => {
   const { t } = useContext(TranslationContext);
   const config = useSearchConfig();
+  const staticSearch = useStaticSearch();
 
   const sortFields = useMemo(() => {
+    // A static search sorts via the ItemsJS `sortings` keys rather than Typesense replicas.
+    if (config.static_search) {
+      return [{
+        label: t('relevance'),
+        value: config.static_search.index_name
+      }, ...getSortings(staticSearch?.options, t)];
+    }
+
+    const typesense = config.typesense as SearchConfig['typesense'] & object;
+
     const base = [{
       label: t('A-Z'),
-      value: `${config.typesense.index_name}/sort/name:asc`
+      value: `${typesense.index_name}/sort/name:asc`
     }, {
       label: t('Z-A'),
-      value: `${config.typesense.index_name}/sort/name:desc`
+      value: `${typesense.index_name}/sort/name:desc`
     }]
 
     // only enable relevance sort if no default sort is set
-    if (!config.typesense.default_sort) {
+    if (!typesense.default_sort) {
       base.unshift({
         label: t('relevance'),
-        value: config.typesense.index_name
+        value: typesense.index_name
       });
     }
 
     return base;
-  }, [t]);
+  }, [config, staticSearch, t]);
 
   const { currentRefinement, refine } = useSortBy({ items: sortFields });
 
@@ -38,14 +52,16 @@ const SortBy = () => {
     // state doesn't know about it and will assume that we're sorting by relevance on page
     // load. This `if` clause handles that situation by treating the relevance sort UI state
     // as the default sort.
-    if (config.typesense.default_sort && currentRefinement === config.typesense.index_name) {
-      result = sortFields.find((field) => field.value === `${config.typesense.index_name}/sort/${config.typesense.default_sort}:asc`);
+    const { typesense } = config;
+
+    if (typesense?.default_sort && currentRefinement === typesense.index_name) {
+      result = sortFields.find((field) => field.value === `${typesense.index_name}/sort/${typesense.default_sort}:asc`);
     } else {
       result = sortFields.find((field) => field.value === currentRefinement);
     }
 
     return result;
-  }, [currentRefinement, sortFields]);
+  }, [config, currentRefinement, sortFields]);
 
   return (
     <div className='flex w-full items-center justify-center md:justify-end gap-4 pr-4'>

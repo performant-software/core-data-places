@@ -13,6 +13,14 @@ export type Models =
 
 import { Dispatch, SetStateAction } from "react";
 
+export interface StaticSearchConfig {
+  index_name: string,
+  facets?: {
+    exclude?: Array<string>,
+    include?: Array<string>
+  }
+}
+
 export interface SearchConfig {
   name: string,
   route: string,
@@ -56,7 +64,9 @@ export interface SearchConfig {
 
   type?: 'grid' | 'image' | 'list' | 'map';
 
-  typesense: {
+  static_search?: StaticSearchConfig;
+
+  typesense?: {
     host: string,
     port: number,
     protocol: string,
@@ -186,6 +196,7 @@ export interface HitComponentProps {
   highlightComponent?: React.FC<any>;
   hit: any;
   setManifestUrl?: Dispatch<SetStateAction<string>>
+  title?: string;
   tags?: {
     name: string;
     primary?: boolean;

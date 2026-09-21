@@ -8,7 +8,6 @@ import {
   ArrowRightIcon,
   ArrowUturnLeftIcon,
 } from '@heroicons/react/24/outline';
-import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, RuntimeConfig } from '@peripleo/peripleo';
 import clsx from 'clsx';
 import React, {
@@ -30,6 +29,7 @@ import { GeoJSONLayer } from '@peripleo/maplibre';
 import { dottedLine, noFill, selectablePoint, selectablePolygon } from '@utils/mapStyles';
 import { Button } from '@headlessui/react';
 import { bbox } from '@turf/turf';
+import { normalizeConfig } from '@utils/runtimeConfig';
 
 export interface PathViewerProps {
   variables: PathQueryVariables;
@@ -269,7 +269,7 @@ const Wrapper = (props: PathViewerProps) => {
   return (
     <RuntimeConfig
       path='/config.json'
-      preprocess={PeripleoUtils.normalize}
+      preprocess={normalizeConfig}
     >
       <Peripleo>
         <TranslationContext.Provider

@@ -730,6 +730,32 @@ const Settings: Collection = {
         type: 'boolean'
       }]
     }, {
+      name: 'static_search',
+      label: 'Static search',
+      description: 'Serve this search from an static JSON file in /content/search instead of Typesense',
+      type: 'object',
+      fields: [{
+        name: 'index_name',
+        label: 'Index name',
+        description: 'File name from /content/search (don\'t include the .json extension)',
+        type: 'string'
+      }, {
+        name: 'facets',
+        label: 'Facets',
+        type: 'object',
+        fields: [{
+          name: 'exclude',
+          label: 'Exclude',
+          type: 'string',
+          list: true
+        }, {
+          name: 'include',
+          label: 'Include',
+          type: 'string',
+          list: true
+        }]
+      }]
+    }, {
       name: 'typesense',
       label: 'Typesense',
       type: 'object',

@@ -4,7 +4,6 @@ import MediaInsert from '@components/MediaInsert'
 import PostEmbedErrorBoundary from '@components/PostEmbedErrorBoundary';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
-import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { Peripleo, RuntimeConfig } from '@peripleo/peripleo';
 import StackedTimeline from '@visualizations/StackedTimeline';
 import EventsByYear from '@visualizations/EventsByYear';
@@ -14,6 +13,7 @@ import Timeline from '@visualizations/Timeline';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import { PostQuery, PostQueryVariables } from '@root/tina/__generated__/types';
 import { tinaField, useTina } from "tinacms/dist/react";
+import { normalizeConfig } from '@utils/runtimeConfig';
 
 interface PostContentProps {
   variables: PostQueryVariables;
@@ -43,7 +43,7 @@ const PostContent = (props: PostContentProps) => {
   return (
     <RuntimeConfig
       path='/config.json'
-      preprocess={PeripleoUtils.normalize}
+      preprocess={normalizeConfig}
     >
       <Peripleo>
         <TranslationContext.Provider
