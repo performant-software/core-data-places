@@ -25,23 +25,26 @@ const Facets = (props: Props) => {
   const { attributes, rangeAttributes } = useContext(FacetStateContext);
   const { t } = useContext(TranslationContext);
 
-  const { typesense } = props.config;
+  const { static_search: staticSearch, typesense } = props.config;
+
+  // Facets are ordered by whichever backend this search is configured against.
+  const include = (staticSearch || typesense)?.facets?.include;
 
   const sortAttributes = useCallback((atts: string[]) => {
     const copy = [...atts];
     if (!copy) {
       return [];
     }
-    if (typesense?.facets?.include) {
+    if (include) {
       return copy.sort((a,b) => {
-        const index_a = typesense.facets.include.findIndex((facet) => facet === a);
-        const index_b = typesense.facets.include.findIndex((facet) => facet === b);
+        const index_a = include.findIndex((facet) => facet === a);
+        const index_b = include.findIndex((facet) => facet === b);
         return index_a - index_b;
       })
     } else {
       return copy;
     }
-  }, [typesense]);
+  }, [include]);
 
   const sortedAttributes = useMemo(() => sortAttributes(attributes), [attributes, sortAttributes]);
 

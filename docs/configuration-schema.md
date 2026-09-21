@@ -348,6 +348,54 @@ The path prefix for which to navigate which clicking on a search result. For exa
 
 Required: Yes
 
+### static_search
+
+Serves this search from an ItemsJS index built in the browser rather than from Typesense. When
+present, no request is made to Typesense and `typesense` is ignored.
+
+Required: No
+
+#### index_name
+
+Base filename of the ItemsJS data in `/content/search`, without the `.json` extension. Both
+`/content/search/<index_name>.json` (the records) and
+`/content/search/<index_name>.itemsjs.json` (the ItemsJS options) must exist.
+
+```
+String
+```
+
+Required: Yes
+
+#### facets
+
+Facet configuration.
+
+Required: No
+
+##### exclude
+
+Aggregations to omit from the facet sidebar. Ignored when `include` is set.
+
+```
+Array<String>
+```
+
+Required: No
+
+##### include
+
+Aggregations to show in the facet sidebar, in the order they should display. Takes precedence
+over `exclude`.
+
+```
+Array<String>
+```
+
+Required: No
+
+---
+
 ### table
 
 If `true` the table view will be available for selection in the search UI.
@@ -387,7 +435,7 @@ Required: No
 
 Typesense configuration options.
 
-Required: Yes
+Required: Yes, unless `static_search` is set
 
 #### host
 
