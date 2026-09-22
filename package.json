@@ -70,7 +70,7 @@
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "html-react-parser": "^6.1.3",
-    "instantsearch-itemsjs-adapter": "^1.1.5",
+    "instantsearch-itemsjs-adapter": "performant-software/instantsearch-itemsjs-adapter#release",
     "itemsjs": "^2.4.4",
     "js-base64": "^3.8.0",
     "module-error": "^1.0.2",
