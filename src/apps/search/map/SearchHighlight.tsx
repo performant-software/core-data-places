@@ -27,7 +27,7 @@ const SearchHighlight = (props: Props) => {
           name={props.icon}
         />
       )}
-      { config?.static_search
+      { config?.static
         // Ignore highlighting in static search mode because it's
         // unsupported by items.js
         ? (

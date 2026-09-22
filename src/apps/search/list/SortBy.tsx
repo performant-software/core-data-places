@@ -15,10 +15,10 @@ const SortBy = () => {
 
   const sortFields = useMemo(() => {
     // A static search sorts via the ItemsJS `sortings` keys rather than Typesense replicas.
-    if (config.static_search) {
+    if (config.static) {
       return [{
         label: t('relevance'),
-        value: config.static_search.index_name
+        value: config.static.index_name
       }, ...getSortings(staticSearch?.options, t)];
     }
 

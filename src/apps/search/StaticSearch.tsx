@@ -15,7 +15,7 @@ interface Index {
 
 const StaticSearch = (props: { children: ReactNode }) => {
   const config = useSearchConfig();
-  const staticSearch = config.static_search as StaticSearchConfig;
+  const staticSearch = config.static as StaticSearchConfig;
 
   const [index, setIndex] = useState<Index>();
 

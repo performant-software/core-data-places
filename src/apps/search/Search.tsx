@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 const Search = (props: { children: ReactNode }) => {
   const config = useSearchConfig();
 
-  if (config?.static_search) {
+  if (config?.static) {
     return (
       <StaticSearch>
         { props.children }

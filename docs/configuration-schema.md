@@ -348,7 +348,7 @@ The path prefix for which to navigate which clicking on a search result. For exa
 
 Required: Yes
 
-### static_search
+### static
 
 Serves this search from an ItemsJS index built in the browser rather than from Typesense. When
 present, no request is made to Typesense and `typesense` is ignored.
@@ -435,7 +435,7 @@ Required: No
 
 Typesense configuration options.
 
-Required: Yes, unless `static_search` is set
+Required: Yes, unless `static` is set
 
 #### host
 

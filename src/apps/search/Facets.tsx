@@ -25,7 +25,7 @@ const Facets = (props: Props) => {
   const { attributes, rangeAttributes } = useContext(FacetStateContext);
   const { t } = useContext(TranslationContext);
 
-  const { static_search: staticSearch, typesense } = props.config;
+  const { static: staticSearch, typesense } = props.config;
 
   // Facets are ordered by whichever backend this search is configured against.
   const include = (staticSearch || typesense)?.facets?.include;

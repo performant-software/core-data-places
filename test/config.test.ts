@@ -320,31 +320,31 @@ describe('search', () => {
       });
     });
 
-    describe('static_search', () => {
-      test.skipIf(!search.static_search)('index_name is not empty', () => {
-        expect(search.static_search?.index_name).toBeString();
+    describe('static', () => {
+      test.skipIf(!search.static)('index_name is not empty', () => {
+        expect(search.static?.index_name).toBeString();
       });
 
-      test.skipIf(!search.static_search)('data file exists', () => {
-        expect(fs.existsSync(`./content/search/${search.static_search?.index_name}.json`)).toBe(true);
+      test.skipIf(!search.static)('data file exists', () => {
+        expect(fs.existsSync(`./content/search/${search.static?.index_name}.json`)).toBe(true);
       });
 
-      test.skipIf(!search.static_search)('ItemsJS configuration file exists', () => {
-        expect(fs.existsSync(`./content/search/${search.static_search?.index_name}.itemsjs.json`)).toBe(true);
+      test.skipIf(!search.static)('ItemsJS configuration file exists', () => {
+        expect(fs.existsSync(`./content/search/${search.static?.index_name}.itemsjs.json`)).toBe(true);
       });
 
       describe('facets', () => {
         test('exclude matches allowed values', () => {
-          expect(search.static_search?.facets?.exclude).toBeArrayOf(String);
+          expect(search.static?.facets?.exclude).toBeArrayOf(String);
         });
 
         test('include matches allowed values', () => {
-          expect(search.static_search?.facets?.include).toBeArrayOf(String);
+          expect(search.static?.facets?.include).toBeArrayOf(String);
         });
       });
     });
 
-    describe.skipIf(search.static_search)('typesense', () => {
+    describe.skipIf(search.static)('typesense', () => {
       test('is not empty', () => {
         expect(search.typesense).toBeObject();
       });

@@ -27,7 +27,7 @@ const { normalizeConfig } = await import('../src/utils/runtimeConfig');
 const staticSearch = {
   name: 'catalogue',
   route: '/items',
-  static_search: {
+  static: {
     index_name: 'catalogue'
   }
 };
@@ -47,7 +47,7 @@ describe('normalizeConfig', () => {
   it('normalizes a static search without Typesense settings', () => {
     const normalized: any = normalizeConfig({ search: [staticSearch] } as any);
 
-    expect(normalized.search[0].static_search).toEqual({ index_name: 'catalogue' });
+    expect(normalized.search[0].static).toEqual({ index_name: 'catalogue' });
     expect(normalized.search[0].typesense).toBeUndefined();
   });
 

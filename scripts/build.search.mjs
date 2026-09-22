@@ -32,8 +32,8 @@ export const buildSearch = async (config) => {
 
 export const buildStaticSearch = async (config) => {
   const indexNames = config.search
-    .filter((search) => search.static_search)
-    .map((search) => search.static_search.index_name);
+    .filter((search) => search.static)
+    .map((search) => search.static.index_name);
 
   if (!indexNames.length) {
     return;
@@ -52,7 +52,7 @@ export const buildStaticSearch = async (config) => {
 
       if (!fs.existsSync(source)) {
         throw new Error(
-          `Missing static search file "${source}". Each "static_search.index_name" in config.json`
+          `Missing static search file "${source}". Each "static.index_name" in config.json`
           + ` requires both <index_name>.json and <index_name>${CONFIG_SUFFIX} in /content/search.`
         );
       }

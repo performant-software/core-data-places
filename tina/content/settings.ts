@@ -730,7 +730,7 @@ const Settings: Collection = {
         type: 'boolean'
       }]
     }, {
-      name: 'static_search',
+      name: 'static',
       label: 'Static search',
       description: 'Serve this search from an static JSON file in /content/search instead of Typesense',
       type: 'object',

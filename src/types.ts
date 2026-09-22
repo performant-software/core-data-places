@@ -64,7 +64,7 @@ export interface SearchConfig {
 
   type?: 'grid' | 'image' | 'list' | 'map';
 
-  static_search?: StaticSearchConfig;
+  static?: StaticSearchConfig;
 
   typesense?: {
     host: string,
