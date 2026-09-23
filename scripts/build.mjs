@@ -12,13 +12,13 @@ import { copyComponents } from './build.components.mjs';
   const config = await fetchConfig();
 
   console.log('Building userDefinedFields.json from Core Data descriptors...');
-  await buildUserDefinedFields(config);
+  const userDefinedFields = await buildUserDefinedFields(config);
 
   console.log('Fetching content from repository...');
   await fetchContent();
 
   console.log('Building search.json from configuration...');
-  await buildSearch(config);
+  await buildSearch(config, userDefinedFields);
 
   console.log('Copying static search indexes...');
   await buildStaticSearch(config);

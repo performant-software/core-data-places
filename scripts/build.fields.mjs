@@ -20,7 +20,7 @@ const getLabel = (field) => {
  *
  * @param config
  *
- * @returns {Promise<void>}
+ * @returns {Promise<Object>} the generated fields, keyed by descriptor identifier
  */
 export const buildUserDefinedFields = async (config) => {
   const fields = {};
@@ -46,4 +46,6 @@ export const buildUserDefinedFields = async (config) => {
 
   const content = JSON.stringify(fields, null, 2);
   fs.writeFileSync('./src/i18n/userDefinedFields.json', content, 'utf8');
+
+  return fields;
 };
