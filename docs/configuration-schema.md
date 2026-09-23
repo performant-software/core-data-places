@@ -353,19 +353,12 @@ Required: Yes
 Serves this search from an ItemsJS index built in the browser rather than from Typesense. When
 present, no request is made to Typesense and `typesense` is ignored.
 
+The index is generated at build time from the FairData records for the search's `route` (e.g.
+`/places`), so static searches require `STATIC_BUILD=true`. Each configured facet becomes an
+ItemsJS aggregation, and `timeline.date_range_facet` becomes a range aggregation. Use `{}` to
+enable a static search without any other options.
+
 Required: No
-
-#### index_name
-
-Base filename of the ItemsJS data in `/content/search`, without the `.json` extension. Both
-`/content/search/<index_name>.json` (the records) and
-`/content/search/<index_name>.itemsjs.json` (the ItemsJS options) must exist.
-
-```
-String
-```
-
-Required: Yes
 
 #### facets
 

@@ -1,13 +1,5 @@
 import fs from 'fs';
-import path from 'node:path';
-import { contentPath } from './build.paths.mjs';
-
-const PUBLIC_SEARCH_DIR = './public/search';
-
-/**
- * Suffix used for the ItemsJS configuration file that accompanies each data file.
- */
-const CONFIG_SUFFIX = '.itemsjs.json';
+import { getAggregations, SORTINGS } from '../src/utils/staticSearchOptions.ts';
 
 /**
  * Field IDs that `getFacetLabel` leaves out of a label, e.g. "Organizations" rather than
@@ -62,13 +54,7 @@ const toSortTitle = ({ field, order }) => `${toTitle(field)} (${order === 'desc'
  * another index, are skipped so a generated title doesn't replace it.
  */
 const buildStaticLabels = (search, existingKeys) => {
-  const source = contentPath('search', `${search.static.index_name}${CONFIG_SUFFIX}`);
-
-  // buildStaticSearch reports the missing file
-  const { aggregations = {}, sortings = {} } = fs.existsSync(source)
-    ? JSON.parse(fs.readFileSync(source, 'utf8'))
-    : {};
-
+  const aggregations = getAggregations(search);
   const labels = {};
 
   const addLabel = (key, title = toTitle(key)) => {
@@ -91,23 +77,22 @@ const buildStaticLabels = (search, existingKeys) => {
   ];
 
   for (const attribute of attributes) {
-    const title = aggregations[attribute]?.title;
     const relationshipId = getRelationshipId(attribute);
     const fieldId = getFieldId(attribute);
 
     if (!relationshipId) {
-      addLabel(fieldId, title);
+      addLabel(fieldId);
     } else if (DEFAULT_FIELD_IDS.includes(fieldId)) {
-      addLabel(relationshipId, title);
+      addLabel(relationshipId);
     } else {
-      // Labelled as "{{relationship}}: {{field}}", so the aggregation title doesn't apply
+      // Labelled as "{{relationship}}: {{field}}"
       addLabel(relationshipId);
       addLabel(fieldId);
     }
   }
 
-  for (const [name, sorting] of Object.entries(sortings)) {
-    addLabel(name, sorting.title || toSortTitle(sorting));
+  for (const [name, sorting] of Object.entries(SORTINGS)) {
+    addLabel(name, toSortTitle(sorting));
   }
 
   return labels;
@@ -144,37 +129,4 @@ export const buildSearch = async (config, userDefinedFields = {}) => {
 
   const content = JSON.stringify(searches, null, 2);
   fs.writeFileSync('./src/i18n/search.json', content, 'utf8');
-};
-
-export const buildStaticSearch = async (config) => {
-  const indexNames = config.search
-    .filter((search) => search.static)
-    .map((search) => search.static.index_name);
-
-  if (!indexNames.length) {
-    return;
-  }
-
-  if (!fs.existsSync(contentPath())) {
-    console.warn(`Skipping static search indexes; ${contentPath()} does not exist`);
-    return;
-  }
-
-  fs.mkdirSync(PUBLIC_SEARCH_DIR, { recursive: true });
-
-  for (const indexName of indexNames) {
-    for (const filename of [`${indexName}.json`, `${indexName}${CONFIG_SUFFIX}`]) {
-      const source = contentPath('search', filename);
-
-      if (!fs.existsSync(source)) {
-        throw new Error(
-          `Missing static search file "${source}". Each "static.index_name" in config.json`
-          + ` requires both <index_name>.json and <index_name>${CONFIG_SUFFIX} in /content/search.`
-        );
-      }
-
-      fs.cpSync(source, path.join(PUBLIC_SEARCH_DIR, filename));
-      console.info(`Copying ${source}`);
-    }
-  }
 };

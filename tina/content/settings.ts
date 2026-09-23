@@ -732,14 +732,9 @@ const Settings: Collection = {
     }, {
       name: 'static',
       label: 'Static search',
-      description: 'Serve this search from an static JSON file in /content/search instead of Typesense',
+      description: 'Serve this search from an index generated at build time from the FairData records instead of Typesense. Requires a static build.',
       type: 'object',
       fields: [{
-        name: 'index_name',
-        label: 'Index name',
-        description: 'File name from /content/search (don\'t include the .json extension)',
-        type: 'string'
-      }, {
         name: 'facets',
         label: 'Facets',
         type: 'object',

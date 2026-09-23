@@ -1,9 +1,14 @@
 import { Configuration } from '@types';
 import _config from '@config' with { type: 'json' };
+import { COLLECTIONS, getCollectionName } from '@utils/staticSearchOptions';
 import { describe, expect, test } from 'vitest';
+import { loadEnv } from 'vite';
 import fs from 'node:fs';
 
 const config = _config as Configuration;
+
+// Read the same way as in astro.config.mjs
+const { STATIC_BUILD } = loadEnv(process.env.STATIC_BUILD, process.cwd(), '');
 
 const icons = [
   'bullet',
@@ -321,16 +326,12 @@ describe('search', () => {
     });
 
     describe('static', () => {
-      test.skipIf(!search.static)('index_name is not empty', () => {
-        expect(search.static?.index_name).toBeString();
+      test.skipIf(!search.static)('requires a static build', () => {
+        expect(STATIC_BUILD).toBe('true');
       });
 
-      test.skipIf(!search.static)('data file exists', () => {
-        expect(fs.existsSync(`./content/search/${search.static?.index_name}.json`)).toBe(true);
-      });
-
-      test.skipIf(!search.static)('ItemsJS configuration file exists', () => {
-        expect(fs.existsSync(`./content/search/${search.static?.index_name}.itemsjs.json`)).toBe(true);
+      test.skipIf(!search.static)('route is a Core Data collection', () => {
+        expect(getCollectionName(search)).toBeOneOf([...COLLECTIONS]);
       });
 
       describe('facets', () => {

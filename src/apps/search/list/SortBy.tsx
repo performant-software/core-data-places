@@ -18,7 +18,7 @@ const SortBy = () => {
     if (config.static) {
       return [{
         label: t('relevance'),
-        value: config.static.index_name
+        value: config.name
       }, ...getSortings(staticSearch?.options, t)];
     }
 

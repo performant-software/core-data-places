@@ -20,14 +20,14 @@ const StaticSearch = (props: { children: ReactNode }) => {
 
   const [index, setIndex] = useState<Index>();
 
-  const routing = useMemo(() => TypesenseUtils.createRouting(staticSearch), [staticSearch]);
+  const routing = useMemo(() => TypesenseUtils.createRouting({ index_name: config.name }), [config.name]);
 
   useEffect(() => {
     let current = true;
 
     const worker = new StaticSearchWorker();
 
-    loadIndex(worker, staticSearch.index_name)
+    loadIndex(worker, config.name)
       .then((options) => {
         if (current) {
           setIndex({ options, searchClient: createStaticSearchClient(worker) });
@@ -38,7 +38,7 @@ const StaticSearch = (props: { children: ReactNode }) => {
       current = false;
       worker.terminate();
     };
-  }, [staticSearch.index_name]);
+  }, [config.name]);
 
   if (!index) {
     return (
@@ -55,7 +55,7 @@ const StaticSearch = (props: { children: ReactNode }) => {
 
   return (
     <InstantSearch
-      indexName={staticSearch.index_name}
+      indexName={config.name}
       routing={routing}
       searchClient={index.searchClient}
       future={{

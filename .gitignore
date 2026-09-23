@@ -42,7 +42,6 @@ tmp/
 /public/config.dev*.json
 /public/config.json
 /public/branding.json
-/public/search/
 
 # Workspaces
 *.code-workspace

@@ -2,8 +2,6 @@ import _ from 'underscore';
 
 const SEARCH_PATH = '/search';
 
-const CONFIG_SUFFIX = '.itemsjs.json';
-
 export interface ItemsJsAggregation {
   title?: string;
   size?: number;
@@ -28,8 +26,8 @@ export interface ItemsJsOptions {
 }
 
 export const getIndexUrls = (indexName: string) => ({
-  data: `${SEARCH_PATH}/${indexName}.json`,
-  options: `${SEARCH_PATH}/${indexName}${CONFIG_SUFFIX}`
+  data: `${SEARCH_PATH}/${indexName}/data.json`,
+  options: `${SEARCH_PATH}/${indexName}/options.json`
 });
 
 export type WorkerRequest =

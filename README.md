@@ -90,16 +90,11 @@ content
 ├── posts
 │   ├── FirstPost.mdx
 │   ├── SecondPost.mdx
-├── search
-│   ├── my_index.json
-│   ├── my_index.itemsjs.json
 ├── settings
 │   ├── config.json
 ├── users
 │   ├── index.json
 ```
-
-The `search` directory is only needed for searches configured with `static`.
 
 ###### Branding
 
@@ -196,8 +191,7 @@ Copy the `/public/config.json` file into your content repository to `/content/se
 | search.result_card.tags.primary                                           | Boolean | Whether the tag should be shown in the primary site color                                                                                                                                              |
 | search.result_card.tags.secondary                                         | Boolean | Whether the tag should be shown in the secondary site color                                                                                                                                            |
 | search.route                                                              | String  | The navigation route to use when clicking on a search result card (e.g. "/places", "/organizations", etc)                                                                                              |
-| search.static                                                             | Object  | Static search configuration. If present, the search is served from an ItemsJS index built in the browser and `search.typesense` is ignored.                                                            |
-| search.static.index_name                                                  | String  | Base filename of the ItemsJS data in `/content/search`, without the `.json` extension (e.g. `my_index` for `/content/search/my_index.json`)                                                            |
+| search.static                                                             | Object  | Static search configuration. If present, the search is served from an ItemsJS index generated from the Core Data records for `search.route` and `search.typesense` is ignored. Requires `STATIC_BUILD=true` |
 | search.static.facets                                                      | Object  | Facet configuration                                                                                                                                                                                    |
 | search.static.facets.exclude                                              | Array   | Array of aggregation names to exclude                                                                                                                                                                  |
 | search.static.facets.include                                              | Array   | Array of aggregation names to include. Also sets the order the facets display in                                                                                                                       |
