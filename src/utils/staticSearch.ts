@@ -1,4 +1,3 @@
-import { createIndex, getSearchClient } from 'instantsearch-itemsjs-adapter';
 import _ from 'underscore';
 
 const SEARCH_PATH = '/search';
@@ -33,32 +32,98 @@ export const getIndexUrls = (indexName: string) => ({
   options: `${SEARCH_PATH}/${indexName}${CONFIG_SUFFIX}`
 });
 
-export const loadIndex = async (indexName: string) => {
-  const urls = getIndexUrls(indexName);
+export type WorkerRequest =
+  | { type: 'load', indexName: string }
+  | { type: 'search', id: number, queries: Array<any> };
 
-  const [data, options] = await Promise.all([
-    fetch(urls.data).then((response) => response.json()),
-    fetch(urls.options).then((response) => response.json())
-  ]);
+export type WorkerResponse =
+  | { type: 'loaded', options: ItemsJsOptions }
+  | { type: 'loadFailed', message: string }
+  | { type: 'results', id: number, response: any }
+  | { type: 'searchFailed', id: number, message: string };
 
-  // ItemsJS requires a `query` key, but InstantSearch supplies the actual query per-request.
-  const index = createIndex(data, { ...options, query: '' });
+export type SearchWorker = Pick<Worker, 'addEventListener' | 'postMessage' | 'removeEventListener'>;
 
-  return { index, options: options as ItemsJsOptions };
-};
+interface Waiter {
+  resolve: (response: any) => void;
+  reject: (error: Error) => void;
+}
 
-export const createStaticSearchClient = (index: any) => {
-  const client = getSearchClient(index);
+/**
+ * The adapter reads `params.facets` unconditionally, but InstantSearch omits it when no facets are requested.
+ */
+export const normalizeQueries = (queries: Array<any>) => _.map(queries, (query: any) => ({
+  ...query,
+  params: {
+    ...query.params,
+    facets: query.params?.facets || []
+  }
+}));
+
+/**
+ * Asks the worker to fetch and index the named search index, resolving with the ItemsJS options.
+ */
+export const loadIndex = (worker: SearchWorker, indexName: string) => new Promise<ItemsJsOptions>((resolve, reject) => {
+  const onMessage = ({ data }: MessageEvent<WorkerResponse>) => {
+    if (data.type === 'loaded') {
+      resolve(data.options);
+    } else if (data.type === 'loadFailed') {
+      reject(new Error(data.message));
+    } else {
+      return;
+    }
+
+    worker.removeEventListener('message', onMessage);
+  };
+
+  worker.addEventListener('message', onMessage);
+  worker.postMessage({ type: 'load', indexName } as WorkerRequest);
+});
+
+export const createStaticSearchClient = (worker: SearchWorker) => {
+  let nextId = 0;
+  let running: { id: number, waiters: Waiter[] } | null = null;
+  let queued: { queries: Array<any>, waiters: Waiter[] } | null = null;
+
+  const send = (queries: Array<any>, waiters: Waiter[]) => {
+    running = { id: nextId++, waiters };
+    worker.postMessage({ type: 'search', id: running.id, queries } as WorkerRequest);
+  };
+
+  worker.addEventListener('message', ({ data }: MessageEvent<WorkerResponse>) => {
+    if ((data.type !== 'results' && data.type !== 'searchFailed') || data.id !== running?.id) {
+      return;
+    }
+
+    const { waiters } = running;
+    running = null;
+
+    if (queued) {
+      send(queued.queries, queued.waiters);
+      queued = null;
+    }
+
+    const settle = (waiter: Waiter) => (data.type === 'results'
+      ? waiter.resolve(data.response)
+      : waiter.reject(new Error(data.message)));
+
+    settle(_.last(waiters)!);
+    setTimeout(() => _.each(_.initial(waiters), settle));
+  });
 
   return {
-    ...client,
-    search: (queries: Array<any>) => client.search(_.map(queries, (query: any) => ({
-      ...query,
-      params: {
-        ...query.params,
-        facets: query.params?.facets || []
+    search: (queries: Array<any>) => new Promise<any>((resolve, reject) => {
+      const waiter = { resolve, reject };
+
+      if (running) {
+        queued = { queries, waiters: [...(queued?.waiters || []), waiter] };
+      } else {
+        send(queries, [waiter]);
       }
-    })))
+    }),
+    searchForFacetValues: () => {
+      throw new Error('Not implemented');
+    }
   };
 };
 

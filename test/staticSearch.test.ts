@@ -1,17 +1,40 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   createStaticSearchClient,
   getFacetAttributes,
   getIndexUrls,
-  getSortings
+  getSortings,
+  loadIndex,
+  normalizeQueries,
+  type WorkerResponse
 } from '../src/utils/staticSearch';
 
-const search = vi.fn();
+class FakeWorker {
+  listeners: Array<(event: { data: WorkerResponse }) => void> = [];
 
-vi.mock('instantsearch-itemsjs-adapter', () => ({
-  createIndex: vi.fn(),
-  getSearchClient: () => ({ search, searchForFacetValues: vi.fn() })
-}));
+  postMessage = vi.fn();
+
+  addEventListener(_type: string, listener: (event: { data: WorkerResponse }) => void) {
+    this.listeners.push(listener);
+  }
+
+  removeEventListener(_type: string, listener: (event: { data: WorkerResponse }) => void) {
+    this.listeners = this.listeners.filter((l) => l !== listener);
+  }
+
+  reply(data: WorkerResponse) {
+    this.listeners.forEach((listener) => listener({ data }));
+  }
+
+  sent() {
+    return this.postMessage.mock.calls.map(([message]) => message);
+  }
+}
+
+const createClient = () => {
+  const worker = new FakeWorker();
+  return { worker, client: createStaticSearchClient(worker as unknown as Worker) };
+};
 
 const options = {
   searchableFields: ['title', 'author'],
@@ -109,35 +132,106 @@ describe('getSortings', () => {
   });
 });
 
-describe('createStaticSearchClient', () => {
-  beforeEach(() => {
-    search.mockReset().mockResolvedValue({ results: [] });
-  });
-
-  it('defaults the facets param, which the adapter reads unconditionally', async () => {
-    const client = createStaticSearchClient({});
-    await client.search([{ indexName: 'catalogue', params: { query: 'a' } }]);
-
-    expect(search).toHaveBeenCalledWith([
+describe('normalizeQueries', () => {
+  it('defaults the facets param, which the adapter reads unconditionally', () => {
+    expect(normalizeQueries([{ indexName: 'catalogue', params: { query: 'a' } }])).toEqual([
       { indexName: 'catalogue', params: { query: 'a', facets: [] } }
     ]);
   });
 
-  it('defaults the facets param when the request has no params at all', async () => {
-    const client = createStaticSearchClient({});
-    await client.search([{ indexName: 'catalogue' }]);
-
-    expect(search).toHaveBeenCalledWith([
+  it('defaults the facets param when the request has no params at all', () => {
+    expect(normalizeQueries([{ indexName: 'catalogue' }])).toEqual([
       { indexName: 'catalogue', params: { facets: [] } }
     ]);
   });
 
-  it('leaves an existing facets param alone', async () => {
-    const client = createStaticSearchClient({});
-    await client.search([{ indexName: 'catalogue', params: { facets: ['author'] } }]);
-
-    expect(search).toHaveBeenCalledWith([
+  it('leaves an existing facets param alone', () => {
+    expect(normalizeQueries([{ indexName: 'catalogue', params: { facets: ['author'] } }])).toEqual([
       { indexName: 'catalogue', params: { facets: ['author'] } }
     ]);
+  });
+});
+
+describe('loadIndex', () => {
+  it('asks the worker to load the index and resolves with its options', async () => {
+    const worker = new FakeWorker();
+    const loading = loadIndex(worker as unknown as Worker, 'catalogue');
+
+    expect(worker.sent()).toEqual([{ type: 'load', indexName: 'catalogue' }]);
+
+    worker.reply({ type: 'loaded', options });
+
+    await expect(loading).resolves.toEqual(options);
+    expect(worker.listeners).toHaveLength(0);
+  });
+
+  it('rejects when the worker fails to load the index', async () => {
+    const worker = new FakeWorker();
+    const loading = loadIndex(worker as unknown as Worker, 'catalogue');
+
+    worker.reply({ type: 'loadFailed', message: 'Not found' });
+
+    await expect(loading).rejects.toThrow('Not found');
+  });
+});
+
+describe('createStaticSearchClient', () => {
+  const response = (query: string) => ({ results: [{ query }] });
+
+  it('runs the search in the worker', async () => {
+    const { client, worker } = createClient();
+    const search = client.search([{ indexName: 'catalogue', params: { query: 'a' } }]);
+
+    expect(worker.sent()).toEqual([
+      { type: 'search', id: 0, queries: [{ indexName: 'catalogue', params: { query: 'a' } }] }
+    ]);
+
+    worker.reply({ type: 'results', id: 0, response: response('a') });
+
+    await expect(search).resolves.toEqual(response('a'));
+  });
+
+  it('only sends the newest of the searches made while one is running', async () => {
+    const { client, worker } = createClient();
+    const settled: string[] = [];
+
+    const searches = ['a', 'b', 'c'].map((query) => client
+      .search([{ params: { query } }])
+      .then((result) => settled.push(`${query}:${result.results[0].query}`)));
+
+    expect(worker.sent()).toHaveLength(1);
+
+    worker.reply({ type: 'results', id: 0, response: response('a') });
+
+    expect(worker.sent()).toEqual([
+      { type: 'search', id: 0, queries: [{ params: { query: 'a' } }] },
+      { type: 'search', id: 1, queries: [{ params: { query: 'c' } }] }
+    ]);
+
+    worker.reply({ type: 'results', id: 1, response: response('c') });
+    await Promise.all(searches);
+
+    // The replaced search settles after the newest one, with its response.
+    expect(settled).toEqual(['a:a', 'c:c', 'b:c']);
+  });
+
+  it('rejects when the search fails in the worker', async () => {
+    const { client, worker } = createClient();
+    const search = client.search([{ params: { query: 'a' } }]);
+
+    worker.reply({ type: 'searchFailed', id: 0, message: 'Boom' });
+
+    await expect(search).rejects.toThrow('Boom');
+  });
+
+  it('ignores responses for other searches', async () => {
+    const { client, worker } = createClient();
+    const search = client.search([{ params: { query: 'a' } }]);
+
+    worker.reply({ type: 'results', id: 5, response: response('x') });
+    worker.reply({ type: 'loaded', options });
+    worker.reply({ type: 'results', id: 0, response: response('a') });
+
+    await expect(search).resolves.toEqual(response('a'));
   });
 });

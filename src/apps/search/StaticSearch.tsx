@@ -5,6 +5,7 @@ import Loader from '@components/Loader';
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
 import type { StaticSearchConfig } from '@types';
 import { createStaticSearchClient, loadIndex, type ItemsJsOptions } from '@utils/staticSearch';
+import StaticSearchWorker from '@utils/staticSearch.worker?worker';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { InstantSearch } from 'react-instantsearch';
 
@@ -24,14 +25,19 @@ const StaticSearch = (props: { children: ReactNode }) => {
   useEffect(() => {
     let current = true;
 
-    loadIndex(staticSearch.index_name)
-      .then(({ index: itemsJsIndex, options }) => {
+    const worker = new StaticSearchWorker();
+
+    loadIndex(worker, staticSearch.index_name)
+      .then((options) => {
         if (current) {
-          setIndex({ options, searchClient: createStaticSearchClient(itemsJsIndex) });
+          setIndex({ options, searchClient: createStaticSearchClient(worker) });
         }
       });
 
-    return () => { current = false; };
+    return () => {
+      current = false;
+      worker.terminate();
+    };
   }, [staticSearch.index_name]);
 
   if (!index) {
