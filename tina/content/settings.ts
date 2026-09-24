@@ -735,6 +735,12 @@ const Settings: Collection = {
       description: 'Serve this search from an index generated at build time from the FairData records instead of Typesense. Requires a static build.',
       type: 'object',
       fields: [{
+        name: 'model_ids',
+        label: 'Model IDs',
+        description: 'UUIDs of the project models to include. Each must belong to one of the projects in Core Data > Project IDs.',
+        type: 'string',
+        list: true
+      }, {
         name: 'facets',
         label: 'Facets',
         type: 'object',

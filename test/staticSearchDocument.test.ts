@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import _ from 'underscore';
-import { buildDocument } from '../src/utils/staticSearchDocument';
+import { buildDocument, getSearchRecords } from '../src/utils/staticSearchDocument';
 import { buildOptions, getCollectionName } from '../src/utils/staticSearchOptions';
 import records from './fixtures/staticSearch/records.json';
 
@@ -66,6 +66,8 @@ describe('buildDocument', () => {
     const eventDocument = buildDocument('events', event, lookup as any);
 
     expect(eventDocument.start_date_facet).toEqual([1722470400, 1722470400]);
+    expect(eventDocument.start_year_facet).toEqual([2024, 2024]);
+    expect(eventDocument.end_year_facet).toEqual([]);
     expect(eventDocument.event_range_facet).toEqual([2024, 2024]);
   });
 });
@@ -105,5 +107,37 @@ describe('getCollectionName', () => {
 
   it('returns undefined for other routes', () => {
     expect(getCollectionName({ route: '/posts' })).toBeUndefined();
+  });
+});
+
+describe('getSearchRecords', () => {
+  const STORE = 'store-model';
+  const T_STOP = 't-stop-model';
+  const PERSON = 'person-model';
+
+  const loaded = new Map<any, Map<string, any>>([
+    ['places', new Map([
+      ['store', { uuid: 'store', project_model_uuid: STORE }],
+      ['t-stop', { uuid: 't-stop', project_model_uuid: T_STOP }]
+    ])],
+    ['people', new Map([
+      ['person', { uuid: 'person', project_model_uuid: PERSON }]
+    ])]
+  ]);
+
+  const search = (modelIds: string[]) => ({ name: 'stores', route: '/places', static: { model_ids: modelIds } });
+
+  it('returns the records for the passed models', () => {
+    expect(_.pluck(getSearchRecords(search([STORE]), 'places', loaded), 'uuid')).toEqual(['store']);
+    expect(_.pluck(getSearchRecords(search([STORE, T_STOP]), 'places', loaded), 'uuid')).toEqual(['store', 't-stop']);
+  });
+
+  it('throws for a model whose records are in another collection', () => {
+    expect(() => getSearchRecords(search([STORE, PERSON]), 'places', loaded)).toThrow(/"people" collection/);
+  });
+
+  it('throws when the records do not include their model', () => {
+    const unknown = new Map<any, Map<string, any>>([['places', new Map([['store', { uuid: 'store' }]])]]);
+    expect(() => getSearchRecords(search([STORE]), 'places', unknown)).toThrow(/project_model_uuid/);
   });
 });

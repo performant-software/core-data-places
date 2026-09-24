@@ -14,6 +14,7 @@ export type Models =
 import { Dispatch, SetStateAction } from "react";
 
 export interface StaticSearchConfig {
+  model_ids: Array<string>,
   facets?: {
     exclude?: Array<string>,
     include?: Array<string>

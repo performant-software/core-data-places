@@ -2,7 +2,7 @@ import config from '@config' with { type: 'json' };
 import { hasContentCollection } from '@root/src/content.config';
 import type { SearchConfig } from '@types';
 import { buildResponse } from '@utils/api';
-import { buildDocument } from '@utils/staticSearchDocument';
+import { buildDocument, getSearchRecords } from '@utils/staticSearchDocument';
 import { buildOptions, COLLECTIONS, getCollectionName, type Collection } from '@utils/staticSearchOptions';
 import type { APIRoute } from 'astro';
 import { STATIC_BUILD } from 'astro:env/client';
@@ -49,7 +49,7 @@ const buildDocuments = async (search: SearchConfig) => {
 
   const lookup = (name: Collection, uuid: string) => loaded.get(name)?.get(uuid);
 
-  return _.map([...loaded.get(collection).values()], (record) => buildDocument(collection, record, lookup));
+  return _.map(getSearchRecords(search, collection, loaded), (record) => buildDocument(collection, record, lookup));
 };
 
 const getDocuments = (search: SearchConfig) => {

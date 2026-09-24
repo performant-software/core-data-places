@@ -130,3 +130,52 @@ export const buildSearch = async (config, userDefinedFields = {}) => {
   const content = JSON.stringify(searches, null, 2);
   fs.writeFileSync('./src/i18n/search.json', content, 'utf8');
 };
+
+/**
+ * Checks that the searches match the kind of build: static builds only support `static` searches, and other builds
+ * only support `typesense` searches. Also checks that each static search lists the project models to include, and that
+ * each of them belongs to one of the projects in `core_data.project_ids`.
+ *
+ * @param config
+ * @param descriptors
+ * @param staticBuild whether STATIC_BUILD is true
+ */
+export const validateSearches = (config, descriptors, staticBuild) => {
+  // Project models are the only descriptors without a context
+  const modelIds = new Set(descriptors
+    .filter((descriptor) => !descriptor.context)
+    .map((descriptor) => descriptor.identifier));
+
+  const errors = [];
+
+  for (const search of config.search) {
+    if (staticBuild && search.typesense) {
+      errors.push(`Search "${search.name}" can't use "typesense" when STATIC_BUILD is true. Use "static" instead.`);
+    }
+
+    if (!staticBuild && search.static) {
+      errors.push(`Search "${search.name}" can't use "static" unless STATIC_BUILD is true.`);
+    }
+  }
+
+  for (const search of config.search.filter((search) => search.static)) {
+    const searchModelIds = search.static.model_ids || [];
+
+    if (!searchModelIds.length) {
+      errors.push(`Static search "${search.name}" requires at least one "static.model_ids" entry.`);
+    }
+
+    for (const modelId of searchModelIds) {
+      if (!modelIds.has(modelId)) {
+        errors.push(
+          `Static search "${search.name}" includes model "${modelId}", which is not in any of the projects in`
+          + ` "core_data.project_ids" (${config.core_data.project_ids.join(', ')}).`
+        );
+      }
+    }
+  }
+
+  if (errors.length) {
+    throw new Error(errors.join('\n'));
+  }
+};

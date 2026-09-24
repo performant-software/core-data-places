@@ -99,6 +99,14 @@ const getUserDefined = (userDefined: CoreDataRecord = {}) => {
 };
 
 /**
+ * Returns [latitude, longitude] for the center of the passed geometry.
+ */
+const getCoordinates = (geometry: any) => {
+  const [longitude, latitude] = centroid(geometry).geometry.coordinates;
+  return [latitude, longitude];
+};
+
+/**
  * Returns the fields shared by a document and the related records nested in it.
  */
 const getFields = (collection: string, record: CoreDataRecord) => {
@@ -110,10 +118,11 @@ const getFields = (collection: string, record: CoreDataRecord) => {
     id: record.uuid,
     uuid: record.uuid,
     name,
-    ...(names ? { names, names_facet: names } : { name_facet: name }),
+    name_facet: name,
+    ...(names ? { names, names_facet: names } : {}),
     ...(record.biography ? { biography: record.biography } : {}),
     ...(record.description ? { description: record.description } : {}),
-    ...(geometry ? { geometry } : {}),
+    ...(geometry ? { geometry, coordinates: getCoordinates(geometry) } : {}),
     ...getUserDefined(record.user_defined)
   };
 };
@@ -127,6 +136,21 @@ const getDates = (event: CoreDataRecord) => {
     start_date_facet: startDate,
     end_date: endDate,
     end_date_facet: endDate
+  };
+};
+
+/**
+ * Returns the years of an event's dates, which only the top-level event documents include.
+ */
+const getYears = (event: CoreDataRecord) => {
+  const startYear = _.map(toTimestamps(event.start_date), toYear);
+  const endYear = _.map(toTimestamps(event.end_date), toYear);
+
+  return {
+    start_year: startYear,
+    start_year_facet: startYear,
+    end_year: endYear,
+    end_year_facet: endYear
   };
 };
 
@@ -150,14 +174,6 @@ const getRelatedEventRange = (record: CoreDataRecord, lookup: RecordLookup) => g
   record.relatedRecords?.events || [],
   ({ uuid }) => lookup('events', uuid)
 )));
-
-/**
- * Returns [latitude, longitude] for the center of the passed geometry.
- */
-const getCoordinates = (geometry: any) => {
-  const [longitude, latitude] = centroid(geometry).geometry.coordinates;
-  return [latitude, longitude];
-};
 
 /**
  * Converts the passed record from the passed collection into a search document.
@@ -201,7 +217,7 @@ export const buildDocument = (collection: Collection, record: CoreDataRecord, lo
   }
 
   if (collection === 'events') {
-    Object.assign(document, getDates(record));
+    Object.assign(document, getDates(record), getYears(record));
   }
 
   const eventRange = getEventRange(collection === 'events' ? [record] : relatedEvents);
@@ -210,9 +226,45 @@ export const buildDocument = (collection: Collection, record: CoreDataRecord, lo
     document.event_range_facet = eventRange;
   }
 
-  if (document.geometry) {
-    document.coordinates = getCoordinates(document.geometry);
+  return document;
+};
+
+interface StaticSearch {
+  name: string;
+  route: string;
+  static?: { model_ids?: string[] };
+}
+
+/**
+ * Returns the records from the passed collection that belong to the search's models. Throws if the records don't say
+ * which model they belong to, or if a model's records are in a different collection than the search's route.
+ */
+export const getSearchRecords = (
+  search: StaticSearch,
+  collection: Collection,
+  loaded: Map<Collection, Map<string, CoreDataRecord>>
+) => {
+  const modelIds = search.static?.model_ids || [];
+  const records = [...(loaded.get(collection)?.values() || [])];
+
+  if (_.some(records, (record) => !record.project_model_uuid)) {
+    throw new Error(
+      `Static search "${search.name}" can't filter the "${collection}" records by model, because they don't include`
+      + ' "project_model_uuid". Check that the FairData API returns it.'
+    );
   }
 
-  return document;
+  for (const [name, otherRecords] of loaded) {
+    const record = name !== collection
+      && _.find([...otherRecords.values()], ({ project_model_uuid: modelId }) => modelIds.includes(modelId));
+
+    if (record) {
+      throw new Error(
+        `Static search "${search.name}" includes model "${record.project_model_uuid}", whose records are in the`
+        + ` "${name}" collection rather than "${collection}" (from its route "${search.route}").`
+      );
+    }
+  }
+
+  return _.filter(records, (record) => modelIds.includes(record.project_model_uuid));
 };

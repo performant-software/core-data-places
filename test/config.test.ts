@@ -334,6 +334,11 @@ describe('search', () => {
         expect(getCollectionName(search)).toBeOneOf([...COLLECTIONS]);
       });
 
+      test.skipIf(!search.static)('model_ids is not empty', () => {
+        expect(search.static?.model_ids).toBeArrayOf(String);
+        expect(search.static?.model_ids?.length).toBeGreaterThan(0);
+      });
+
       describe('facets', () => {
         test('exclude matches allowed values', () => {
           expect(search.static?.facets?.exclude).toBeArrayOf(String);
@@ -346,6 +351,10 @@ describe('search', () => {
     });
 
     describe.skipIf(search.static)('typesense', () => {
+      test('requires a non-static build', () => {
+        expect(STATIC_BUILD).not.toBe('true');
+      });
+
       test('is not empty', () => {
         expect(search.typesense).toBeObject();
       });

@@ -355,10 +355,21 @@ present, no request is made to Typesense and `typesense` is ignored.
 
 The index is generated at build time from the FairData records for the search's `route` (e.g.
 `/places`), so static searches require `STATIC_BUILD=true`. Each configured facet becomes an
-ItemsJS aggregation, and `timeline.date_range_facet` becomes a range aggregation. Use `{}` to
-enable a static search without any other options.
+ItemsJS aggregation, and `timeline.date_range_facet` becomes a range aggregation.
 
 Required: No
+
+#### model_ids
+
+UUIDs of the project models whose records are included in the index. The build fails if a model
+isn't in one of the projects in `core_data.project_ids`, or if its records don't match the
+search's `route` (e.g. a person model on a `/places` search).
+
+```
+Array<String>
+```
+
+Required: Yes
 
 #### facets
 
