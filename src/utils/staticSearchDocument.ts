@@ -1,4 +1,5 @@
 import { centroid } from '@turf/turf';
+import { getNameView } from '@utils/people';
 import type { Collection } from '@utils/staticSearchOptions';
 import _ from 'underscore';
 
@@ -45,14 +46,8 @@ const toTimestamps = (date?: { start_date?: string, end_date?: string }) => (
 
 const toYear = (timestamp: number) => new Date(timestamp * 1000).getUTCFullYear();
 
-const getPersonName = (person: CoreDataRecord) => _.compact([
-  person.first_name,
-  person.middle_name,
-  person.last_name
-]).join(' ');
-
 const getName = (collection: string, record: CoreDataRecord) => (
-  collection === 'people' ? getPersonName(record) : record.name
+  collection === 'people' ? getNameView(record) : record.name
 );
 
 /**
@@ -64,7 +59,7 @@ const getNames = (collection: string, record: CoreDataRecord): string[] | undefi
       return _.pluck(record.organization_names || [], 'name');
 
     case 'people':
-      return _.map(record.person_names || [], getPersonName);
+      return _.map(record.person_names || [], getNameView);
 
     case 'places':
       return _.pluck(record.place_names || [], 'name');
