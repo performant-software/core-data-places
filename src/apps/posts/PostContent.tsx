@@ -13,7 +13,7 @@ import Timeline from '@visualizations/Timeline';
 import { TinaMarkdown } from 'tinacms/dist/rich-text';
 import { PostQuery, PostQueryVariables } from '@root/tina/__generated__/types';
 import { tinaField, useTina } from "tinacms/dist/react";
-import { normalizeConfig } from '@utils/runtimeConfig';
+import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 
 interface PostContentProps {
   variables: PostQueryVariables;
@@ -43,7 +43,7 @@ const PostContent = (props: PostContentProps) => {
   return (
     <RuntimeConfig
       path='/config.json'
-      preprocess={normalizeConfig}
+      preprocess={PeripleoUtils.normalize}
     >
       <Peripleo>
         <TranslationContext.Provider

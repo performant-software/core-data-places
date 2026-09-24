@@ -29,7 +29,7 @@ import { GeoJSONLayer } from '@peripleo/maplibre';
 import { dottedLine, noFill, selectablePoint, selectablePolygon } from '@utils/mapStyles';
 import { Button } from '@headlessui/react';
 import { bbox } from '@turf/turf';
-import { normalizeConfig } from '@utils/runtimeConfig';
+import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 
 export interface PathViewerProps {
   variables: PathQueryVariables;
@@ -269,7 +269,7 @@ const Wrapper = (props: PathViewerProps) => {
   return (
     <RuntimeConfig
       path='/config.json'
-      preprocess={normalizeConfig}
+      preprocess={PeripleoUtils.normalize}
     >
       <Peripleo>
         <TranslationContext.Provider

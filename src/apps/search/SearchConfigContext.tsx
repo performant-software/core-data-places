@@ -7,7 +7,7 @@ import {
 import _ from 'underscore';
 import type { SearchConfig } from '@types';
 import { RuntimeConfig, useRuntimeConfig } from '@peripleo/peripleo';
-import { normalizeConfig } from '@utils/runtimeConfig';
+import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 
 interface SearchContextType {
   searchConfig: SearchConfig;
@@ -23,7 +23,7 @@ interface Props {
 export const RuntimeConfigProvider = ({ children, name }: Props) => (
   <RuntimeConfig
     path='/config.json'
-    preprocess={normalizeConfig}
+    preprocess={PeripleoUtils.normalize}
   >
     <SearchConfigContextProvider
       name={name}

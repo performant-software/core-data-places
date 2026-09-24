@@ -6,7 +6,7 @@ import { useTranslations } from '@i18n/useTranslations';
 import { useMemo } from 'react';
 import { kilometersToMiles } from '@utils/map';
 import { Map as MapUtils } from '@performant-software/geospatial';
-import { normalizeConfig } from '@utils/runtimeConfig';
+import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 
 interface Props {
   classNames?: {
@@ -58,7 +58,7 @@ const PlaceMap = (props: Props) => {
     >
       <RuntimeConfig
         path='/config.json'
-        preprocess={normalizeConfig}
+        preprocess={PeripleoUtils.normalize}
       >
         <Peripleo>
           <Map classNames={props.classNames}>
