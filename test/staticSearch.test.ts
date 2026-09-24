@@ -1,7 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
   createStaticSearchClient,
+  denormalizeResponse,
   getFacetAttributes,
+  getIndexOptions,
   getIndexUrls,
   getSortings,
   loadIndex,
@@ -149,6 +151,75 @@ describe('normalizeQueries', () => {
     expect(normalizeQueries([{ indexName: 'catalogue', params: { facets: ['author'] } }])).toEqual([
       { indexName: 'catalogue', params: { facets: ['author'] } }
     ]);
+  });
+});
+
+describe('getIndexOptions', () => {
+  it('keys the aggregations by document field', () => {
+    expect(getIndexOptions({
+      searchableFields: ['name'],
+      aggregations: {
+        names_facet: { size: 20 },
+        event_range_facet: { show_facet_stats: true },
+        author: { size: 20 }
+      }
+    })).toEqual({
+      searchableFields: ['name'],
+      aggregations: {
+        names: { size: 20 },
+        event_range: { show_facet_stats: true },
+        author: { size: 20 }
+      }
+    });
+  });
+});
+
+describe('normalizeQueries facet attributes', () => {
+  it('maps the facets and filters to the document fields', () => {
+    expect(normalizeQueries([{
+      params: {
+        facets: ['names_facet', 'author'],
+        facetFilters: [['names_facet:Paris', 'names_facet:Rome: Città'], 'author:Pratchett'],
+        numericFilters: ['event_range_facet>=2000', 'event_range_facet<=2020']
+      }
+    }])).toEqual([{
+      params: {
+        facets: ['names', 'author'],
+        facetFilters: [['names:Paris', 'names:Rome: Città'], 'author:Pratchett'],
+        numericFilters: ['event_range>=2000', 'event_range<=2020']
+      }
+    }]);
+  });
+});
+
+describe('denormalizeResponse', () => {
+  it('keys the facets and stats by the requested attributes', () => {
+    const queries = [
+      { params: { facets: ['names_facet', 'event_range_facet'] } },
+      { params: { facets: ['author'] } }
+    ];
+
+    const response = {
+      results: [
+        {
+          hits: [],
+          facets: { names: { Paris: 1 }, event_range: { 2024: 1 } },
+          facets_stats: { event_range: { min: 2024, max: 2024 } }
+        },
+        { hits: [], facets: { author: { Pratchett: 2 } }, facets_stats: {} }
+      ]
+    };
+
+    expect(denormalizeResponse(queries, response)).toEqual({
+      results: [
+        {
+          hits: [],
+          facets: { names_facet: { Paris: 1 }, event_range_facet: { 2024: 1 } },
+          facets_stats: { event_range_facet: { min: 2024, max: 2024 } }
+        },
+        { hits: [], facets: { author: { Pratchett: 2 } }, facets_stats: {} }
+      ]
+    });
   });
 });
 

@@ -1,5 +1,5 @@
 import { centroid } from '@turf/turf';
-import { FACET_SUFFIX, type Collection } from '@utils/staticSearchOptions';
+import type { Collection } from '@utils/staticSearchOptions';
 import _ from 'underscore';
 
 /**
@@ -13,11 +13,6 @@ type CoreDataRecord = { [key: string]: any };
  * Returns the full record for the passed collection and UUID, or `undefined` if it was not loaded.
  */
 export type RecordLookup = (collection: Collection, uuid: string) => CoreDataRecord | undefined;
-
-/**
- * User-defined field types that also get a "<uuid>_facet" copy. Free text fields do not.
- */
-const FACET_TYPES = ['Boolean', 'Select'];
 
 /**
  * Related record keys that the loader stores as references, mapped to the collection holding the full record.
@@ -83,16 +78,12 @@ const getNames = (collection: string, record: CoreDataRecord): string[] | undefi
 const getUserDefined = (userDefined: CoreDataRecord = {}) => {
   const fields: CoreDataRecord = {};
 
-  for (const [uuid, { type, value }] of Object.entries(userDefined)) {
+  for (const [uuid, { value }] of Object.entries(userDefined)) {
     if (value === null || value === undefined || value === '') {
       continue;
     }
 
     fields[uuid] = value;
-
-    if (FACET_TYPES.includes(type)) {
-      fields[`${uuid}${FACET_SUFFIX}`] = value;
-    }
   }
 
   return fields;
@@ -118,8 +109,7 @@ const getFields = (collection: string, record: CoreDataRecord) => {
     id: record.uuid,
     uuid: record.uuid,
     name,
-    name_facet: name,
-    ...(names ? { names, names_facet: names } : {}),
+    ...(names ? { names } : {}),
     ...(record.biography ? { biography: record.biography } : {}),
     ...(record.description ? { description: record.description } : {}),
     ...(geometry ? { geometry, coordinates: getCoordinates(geometry) } : {}),
@@ -133,9 +123,7 @@ const getDates = (event: CoreDataRecord) => {
 
   return {
     start_date: startDate,
-    start_date_facet: startDate,
-    end_date: endDate,
-    end_date_facet: endDate
+    end_date: endDate
   };
 };
 
@@ -143,14 +131,9 @@ const getDates = (event: CoreDataRecord) => {
  * Returns the years of an event's dates, which only the top-level event documents include.
  */
 const getYears = (event: CoreDataRecord) => {
-  const startYear = _.map(toTimestamps(event.start_date), toYear);
-  const endYear = _.map(toTimestamps(event.end_date), toYear);
-
   return {
-    start_year: startYear,
-    start_year_facet: startYear,
-    end_year: endYear,
-    end_year_facet: endYear
+    start_year: _.map(toTimestamps(event.start_date), toYear),
+    end_year: _.map(toTimestamps(event.end_date), toYear)
   };
 };
 
@@ -205,7 +188,7 @@ export const buildDocument = (collection: Collection, record: CoreDataRecord, lo
           const eventRange = getRelatedEventRange(relatedRecord, lookup);
 
           if (!_.isEmpty(eventRange)) {
-            entry.event_range_facet = eventRange;
+            entry.event_range = eventRange;
           }
         }
       }
@@ -223,7 +206,7 @@ export const buildDocument = (collection: Collection, record: CoreDataRecord, lo
   const eventRange = getEventRange(collection === 'events' ? [record] : relatedEvents);
 
   if (!_.isEmpty(eventRange)) {
-    document.event_range_facet = eventRange;
+    document.event_range = eventRange;
   }
 
   return document;

@@ -1,4 +1,6 @@
 import {
+  denormalizeResponse,
+  getIndexOptions,
   getIndexUrls,
   normalizeQueries,
   type WorkerRequest,
@@ -21,7 +23,7 @@ const load = async (indexName: string) => {
   ]);
 
   // ItemsJS requires a `query` key, but InstantSearch supplies the actual query per-request.
-  index = createIndex(data, { ...options, query: '' });
+  index = createIndex(data, { ...getIndexOptions(options), query: '' });
 
   return options;
 };
@@ -36,7 +38,7 @@ worker.addEventListener('message', async ({ data }: MessageEvent<WorkerRequest>)
   } else if (data.type === 'search') {
     try {
       const response = await performSearch(normalizeQueries(data.queries), index);
-      post({ type: 'results', id: data.id, response });
+      post({ type: 'results', id: data.id, response: denormalizeResponse(data.queries, response) });
     } catch (error) {
       post({ type: 'searchFailed', id: data.id, message: String(error) });
     }

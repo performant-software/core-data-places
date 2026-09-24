@@ -1,3 +1,4 @@
+import { toField } from '@utils/staticSearchOptions';
 import _ from 'underscore';
 
 const SEARCH_PATH = '/search';
@@ -48,15 +49,64 @@ interface Waiter {
 }
 
 /**
- * The adapter reads `params.facets` unconditionally, but InstantSearch omits it when no facets are requested.
+ * Returns the passed options with the aggregations keyed by document field, which is what ItemsJS indexes them by.
+ * The options file keeps the configured facet names, which InstantSearch uses as the attributes.
  */
-export const normalizeQueries = (queries: Array<any>) => _.map(queries, (query: any) => ({
-  ...query,
-  params: {
-    ...query.params,
-    facets: query.params?.facets || []
-  }
-}));
+export const getIndexOptions = (options: ItemsJsOptions): ItemsJsOptions => ({
+  ...options,
+  aggregations: _.object(_.map(options.aggregations || {}, (aggregation, name) => [toField(name), aggregation]))
+});
+
+/**
+ * Replaces the attribute at the start of a facet or numeric filter, e.g. "names_facet:Paris" -> "names:Paris".
+ */
+const toFieldFilter = (filter: string) => filter.replace(/^[^:<=!>]+/, (attribute) => toField(attribute));
+
+const toFieldFilters = (filters: Array<string | string[]>) => _.map(filters, (filter) => (
+  _.isArray(filter) ? _.map(filter, toFieldFilter) : toFieldFilter(filter)
+));
+
+/**
+ * Converts the InstantSearch queries into the ones the adapter passes to ItemsJS:
+ *
+ * - The adapter reads `params.facets` unconditionally, but InstantSearch omits it when no facets are requested.
+ * - The facets and filters use the configured attributes, which are mapped to the document fields.
+ */
+export const normalizeQueries = (queries: Array<any>) => _.map(queries, (query: any) => {
+  const { facetFilters, numericFilters } = query.params || {};
+
+  return {
+    ...query,
+    params: {
+      ...query.params,
+      facets: _.map(query.params?.facets || [], toField),
+      ...(_.isArray(facetFilters) ? { facetFilters: toFieldFilters(facetFilters) } : {}),
+      ...(_.isArray(numericFilters) ? { numericFilters: toFieldFilters(numericFilters) } : {})
+    }
+  };
+});
+
+/**
+ * Keys the facet values and stats in the adapter's response by the attributes each query requested, reversing
+ * `normalizeQueries`.
+ */
+export const denormalizeResponse = (queries: Array<any>, response: any) => ({
+  ...response,
+  results: _.map(response.results, (result: any, index: number) => {
+    const attributes = _.indexBy(queries[index]?.params?.facets || [], toField);
+
+    const toAttributes = (values?: { [field: string]: any }) => values && _.object(_.map(
+      values,
+      (value, field) => [attributes[field] || field, value]
+    ));
+
+    return {
+      ...result,
+      facets: toAttributes(result.facets),
+      facets_stats: toAttributes(result.facets_stats)
+    };
+  })
+});
 
 /**
  * Asks the worker to fetch and index the named search index, resolving with the ItemsJS options.

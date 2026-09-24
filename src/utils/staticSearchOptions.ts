@@ -29,6 +29,10 @@ export type Collection = typeof COLLECTIONS[number];
 
 export const FACET_SUFFIX = '_facet';
 
+export const toField = (attribute: string) => (
+  attribute.endsWith(FACET_SUFFIX) ? attribute.slice(0, -FACET_SUFFIX.length) : attribute
+);
+
 /**
  * Number of values ItemsJS returns for each facet.
  */
@@ -72,14 +76,14 @@ const isText = (value: unknown) => typeof value === 'string'
   || (Array.isArray(value) && value.some((item) => typeof item === 'string'));
 
 /**
- * Returns the top-level document fields that hold text, excluding the IDs and the facet copies.
+ * Returns the top-level document fields that hold text, excluding the IDs.
  */
 export const getSearchableFields = (documents: Array<{ [key: string]: unknown }>) => {
   const fields = new Set<string>();
 
   for (const document of documents) {
     for (const [key, value] of Object.entries(document)) {
-      if (!UNSEARCHABLE_FIELDS.includes(key) && !key.endsWith(FACET_SUFFIX) && isText(value)) {
+      if (!UNSEARCHABLE_FIELDS.includes(key) && isText(value)) {
         fields.add(key);
       }
     }

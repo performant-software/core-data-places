@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import _ from 'underscore';
 import { buildDocument, getSearchRecords } from '../src/utils/staticSearchDocument';
-import { buildOptions, getCollectionName } from '../src/utils/staticSearchOptions';
+import { buildOptions, getCollectionName, toField } from '../src/utils/staticSearchOptions';
 import records from './fixtures/staticSearch/records.json';
 
 /**
@@ -11,6 +11,32 @@ import records from './fixtures/staticSearch/records.json';
 import expected from './fixtures/staticSearch/document.json';
 
 const lookup = (collection: string, uuid: string) => _.findWhere(records[collection] || [], { uuid });
+
+/**
+ * Converts a Typesense document to the static search equivalent, which drops the "_facet" copies, e.g. "name_facet",
+ * and names the facet-only fields without the suffix, e.g. "event_range_facet" -> "event_range".
+ */
+const withoutFacetCopies = (value: any): any => {
+  if (_.isArray(value)) {
+    return _.map(value, withoutFacetCopies);
+  }
+
+  if (!_.isObject(value)) {
+    return value;
+  }
+
+  const fields: any = {};
+
+  for (const [key, field] of Object.entries(value)) {
+    const name = toField(key);
+
+    if (name === key || !_.has(value, name)) {
+      fields[name] = withoutFacetCopies(field);
+    }
+  }
+
+  return fields;
+};
 
 /**
  * Related records aren't guaranteed to come back in the same order as they were indexed in.
@@ -24,12 +50,12 @@ describe('buildDocument', () => {
   const document = buildDocument('places', place, lookup as any);
 
   it('matches the document indexed in Typesense', () => {
-    expect(sortRelated(document)).toMatchObject(sortRelated(expected));
+    expect(sortRelated(document)).toMatchObject(sortRelated(withoutFacetCopies(expected)));
   });
 
-  it('adds a facet copy of Select fields only', () => {
-    expect(document['6b38e52b-e3d4-4135-be7a-3c5cbd34ad89_facet']).toEqual('Multi-level');
-    expect(document).not.toHaveProperty('6915e33c-a864-41e2-a1c3-7d54e4deb984_facet');
+  it('leaves out the facet copies', () => {
+    expect(document['6b38e52b-e3d4-4135-be7a-3c5cbd34ad89']).toEqual('Multi-level');
+    expect(_.filter(_.keys(document), (key) => key.endsWith('_facet'))).toEqual([]);
   });
 
   it('keeps the reference to a related record that was not loaded', () => {
@@ -58,17 +84,17 @@ describe('buildDocument', () => {
     }, lookup as any);
 
     expect(person.name).toEqual('Terry Pratchett');
-    expect(person.names_facet).toEqual(['Terry Pratchett', 'Sir Terry Pratchett']);
+    expect(person.names).toEqual(['Terry Pratchett', 'Sir Terry Pratchett']);
   });
 
   it('uses its own dates for events', () => {
     const event = lookup('events', '41d6ee01-314c-4884-90f9-f9bc64c3db4b');
     const eventDocument = buildDocument('events', event, lookup as any);
 
-    expect(eventDocument.start_date_facet).toEqual([1722470400, 1722470400]);
-    expect(eventDocument.start_year_facet).toEqual([2024, 2024]);
-    expect(eventDocument.end_year_facet).toEqual([]);
-    expect(eventDocument.event_range_facet).toEqual([2024, 2024]);
+    expect(eventDocument.start_date).toEqual([1722470400, 1722470400]);
+    expect(eventDocument.start_year).toEqual([2024, 2024]);
+    expect(eventDocument.end_year).toEqual([]);
+    expect(eventDocument.event_range).toEqual([2024, 2024]);
   });
 });
 
