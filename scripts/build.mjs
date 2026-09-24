@@ -1,7 +1,7 @@
 import { fetchConfig } from './build.config.mjs';
 import { fetchContent } from './build.content.mjs';
 import { buildUserDefinedFields, fetchDescriptors } from './build.fields.mjs';
-import { buildSearch, validateSearches } from './build.search.mjs';
+import { buildSearch } from './build.search.mjs';
 import { copyComponents } from './build.components.mjs';
 
 (async function() {
@@ -13,9 +13,6 @@ import { copyComponents } from './build.components.mjs';
 
   console.log('Fetching Core Data descriptors...');
   const descriptors = await fetchDescriptors(config);
-
-  console.log('Validating searches...');
-  validateSearches(config, descriptors, process.env.STATIC_BUILD === 'true');
 
   console.log('Building userDefinedFields.json from Core Data descriptors...');
   const userDefinedFields = buildUserDefinedFields(descriptors);
