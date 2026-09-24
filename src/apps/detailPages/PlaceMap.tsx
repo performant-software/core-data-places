@@ -1,12 +1,12 @@
 import { Peripleo, RuntimeConfig } from '@peripleo/peripleo';
 import { LocationMarkers } from '@performant-software/geospatial';
+import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import Map from '@components/Map';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
 import { useMemo } from 'react';
 import { kilometersToMiles } from '@utils/map';
 import { Map as MapUtils } from '@performant-software/geospatial';
-import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 
 interface Props {
   classNames?: {

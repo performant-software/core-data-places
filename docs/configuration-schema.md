@@ -439,7 +439,7 @@ Required: No
 
 Typesense configuration options.
 
-Required: Yes, unless `static` is set
+Required: Yes, if not using `static`
 
 #### host
 
