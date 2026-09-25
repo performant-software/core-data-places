@@ -15,6 +15,8 @@ permissions:
 # Serve the committed fixtures instead of a real content repo.
 env:
   TINA_LOCAL_CONTENT_PATH: ../test/fixtures/
+  # So the RBAC media manager test exercises the FairData store's isStatic restrictions.
+  TINA_PUBLIC_USE_FD_MEDIA: true
 
 jobs:
   unit:
