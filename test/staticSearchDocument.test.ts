@@ -1,0 +1,169 @@
+import { describe, expect, it } from 'vitest';
+import _ from 'underscore';
+import { buildDocument, getSearchRecords } from '../src/utils/staticSearchDocument';
+import { buildOptions, getCollectionName, toField } from '../src/utils/staticSearchOptions';
+import records from './fixtures/staticSearch/records.json';
+
+/**
+ * The document FairData indexed in Typesense for the first place in `records.json`, without the fields the public API
+ * doesn't return (`record_id`, `import_id`, `owner_project` and `all_projects`).
+ */
+import expected from './fixtures/staticSearch/document.json';
+
+const lookup = (collection: string, uuid: string) => _.findWhere(records[collection] || [], { uuid });
+
+/**
+ * Converts a Typesense document to the static search equivalent, which drops the "_facet" copies, e.g. "name_facet",
+ * and names the facet-only fields without the suffix, e.g. "event_range_facet" -> "event_range".
+ */
+const withoutFacetCopies = (value: any): any => {
+  if (_.isArray(value)) {
+    return _.map(value, withoutFacetCopies);
+  }
+
+  if (!_.isObject(value)) {
+    return value;
+  }
+
+  const fields: any = {};
+
+  for (const [key, field] of Object.entries(value)) {
+    const name = toField(key);
+
+    if (name === key || !_.has(value, name)) {
+      fields[name] = withoutFacetCopies(field);
+    }
+  }
+
+  return fields;
+};
+
+/**
+ * Related records aren't guaranteed to come back in the same order as they were indexed in.
+ */
+const sortRelated = (document: any) => _.mapObject(document, (value) => (
+  _.isArray(value) && _.isObject(value[0]) ? _.sortBy(value, 'uuid') : value
+));
+
+describe('buildDocument', () => {
+  const [place] = records.places;
+  const document = buildDocument('places', place, lookup as any);
+
+  it('matches the document indexed in Typesense', () => {
+    expect(sortRelated(document)).toMatchObject(sortRelated(withoutFacetCopies(expected)));
+  });
+
+  it('leaves out the facet copies', () => {
+    expect(document['6b38e52b-e3d4-4135-be7a-3c5cbd34ad89']).toEqual('Multi-level');
+    expect(_.filter(_.keys(document), (key) => key.endsWith('_facet'))).toEqual([]);
+  });
+
+  it('keeps the reference to a related record that was not loaded', () => {
+    const missing = buildDocument('places', {
+      ...place,
+      relatedRecords: {
+        people: [{
+          uuid: 'missing',
+          project_model_relationship_uuid: 'relationship',
+          project_model_relationship_inverse: true
+        }]
+      }
+    }, lookup as any);
+
+    expect(missing.relationship).toEqual([{ id: 'missing', uuid: 'missing', inverse: true }]);
+  });
+
+  it('uses the full name for people', () => {
+    const person = buildDocument('people', {
+      uuid: 'person',
+      first_name: 'Terry',
+      middle_name: null,
+      last_name: 'Pratchett',
+      person_names: [{ first_name: 'Terry', last_name: 'Pratchett' }, { first_name: 'Sir Terry', last_name: 'Pratchett' }],
+      user_defined: {}
+    }, lookup as any);
+
+    expect(person.name).toEqual('Terry Pratchett');
+    expect(person.names).toEqual(['Terry Pratchett', 'Sir Terry Pratchett']);
+  });
+
+  it('uses its own dates for events', () => {
+    const event = lookup('events', '41d6ee01-314c-4884-90f9-f9bc64c3db4b');
+    const eventDocument = buildDocument('events', event, lookup as any);
+
+    expect(eventDocument.start_date).toEqual([1722470400, 1722470400]);
+    expect(eventDocument.start_year).toEqual([2024, 2024]);
+    expect(eventDocument.end_year).toEqual([]);
+    expect(eventDocument.event_range).toEqual([2024, 2024]);
+  });
+});
+
+describe('buildOptions', () => {
+  const search = {
+    route: '/places',
+    facets: [{ name: 'names_facet' }, { name: '6b38e52b-e3d4-4135-be7a-3c5cbd34ad89_facet' }],
+    timeline: { date_range_facet: 'event_range_facet' }
+  };
+
+  const options = buildOptions(search, [buildDocument('places', records.places[0], lookup as any)]);
+
+  it('adds an aggregation for each facet and a range for the timeline', () => {
+    expect(options.aggregations).toEqual({
+      names_facet: { size: 20, conjunction: false },
+      '6b38e52b-e3d4-4135-be7a-3c5cbd34ad89_facet': { size: 20, conjunction: false },
+      event_range_facet: { show_facet_stats: true }
+    });
+  });
+
+  it('searches the top-level text fields', () => {
+    expect(_.sortBy(options.searchableFields)).toEqual(_.sortBy([
+      '38fdfecb-5f8f-4085-8bfa-6640c410fa36',
+      '6915e33c-a864-41e2-a1c3-7d54e4deb984',
+      '6b38e52b-e3d4-4135-be7a-3c5cbd34ad89',
+      'name',
+      'names'
+    ]));
+  });
+});
+
+describe('getCollectionName', () => {
+  it('returns the collection for a Core Data route', () => {
+    expect(getCollectionName({ route: '/places' })).toEqual('places');
+  });
+
+  it('returns undefined for other routes', () => {
+    expect(getCollectionName({ route: '/posts' })).toBeUndefined();
+  });
+});
+
+describe('getSearchRecords', () => {
+  const STORE = 'store-model';
+  const T_STOP = 't-stop-model';
+  const PERSON = 'person-model';
+
+  const loaded = new Map<any, Map<string, any>>([
+    ['places', new Map([
+      ['store', { uuid: 'store', project_model_uuid: STORE }],
+      ['t-stop', { uuid: 't-stop', project_model_uuid: T_STOP }]
+    ])],
+    ['people', new Map([
+      ['person', { uuid: 'person', project_model_uuid: PERSON }]
+    ])]
+  ]);
+
+  const search = (modelIds: string[]) => ({ name: 'stores', route: '/places', static: { model_ids: modelIds } });
+
+  it('returns the records for the passed models', () => {
+    expect(_.pluck(getSearchRecords(search([STORE]), 'places', loaded), 'uuid')).toEqual(['store']);
+    expect(_.pluck(getSearchRecords(search([STORE, T_STOP]), 'places', loaded), 'uuid')).toEqual(['store', 't-stop']);
+  });
+
+  it('throws for a model whose records are in another collection', () => {
+    expect(() => getSearchRecords(search([STORE, PERSON]), 'places', loaded)).toThrow(/"people" collection/);
+  });
+
+  it('throws when the records do not include their model', () => {
+    const unknown = new Map<any, Map<string, any>>([['places', new Map([['store', { uuid: 'store' }]])]]);
+    expect(() => getSearchRecords(search([STORE]), 'places', unknown)).toThrow(/project_model_uuid/);
+  });
+});

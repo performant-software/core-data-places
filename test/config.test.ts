@@ -1,9 +1,25 @@
 import { Configuration } from '@types';
 import _config from '@config' with { type: 'json' };
+import { COLLECTIONS, getCollectionName } from '@utils/staticSearchOptions';
 import { describe, expect, test } from 'vitest';
+import { loadEnv } from 'vite';
 import fs from 'node:fs';
+import { fetchDescriptors } from '../scripts/build.fields.mjs';
 
 const config = _config as Configuration;
+
+// Read the same way as in astro.config.mjs
+const { STATIC_BUILD } = loadEnv(process.env.STATIC_BUILD, process.cwd(), '');
+
+let projectModelIds: Promise<Array<string>>;
+
+const getProjectModelIds = () => {
+  projectModelIds ??= fetchDescriptors(config).then((descriptors) => descriptors
+    .filter((descriptor) => !descriptor.context)
+    .map((descriptor) => descriptor.identifier));
+
+  return projectModelIds;
+};
 
 const icons = [
   'bullet',
@@ -320,7 +336,45 @@ describe('search', () => {
       });
     });
 
-    describe('typesense', () => {
+    describe('static', () => {
+      test.skipIf(!search.static)('requires a static build', () => {
+        expect(STATIC_BUILD).toBe('true');
+      });
+
+      test.skipIf(!search.static)('route is a Core Data collection', () => {
+        expect(getCollectionName(search)).toBeOneOf([...COLLECTIONS]);
+      });
+
+      test.skipIf(!search.static)('model_ids is not empty', () => {
+        expect(search.static?.model_ids).toBeArrayOf(String);
+        expect(search.static?.model_ids?.length).toBeGreaterThan(0);
+      });
+
+      test.skipIf(!search.static)('model_ids belong to the Core Data projects', async () => {
+        const modelIds = await getProjectModelIds();
+
+        for (const modelId of search.static?.model_ids || []) {
+          expect(modelIds, `model "${modelId}" is not in any of the projects in core_data.project_ids`)
+            .toContain(modelId);
+        }
+      });
+
+      describe('facets', () => {
+        test('exclude matches allowed values', () => {
+          expect(search.static?.facets?.exclude).toBeArrayOf(String);
+        });
+
+        test('include matches allowed values', () => {
+          expect(search.static?.facets?.include).toBeArrayOf(String);
+        });
+      });
+    });
+
+    describe.skipIf(search.static)('typesense', () => {
+      test('requires a non-static build', () => {
+        expect(STATIC_BUILD).not.toBe('true');
+      });
+
       test('is not empty', () => {
         expect(search.typesense).toBeObject();
       });

@@ -348,6 +348,58 @@ The path prefix for which to navigate which clicking on a search result. For exa
 
 Required: Yes
 
+### static
+
+Serves this search from an ItemsJS index built in the browser rather than from Typesense. When
+present, no request is made to Typesense and `typesense` is ignored.
+
+The index is generated at build time from the FairData records for the search's `route` (e.g.
+`/places`), so static searches require `STATIC_BUILD=true`. Each configured facet becomes an
+ItemsJS aggregation, and `timeline.date_range_facet` becomes a range aggregation.
+
+Required: No
+
+#### model_ids
+
+UUIDs of the project models whose records are included in the index. The build fails if a model
+isn't in one of the projects in `core_data.project_ids`, or if its records don't match the
+search's `route` (e.g. a person model on a `/places` search).
+
+```
+Array<String>
+```
+
+Required: Yes
+
+#### facets
+
+Facet configuration.
+
+Required: No
+
+##### exclude
+
+Aggregations to omit from the facet sidebar. Ignored when `include` is set.
+
+```
+Array<String>
+```
+
+Required: No
+
+##### include
+
+Aggregations to show in the facet sidebar, in the order they should display. Takes precedence
+over `exclude`.
+
+```
+Array<String>
+```
+
+Required: No
+
+---
+
 ### table
 
 If `true` the table view will be available for selection in the search UI.
@@ -387,7 +439,7 @@ Required: No
 
 Typesense configuration options.
 
-Required: Yes
+Required: Yes, if not using `static`
 
 #### host
 
