@@ -70,11 +70,13 @@ const getNames = (collection: string, record: CoreDataRecord): string[] | undefi
   }
 };
 
+const isPresent = (value: unknown) => value !== null && value !== undefined && value !== '';
+
 const getUserDefined = (userDefined: CoreDataRecord = {}) => {
   const fields: CoreDataRecord = {};
 
   for (const [uuid, { value }] of Object.entries(userDefined)) {
-    if (value === null || value === undefined || value === '') {
+    if (!isPresent(value)) {
       continue;
     }
 
@@ -206,8 +208,6 @@ export const buildDocument = (collection: Collection, record: CoreDataRecord, lo
 
   return document;
 };
-
-const isPresent = (value: unknown) => value !== null && value !== undefined && value !== '';
 
 export const addRelationshipFacets = (document: CoreDataRecord, attributes: string[]) => {
   for (const attribute of attributes) {
