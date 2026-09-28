@@ -1,5 +1,6 @@
 import {
   denormalizeResponse,
+  GEO_LOCATION_FIELD,
   getIndexOptions,
   getIndexUrls,
   normalizeFacetValuesQueries,
@@ -12,6 +13,8 @@ import { createIndex, performSearch, searchForFacetValues } from 'instantsearch-
 const worker = self as unknown as Worker;
 
 let index: any;
+
+const adapterOptions = { geoLocationField: GEO_LOCATION_FIELD };
 
 const post = (message: WorkerResponse) => worker.postMessage(message);
 
@@ -38,14 +41,14 @@ worker.addEventListener('message', async ({ data }: MessageEvent<WorkerRequest>)
     }
   } else if (data.type === 'search') {
     try {
-      const response = await performSearch(normalizeQueries(data.queries), index);
+      const response = await performSearch(normalizeQueries(data.queries), index, adapterOptions);
       post({ type: 'results', id: data.id, response: denormalizeResponse(data.queries, response) });
     } catch (error) {
       post({ type: 'searchFailed', id: data.id, message: String(error) });
     }
   } else if (data.type === 'searchForFacetValues') {
     try {
-      const response = await searchForFacetValues(normalizeFacetValuesQueries(data.queries), index);
+      const response = await searchForFacetValues(normalizeFacetValuesQueries(data.queries), index, adapterOptions);
       post({ type: 'facetValues', id: data.id, response });
     } catch (error) {
       post({ type: 'facetValuesFailed', id: data.id, message: String(error) });

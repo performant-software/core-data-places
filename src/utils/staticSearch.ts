@@ -3,6 +3,8 @@ import _ from 'underscore';
 
 const SEARCH_PATH = '/search';
 
+export const GEO_LOCATION_FIELD = 'coordinates';
+
 export interface ItemsJsAggregation {
   title?: string;
   size?: number;
