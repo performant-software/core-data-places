@@ -33,13 +33,16 @@ export const getIndexUrls = (indexName: string) => ({
 
 export type WorkerRequest =
   | { type: 'load', indexName: string }
-  | { type: 'search', id: number, queries: Array<any> };
+  | { type: 'search', id: number, queries: Array<any> }
+  | { type: 'searchForFacetValues', id: number, queries: Array<any> };
 
 export type WorkerResponse =
   | { type: 'loaded', options: ItemsJsOptions }
   | { type: 'loadFailed', message: string }
   | { type: 'results', id: number, response: any }
-  | { type: 'searchFailed', id: number, message: string };
+  | { type: 'searchFailed', id: number, message: string }
+  | { type: 'facetValues', id: number, response: any }
+  | { type: 'facetValuesFailed', id: number, message: string };
 
 export type SearchWorker = Pick<Worker, 'addEventListener' | 'postMessage' | 'removeEventListener'>;
 
@@ -80,6 +83,20 @@ export const normalizeQueries = (queries: Array<any>) => _.map(queries, (query: 
     params: {
       ...query.params,
       facets: _.map(query.params?.facets || [], toField),
+      ...(_.isArray(facetFilters) ? { facetFilters: toFieldFilters(facetFilters) } : {}),
+      ...(_.isArray(numericFilters) ? { numericFilters: toFieldFilters(numericFilters) } : {})
+    }
+  };
+});
+
+export const normalizeFacetValuesQueries = (queries: Array<any>) => _.map(queries, (query: any) => {
+  const { facetFilters, facetName, numericFilters } = query.params || {};
+
+  return {
+    ...query,
+    params: {
+      ...query.params,
+      facetName: toField(facetName),
       ...(_.isArray(facetFilters) ? { facetFilters: toFieldFilters(facetFilters) } : {}),
       ...(_.isArray(numericFilters) ? { numericFilters: toFieldFilters(numericFilters) } : {})
     }
@@ -133,12 +150,27 @@ export const createStaticSearchClient = (worker: SearchWorker) => {
   let running: { id: number, waiters: Waiter[] } | null = null;
   let queued: { queries: Array<any>, waiters: Waiter[] } | null = null;
 
+  const facetValueWaiters = new Map<number, Waiter>();
+
   const send = (queries: Array<any>, waiters: Waiter[]) => {
     running = { id: nextId++, waiters };
     worker.postMessage({ type: 'search', id: running.id, queries } as WorkerRequest);
   };
 
   worker.addEventListener('message', ({ data }: MessageEvent<WorkerResponse>) => {
+    if (data.type === 'facetValues' || data.type === 'facetValuesFailed') {
+      const waiter = facetValueWaiters.get(data.id);
+      facetValueWaiters.delete(data.id);
+
+      if (data.type === 'facetValues') {
+        waiter?.resolve(data.response);
+      } else {
+        waiter?.reject(new Error(data.message));
+      }
+
+      return;
+    }
+
     if ((data.type !== 'results' && data.type !== 'searchFailed') || data.id !== running?.id) {
       return;
     }
@@ -169,9 +201,12 @@ export const createStaticSearchClient = (worker: SearchWorker) => {
         send(queries, [waiter]);
       }
     }),
-    searchForFacetValues: () => {
-      throw new Error('Not implemented');
-    }
+    searchForFacetValues: (queries: Array<any>) => new Promise<any>((resolve, reject) => {
+      const id = nextId++;
+
+      facetValueWaiters.set(id, { resolve, reject });
+      worker.postMessage({ type: 'searchForFacetValues', id, queries } as WorkerRequest);
+    })
   };
 };
 
