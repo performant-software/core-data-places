@@ -2,11 +2,12 @@ import {
   denormalizeResponse,
   getIndexOptions,
   getIndexUrls,
+  normalizeFacetValuesQueries,
   normalizeQueries,
   type WorkerRequest,
   type WorkerResponse
 } from '@utils/staticSearch';
-import { createIndex, performSearch } from 'instantsearch-itemsjs-adapter';
+import { createIndex, performSearch, searchForFacetValues } from 'instantsearch-itemsjs-adapter';
 
 const worker = self as unknown as Worker;
 
@@ -41,6 +42,13 @@ worker.addEventListener('message', async ({ data }: MessageEvent<WorkerRequest>)
       post({ type: 'results', id: data.id, response: denormalizeResponse(data.queries, response) });
     } catch (error) {
       post({ type: 'searchFailed', id: data.id, message: String(error) });
+    }
+  } else if (data.type === 'searchForFacetValues') {
+    try {
+      const response = await searchForFacetValues(normalizeFacetValuesQueries(data.queries), index);
+      post({ type: 'facetValues', id: data.id, response });
+    } catch (error) {
+      post({ type: 'facetValuesFailed', id: data.id, message: String(error) });
     }
   }
 });
