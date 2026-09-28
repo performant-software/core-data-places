@@ -152,7 +152,7 @@ export const createStaticSearchClient = (worker: SearchWorker) => {
 
   const facetValueWaiters = new Map<number, Waiter>();
 
-  const send =(queries: Array<any>, waiters: Waiter[]) => {
+  const send = (queries: Array<any>, waiters: Waiter[]) => {
     running = { id: nextId++, waiters };
     worker.postMessage({ type: 'search', id: running.id, queries } as WorkerRequest);
   };
