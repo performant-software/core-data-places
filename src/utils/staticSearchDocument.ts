@@ -1,6 +1,6 @@
 import { centroid } from '@turf/turf';
 import { getNameView } from '@utils/people';
-import type { Collection } from '@utils/staticSearchOptions';
+import { toField, type Collection } from '@utils/staticSearchOptions';
 import _ from 'underscore';
 
 /**
@@ -70,11 +70,13 @@ const getNames = (collection: string, record: CoreDataRecord): string[] | undefi
   }
 };
 
+const isPresent = (value: unknown) => value !== null && value !== undefined && value !== '';
+
 const getUserDefined = (userDefined: CoreDataRecord = {}) => {
   const fields: CoreDataRecord = {};
 
   for (const [uuid, { value }] of Object.entries(userDefined)) {
-    if (value === null || value === undefined || value === '') {
+    if (!isPresent(value)) {
       continue;
     }
 
@@ -202,6 +204,30 @@ export const buildDocument = (collection: Collection, record: CoreDataRecord, lo
 
   if (!_.isEmpty(eventRange)) {
     document.event_range = eventRange;
+  }
+
+  return document;
+};
+
+export const addRelationshipFacets = (document: CoreDataRecord, attributes: string[]) => {
+  for (const attribute of attributes) {
+    const field = toField(attribute);
+    const index = field.indexOf('.');
+
+    if (index < 0) {
+      continue;
+    }
+
+    const values = _.chain(document[field.substring(0, index)] || [])
+      .pluck(field.substring(index + 1))
+      .flatten()
+      .filter(isPresent)
+      .uniq()
+      .value();
+
+    if (!_.isEmpty(values)) {
+      document[field] = values;
+    }
   }
 
   return document;
