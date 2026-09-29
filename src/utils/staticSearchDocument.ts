@@ -95,7 +95,8 @@ const getCoordinates = (geometry: any) => {
 };
 
 /**
- * Returns the fields shared by a document and the related records nested in it.
+ * Returns the fields shared by a document and the related records nested in it. Geometry is omitted because
+ * it will be fetched from the geometry endpoint.
  */
 const getFields = (collection: string, record: CoreDataRecord) => {
   const name = getName(collection, record);
@@ -109,7 +110,7 @@ const getFields = (collection: string, record: CoreDataRecord) => {
     ...(names ? { names } : {}),
     ...(record.biography ? { biography: record.biography } : {}),
     ...(record.description ? { description: record.description } : {}),
-    ...(geometry ? { geometry, coordinates: getCoordinates(geometry) } : {}),
+    ...(geometry ? { coordinates: getCoordinates(geometry) } : {}),
     ...getUserDefined(record.user_defined)
   };
 };
