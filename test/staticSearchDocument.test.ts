@@ -39,6 +39,21 @@ const withoutFacetCopies = (value: any): any => {
 };
 
 /**
+ * Removes the "geometry" fields from a Typesense document, including those on the nested related records.
+ */
+const withoutGeometry = (value: any): any => {
+  if (_.isArray(value)) {
+    return _.map(value, withoutGeometry);
+  }
+
+  if (!_.isObject(value)) {
+    return value;
+  }
+
+  return _.mapObject(_.omit(value, 'geometry'), withoutGeometry);
+};
+
+/**
  * Related records aren't guaranteed to come back in the same order as they were indexed in.
  */
 const sortRelated = (document: any) => _.mapObject(document, (value) => (
@@ -50,7 +65,7 @@ describe('buildDocument', () => {
   const document = buildDocument('places', place, lookup as any);
 
   it('matches the document indexed in Typesense', () => {
-    expect(sortRelated(document)).toMatchObject(sortRelated(withoutFacetCopies(expected)));
+    expect(sortRelated(document)).toMatchObject(sortRelated(withoutGeometry(withoutFacetCopies(expected))));
   });
 
   it('leaves out the facet copies', () => {
