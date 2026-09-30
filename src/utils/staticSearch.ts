@@ -137,20 +137,6 @@ const mapHits = (response: any, iteratee: (hit: any) => any) => ({
   ))
 });
 
-const HTML_ENTITIES: { [character: string]: string } = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;'
-};
-
-/**
- * Escapes the same characters as the adapter, which are the ones InstantSearch's `Highlight` unescapes. Underscore's
- * `_.escape` also escapes backticks, which `Highlight` would render literally.
- */
-const escapeHtml = (text: string) => text.replace(/[&<>"']/g, (character) => HTML_ENTITIES[character]);
-
 /**
  * Returns true if any value in the passed highlight result matched the query.
  */
@@ -183,7 +169,8 @@ export const pruneHighlights = (response: any) => mapHits(response, (hit) => {
 });
 
 /**
- * Returns the unmatched highlight result for the passed value, in the same shape as the adapter.
+ * Returns the unmatched highlight result for the passed value, in the same shape as the adapter. Like the adapter, the
+ * value is left unescaped because InstantSearch's hits connector escapes it.
  */
 const toHighlight = (value: any): any => {
   if (_.isArray(value)) {
@@ -195,7 +182,7 @@ const toHighlight = (value: any): any => {
   }
 
   if (_.isString(value) || _.isNumber(value) || _.isBoolean(value)) {
-    return { value: escapeHtml(String(value)), matchLevel: 'none', matchedWords: [] };
+    return { value: String(value), matchLevel: 'none', matchedWords: [] };
   }
 
   return undefined;
