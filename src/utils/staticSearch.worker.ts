@@ -5,6 +5,7 @@ import {
   getIndexUrls,
   normalizeFacetValuesQueries,
   normalizeQueries,
+  pruneHighlights,
   type WorkerRequest,
   type WorkerResponse
 } from '@utils/staticSearch';
@@ -42,7 +43,7 @@ worker.addEventListener('message', async ({ data }: MessageEvent<WorkerRequest>)
   } else if (data.type === 'search') {
     try {
       const response = await performSearch(normalizeQueries(data.queries), index, adapterOptions);
-      post({ type: 'results', id: data.id, response: denormalizeResponse(data.queries, response) });
+      post({ type: 'results', id: data.id, response: pruneHighlights(denormalizeResponse(data.queries, response)) });
     } catch (error) {
       post({ type: 'searchFailed', id: data.id, message: String(error) });
     }
