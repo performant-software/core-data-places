@@ -126,16 +126,10 @@ const Hits = (props: Props) => {
     [searchConfig.route]
   );
 
-  // Ignore highlights in static search mode because items.js doesn't support them
-  const highlightComponent = useMemo(
-    () => (searchConfig.static ? undefined : Highlight),
-    [searchConfig.static]
-  );
-
   const renderItem = useCallback((item: any) => {
     const hitComp = (
       <HitComponent
-        highlightComponent={highlightComponent}
+        highlightComponent={Highlight}
         key={item.hit.id}
         labels={{
           tags: t('tags')
@@ -157,7 +151,7 @@ const Hits = (props: Props) => {
     }
 
     return hitComp
-  }, [highlightComponent, isLinkable, searchConfig.route, props.lang, t]);
+  }, [isLinkable, searchConfig.route, props.lang, t]);
 
   return (
     <>

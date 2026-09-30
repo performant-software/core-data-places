@@ -128,6 +128,100 @@ export const denormalizeResponse = (queries: Array<any>, response: any) => ({
 });
 
 /**
+ * Returns the passed response with the passed function applied to the hits of each result.
+ */
+const mapHits = (response: any, iteratee: (hit: any) => any) => ({
+  ...response,
+  results: _.map(response.results, (result: any) => (
+    result.hits ? { ...result, hits: _.map(result.hits, iteratee) } : result
+  ))
+});
+
+const HTML_ENTITIES: { [character: string]: string } = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;'
+};
+
+/**
+ * Escapes the same characters as the adapter, which are the ones InstantSearch's `Highlight` unescapes. Underscore's
+ * `_.escape` also escapes backticks, which `Highlight` would render literally.
+ */
+const escapeHtml = (text: string) => text.replace(/[&<>"']/g, (character) => HTML_ENTITIES[character]);
+
+/**
+ * Returns true if any value in the passed highlight result matched the query.
+ */
+const hasMatch = (highlight: any): boolean => {
+  if (_.isArray(highlight)) {
+    return _.some(highlight, hasMatch);
+  }
+
+  if (!_.isObject(highlight)) {
+    return false;
+  }
+
+  if (_.has(highlight, 'matchLevel')) {
+    return (highlight as any).matchLevel !== 'none';
+  }
+
+  return _.some(highlight, hasMatch);
+};
+
+/**
+ * Removes the top-level attributes with no matches from each hit's `_highlightResult`, since the adapter includes an
+ * escaped copy of every attribute whether or not it matched (or whether there's a query at all). This keeps the
+ * response posted from the worker small; `backfillHighlights` restores the removed attributes.
+ */
+export const pruneHighlights = (response: any) => mapHits(response, (hit) => {
+  const { _highlightResult: highlightResult, ...rest } = hit;
+  const matched = _.pick(highlightResult || {}, hasMatch);
+
+  return _.isEmpty(matched) ? rest : { ...rest, _highlightResult: matched };
+});
+
+/**
+ * Returns the unmatched highlight result for the passed value, in the same shape as the adapter.
+ */
+const toHighlight = (value: any): any => {
+  if (_.isArray(value)) {
+    return _.map(value, toHighlight);
+  }
+
+  if (_.isObject(value)) {
+    return _.omit(_.mapObject(value, toHighlight), _.isUndefined);
+  }
+
+  if (_.isString(value) || _.isNumber(value) || _.isBoolean(value)) {
+    return { value: escapeHtml(String(value)), matchLevel: 'none', matchedWords: [] };
+  }
+
+  return undefined;
+};
+
+/**
+ * Restores the attributes removed from each hit's `_highlightResult` by `pruneHighlights`, which InstantSearch's
+ * `Highlight` needs to render the unmatched values.
+ */
+export const backfillHighlights = (response: any) => mapHits(response, (hit) => {
+  const highlightResult = { ...hit._highlightResult };
+
+  _.each(hit, (value, key) => {
+    if (key !== 'objectID' && !key.startsWith('_') && !_.has(highlightResult, key)) {
+      const highlight = toHighlight(value);
+
+      if (!_.isUndefined(highlight)) {
+        highlightResult[key] = highlight;
+      }
+    }
+  });
+
+  return { ...hit, _highlightResult: highlightResult };
+});
+
+/**
  * Asks the worker to fetch and index the named search index, resolving with the ItemsJS options.
  */
 export const loadIndex = (worker: SearchWorker, indexName: string) => new Promise<ItemsJsOptions>((resolve, reject) => {
@@ -185,8 +279,10 @@ export const createStaticSearchClient = (worker: SearchWorker) => {
       queued = null;
     }
 
+    const response = data.type === 'results' ? backfillHighlights(data.response) : null;
+
     const settle = (waiter: Waiter) => (data.type === 'results'
-      ? waiter.resolve(data.response)
+      ? waiter.resolve(response)
       : waiter.reject(new Error(data.message)));
 
     settle(_.last(waiters)!);

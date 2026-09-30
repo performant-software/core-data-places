@@ -1,5 +1,7 @@
+import { createIndex, performSearch } from 'instantsearch-itemsjs-adapter';
 import { describe, expect, it, vi } from 'vitest';
 import {
+  backfillHighlights,
   createStaticSearchClient,
   denormalizeResponse,
   getFacetAttributes,
@@ -8,6 +10,7 @@ import {
   getSortings,
   loadIndex,
   normalizeQueries,
+  pruneHighlights,
   type WorkerResponse
 } from '../src/utils/staticSearch';
 
@@ -223,6 +226,75 @@ describe('denormalizeResponse', () => {
   });
 });
 
+describe('pruneHighlights', () => {
+  const none = (value: string) => ({ value, matchLevel: 'none', matchedWords: [] });
+  const full = (value: string) => ({ value, matchLevel: 'full', matchedWords: ['paris'] });
+
+  it('keeps only the attributes with a match, including nested and array values', () => {
+    const response = {
+      results: [{
+        hits: [{
+          id: '1',
+          name: 'Paris',
+          names: [{ toponym: 'Lutetia' }, { toponym: 'Paris' }],
+          type: 'City',
+          _highlightResult: {
+            id: none('1'),
+            name: full('<mark>Paris</mark>'),
+            names: [{ toponym: none('Lutetia') }, { toponym: full('<mark>Paris</mark>') }],
+            type: none('City')
+          }
+        }]
+      }]
+    };
+
+    expect(pruneHighlights(response).results[0].hits[0]._highlightResult).toEqual({
+      name: full('<mark>Paris</mark>'),
+      names: [{ toponym: none('Lutetia') }, { toponym: full('<mark>Paris</mark>') }]
+    });
+  });
+
+  it('removes the highlight result from hits without a match', () => {
+    const response = {
+      results: [{ hits: [{ id: '1', name: 'London', _highlightResult: { id: none('1'), name: none('London') } }] }]
+    };
+
+    expect(pruneHighlights(response).results[0].hits[0]).toEqual({ id: '1', name: 'London' });
+  });
+});
+
+describe('backfillHighlights', () => {
+  it('escapes the values the way InstantSearch unescapes them', () => {
+    const response = { results: [{ hits: [{ objectID: '1', name: '<a> & "b" \'c\' `d`', _rankingInfo: {} }] }] };
+
+    expect(backfillHighlights(response).results[0].hits[0]._highlightResult).toEqual({
+      name: { value: '&lt;a&gt; &amp; &quot;b&quot; &#39;c&#39; `d`', matchLevel: 'none', matchedWords: [] }
+    });
+  });
+
+  it('restores the highlight result the adapter produces', async () => {
+    const data = [
+      {
+        id: '1',
+        name: 'Paris & <Co>',
+        names: [{ toponym: 'Lutetia' }, { toponym: 'Paris' }],
+        count: 3,
+        flag: true,
+        empty: null,
+        tags: ['a', 'paris']
+      },
+      { id: '2', name: 'London', names: [{ toponym: 'Londinium' }], count: 0, flag: false, tags: [] }
+    ];
+
+    const index = createIndex(data, { searchableFields: ['name', 'names.toponym', 'tags'], query: '' });
+
+    for (const query of ['', 'paris', 'lond', 'zzz']) {
+      const response = await performSearch([{ indexName: 'places', params: { query, facets: [] } }], index, {});
+      expect(backfillHighlights(pruneHighlights(response))).toEqual(response);
+    }
+  });
+});
+
 describe('loadIndex', () => {
   it('asks the worker to load the index and resolves with its options', async () => {
     const worker = new FakeWorker();
@@ -260,6 +332,18 @@ describe('createStaticSearchClient', () => {
     worker.reply({ type: 'results', id: 0, response: response('a') });
 
     await expect(search).resolves.toEqual(response('a'));
+  });
+
+  it('backfills the highlight results removed in the worker', async () => {
+    const { client, worker } = createClient();
+    const search = client.search([{ params: { query: '' } }]);
+
+    worker.reply({ type: 'results', id: 0, response: { results: [{ hits: [{ objectID: '1', name: 'Paris' }] }] } });
+
+    const result = await search;
+    expect(result.results[0].hits[0]._highlightResult).toEqual({
+      name: { value: 'Paris', matchLevel: 'none', matchedWords: [] }
+    });
   });
 
   it('only sends the newest of the searches made while one is running', async () => {
