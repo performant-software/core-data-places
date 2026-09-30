@@ -1,6 +1,4 @@
-import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import { Icon } from '@performant-software/core-data';
-import { getHitValue } from '@utils/search';
 import clsx from 'clsx';
 import { Highlight } from 'react-instantsearch';
 
@@ -16,8 +14,6 @@ interface Props {
 }
 
 const SearchHighlight = (props: Props) => {
-  const config = useSearchConfig();
-
   return (
     <div
       className={clsx('flex gap-x-0.5 items-center', props.classNames?.root)}
@@ -27,23 +23,11 @@ const SearchHighlight = (props: Props) => {
           name={props.icon}
         />
       )}
-      { config?.static
-        // Ignore highlighting in static search mode because it's
-        // unsupported by items.js
-        ? (
-          <span
-            className={props.classNames?.highlight}
-          >
-            { getHitValue(props.hit, { name: props.attribute }) }
-          </span>
-        )
-        : (
-          <Highlight
-            attribute={props.attribute}
-            className={props.classNames?.highlight}
-            hit={props.hit}
-          />
-        )}
+      <Highlight
+        attribute={props.attribute}
+        className={props.classNames?.highlight}
+        hit={props.hit}
+      />
     </div>
   );
 };
