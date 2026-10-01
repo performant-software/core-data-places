@@ -95,7 +95,7 @@ const getCoordinates = (geometry: any) => {
 };
 
 /**
- * Returns the fields shared by a document and the related records nested in it. Geometry is omitted because
+ * Returns the fields shared by a document and the related records nested in it. Polygon geometry is omitted because
  * it will be fetched from the geometry endpoint.
  */
 const getFields = (collection: string, record: CoreDataRecord) => {
