@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import _ from 'underscore';
-import { getGeoLocationField } from '../src/utils/map';
-import { addGeoLocation, buildDocument, getSearchRecords } from '../src/utils/staticSearchDocument';
+import { buildDocument, getSearchRecords } from '../src/utils/staticSearchDocument';
 import { buildOptions, getCollectionName, toField } from '../src/utils/staticSearchOptions';
 import records from './fixtures/staticSearch/records.json';
 
@@ -111,24 +110,6 @@ describe('buildDocument', () => {
     expect(eventDocument.start_year).toEqual([2024, 2024]);
     expect(eventDocument.end_year).toEqual([]);
     expect(eventDocument.event_range).toEqual([2024, 2024]);
-  });
-});
-
-describe('addGeoLocation', () => {
-  const [place] = records.places;
-  const relationship = '700dd643-b4a2-4f3c-8336-9e15a423dee8';
-
-  it('copies the related coordinates to a top-level field', () => {
-    const document = addGeoLocation(buildDocument('places', place, lookup as any), `${relationship}.coordinates`);
-    expect(document[`${relationship}.coordinates`]).toEqual([[42.34226313779384, -71.12111777404212]]);
-  });
-
-  it('skips related records without coordinates', () => {
-    const document = addGeoLocation({
-      relationship: [{ uuid: 'a', coordinates: [1, 2] }, { uuid: 'b' }, { uuid: 'c', coordinates: [3, 4] }]
-    }, 'relationship.coordinates');
-
-    expect(document['relationship.coordinates']).toEqual([[1, 2], [3, 4]]);
   });
 });
 

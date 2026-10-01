@@ -298,9 +298,9 @@ describe('backfillHighlights', () => {
 describe('map bounds', () => {
   it('matches documents with any related location inside the bounds', async () => {
     const data = [
-      { id: '1', name: 'Boston', 'relationship.coordinates': [[0, 0], [42.36, -71.06]] },
-      { id: '2', name: 'Paris', 'relationship.coordinates': [[48.86, 2.35]] },
-      { id: '3', name: 'Nowhere' }
+      { id: '1', name: 'Boston', relationship: [{ coordinates: [0, 0] }, { coordinates: [42.36, -71.06] }] },
+      { id: '2', name: 'Paris', relationship: [{ coordinates: [48.86, 2.35] }] },
+      { id: '3', name: 'Nowhere', relationship: [{ name: 'No geometry' }] }
     ];
 
     const index = createIndex(data, { searchableFields: ['name'], query: '' });

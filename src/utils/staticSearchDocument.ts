@@ -234,30 +234,6 @@ export const addRelationshipFacets = (document: CoreDataRecord, attributes: stri
   return document;
 };
 
-/**
- * Copies the coordinates of the related records to the passed field, e.g. "<relationship-uuid>.coordinates", since the
- * search adapter only reads locations from top-level fields. Like the `geopoint[]` fields FairData indexes in
- * Typesense, the field holds a list of [latitude, longitude] pairs.
- */
-export const addGeoLocation = (document: CoreDataRecord, field: string) => {
-  const index = field.indexOf('.');
-
-  if (index < 0) {
-    return document;
-  }
-
-  const coordinates = _.chain(document[field.substring(0, index)] || [])
-    .pluck(field.substring(index + 1))
-    .compact()
-    .value();
-
-  if (!_.isEmpty(coordinates)) {
-    document[field] = coordinates;
-  }
-
-  return document;
-};
-
 interface StaticSearch {
   name: string;
   route: string;
