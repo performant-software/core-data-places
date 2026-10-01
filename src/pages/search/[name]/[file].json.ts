@@ -2,7 +2,8 @@ import config from '@config' with { type: 'json' };
 import { hasContentCollection } from '@root/src/content.config';
 import type { SearchConfig } from '@types';
 import { buildResponse } from '@utils/api';
-import { addRelationshipFacets, buildDocument, getSearchRecords } from '@utils/staticSearchDocument';
+import { getGeoLocationField } from '@utils/map';
+import { addGeoLocation, addRelationshipFacets, buildDocument, getSearchRecords } from '@utils/staticSearchDocument';
 import { buildOptions, COLLECTIONS, getAggregations, getCollectionName, type Collection } from '@utils/staticSearchOptions';
 import type { APIRoute } from 'astro';
 import { STATIC_BUILD } from 'astro:env/client';
@@ -50,9 +51,11 @@ const buildDocuments = async (search: SearchConfig) => {
   const lookup = (name: Collection, uuid: string) => loaded.get(name)?.get(uuid);
 
   const attributes = _.keys(getAggregations(search));
+  const geoLocationField = getGeoLocationField(search);
 
-  return _.map(getSearchRecords(search, collection, loaded), (record) => (
-    addRelationshipFacets(buildDocument(collection, record, lookup), attributes)
+  return _.map(getSearchRecords(search, collection, loaded), (record) => addGeoLocation(
+    addRelationshipFacets(buildDocument(collection, record, lookup), attributes),
+    geoLocationField
   ));
 };
 

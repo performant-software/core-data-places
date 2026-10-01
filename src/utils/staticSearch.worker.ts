@@ -1,6 +1,5 @@
 import {
   denormalizeResponse,
-  GEO_LOCATION_FIELD,
   getIndexOptions,
   getIndexUrls,
   normalizeFacetValuesQueries,
@@ -15,7 +14,7 @@ const worker = self as unknown as Worker;
 
 let index: any;
 
-const adapterOptions = { geoLocationField: GEO_LOCATION_FIELD };
+let adapterOptions: { geoLocationField?: string } = {};
 
 const post = (message: WorkerResponse) => worker.postMessage(message);
 
@@ -35,6 +34,8 @@ const load = async (indexName: string) => {
 
 worker.addEventListener('message', async ({ data }: MessageEvent<WorkerRequest>) => {
   if (data.type === 'load') {
+    adapterOptions = { geoLocationField: data.geoLocationField };
+
     try {
       post({ type: 'loaded', options: await load(data.indexName) });
     } catch (error) {
