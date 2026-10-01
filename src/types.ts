@@ -21,6 +21,8 @@ export interface StaticSearchConfig {
   }
 }
 
+export type SearchType = 'grid' | 'image' | 'list' | 'map';
+
 export interface SearchConfig {
   name: string,
   route: string,
@@ -62,7 +64,7 @@ export interface SearchConfig {
 
   table?: boolean;
 
-  type?: 'grid' | 'image' | 'list' | 'map';
+  type?: SearchType;
 
   static?: StaticSearchConfig;
 

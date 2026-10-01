@@ -5,11 +5,13 @@
  * and erasable TypeScript syntax.
  */
 import type { ItemsJsOptions } from '@utils/staticSearch';
+import type { SearchType } from '@types';
 
 interface StaticSearch {
   facets?: Array<{ name: string }>;
   route: string;
   timeline?: { date_range_facet?: string };
+  type?: SearchType;
 }
 
 /**
@@ -92,11 +94,14 @@ export const getSearchableFields = (documents: Array<{ [key: string]: unknown }>
   return [...fields];
 };
 
+const isListSearch = (search?: { type?: SearchType }) => !!search?.type && search.type !== 'map';
+
 export const buildOptions = (
   search: StaticSearch,
   documents: Array<{ [key: string]: unknown }>
 ): ItemsJsOptions => ({
   aggregations: getAggregations(search),
   searchableFields: getSearchableFields(documents),
-  sortings: SORTINGS
+  // don't bother calculating sortings for map search because it has no sort UI
+  ...(isListSearch(search) ? { sortings: SORTINGS } : {})
 });

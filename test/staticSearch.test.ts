@@ -264,11 +264,11 @@ describe('pruneHighlights', () => {
 });
 
 describe('backfillHighlights', () => {
-  it('escapes the values the way InstantSearch unescapes them', () => {
+  it('leaves the values unescaped for InstantSearch to escape', () => {
     const response = { results: [{ hits: [{ objectID: '1', name: '<a> & "b" \'c\' `d`', _rankingInfo: {} }] }] };
 
     expect(backfillHighlights(response).results[0].hits[0]._highlightResult).toEqual({
-      name: { value: '&lt;a&gt; &amp; &quot;b&quot; &#39;c&#39; `d`', matchLevel: 'none', matchedWords: [] }
+      name: { value: '<a> & "b" \'c\' `d`', matchLevel: 'none', matchedWords: [] }
     });
   });
 
