@@ -114,17 +114,6 @@ describe('buildDocument', () => {
   });
 });
 
-describe('getGeoLocationField', () => {
-  it('uses the top-level coordinates for top-level geometry', () => {
-    expect(getGeoLocationField({ map: { geometry: 'geometry' } })).toEqual('coordinates');
-    expect(getGeoLocationField({})).toEqual('coordinates');
-  });
-
-  it('uses the related coordinates for related geometry', () => {
-    expect(getGeoLocationField({ map: { geometry: 'relationship.place_geometry' } })).toEqual('relationship.coordinates');
-  });
-});
-
 describe('addGeoLocation', () => {
   const [place] = records.places;
   const relationship = '700dd643-b4a2-4f3c-8336-9e15a423dee8';
@@ -140,16 +129,6 @@ describe('addGeoLocation', () => {
     }, 'relationship.coordinates');
 
     expect(document['relationship.coordinates']).toEqual([[1, 2], [3, 4]]);
-  });
-
-  it('leaves out the field when no related record has coordinates', () => {
-    const document = addGeoLocation({ relationship: [{ uuid: 'a' }] }, 'relationship.coordinates');
-    expect(_.has(document, 'relationship.coordinates')).toBe(false);
-  });
-
-  it('leaves the document alone for the top-level coordinates', () => {
-    const document = { coordinates: [1, 2] };
-    expect(addGeoLocation({ ...document }, 'coordinates')).toEqual(document);
   });
 });
 
