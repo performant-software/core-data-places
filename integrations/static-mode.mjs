@@ -1,4 +1,5 @@
 import { loadEnv } from 'vite';
+import staticIslands from './static-islands.mjs';
 
 const { STATIC_BUILD } = loadEnv(process.env.STATIC_BUILD, process.cwd(), '');
 
@@ -35,7 +36,8 @@ export const withEmptyStaticPaths = (code) => {
 
 /**
  * Astro integration for static builds: with STATIC_BUILD=true it prerenders
- * the server-only routes with no paths. It changes nothing otherwise.
+ * the server-only routes with no paths and renders server islands at build
+ * time. It changes nothing otherwise.
  */
 export default function staticMode() {
   return {
@@ -46,7 +48,7 @@ export default function staticMode() {
 
         updateConfig({
           vite: {
-            plugins: [{
+            plugins: [staticIslands(), {
               name: 'fds-static-mode-routes',
               enforce: 'pre',
               transform(code, id) {
