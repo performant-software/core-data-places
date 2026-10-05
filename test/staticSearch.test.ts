@@ -272,6 +272,21 @@ describe('backfillHighlights', () => {
     });
   });
 
+  it('gives array items without a highlight an empty one', () => {
+    const response = {
+      results: [{ hits: [{ objectID: '1', events: [{ start_date: [null, null], end_date: ['1900', null] }] }] }]
+    };
+
+    const none = { matchLevel: 'none', matchedWords: [] };
+
+    expect(backfillHighlights(response).results[0].hits[0]._highlightResult).toEqual({
+      events: [{
+        start_date: [{ value: '', ...none }, { value: '', ...none }],
+        end_date: [{ value: '1900', ...none }, { value: '', ...none }]
+      }]
+    });
+  });
+
   it('restores the highlight result the adapter produces', async () => {
     const data = [
       {

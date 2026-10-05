@@ -166,13 +166,17 @@ export const pruneHighlights = (response: any) => mapHits(response, (hit) => {
   return _.isEmpty(matched) ? rest : { ...rest, _highlightResult: matched };
 });
 
+const EMPTY_HIGHLIGHT = { value: '', matchLevel: 'none', matchedWords: [] };
+
 /**
  * Returns the unmatched highlight result for the passed value, in the same shape as the adapter. Like the adapter, the
- * value is left unescaped because InstantSearch's hits connector escapes it.
+ * value is left unescaped because InstantSearch's hits connector escapes it. Array items without a highlight (e.g.
+ * nulls) get an empty one, since the hits connector throws on undefined items and removing them would misalign the
+ * indexes with the hit's values.
  */
 const toHighlight = (value: any): any => {
   if (_.isArray(value)) {
-    return _.map(value, toHighlight);
+    return _.map(value, (item) => toHighlight(item) ?? EMPTY_HIGHLIGHT);
   }
 
   if (_.isObject(value)) {
