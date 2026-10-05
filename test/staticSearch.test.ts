@@ -292,13 +292,20 @@ describe('backfillHighlights', () => {
       {
         id: '1',
         name: 'Paris & <Co>',
-        names: [{ toponym: 'Lutetia' }, { toponym: 'Paris' }],
+        names: [{ toponym: 'Lutetia', dates: [null, 1] }, { toponym: 'Paris' }],
         count: 3,
         flag: true,
         empty: null,
-        tags: ['a', 'paris']
+        tags: ['a', null, 'paris']
       },
-      { id: '2', name: 'London', names: [{ toponym: 'Londinium' }], count: 0, flag: false, tags: [] }
+      {
+        id: '2',
+        name: 'London',
+        names: [{ toponym: 'Londinium', dates: [null, null] }],
+        count: 0,
+        flag: false,
+        tags: [null]
+      }
     ];
 
     const index = createIndex(data, { searchableFields: ['name', 'names.toponym', 'tags'], query: '' });
