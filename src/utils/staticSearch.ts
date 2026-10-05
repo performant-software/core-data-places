@@ -166,7 +166,7 @@ export const pruneHighlights = (response: any) => mapHits(response, (hit) => {
   return _.isEmpty(matched) ? rest : { ...rest, _highlightResult: matched };
 });
 
-const EMPTY_HIGHLIGHT = { value: '', matchLevel: 'none', matchedWords: [] };
+const toUnmatched = (value = '') => ({ value, matchLevel: 'none', matchedWords: [] });
 
 /**
  * Returns the unmatched highlight result for the passed value, in the same shape as the adapter. Like the adapter, the
@@ -176,7 +176,7 @@ const EMPTY_HIGHLIGHT = { value: '', matchLevel: 'none', matchedWords: [] };
  */
 const toHighlight = (value: any): any => {
   if (_.isArray(value)) {
-    return _.map(value, (item) => toHighlight(item) ?? EMPTY_HIGHLIGHT);
+    return _.map(value, (item) => toHighlight(item) ?? toUnmatched());
   }
 
   if (_.isObject(value)) {
@@ -184,7 +184,7 @@ const toHighlight = (value: any): any => {
   }
 
   if (_.isString(value) || _.isNumber(value) || _.isBoolean(value)) {
-    return { value: String(value), matchLevel: 'none', matchedWords: [] };
+    return toUnmatched(String(value));
   }
 
   return undefined;
