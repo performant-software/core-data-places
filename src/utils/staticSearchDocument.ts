@@ -33,7 +33,14 @@ const REFERENCED_COLLECTIONS: { [key: string]: Collection } = {
  */
 const EMBEDDED_KEYS = ['mediaContents', 'taxonomies'];
 
-const toTimestamp = (date: string) => Date.parse(date) / 1000;
+/**
+ * Converts a date like "2024-08-01" to a Unix timestamp. Rails writes BCE years with four digits (e.g. "-0500-01-01"),
+ * but `Date.parse` only reads them in the six-digit form ("-000500-01-01"), so they're padded first. `Date.UTC` isn't
+ * an option because it treats years 0-99 as 1900-1999.
+ */
+const toTimestamp = (date: string) => Date.parse(
+  date.replace(/^([+-])(\d{4,5})-/, (_match, sign, year) => `${sign}${year.padStart(6, '0')}-`)
+) / 1000;
 
 /**
  * Converts a fuzzy date to its range as Unix timestamps, e.g. [1722470400, 1722470400].
