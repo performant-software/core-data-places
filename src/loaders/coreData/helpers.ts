@@ -1,7 +1,7 @@
 import config from '@config' with { type: 'json' };
 import type { LoaderContext } from 'astro/loaders';
 import _ from 'underscore';
-import { CONTENT_MODE } from 'astro:env/client';
+import { CONTENT_MODE, STATIC_BUILD } from 'astro:env/client';
 
 const RELATIONSHIP_ATTRIBUTES = [
   'uuid',
@@ -10,7 +10,7 @@ const RELATIONSHIP_ATTRIBUTES = [
 ];
 
 //amount to pause between loop iterations, in ms
-const DELAY = 10;
+const DELAY = 500;
 
 /**
  * Helper function to add delay between loop iterations
@@ -84,7 +84,7 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
             { events },
             { instances },
             { items },
-            { media_contents: mediaContents },
+            { media_contents },
             { organizations },
             { people },
             { places },
@@ -106,6 +106,28 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
           ]);
 
           const record = response[showName];
+
+          let mediaContents = media_contents;
+
+          if (STATIC_BUILD) {
+            // In this case we need to modify the media contents to point at local records
+            // This process should be improved!
+            mediaContents = _.map(media_contents, (media: any) => {
+              const { content_type, content_url, project_model_uuid, project_model_relationship_uuid, user_defined, uuid, name } = media;
+              const resourceId = content_url?.split('resources/')[1].split('/')[0];
+              return ({
+                content_type,
+                project_model_uuid,
+                project_model_relationship_uuid,
+                user_defined,
+                uuid,
+                name,
+                content_url: `/iiif/3/image/${resourceId}/full/max/0/default.jpg`,
+                content_preview_url: `/iiif/3/image/${resourceId}/full/max/0/default.jpg`, //this should be gleaned from the relevant info.json
+                content_iiif_url: `/iiif/3/image/${resourceId}/full/max/0/default.jpg`
+              })
+            });
+          }
 
           records.push({
             ...record,

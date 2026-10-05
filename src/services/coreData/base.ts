@@ -151,7 +151,12 @@ class Base {
     let manifests;
 
     if (this.useCache()) {
-      manifests = await this.getRelatedRecords(id, 'manifests');
+      // manifests = await this.getRelatedRecords(id, 'manifests');
+      const resp = await fetch(`${import.meta.env.PUBLIC_BASE_URL}/iiif/3/presentation/${this.name}/${id}/collection.json`);
+      if (resp?.ok) {
+        return await resp.json();
+      }
+      return {};
     } else {
       const response = await this.service.fetchRelatedManifests(id, REQUEST_PARAMS);
       manifests = response;
