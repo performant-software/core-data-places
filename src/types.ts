@@ -141,7 +141,9 @@ export interface Configuration {
     layer_type: 'geojson' | 'vector' | 'raster' | 'georeference',
     url: string,
     static?: {
-      url?: string
+      url?: string,
+      maxzoom?: number,
+      bbox?: [number, number, number, number]
     },
     overlay?: boolean
   }>,

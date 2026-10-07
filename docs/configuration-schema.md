@@ -146,8 +146,31 @@ URL to load the layer from in place of `url`, e.g. a self-hosted style, tile tem
 
 For vector layers, the style may load its tiles from a single [PMTiles](https://docs.protomaps.com/pmtiles/) archive using a `pmtiles://` source URL, e.g. `pmtiles:///maps/basemap.pmtiles`.
 
+URLs in `/_fds/maps/` can be made by the [maps script](static-deploy.md#static-maps).
+
 ```
 String
+```
+
+Required: No
+
+#### maxzoom
+
+For static copies made by the maps script: the highest zoom level to copy.
+
+```
+Number
+```
+
+Required: No  
+Default value: `10`
+
+#### bbox
+
+For static copies made by the maps script: the area to copy, as `[west, south, east, north]` in degrees. A basemap defaults to the area around the places.
+
+```
+[Number, Number, Number, Number]
 ```
 
 Required: No

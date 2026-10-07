@@ -171,6 +171,15 @@ describe('layers', () => {
       expect(layer.static.url).toBeString();
     });
 
+    test.skipIf(layer.static?.maxzoom === undefined)('static maxzoom is a whole number', () => {
+      expect(Number.isInteger(layer.static.maxzoom)).toBe(true);
+    });
+
+    test.skipIf(layer.static?.bbox === undefined)('static bbox is four numbers', () => {
+      expect(layer.static.bbox).toBeArrayOf(Number);
+      expect(layer.static.bbox).toHaveLength(4);
+    });
+
     test('overlay matches allowed values', () => {
       expect(layer.overlay).toBeBoolean();
     });
