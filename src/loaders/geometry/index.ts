@@ -4,6 +4,7 @@ import { truncate } from '@turf/turf';
 import type { LoaderContext } from 'astro/loaders';
 import { defineCollection } from 'astro:content';
 import _ from 'underscore';
+import fs from 'fs';
 
 const loader = {
   name: 'geometry-loader',
@@ -37,16 +38,18 @@ const loader = {
     for (let page = 1; page <= pages; page += 1) {
       logger.info(`Fetching page ${page}...`);
 
-      const listResponse = await service.fetchAll(_.extend(params, { page }));
-      const listRecords = (listResponse && listResponse.places) || [];
+      const listRecords = fs.existsSync('data/fairdata/places/index.json') ? JSON.parse(fs.readFileSync(`data/fairdata/places/index.json`, 'utf-8')).places : [];
 
-      if (listResponse.list?.pages > pages) {
-        pages = listResponse.list?.pages;
-      }
+      // const listResponse = await service.fetchAll(_.extend(params, { page }));
+      // const listRecords = (listResponse && listResponse.places) || [];
 
-      if (listResponse.list?.count > total) {
-        total = listResponse.list?.count;
-      }
+      // if (listResponse.list?.pages > pages) {
+      //   pages = listResponse.list?.pages;
+      // }
+
+      // if (listResponse.list?.count > total) {
+      //   total = listResponse.list?.count;
+      // }
 
       for (const record of listRecords) {
         const { uuid, name } = record;
