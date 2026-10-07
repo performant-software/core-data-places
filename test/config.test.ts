@@ -167,6 +167,10 @@ describe('layers', () => {
       expect(layer.url).toBeString();
     });
 
+    test.skipIf(layer.static?.url === undefined)('static url is a string', () => {
+      expect(layer.static.url).toBeString();
+    });
+
     test('overlay matches allowed values', () => {
       expect(layer.overlay).toBeBoolean();
     });

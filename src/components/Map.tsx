@@ -12,6 +12,8 @@ import {
   ZoomControl
 } from '@peripleo/maplibre';
 import { MapProvider, useRuntimeConfig } from '@peripleo/peripleo';
+import type { Configuration } from '@types';
+import { resolveLayers } from '@utils/map';
 import clsx from 'clsx';
 import { Protocol } from 'pmtiles';
 import { type ReactNode, useContext, useEffect, useMemo, useState } from 'react';
@@ -79,8 +81,11 @@ interface Props {
 }
 
 const Map = (props: Props) => {
-  const config = useRuntimeConfig();
-  const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(config);
+  const config = useRuntimeConfig<Configuration>();
+  const { baseLayers, dataLayers } = useMemo(() => PeripleoUtils.filterLayers({
+    ...config,
+    layers: resolveLayers(config.layers)
+  }), [config]);
 
   const loadedMap = useLoadedMap();
 

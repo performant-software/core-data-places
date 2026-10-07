@@ -134,6 +134,24 @@ String
 
 Required: `true`
 
+### static
+
+Settings used only when the site is built with `STATIC_BUILD=true`.
+
+Required: No
+
+#### url
+
+URL to load the layer from in place of `url`, e.g. a self-hosted style, tile template or GeoJSON file. Other references to the layer, such as a path's overlay, still use `url`, so it can stay unchanged. When blank, `url` is used.
+
+For vector layers, the style may load its tiles from a single [PMTiles](https://docs.protomaps.com/pmtiles/) archive using a `pmtiles://` source URL, e.g. `pmtiles:///maps/basemap.pmtiles`.
+
+```
+String
+```
+
+Required: No
+
 ### overlay
 
 If `true`, the layer can be rendered on top of the base map layer.

@@ -451,6 +451,17 @@ const Settings: Collection = {
         component: TinaMapLayerURLField,
       },
     }, {
+      name: 'static',
+      label: 'Static build',
+      description: 'Only for sites published as static files.',
+      type: 'object',
+      fields: [{
+        name: 'url',
+        label: 'Self-hosted URL',
+        description: 'Where to load this layer from instead of the URL above. Leave blank to keep using the URL above.',
+        type: 'string'
+      }]
+    }, {
       name: 'overlay',
       label: 'Overlay',
       type: 'boolean',
