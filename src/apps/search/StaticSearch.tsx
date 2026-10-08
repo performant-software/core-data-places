@@ -4,6 +4,7 @@ import StaticSearchContext from '@apps/search/StaticSearchContext';
 import Loader from '@components/Loader';
 import { Typesense as TypesenseUtils } from '@performant-software/core-data';
 import type { StaticSearchConfig } from '@types';
+import { getGeoLocationField } from '@utils/map';
 import { createStaticSearchClient, loadIndex, type ItemsJsOptions } from '@utils/staticSearch';
 import StaticSearchWorker from '@utils/staticSearch.worker?worker';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
@@ -27,7 +28,7 @@ const StaticSearch = (props: { children: ReactNode }) => {
 
     const worker = new StaticSearchWorker();
 
-    loadIndex(worker, config.name)
+    loadIndex(worker, config.name, getGeoLocationField(config))
       .then((options) => {
         if (current) {
           setIndex({ options, searchClient: createStaticSearchClient(worker) });

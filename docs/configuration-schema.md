@@ -200,6 +200,8 @@ Default value: `list`
 
 If `true`, the "Filter by map bounds" option will be available on the map facet menu. This option will allow the user to filter the search results by zooming/panning the map viewport. This option should only be used if the data set contains only Latitude/Longitude geometries.
 
+The locations are read from the `coordinates` field next to the `map.geometry` path. For example, `<uuid>.geometry` filters on `<uuid>.coordinates`. Use `typesense.overrides.geoLocationField` to change this for Typesense search.
+
 ```
 Boolean
 ```

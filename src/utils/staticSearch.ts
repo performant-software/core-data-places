@@ -3,8 +3,6 @@ import _ from 'underscore';
 
 const SEARCH_PATH = '/search';
 
-export const GEO_LOCATION_FIELD = 'coordinates';
-
 export interface ItemsJsAggregation {
   title?: string;
   size?: number;
@@ -34,7 +32,7 @@ export const getIndexUrls = (indexName: string) => ({
 });
 
 export type WorkerRequest =
-  | { type: 'load', indexName: string }
+  | { type: 'load', indexName: string, geoLocationField: string }
   | { type: 'search', id: number, queries: Array<any> }
   | { type: 'searchForFacetValues', id: number, queries: Array<any> };
 
@@ -168,13 +166,17 @@ export const pruneHighlights = (response: any) => mapHits(response, (hit) => {
   return _.isEmpty(matched) ? rest : { ...rest, _highlightResult: matched };
 });
 
+const toUnmatched = (value = '') => ({ value, matchLevel: 'none', matchedWords: [] });
+
 /**
  * Returns the unmatched highlight result for the passed value, in the same shape as the adapter. Like the adapter, the
- * value is left unescaped because InstantSearch's hits connector escapes it.
+ * value is left unescaped because InstantSearch's hits connector escapes it. Array items without a highlight (e.g.
+ * nulls) get an empty one, since the hits connector throws on undefined items and removing them would misalign the
+ * indexes with the hit's values.
  */
 const toHighlight = (value: any): any => {
   if (_.isArray(value)) {
-    return _.map(value, toHighlight);
+    return _.map(value, (item) => toHighlight(item) ?? toUnmatched());
   }
 
   if (_.isObject(value)) {
@@ -182,7 +184,7 @@ const toHighlight = (value: any): any => {
   }
 
   if (_.isString(value) || _.isNumber(value) || _.isBoolean(value)) {
-    return { value: String(value), matchLevel: 'none', matchedWords: [] };
+    return toUnmatched(String(value));
   }
 
   return undefined;
@@ -209,9 +211,14 @@ export const backfillHighlights = (response: any) => mapHits(response, (hit) => 
 });
 
 /**
- * Asks the worker to fetch and index the named search index, resolving with the ItemsJS options.
+ * Asks the worker to fetch and index the named search index, resolving with the ItemsJS options. The map bounds
+ * filter reads locations from the passed field.
  */
-export const loadIndex = (worker: SearchWorker, indexName: string) => new Promise<ItemsJsOptions>((resolve, reject) => {
+export const loadIndex = (
+  worker: SearchWorker,
+  indexName: string,
+  geoLocationField: string
+) => new Promise<ItemsJsOptions>((resolve, reject) => {
   const onMessage = ({ data }: MessageEvent<WorkerResponse>) => {
     if (data.type === 'loaded') {
       resolve(data.options);
@@ -225,7 +232,7 @@ export const loadIndex = (worker: SearchWorker, indexName: string) => new Promis
   };
 
   worker.addEventListener('message', onMessage);
-  worker.postMessage({ type: 'load', indexName } as WorkerRequest);
+  worker.postMessage({ type: 'load', indexName, geoLocationField } as WorkerRequest);
 });
 
 export const createStaticSearchClient = (worker: SearchWorker) => {

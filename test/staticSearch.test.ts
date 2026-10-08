@@ -272,18 +272,40 @@ describe('backfillHighlights', () => {
     });
   });
 
+  it('gives array items without a highlight an empty one', () => {
+    const response = {
+      results: [{ hits: [{ objectID: '1', events: [{ start_date: [null, null], end_date: ['1900', null] }] }] }]
+    };
+
+    const none = { matchLevel: 'none', matchedWords: [] };
+
+    expect(backfillHighlights(response).results[0].hits[0]._highlightResult).toEqual({
+      events: [{
+        start_date: [{ value: '', ...none }, { value: '', ...none }],
+        end_date: [{ value: '1900', ...none }, { value: '', ...none }]
+      }]
+    });
+  });
+
   it('restores the highlight result the adapter produces', async () => {
     const data = [
       {
         id: '1',
         name: 'Paris & <Co>',
-        names: [{ toponym: 'Lutetia' }, { toponym: 'Paris' }],
+        names: [{ toponym: 'Lutetia', dates: [null, 1] }, { toponym: 'Paris' }],
         count: 3,
         flag: true,
         empty: null,
-        tags: ['a', 'paris']
+        tags: ['a', null, 'paris']
       },
-      { id: '2', name: 'London', names: [{ toponym: 'Londinium' }], count: 0, flag: false, tags: [] }
+      {
+        id: '2',
+        name: 'London',
+        names: [{ toponym: 'Londinium', dates: [null, null] }],
+        count: 0,
+        flag: false,
+        tags: [null]
+      }
     ];
 
     const index = createIndex(data, { searchableFields: ['name', 'names.toponym', 'tags'], query: '' });
@@ -295,12 +317,32 @@ describe('backfillHighlights', () => {
   });
 });
 
+describe('map bounds', () => {
+  it('matches documents with any related location inside the bounds', async () => {
+    const data = [
+      { id: '1', name: 'Boston', relationship: [{ coordinates: [0, 0] }, { coordinates: [42.36, -71.06] }] },
+      { id: '2', name: 'Paris', relationship: [{ coordinates: [48.86, 2.35] }] },
+      { id: '3', name: 'Nowhere', relationship: [{ name: 'No geometry' }] }
+    ];
+
+    const index = createIndex(data, { searchableFields: ['name'], query: '' });
+
+    const response = await performSearch(
+      [{ indexName: 'places', params: { query: '', facets: [], insideBoundingBox: '45,-70,40,-80' } }],
+      index,
+      { geoLocationField: 'relationship.coordinates' }
+    );
+
+    expect(response.results[0].hits.map((hit) => hit.id)).toEqual(['1']);
+  });
+});
+
 describe('loadIndex', () => {
   it('asks the worker to load the index and resolves with its options', async () => {
     const worker = new FakeWorker();
-    const loading = loadIndex(worker as unknown as Worker, 'catalogue');
+    const loading = loadIndex(worker as unknown as Worker, 'catalogue', 'coordinates');
 
-    expect(worker.sent()).toEqual([{ type: 'load', indexName: 'catalogue' }]);
+    expect(worker.sent()).toEqual([{ type: 'load', indexName: 'catalogue', geoLocationField: 'coordinates' }]);
 
     worker.reply({ type: 'loaded', options });
 
@@ -310,7 +352,7 @@ describe('loadIndex', () => {
 
   it('rejects when the worker fails to load the index', async () => {
     const worker = new FakeWorker();
-    const loading = loadIndex(worker as unknown as Worker, 'catalogue');
+    const loading = loadIndex(worker as unknown as Worker, 'catalogue', 'coordinates');
 
     worker.reply({ type: 'loadFailed', message: 'Not found' });
 

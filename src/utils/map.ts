@@ -37,3 +37,19 @@ export const parseFeature = (feature) => {
 };
 
 export const kilometersToMiles = (km) => km * 0.621371;
+
+const DEFAULT_GEO_LOCATION_FIELD = 'coordinates';
+
+/**
+ * Returns the search field the "filter by map bounds" option reads locations from. When the map geometry comes from
+ * a related record, e.g. "<relationship-uuid>.place_geometry", the locations are in that relationship's coordinates,
+ * e.g. "<relationship-uuid>.coordinates".
+ *
+ * @param config
+ */
+export const getGeoLocationField = (config: { map?: { geometry?: string } }) => {
+  const path = config.map?.geometry || '';
+  const index = path.lastIndexOf('.');
+
+  return index < 0 ? DEFAULT_GEO_LOCATION_FIELD : `${path.substring(0, index)}.${DEFAULT_GEO_LOCATION_FIELD}`;
+};
