@@ -8,12 +8,13 @@ import {
   getExtractSize,
   getInputs,
   getStyle,
+  getTileRange,
   STYLE_PATH,
   TILES_MAJOR_VERSION
 } from './maps/inputs.mjs';
 
 /**
- * Writes the files for static Protomaps basemap layers.
+ * Writes the files for static map layers: a Protomaps basemap, and copies of raster and GeoJSON overlays.
  * Matches layers where `static.url` is inside the passed base URL (e.g. `/_fds/maps/style.json` for the default
  * `/_fds/maps/` base URL); ensure config matches before running.
  */
@@ -27,10 +28,15 @@ const USAGE = `Usage: npm run build:maps -- [options]
   --inputs-only              Print what the output depends on, without writing it
   --source <url|file>        Protomaps world map (default: PROTOMAPS_SOURCE, or the latest daily build)
   --work-dir <dir>           Folder for downloads (default: in the system temp folder)
-  --max-basemap-size <MB>    Largest basemap to pull (default: 1000)`;
+  --max-basemap-size <MB>    Largest basemap to pull (default: 1000)
+  --max-overlay-tiles <n>    Most tiles to copy for a raster overlay (default: 5000)`;
 
 const DAILY_BUILDS = 'https://build.protomaps.com';
 const ASSETS_REPOSITORY = 'https://github.com/protomaps/basemaps-assets.git';
+const USER_AGENT = 'core-data-places static maps (https://github.com/performant-software/core-data-places)';
+
+const OVERLAY_CONCURRENCY = 4;
+const OVERLAY_MAX_FAILURES = 20;
 
 const log = (message) => console.error(message);
 
@@ -168,6 +174,94 @@ const writeBasemap = async (basemap, baseUrl, options) => {
   }
 };
 
+/**
+ * Runs `fn` on each item, at most `limit` at a time.
+ */
+const runBounded = async (items, limit, fn) => {
+  let next = 0;
+
+  const worker = async () => {
+    while (next < items.length) {
+      const item = items[next];
+      next += 1;
+      await fn(item);
+    }
+  };
+
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+};
+
+/**
+ * Copies a raster overlay's tiles. 404s and empty tiles are skipped.
+ */
+const copyRasterOverlay = async (overlay, bbox, out) => {
+  let failures = 0;
+  let lastFailure;
+
+  await runBounded(getTileRange(bbox, overlay.maxzoom), OVERLAY_CONCURRENCY, async ({ z, x, y }) => {
+    if (failures > OVERLAY_MAX_FAILURES) {
+      return;
+    }
+
+    const fill = (template) => template.replace('{z}', z).replace('{x}', x).replace('{y}', y);
+    const response = await fetch(fill(overlay.source), { headers: { 'User-Agent': USER_AGENT } }).catch(() => null);
+
+    if (response?.status === 404) {
+      return;
+    }
+
+    if (!response?.ok) {
+      failures += 1;
+      lastFailure = response ? `HTTP ${response.status}` : 'no response';
+      return;
+    }
+
+    const body = Buffer.from(await response.arrayBuffer());
+
+    if (body.length > 0) {
+      const file = path.join(out, fill(overlay.path));
+      fs.mkdirSync(path.dirname(file), { recursive: true });
+      fs.writeFileSync(file, body);
+    }
+  });
+
+  if (failures > OVERLAY_MAX_FAILURES) {
+    throw new Error(`Layer "${overlay.name}": more than ${OVERLAY_MAX_FAILURES} tiles failed (last: ${lastFailure})`);
+  }
+};
+
+const copyGeoJsonOverlay = async (overlay, out) => {
+  const response = await fetch(overlay.source, { headers: { 'User-Agent': USER_AGENT } });
+
+  if (!response.ok) {
+    throw new Error(`Layer "${overlay.name}": ${overlay.source} returned HTTP ${response.status}`);
+  }
+
+  const file = path.join(out, overlay.path);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify(await response.json()));
+};
+
+const writeOverlays = async (overlays, basemap, options) => {
+  for (const overlay of overlays) {
+    log(`Copying "${overlay.name}"...`);
+
+    if (overlay.type === 'geojson') {
+      await copyGeoJsonOverlay(overlay, options.out);
+      continue;
+    }
+
+    const bbox = overlay.bbox || basemap.bbox;
+    const count = getTileRange(bbox, overlay.maxzoom).length;
+
+    if (count > options.maxOverlayTiles) {
+      throw new Error(`Layer "${overlay.name}" needs ${count} tiles, more than --max-overlay-tiles (${options.maxOverlayTiles}). Lower static.maxzoom or set a smaller static.bbox.`);
+    }
+
+    await copyRasterOverlay(overlay, bbox, options.out);
+  }
+};
+
 (async function() {
   try { process.loadEnvFile() } catch {};
 
@@ -181,6 +275,7 @@ const writeBasemap = async (basemap, baseUrl, options) => {
       source: { type: 'string' },
       'work-dir': { type: 'string', default: path.join(os.tmpdir(), 'core-data-places-maps') },
       'max-basemap-size': { type: 'string', default: '1000' },
+      'max-overlay-tiles': { type: 'string', default: '5000' },
       help: { type: 'boolean', default: false }
     }
   });
@@ -212,18 +307,23 @@ const writeBasemap = async (basemap, baseUrl, options) => {
       out: args.out,
       source: args.source,
       workDir: args['work-dir'],
-      maxBasemapSize: Number(args['max-basemap-size'])
+      maxBasemapSize: Number(args['max-basemap-size']),
+      maxOverlayTiles: Number(args['max-overlay-tiles'])
     };
 
-    if (!inputs.basemap) {
-      log(`No vector layer has a static.url of ${inputs.base_url}${STYLE_PATH}.`);
+    if (!inputs.basemap && inputs.overlays.length === 0) {
+      log(`No layer has a static.url in ${inputs.base_url}.`);
       return;
     }
 
     fs.mkdirSync(options.out, { recursive: true });
     fs.mkdirSync(options.workDir, { recursive: true });
 
-    await writeBasemap(inputs.basemap, inputs.base_url, options);
+    if (inputs.basemap) {
+      await writeBasemap(inputs.basemap, inputs.base_url, options);
+    }
+
+    await writeOverlays(inputs.overlays, inputs.basemap, options);
 
     log(`Done. ${args.out} must be served at ${inputs.base_url}`);
   } catch (error) {

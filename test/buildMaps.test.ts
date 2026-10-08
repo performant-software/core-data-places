@@ -6,6 +6,8 @@ import {
   getInputs,
   getLanguage,
   getStyle,
+  getTileRange,
+  getTiles,
   padBounds,
   snapBounds
 } from '../scripts/maps/inputs.mjs';
@@ -26,6 +28,22 @@ const basemapLayer = {
   layer_type: 'vector',
   url: 'https://api.maptiler.com/maps/dataviz/style.json?key=abc',
   static: { url: '/_fds/maps/style.json' }
+};
+
+const rasterLayer = {
+  name: 'Historic map',
+  layer_type: 'raster',
+  url: 'https://tiles.example.org/historic/{z}/{x}/{y}.png',
+  overlay: true,
+  static: { url: '/_fds/maps/overlays/historic/{z}/{x}/{y}.png', maxzoom: 6 }
+};
+
+const geojsonLayer = {
+  name: 'Boundaries',
+  layer_type: 'geojson',
+  url: 'https://data.example.org/boundaries.geojson',
+  overlay: true,
+  static: { url: '/_fds/maps/overlays/boundaries.geojson' }
 };
 
 const toConfig = (layers: object[], locale = 'en') => ({ i18n: { default_locale: locale }, layers });
@@ -93,7 +111,8 @@ describe('getInputs', () => {
         language: 'fr',
         flavor: 'light',
         basemaps_version: BASEMAPS_VERSION
-      }
+      },
+      overlays: []
     });
   });
 
@@ -115,11 +134,31 @@ describe('getInputs', () => {
     expect(basemap).toMatchObject({ maxzoom: 12, bbox: [1.23, 2.35, 3.46, 4.57] });
   });
 
+  it('describes raster and GeoJSON overlays, sorted by path', () => {
+    const { overlays } = getInputs(toConfig([basemapLayer, rasterLayer, geojsonLayer]), places, { baseUrl: BASE_URL });
+
+    expect(overlays).toEqual([{
+      name: 'Boundaries',
+      type: 'geojson',
+      source: geojsonLayer.url,
+      path: 'overlays/boundaries.geojson'
+    }, {
+      name: 'Historic map',
+      type: 'raster',
+      source: rasterLayer.url,
+      path: 'overlays/historic/{z}/{x}/{y}.png',
+      maxzoom: 6
+    }]);
+  });
+
   it('ignores layers that are live or hosted elsewhere', () => {
     const live = { ...basemapLayer, static: undefined };
-    const elsewhere = { ...basemapLayer, static: { url: 'https://tiles.example.org/style.json' } };
+    const elsewhere = { ...rasterLayer, static: { url: 'https://tiles.example.org/static/{z}/{x}/{y}.png' } };
 
-    expect(getInputs(toConfig([live, elsewhere]), places, { baseUrl: BASE_URL }).basemap).toBeNull();
+    expect(getInputs(toConfig([live, elsewhere]), places, { baseUrl: BASE_URL })).toMatchObject({
+      basemap: null,
+      overlays: []
+    });
   });
 
   it('accepts a base URL without a trailing slash', () => {
@@ -135,7 +174,10 @@ describe('getInputs', () => {
     const generate = (layer: object) => () => getInputs(toConfig([basemapLayer, layer]), places, { baseUrl: BASE_URL });
 
     expect(generate({ ...basemapLayer, static: { url: '/_fds/maps/other.json' } })).toThrow('static.url must be /_fds/maps/style.json');
-    expect(generate({ ...basemapLayer, static: { ...basemapLayer.static, bbox: [1, 2, 3] } })).toThrow('four numbers');
+    expect(generate({ ...rasterLayer, static: { url: '/_fds/maps/historic/{z}/{x}/{y}.png' } })).toThrow('tile template in /_fds/maps/overlays/');
+    expect(generate({ ...rasterLayer, url: 'https://example.org/wms?bbox={bbox-epsg-3857}' })).toThrow('only {z}/{x}/{y} tile URLs');
+    expect(generate({ ...geojsonLayer, static: { url: '/_fds/maps/boundaries.geojson' } })).toThrow('must be in /_fds/maps/overlays/');
+    expect(generate({ ...rasterLayer, static: { ...rasterLayer.static, bbox: [1, 2, 3] } })).toThrow('four numbers');
     expect(generate({ name: 'Warped', layer_type: 'georeference', url: 'https://annotations.allmaps.org/x', static: { url: '/_fds/maps/overlays/warped.json' } }))
       .toThrow('georeference layers can\'t be generated');
   });
@@ -144,11 +186,32 @@ describe('getInputs', () => {
     expect(() => getInputs(toConfig([basemapLayer]), [toPlace(null)], { baseUrl: BASE_URL })).toThrow('no region');
   });
 
+  it('needs a region for raster overlays when there is no basemap', () => {
+    expect(() => getInputs(toConfig([rasterLayer]), places, { baseUrl: BASE_URL })).toThrow('set static.bbox');
+    expect(getInputs(toConfig([{ ...rasterLayer, static: { ...rasterLayer.static, bbox: [0, 0, 1, 1] } }]), [], { baseUrl: BASE_URL }).overlays).toHaveLength(1);
+  });
+
   it('gives the same inputs for the same config and places', () => {
-    const config = toConfig([basemapLayer]);
+    const config = toConfig([basemapLayer, rasterLayer, geojsonLayer]);
 
     expect(JSON.stringify(getInputs(config, places, { baseUrl: BASE_URL })))
       .toBe(JSON.stringify(getInputs(structuredClone(config), [...places].reverse(), { baseUrl: BASE_URL })));
+  });
+});
+
+describe('getTiles', () => {
+  it('covers the world with one tile at zoom 0 and four at zoom 1', () => {
+    expect(getTiles([-180, -85, 180, 85], 0)).toEqual([{ z: 0, x: 0, y: 0 }]);
+    expect(getTiles([-180, -85, 180, 85], 1)).toHaveLength(4);
+  });
+
+  it('covers a small area with the tiles it overlaps', () => {
+    expect(getTiles([-71.1, 42.35, -71.05, 42.36], 10)).toEqual([{ z: 10, x: 309, y: 378 }]);
+    expect(getTiles([-71.2, 42.3, -71.0, 42.4], 10)).toEqual([{ z: 10, x: 309, y: 378 }, { z: 10, x: 310, y: 378 }]);
+  });
+
+  it('counts tiles for every zoom up to the maximum', () => {
+    expect(getTileRange([-180, -85, 180, 85], 2)).toHaveLength(1 + 4 + 16);
   });
 });
 

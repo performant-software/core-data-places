@@ -163,7 +163,7 @@ Number
 ```
 
 Required: No  
-Default value: `10`
+Default value: `10` for a basemap, `8` for a raster overlay
 
 #### bbox
 

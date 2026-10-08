@@ -22,15 +22,27 @@ Build times can also be affected by the number of content records (paths, posts,
 
 #### 2. Static maps
 
-A static build can optionally serve its own basemap instead of using a live service such as MapTiler.
+A static build can optionally serve its own copies of map layers instead of using live services such as MapTiler.
 
-Set the layer's `static.url` of the basemap's `vector` layer (see [layers](configuration-schema.md#static)) to `/_fds/maps/style.json`. Then, to generate a static PMTiles basemap, ensure you have [pmtiles](https://github.com/protomaps/go-pmtiles) installed (`brew install pmtiles` on Mac), and run:
+First, set the `static.url` (see [layers](configuration-schema.md#static)) of each layer to copy:
+
+| Layer | `static.url` | Static copy |
+|---|---|---|
+| `vector` | `/_fds/maps/style.json` | A basemap pulled from the [Protomaps](https://protomaps.com) world map, with its style, fonts and sprites |
+| `raster` | `/_fds/maps/overlays/{name}/{z}/{x}/{y}.png` | The tiles at `url`, which must be a `{z}/{x}/{y}` tile URL |
+| `geojson` | `/_fds/maps/overlays/{name}.geojson` | The file at `url` |
+
+Then make the copies by running the following command.
+
+> **Note**: The basemap needs [pmtiles](https://github.com/protomaps/go-pmtiles) installed (`brew install pmtiles` on Mac) before running.
 
 ```sh
 npm run build:maps -- --export-dir /path/to/export --out dist/_fds/maps
 ```
 
-The basemap is pulled from the [Protomaps](https://protomaps.com) world map. It covers the area around the places in a FairData JSON export (`--export-dir`), or the layer's `static.bbox` if set, in which case no export is needed. Run `npm run build:maps -- --help` for more options.
+The basemap and raster tiles cover the area around the places in a FairData JSON export (`--export-dir`), or a layer's `static.bbox` if set, in which case no export is needed. `static.maxzoom` sets how far in a copy goes. Run `npm run build:maps -- --help` for more options.
+
+Check that a raster layer's tile server allows bulk downloads before copying it; many public tile servers don't.
 
 The web server must support HTTP range requests to serve the `.pmtiles` file (storage buckets like R2 and S3 typically do).
 

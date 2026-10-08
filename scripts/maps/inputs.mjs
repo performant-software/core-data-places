@@ -10,6 +10,7 @@ export const BASEMAPS_VERSION = require('@protomaps/basemaps/package.json').vers
  */
 export const STYLE_PATH = 'style.json';
 export const BASEMAP_PATH = 'basemap.pmtiles';
+export const OVERLAYS_PATH = 'overlays/';
 
 /**
  * The major version of the Protomaps tile data that @protomaps/basemaps draws.
@@ -19,11 +20,14 @@ export const TILES_MAJOR_VERSION = 4;
 const FLAVOR = 'light';
 
 const DEFAULT_BASEMAP_MAXZOOM = 10;
+const DEFAULT_OVERLAY_MAXZOOM = 8;
 
 // Degrees
 const MIN_PADDING = 0.1;
 const REGION_GRID = 0.5;
 const MAX_LATITUDE = 85.0511;
+
+const XYZ_TEMPLATE = /\{z\}.*\{x\}.*\{y\}/;
 
 export const normalizeBaseUrl = (baseUrl) => (baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`);
 
@@ -111,13 +115,14 @@ const validateBounds = (bbox, layer) => {
 };
 
 /**
- * Returns what the generated files depend on: the basemap's region, zoom and language. Only layers whose `static.url`
- * is inside the base URL are included. Callers can hash the result to skip unchanged runs.
+ * Returns what the generated files depend on: the basemap's region, zoom and language, and the overlays to copy. Only
+ * layers whose `static.url` is inside the base URL are included. Callers can hash the result to skip unchanged runs.
  */
 export const getInputs = (config, places, { baseUrl }) => {
   const base = normalizeBaseUrl(baseUrl);
 
   let basemap = null;
+  const overlays = [];
 
   for (const layer of config?.layers || []) {
     if (!layer?.static?.url?.startsWith(base)) {
@@ -158,16 +163,51 @@ export const getInputs = (config, places, { baseUrl }) => {
         flavor: FLAVOR,
         basemaps_version: BASEMAPS_VERSION
       };
+    } else if (layer.layer_type === 'raster') {
+      if (!path.startsWith(OVERLAYS_PATH) || !XYZ_TEMPLATE.test(path)) {
+        throw new Error(`Layer "${layer.name}": a generated raster layer's static.url must be a tile template in ${base}${OVERLAYS_PATH}, e.g. ${base}${OVERLAYS_PATH}name/{z}/{x}/{y}.png`);
+      }
+
+      if (!XYZ_TEMPLATE.test(layer.url)) {
+        throw new Error(`Layer "${layer.name}": only {z}/{x}/{y} tile URLs can be copied, not ${layer.url}`);
+      }
+
+      overlays.push({
+        name: layer.name,
+        type: 'raster',
+        source: layer.url,
+        path,
+        maxzoom: Number(layer.static.maxzoom ?? DEFAULT_OVERLAY_MAXZOOM),
+        ...(layer.static.bbox ? { bbox: roundBounds(layer.static.bbox) } : {})
+      });
+    } else if (layer.layer_type === 'geojson') {
+      if (!path.startsWith(OVERLAYS_PATH)) {
+        throw new Error(`Layer "${layer.name}": a generated GeoJSON layer's static.url must be in ${base}${OVERLAYS_PATH}`);
+      }
+
+      overlays.push({
+        name: layer.name,
+        type: 'geojson',
+        source: layer.url,
+        path
+      });
     } else {
       throw new Error(`Layer "${layer.name}": ${layer.layer_type} layers can't be generated`);
     }
+  }
+
+  const unbounded = !basemap && overlays.find((overlay) => overlay.type === 'raster' && !overlay.bbox);
+
+  if (unbounded) {
+    throw new Error(`Layer "${unbounded.name}": set static.bbox, or generate a basemap to take the region from`);
   }
 
   return {
     generator: 'maps',
     schema_version: 1,
     base_url: base,
-    basemap
+    basemap,
+    overlays: overlays.sort((a, b) => a.path.localeCompare(b.path))
   };
 };
 
@@ -184,6 +224,36 @@ export const getExtractSize = (output) => {
   const multipliers = { '': 1, k: 1e3, M: 1e6, G: 1e9, T: 1e12 };
   return Math.round(Number(match[1]) * multipliers[match[2]]);
 };
+
+const toTileX = (lon, z) => Math.floor(((lon + 180) / 360) * 2 ** z);
+
+const toTileY = (lat, z) => {
+  const radians = (Math.max(Math.min(lat, MAX_LATITUDE), -MAX_LATITUDE) * Math.PI) / 180;
+  return Math.floor(((1 - Math.log(Math.tan(radians) + 1 / Math.cos(radians)) / Math.PI) / 2) * 2 ** z);
+};
+
+/**
+ * Returns the XYZ tiles covering the bounds at zoom `z`.
+ */
+export const getTiles = ([minx, miny, maxx, maxy], z) => {
+  const last = 2 ** z - 1;
+  const tiles = [];
+
+  for (let x = Math.max(0, toTileX(minx, z)); x <= Math.min(last, toTileX(maxx, z)); x += 1) {
+    for (let y = Math.max(0, toTileY(maxy, z)); y <= Math.min(last, toTileY(miny, z)); y += 1) {
+      tiles.push({ z, x, y });
+    }
+  }
+
+  return tiles;
+};
+
+/**
+ * Returns the XYZ tiles covering the bounds at zooms 0 to `maxzoom`.
+ */
+export const getTileRange = (bbox, maxzoom) => Array
+  .from({ length: maxzoom + 1 }, (_, z) => getTiles(bbox, z))
+  .flat();
 
 /**
  * Returns the basemap style, with all URLs based on the base URL, and fonts list.
