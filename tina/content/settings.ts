@@ -451,6 +451,28 @@ const Settings: Collection = {
         component: TinaMapLayerURLField,
       },
     }, {
+      name: 'static',
+      label: 'Static build',
+      description: 'Only for sites published as static files.',
+      type: 'object',
+      fields: [{
+        name: 'url',
+        label: 'Self-hosted URL',
+        description: 'Where to load this layer from instead of the URL above. Leave blank to keep using the URL above.',
+        type: 'string'
+      }, {
+        name: 'maxzoom',
+        label: 'Maximum zoom',
+        description: 'For static copies made by the maps script. Higher shows more detail but makes larger files.',
+        type: 'number'
+      }, {
+        name: 'bbox',
+        label: 'Area',
+        description: 'For static copies made by the maps script: west, south, east and north, in degrees. Leave blank to use the area around the places.',
+        type: 'number',
+        list: true
+      }]
+    }, {
       name: 'overlay',
       label: 'Overlay',
       type: 'boolean',

@@ -2,6 +2,7 @@
 import PathViewer from '@apps/paths/PathViewer';
 import { fetchPathResponse } from '@backend/tina';
 import config from '@config';
+import { resolveLayer } from '@utils/map';
 
 const { slug } = Astro.props;
 const pathResponse = await fetchPathResponse(slug);
@@ -17,7 +18,7 @@ if (pathResponse.data?.path.overlay_layer) {
   );
 
   if (match) {
-    overlayLayer = match;
+    overlayLayer = resolveLayer(match);
   }
 }
 

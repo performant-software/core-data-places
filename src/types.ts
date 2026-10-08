@@ -140,6 +140,11 @@ export interface Configuration {
     name: string,
     layer_type: 'geojson' | 'vector' | 'raster' | 'georeference',
     url: string,
+    static?: {
+      url?: string,
+      maxzoom?: number,
+      bbox?: [number, number, number, number]
+    },
     overlay?: boolean
   }>,
 
