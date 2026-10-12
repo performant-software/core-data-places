@@ -43,6 +43,9 @@ tmp/
 /public/config.json
 /public/branding.json
 
+# Static maps generated locally with npm run build:maps
+/public/_fds/
+
 # Workspaces
 *.code-workspace
 

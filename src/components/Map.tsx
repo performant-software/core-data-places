@@ -5,11 +5,26 @@ import {
   OverlayLayer,
   Peripleo as PeripleoUtils
 } from '@performant-software/core-data';
-import { Map as PeripleoMap, useLoadedMap, ZoomControl } from '@peripleo/maplibre';
+import {
+  addProtocol,
+  Map as PeripleoMap,
+  useLoadedMap,
+  ZoomControl
+} from '@peripleo/maplibre';
 import { MapProvider, useRuntimeConfig } from '@peripleo/peripleo';
+import type { Configuration } from '@types';
+import { resolveLayers } from '@utils/map';
 import clsx from 'clsx';
+import { Protocol } from 'pmtiles';
 import { type ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import _ from 'underscore';
+
+/**
+ * Registers the `pmtiles://` protocol so that styles can load tiles from a PMTiles archive
+ */
+if (typeof window !== 'undefined') {
+  addProtocol('pmtiles', new Protocol().tile);
+}
 
 /**
  * Defers rendering children until the underlying MapLibre style has fully
@@ -66,8 +81,11 @@ interface Props {
 }
 
 const Map = (props: Props) => {
-  const config = useRuntimeConfig();
-  const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(config);
+  const config = useRuntimeConfig<Configuration>();
+  const { baseLayers, dataLayers } = useMemo(() => PeripleoUtils.filterLayers({
+    ...config,
+    layers: resolveLayers(config.layers)
+  }), [config]);
 
   const loadedMap = useLoadedMap();
 
