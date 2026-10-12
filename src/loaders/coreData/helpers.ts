@@ -50,7 +50,7 @@ export const createLoader = (name, Service, [indexName, showName]) => ({
     const startTime = Date.now();
     logger.info('Loading data');
 
-    const DATA_BASE_PATH = 'data/fairdata';
+    const DATA_BASE_PATH = 'api';
 
     const records = [];
     if (fs.existsSync(`${DATA_BASE_PATH}/${indexName}/index.json`)) {

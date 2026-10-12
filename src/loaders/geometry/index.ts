@@ -38,7 +38,7 @@ const loader = {
     for (let page = 1; page <= pages; page += 1) {
       logger.info(`Fetching page ${page}...`);
 
-      const listRecords = fs.existsSync('data/fairdata/places/index.json') ? JSON.parse(fs.readFileSync(`data/fairdata/places/index.json`, 'utf-8')).places : [];
+      const listRecords = fs.existsSync('api/places/index.json') ? JSON.parse(fs.readFileSync(`api/places/index.json`, 'utf-8')).places : [];
 
       // const listResponse = await service.fetchAll(_.extend(params, { page }));
       // const listRecords = (listResponse && listResponse.places) || [];
