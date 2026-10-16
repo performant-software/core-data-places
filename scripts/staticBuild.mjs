@@ -2,7 +2,7 @@ import { spawn } from 'child_process';
 import { resolveConfig } from './staticBuild.config.mjs';
 import { exportProjectData } from './staticBuild.coreData.mjs';
 import { generateStaticAssets } from './staticBuild.iiifCloud.mjs';
-import { uploadDirectory } from './staticBuild.r2.mjs';
+import { uploadDirectory } from './staticBuild.storage.mjs';
 
 // Spawned detached (its own process group) so that if the other concurrent step (generating
 // static assets) fails first, the whole build subprocess tree (npm -> astro/tinacms) can be
@@ -71,7 +71,7 @@ const killAstroBuild = () => {
     throw error;
   }
 
-  console.info('Step 3: Uploading the built site to R2...');
+  console.info('Step 3: Uploading the built site to storage...');
   await uploadDirectory(config, 'dist');
 
   console.info('Static build complete.');

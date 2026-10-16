@@ -6,10 +6,10 @@ const REQUIRED_ENV_VARS = [
   'CORE_DATA_SERVICE_PASSWORD',
   'IIIF_CLOUD_URL',
   'IIIF_CLOUD_API_KEY',
-  'R2_BUCKET',
-  'R2_ACCESS_KEY_ID',
-  'R2_SECRET_ACCESS_KEY',
-  'R2_ENDPOINT'
+  'STATIC_STORAGE_BUCKET',
+  'STATIC_STORAGE_ACCESS_KEY_ID',
+  'STATIC_STORAGE_SECRET_ACCESS_KEY',
+  'STATIC_STORAGE_ENDPOINT'
 ];
 
 const DEFAULT_POLL_INTERVAL_SECONDS = 10;
@@ -74,11 +74,11 @@ export const resolveConfig = async () => {
     coreDataServicePassword: process.env.CORE_DATA_SERVICE_PASSWORD,
     iiifCloudUrl: process.env.IIIF_CLOUD_URL,
     iiifCloudApiKey: process.env.IIIF_CLOUD_API_KEY,
-    r2: {
-      bucket: process.env.R2_BUCKET,
-      accessKeyId: process.env.R2_ACCESS_KEY_ID,
-      secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
-      endpoint: process.env.R2_ENDPOINT
+    storage: {
+      bucket: process.env.STATIC_STORAGE_BUCKET,
+      accessKeyId: process.env.STATIC_STORAGE_ACCESS_KEY_ID,
+      secretAccessKey: process.env.STATIC_STORAGE_SECRET_ACCESS_KEY,
+      endpoint: process.env.STATIC_STORAGE_ENDPOINT
     },
     pollIntervalMs: 1000 * Number(process.env.STATIC_BUILD_POLL_INTERVAL_SECONDS || DEFAULT_POLL_INTERVAL_SECONDS),
     pollMaxAttempts: Number(process.env.STATIC_BUILD_POLL_MAX_ATTEMPTS || DEFAULT_POLL_MAX_ATTEMPTS)

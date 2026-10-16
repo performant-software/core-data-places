@@ -1,7 +1,13 @@
 /**
  * Sends the merged resource_ids list to iiif-cloud's create_static_assets endpoint, passing along
- * this run's own R2 credentials (minted narrowly for this run, rather than relying on iiif-cloud's
- * own blanket-access, long-lived R2 credentials), and polls until the static assets are done.
+ * this run's own storage credentials (minted narrowly for this run, rather than relying on
+ * iiif-cloud's own blanket-access, long-lived credentials), and polls until the static assets are
+ * done.
+ *
+ * Only bucket/access_key_id/secret_access_key are sent - iiif-cloud fixes its storage
+ * endpoint/region server-side and no longer accepts them per-request, so config.storage.endpoint
+ * (used locally by staticBuild.storage.mjs for the Astro build upload) is intentionally omitted
+ * here.
  *
  * @param {Object} config - see staticBuild.config.mjs#resolveConfig
  * @param {string[]} resourceIds
@@ -24,11 +30,10 @@ export const generateStaticAssets = async (config, resourceIds) => {
       resource_ids: resourceIds,
       base_url: config.baseUrl,
       destination: config.destination,
-      r2: {
-        bucket: config.r2.bucket,
-        access_key_id: config.r2.accessKeyId,
-        secret_access_key: config.r2.secretAccessKey,
-        endpoint: config.r2.endpoint
+      storage: {
+        bucket: config.storage.bucket,
+        access_key_id: config.storage.accessKeyId,
+        secret_access_key: config.storage.secretAccessKey
       }
     })
   });

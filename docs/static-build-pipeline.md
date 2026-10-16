@@ -14,7 +14,7 @@ npm run static-build
 This is a different, newer mechanism than the older fully-manual process described in
 [static-deploy.md](./static-deploy.md) (local build → zip → FTP transfer). This pipeline automates
 every step, including generating IIIF static image assets (which the older doc does not cover at
-all) and uploading directly to R2.
+all) and uploading directly to storage.
 
 ## What it does
 
@@ -37,25 +37,25 @@ all) and uploading directly to R2.
    deployment, not fetched or validated at build time. So they run concurrently:
    - **Static IIIF assets:** reads the list of iiif-cloud media resource UUIDs from the merged
      `api/resources.json`, sends them to iiif-cloud's `create_static_assets` endpoint
-     (along with this run's own R2 credentials - see [R2 credentials](#r2-credentials) below), and
-     polls until all of them are generated.
+     (along with this run's own storage credentials - see [storage credentials](#storage-credentials)
+     below), and polls until all of them are generated.
    - **Astro build:** runs `npm run build` with `STATIC_BUILD=true`, so the Astro content
      collections are built entirely from the files written in step 1 - no further network calls to
      core-data-cloud for record data.
 
    If either fails, the other is terminated rather than left running to completion.
-3. **Uploads to R2.** Once both of the above have succeeded, recursively uploads the built `dist/`
-   directory to the R2 bucket, under `destination`.
+3. **Uploads to storage.** Once both of the above have succeeded, recursively uploads the built
+   `dist/` directory to the storage bucket, under `destination`.
 
 ## Required destination alignment
 
-Steps 2 and 3 **must** write to the same R2 bucket, under the same `destination` prefix. The
+Steps 2 and 3 **must** write to the same storage bucket, under the same `destination` prefix. The
 built site's HTML/JSON references media at root-relative paths like
 `/iiif/3/image/<uuid>/full/max/0/default.jpg` (see `src/loaders/coreData/helpers.ts`), so the IIIF
 image assets and the built site need to be reachable at the same origin and path prefix once
-deployed. This script already enforces this by using one `destination` value, and one set of R2
-credentials, for both steps - there's nothing extra to configure, but it's worth understanding if
-you're debugging a deployed site where images don't load.
+deployed. This script already enforces this by using one `destination` value, and one set of
+storage credentials, for both steps - there's nothing extra to configure, but it's worth
+understanding if you're debugging a deployed site where images don't load.
 
 ## Parameters
 
@@ -77,8 +77,9 @@ are correct absolute URLs), and to the Astro build as `PUBLIC_BASE_URL`.
 
 ### `--destination` / `DESTINATION`
 
-**Required.** The shared R2 key prefix both the IIIF static assets and the built site are uploaded
-under, e.g. `sites/my-site`. See [Required destination alignment](#required-destination-alignment).
+**Required.** The shared storage key prefix both the IIIF static assets and the built site are
+uploaded under, e.g. `sites/my-site`. See
+[Required destination alignment](#required-destination-alignment).
 
 ### Core Data credentials (env only)
 
@@ -95,25 +96,32 @@ under, e.g. `sites/my-site`. See [Required destination alignment](#required-dest
 | `IIIF_CLOUD_URL` | Yes | Base URL of the iiif-cloud instance, e.g. `https://iiif.example.com`. |
 | `IIIF_CLOUD_API_KEY` | Yes | API key for an admin iiif-cloud user account (required to call `create_static_assets`). |
 
-### R2 credentials (env only)
+### Storage credentials (env only)
 
 | Variable | Required | Description |
 |---|---|---|
-| `R2_BUCKET` | Yes | R2 bucket name. |
-| `R2_ACCESS_KEY_ID` | Yes | R2 access key ID. |
-| `R2_SECRET_ACCESS_KEY` | Yes | R2 secret access key. |
-| `R2_ENDPOINT` | Yes | R2 S3-compatible endpoint URL. |
+| `STATIC_STORAGE_BUCKET` | Yes | Storage bucket name. |
+| `STATIC_STORAGE_ACCESS_KEY_ID` | Yes | Storage access key ID. |
+| `STATIC_STORAGE_SECRET_ACCESS_KEY` | Yes | Storage secret access key. |
+| `STATIC_STORAGE_ENDPOINT` | Yes | S3-compatible endpoint URL for this script's own upload in step 3 (e.g. `https://<account-id>.r2.cloudflarestorage.com`). Not sent to iiif-cloud - see below. |
 
-#### R2 credentials
+#### Storage credentials
 
-These credentials are used for two things: this script's own upload of the built site (step 3),
-and are also forwarded to iiif-cloud's `create_static_assets` call (step 2) so that iiif-cloud
-writes the IIIF static assets using *this run's own credentials* rather than its own long-lived,
-bucket-wide R2 credentials. This means you can (and should) mint a narrowly-scoped, short-lived R2
-credential for each build - e.g. one limited to read/write access under `destination` only - rather
-than giving every static build run (and iiif-cloud's own environment) blanket access to the whole
-bucket. iiif-cloud falls back to its own environment-configured R2 credentials only if this `r2`
-parameter is omitted entirely from the request, which this script never does.
+The bucket/access key ID/secret access key are used for two things: this script's own upload of
+the built site (step 3), and are also forwarded to iiif-cloud's `create_static_assets` call (step
+2) so that iiif-cloud writes the IIIF static assets using *this run's own credentials* rather than
+its own long-lived, bucket-wide credentials. This means you can (and should) mint a
+narrowly-scoped, short-lived storage credential for each build - e.g. one limited to read/write
+access under `destination` only - rather than giving every static build run (and iiif-cloud's own
+environment) blanket access to the whole bucket. iiif-cloud requires this `storage` parameter on
+every request and will reject the request outright if it's missing - there is no credential
+fallback on iiif-cloud's side (its own `STATIC_STORAGE_*` environment variables, if configured, are
+used only as a local-dev fallback for its own rake tasks, never for requests from this script).
+
+`STATIC_STORAGE_ENDPOINT` is **not** included in what's sent to iiif-cloud: iiif-cloud fixes its
+own storage endpoint/region server-side, so this script's endpoint must point at the same
+account/endpoint iiif-cloud's deployment is configured for - only the bucket and credentials are
+selectable per run.
 
 ### Polling (env only, optional)
 
@@ -132,10 +140,10 @@ CORE_DATA_SERVICE_EMAIL=static-build@example.com \
 CORE_DATA_SERVICE_PASSWORD=*** \
 IIIF_CLOUD_URL=https://iiif.example.com \
 IIIF_CLOUD_API_KEY=*** \
-R2_BUCKET=my-bucket \
-R2_ACCESS_KEY_ID=*** \
-R2_SECRET_ACCESS_KEY=*** \
-R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com \
+STATIC_STORAGE_BUCKET=my-bucket \
+STATIC_STORAGE_ACCESS_KEY_ID=*** \
+STATIC_STORAGE_SECRET_ACCESS_KEY=*** \
+STATIC_STORAGE_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com \
 npm run static-build -- --base-url https://my-site.example.com --destination sites/my-site
 ```
 

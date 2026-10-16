@@ -4,10 +4,12 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import mime from 'mime-types';
 
 /**
- * Recursively uploads every file under sourceDir to the R2 bucket, keyed under destination,
+ * Recursively uploads every file under sourceDir to the storage bucket, keyed under destination,
  * preserving the directory structure relative to sourceDir. Uses the same bucket/credentials
- * this run sent to iiif-cloud for its static assets, so the Astro build output ends up alongside
- * the IIIF image assets under one shared prefix (both reachable at the site's own base_url).
+ * this run sent to iiif-cloud for its static assets (endpoint/region aside - iiif-cloud now fixes
+ * those server-side rather than accepting them per-request), so the Astro build output ends up
+ * alongside the IIIF image assets under one shared prefix (both reachable at the site's own
+ * base_url).
  *
  * @param {Object} config - see staticBuild.config.mjs#resolveConfig
  * @param {string} sourceDir - local directory to upload (e.g. "dist")
@@ -15,30 +17,30 @@ import mime from 'mime-types';
 export const uploadDirectory = async (config, sourceDir) => {
   const client = new S3Client({
     region: 'auto',
-    endpoint: config.r2.endpoint,
+    endpoint: config.storage.endpoint,
     forcePathStyle: true,
     credentials: {
-      accessKeyId: config.r2.accessKeyId,
-      secretAccessKey: config.r2.secretAccessKey
+      accessKeyId: config.storage.accessKeyId,
+      secretAccessKey: config.storage.secretAccessKey
     }
   });
 
   const filePaths = listFiles(sourceDir);
-  console.info(`[r2] Uploading ${filePaths.length} file(s) from ${sourceDir} to ${config.destination}...`);
+  console.info(`[storage] Uploading ${filePaths.length} file(s) from ${sourceDir} to ${config.destination}...`);
 
   for (const filePath of filePaths) {
     const relativePath = path.relative(sourceDir, filePath);
     const key = path.posix.join(config.destination, ...relativePath.split(path.sep));
 
     await client.send(new PutObjectCommand({
-      Bucket: config.r2.bucket,
+      Bucket: config.storage.bucket,
       Key: key,
       Body: fs.readFileSync(filePath),
       ContentType: mime.lookup(filePath) || 'application/octet-stream'
     }));
   }
 
-  console.info('[r2] Upload complete.');
+  console.info('[storage] Upload complete.');
 };
 
 const listFiles = (dir) => {
