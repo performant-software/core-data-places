@@ -12,6 +12,8 @@ const loader = {
 
     logger.info('Fetching gallery manifests.');
 
+    // TODO: Fully static site version
+
     const data = await getManifests();
 
     for (const item of data) {
