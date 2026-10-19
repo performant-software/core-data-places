@@ -134,6 +134,47 @@ String
 
 Required: `true`
 
+### static
+
+Settings used only when the site is built with `STATIC_BUILD=true`.
+
+Required: No
+
+#### url
+
+URL to load the layer from in place of `url`, e.g. a self-hosted style, tile template or GeoJSON file. Other references to the layer, such as a path's overlay, still use `url`, so it can stay unchanged. When blank, `url` is used.
+
+For vector layers, the style may load its tiles from a single [PMTiles](https://docs.protomaps.com/pmtiles/) archive using a `pmtiles://` source URL, e.g. `pmtiles:///maps/basemap.pmtiles`.
+
+URLs in `/_fds/maps/` can be made by the [maps script](static-deploy.md#static-maps).
+
+```
+String
+```
+
+Required: No
+
+#### maxzoom
+
+For static copies made by the maps script: the highest zoom level to copy.
+
+```
+Number
+```
+
+Required: No  
+Default value: `10` for a basemap, `8` for a raster overlay
+
+#### bbox
+
+For static copies made by the maps script: the area to copy, as `[west, south, east, north]` in degrees. A basemap defaults to the area around the places.
+
+```
+[Number, Number, Number, Number]
+```
+
+Required: No
+
 ### overlay
 
 If `true`, the layer can be rendered on top of the base map layer.
