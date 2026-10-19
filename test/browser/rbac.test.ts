@@ -97,4 +97,15 @@ test.describe('Tina RBAC restrictions', () => {
 
     await expect(page.locator('body')).toHaveAttribute('data-tina-read-only', 'true');
   });
+
+  test('Media manager hides folder/upload/delete controls for the FairData store', async ({ page }) => {
+    test.skip(process.env.TINA_PUBLIC_USE_FD_MEDIA !== 'true', 'FairData media store is not enabled');
+
+    await page.getByRole('button', { name: 'Open navigation menu' }).click();
+    await page.getByRole('button', { name: 'Media Manager' }).click();
+
+    for (const label of ['New Folder', 'Upload', 'Delete']) {
+      await expect(page.getByRole('button', { name: label })).toHaveCount(0);
+    }
+  });
 });
