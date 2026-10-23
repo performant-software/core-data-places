@@ -1,3 +1,28 @@
+import type { Configuration } from '@types';
+import { STATIC_BUILD } from 'astro:env/client';
+import _ from 'underscore';
+
+type Layer = NonNullable<Configuration['layers']>[number];
+
+/**
+ * Returns the passed map layer, using its `static.url` in place of its `url` for static builds. The `url` itself is
+ * left in the config so that references to the layer (e.g. a path's overlay) still match.
+ *
+ * @param layer
+ */
+export const resolveLayer = (layer: Layer): Layer => (
+  STATIC_BUILD && layer?.static?.url
+    ? { ...layer, url: layer.static.url }
+    : layer
+);
+
+/**
+ * Returns the passed map layers with `resolveLayer` applied to each.
+ *
+ * @param layers
+ */
+export const resolveLayers = (layers?: Layer[]): Layer[] => _.map(layers || [], resolveLayer);
+
 /**
  * Parses the JSON from the `properties` object as a work-around. See description below.
  *
