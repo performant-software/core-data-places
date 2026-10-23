@@ -2,6 +2,10 @@
 
 Follow the instructions below to build a static version of a site to host on GitHub Pages, Reclaim Hosting, AWS, etc. The steps will include instructions for building the site on a local development machine and uploading the assets to a static hosting service.
 
+> For an automated pipeline that also generates IIIF static image assets and uploads directly to
+> an R2 bucket (rather than the manual FTP transfer below), see
+> [static-build-pipeline.md](./static-build-pipeline.md).
+
 #### FairData on Heroku
 
 For FairData applications hosted on Heroku, it may be advisable to scale the dyno infrastructure, either by upgrading the web dynos and/or adding more dynos.
