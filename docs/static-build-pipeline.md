@@ -1,9 +1,9 @@
 # Static Build Pipeline
 
 An automated, end-to-end pipeline that exports a project's Core Data content, generates its IIIF
-level 0 static image assets, builds the Astro site entirely from those exported files (no network
-access to Core Data during the Astro build itself), and uploads everything to a Cloudflare R2
-bucket.
+level 0 static image assets, optionally builds static map layers, builds the Astro site entirely
+from those exported files (no network access to Core Data during the Astro build itself), and
+uploads everything to a Cloudflare R2 bucket.
 
 It's intended to be run from a script (locally, or in CI such as GitHub Actions) via:
 
@@ -30,32 +30,61 @@ all) and uploading directly to storage.
    canvases reference the *static* image assets step 2 generates at `iiif/3/image/<uuid>/...`
    (unaffected by this - that path is unchanged), but the manifests themselves are written now,
    independent of whether those static assets exist yet.
-2. **Generates static IIIF assets and builds the site, in parallel.** These two steps have no
-   dependency on each other - the Astro build only reads `api/` (written in step 1) and
-   never touches the IIIF assets directly; they're baked into the built output only as
-   root-relative URL strings (e.g. `/iiif/3/image/<uuid>/...`), resolved by a browser after
-   deployment, not fetched or validated at build time. So they run concurrently:
+2. **Generates static IIIF assets, builds static map layers, and builds the site, all in
+   parallel.** These three steps have no dependency on each other - the Astro build only reads
+   `api/` (written in step 1) and never touches the IIIF assets or map layers directly; they're
+   baked into the built output only as root-relative URL strings (e.g. `/iiif/3/image/<uuid>/...`,
+   `/_fds/maps/style.json`), resolved by a browser after deployment, not fetched or validated at
+   build time. So they run concurrently:
    - **Static IIIF assets:** reads the list of iiif-cloud media resource UUIDs from the merged
      `api/resources.json`, sends them to iiif-cloud's `create_static_assets` endpoint
      (along with this run's own storage credentials - see [storage credentials](#storage-credentials)
      below), and polls until all of them are generated.
+   - **Static map layers:** runs `npm run build:maps` (see `scripts/build.maps.mjs`), reading
+     places from the `api/` tree written in step 1, to generate any configured Protomaps basemap
+     and/or raster/GeoJSON overlays. See [Static map layers](#static-map-layers) below - this step
+     is a no-op (not a failure) for a site with no layer configured for static builds.
    - **Astro build:** runs `npm run build` with `STATIC_BUILD=true`, so the Astro content
      collections are built entirely from the files written in step 1 - no further network calls to
      core-data-cloud for record data.
 
-   If either fails, the other is terminated rather than left running to completion.
-3. **Uploads to storage.** Once both of the above have succeeded, recursively uploads the built
-   `dist/` directory to the storage bucket, under `destination`.
+   If any of the three fails, the other two are terminated rather than left running to completion.
+3. **Uploads to storage.** Once all of the above have succeeded, recursively uploads the built
+   `dist/` directory to the storage bucket, under `destination`, and - if the static map layers
+   step actually wrote anything - the map layers to `destination/_fds/maps/`.
+
+## Static map layers
+
+The static maps build (`npm run build:maps`, see `scripts/build.maps.mjs`) only generates output
+for layers whose site config has a `static.url` set, matching the fixed upload path this script
+uses (`/_fds/maps/...`, root-relative once deployed):
+
+| Layer type | `static.url` |
+|---|---|
+| Basemap | `/_fds/maps/style.json` |
+| Raster overlay | A tile template under `/_fds/maps/overlays/`, e.g. `/_fds/maps/overlays/historic/{z}/{x}/{y}.png` |
+| GeoJSON overlay | A path under `/_fds/maps/overlays/`, e.g. `/_fds/maps/overlays/boundaries.geojson` |
+
+See [static-deploy.md](./static-deploy.md) for the full table of static map layer config options.
+A site with no layer configured this way isn't an error - this step simply produces nothing to
+upload, and the rest of the pipeline proceeds normally.
+
+Requires the `pmtiles` CLI (e.g. `brew install pmtiles`, or set `PMTILES_BIN` to a downloaded
+binary) and `git` to be available on `PATH` wherever `npm run static-build` runs - both are used
+to prepare the basemap tiles and fonts/sprites. See `npm run build:maps -- --help` for the full
+set of options (world map source, work directory, size limits, etc.) this script doesn't expose
+directly, relying on their defaults instead.
 
 ## Required destination alignment
 
-Steps 2 and 3 **must** write to the same storage bucket, under the same `destination` prefix. The
+Every upload **must** write to the same storage bucket, under the same `destination` prefix. The
 built site's HTML/JSON references media at root-relative paths like
-`/iiif/3/image/<uuid>/full/max/0/default.jpg` (see `src/loaders/coreData/helpers.ts`), so the IIIF
-image assets and the built site need to be reachable at the same origin and path prefix once
-deployed. This script already enforces this by using one `destination` value, and one set of
-storage credentials, for both steps - there's nothing extra to configure, but it's worth
-understanding if you're debugging a deployed site where images don't load.
+`/iiif/3/image/<uuid>/full/max/0/default.jpg` (see `src/loaders/coreData/helpers.ts`) and
+`/_fds/maps/...`, so the IIIF image assets, static map layers, and the built site all need to be
+reachable at the same origin and path prefix once deployed. This script already enforces this by
+using one `destination` value, and one set of storage credentials, for every step - there's
+nothing extra to configure, but it's worth understanding if you're debugging a deployed site where
+images or maps don't load.
 
 ## Parameters
 
@@ -94,7 +123,7 @@ uploaded under, e.g. `sites/my-site`. See
 | Variable | Required | Description |
 |---|---|---|
 | `IIIF_CLOUD_URL` | Yes | Base URL of the iiif-cloud instance, e.g. `https://iiif.example.com`. |
-| `IIIF_CLOUD_API_KEY` | Yes | API key for an admin iiif-cloud user account (required to call `create_static_assets`). |
+| `IIIF_CLOUD_API_KEY` | Yes | API key for a iiif-cloud user account (required to call `create_static_assets`). |
 
 ### Storage credentials (env only)
 
@@ -128,7 +157,14 @@ selectable per run.
 | Variable | Default | Description |
 |---|---|---|
 | `STATIC_BUILD_POLL_INTERVAL_SECONDS` | `10` | How often to poll job status (both core-data-cloud and iiif-cloud). |
-| `STATIC_BUILD_POLL_MAX_ATTEMPTS` | `360` | Maximum number of polls before giving up (default: 1 hour at the default interval). |
+| `STATIC_BUILD_POLL_MAX_ATTEMPTS` | `360` | Maximum number of *consecutive polls with no progress* before giving up (default: 1 hour at the default interval if a job never moves at all). |
+
+For the iiif-cloud static assets job, each poll that reports a different `completed_count +
+failed_count` than the previous one resets this count rather than adding to it - so a large batch
+that keeps making incremental progress can run well past `STATIC_BUILD_POLL_MAX_ATTEMPTS *
+STATIC_BUILD_POLL_INTERVAL_SECONDS` in total, as long as it doesn't actually stall for that long at
+a stretch. The core-data-cloud export job has no equivalent progress signal to key off (it's a
+single job with no partial-completion count), so its poll simply counts every attempt as before.
 
 ## Example
 

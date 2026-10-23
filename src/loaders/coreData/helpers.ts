@@ -47,14 +47,19 @@ export const createLoader = (name, [indexName, showName]) => ({
             relatedRecords: {}
           };
           const relatedModels = ['events', 'instances', 'items', 'media_contents', 'organizations', 'people', 'places', 'taxonomies', 'works'];
+          // media_content and taxonomies don't have their own collection, 
+          // so we must store the full info on the base record rather than filtering
+          const skipFilter = ['media_content', 'taxonomies']
           for (const model of relatedModels) {
             if (!fs.existsSync(`${DATA_BASE_PATH}/${indexName}/${uuid}/${model}.json`)) {
               record.relatedRecords[model] = [];
               continue;
             }
             try {
+              // convert any compound model names to camel case for the relatedRecords attribute
+              const camelCase = model.replace(/_([a-z])/g, (_, char) => char.toUpperCase());
               const relatedRecords = JSON.parse(fs.readFileSync(`${DATA_BASE_PATH}/${indexName}/${uuid}/${model}.json`, 'utf-8'))[model];
-              record.relatedRecords[model] = filterRelated(relatedRecords)
+              record.relatedRecords[camelCase] = skipFilter.includes(model) ? relatedRecords : filterRelated(relatedRecords);
             } catch {
               logger.info(`Error loading related ${model} for record ${uuid}`)
             }
@@ -69,8 +74,8 @@ export const createLoader = (name, [indexName, showName]) => ({
           }
 
           // We need to modify the media contents to point at local records
-          // This process should be improved!
-          record.relatedRecords['media_contents'] = _.map(record.relatedRecords['media_contents'], (media: any) => {
+          // This process is kind of janky and should be improved!
+          record.relatedRecords.mediaContents = _.map(record.relatedRecords['media_contents'], (media: any) => {
             const { content_type, content_url, project_model_uuid, project_model_relationship_uuid, user_defined, uuid, name } = media;
             const resourceId = content_url?.split('resources/')[1].split('/')[0];
             return ({
@@ -81,7 +86,7 @@ export const createLoader = (name, [indexName, showName]) => ({
               uuid,
               name,
               content_url: `/iiif/3/image/${resourceId}/full/max/0/default.jpg`,
-              content_preview_url: `/iiif/3/image/${resourceId}/full/max/0/default.jpg`, //this should be gleaned from the relevant info.json
+              content_preview_url: `/iiif/3/image/${resourceId}/full/max/0/default.jpg`, //this would ideally be gleaned from the relevant info.json
               content_iiif_url: `/iiif/3/image/${resourceId}/full/max/0/default.jpg`
             })
           });

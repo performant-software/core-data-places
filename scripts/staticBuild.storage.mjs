@@ -13,8 +13,10 @@ import mime from 'mime-types';
  *
  * @param {Object} config - see staticBuild.config.mjs#resolveConfig
  * @param {string} sourceDir - local directory to upload (e.g. "dist")
+ * @param {string} keyPrefix - optional sub-path under destination to upload into (e.g.
+ *   "_fds/maps" for the static maps build), rather than directly under destination itself
  */
-export const uploadDirectory = async (config, sourceDir) => {
+export const uploadDirectory = async (config, sourceDir, keyPrefix = '') => {
   const client = new S3Client({
     region: 'auto',
     endpoint: config.storage.endpoint,
@@ -30,7 +32,7 @@ export const uploadDirectory = async (config, sourceDir) => {
 
   for (const filePath of filePaths) {
     const relativePath = path.relative(sourceDir, filePath);
-    const key = path.posix.join(config.destination, ...relativePath.split(path.sep));
+    const key = path.posix.join(config.destination, keyPrefix, ...relativePath.split(path.sep));
 
     await client.send(new PutObjectCommand({
       Bucket: config.storage.bucket,

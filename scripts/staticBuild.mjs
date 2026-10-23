@@ -2,12 +2,13 @@ import { spawn } from 'child_process';
 import { resolveConfig } from './staticBuild.config.mjs';
 import { exportProjectData } from './staticBuild.coreData.mjs';
 import { generateStaticAssets } from './staticBuild.iiifCloud.mjs';
+import { buildStaticMaps, hasStaticMaps, UPLOAD_PREFIX as MAPS_UPLOAD_PREFIX } from './staticBuild.maps.mjs';
 import { uploadDirectory } from './staticBuild.storage.mjs';
 
-// Spawned detached (its own process group) so that if the other concurrent step (generating
-// static assets) fails first, the whole build subprocess tree (npm -> astro/tinacms) can be
-// killed as a group via killAstroBuild below - a plain child.kill() only signals the top npm
-// process and can leave its own child processes running as orphans.
+// Spawned detached (its own process group) so that if either other concurrent step (generating
+// static assets, building static map layers) fails first, the whole build subprocess tree
+// (npm -> astro/tinacms) can be killed as a group via killAstroBuild below - a plain child.kill()
+// only signals the top npm process and can leave its own child processes running as orphans.
 let astroBuildChild = null;
 
 const runAstroBuild = (config) => new Promise((resolve, reject) => {
@@ -53,17 +54,20 @@ const killAstroBuild = () => {
   console.info('Step 1: Exporting project data from core-data-cloud...');
   const resourceIds = await exportProjectData(config);
 
-  // Generating static assets and building the Astro site are independent of each other - the
-  // Astro build only reads the files step 1 already wrote to api/, and never touches
-  // the IIIF assets directly (they're referenced in the built output only as root-relative URL
-  // strings, resolved by a browser after deployment, not fetched or validated at build time).
-  // Running them concurrently costs little: the only CPU/memory-heavy work here is the Astro
-  // build itself; waiting on the IIIF assets is just a network-polling loop, since the actual
-  // asset generation happens on iiif-cloud's own workers.
-  console.info('Step 2: Generating static IIIF assets and building the Astro site in parallel...');
+  // Generating static assets, building static map layers, and building the Astro site are all
+  // independent of each other - the Astro build only reads the files step 1 already wrote to
+  // api/, and never touches the IIIF assets or map layers directly (they're referenced in the
+  // built output only as root-relative URL strings, resolved by a browser after deployment, not
+  // fetched or validated at build time). Running them concurrently costs little: the only
+  // CPU/memory-heavy work here is the Astro build itself; the other two are either a
+  // network-polling loop (IIIF assets are generated on iiif-cloud's own workers) or a short,
+  // separate CLI process (static maps).
+  console.info('Step 2: Generating static IIIF assets, building static map layers, and building the Astro site in parallel...');
+  let mapsDir;
   try {
-    await Promise.all([
+    [, mapsDir] = await Promise.all([
       generateStaticAssets(config, resourceIds),
+      buildStaticMaps(config),
       runAstroBuild(config)
     ]);
   } catch (error) {
@@ -73,6 +77,13 @@ const killAstroBuild = () => {
 
   console.info('Step 3: Uploading the built site to storage...');
   await uploadDirectory(config, 'dist');
+
+  if (hasStaticMaps(mapsDir)) {
+    console.info('Step 4: Uploading static map layers to storage...');
+    await uploadDirectory(config, mapsDir, MAPS_UPLOAD_PREFIX);
+  } else {
+    console.info('No static map layers configured for this site, skipping their upload.');
+  }
 
   console.info('Static build complete.');
 }()).catch((error) => {

@@ -52,8 +52,18 @@ export const generateStaticAssets = async (config, resourceIds) => {
   console.info('[iiif-cloud] Static assets generated.');
 };
 
+// pollMaxAttempts bounds consecutive polls with *no observed progress*, not the job's total
+// wall-clock running time - large projects can take far longer than pollMaxAttempts *
+// pollIntervalMs to finish, as long as more resources keep completing/failing along the way
+// (iiif-cloud's own GenerateStaticAssetsJob uses the same reset-on-progress approach). Each time
+// completed_count + failed_count moves, that's confirmation iiif-cloud is still actively working
+// through the batch, so the attempt count resets instead of accumulating toward a timeout that's
+// only meant to catch a job that's actually stalled.
 const pollJob = async (config, jobUuid) => {
-  for (let attempt = 0; attempt < config.pollMaxAttempts; attempt += 1) {
+  let attempt = 0;
+  let lastProgress = null;
+
+  while (attempt < config.pollMaxAttempts) {
     const response = await fetch(`${config.iiifCloudUrl}/public/jobs/${jobUuid}`, {
       headers: { 'X-API-KEY': config.iiifCloudApiKey }
     });
@@ -70,11 +80,15 @@ const pollJob = async (config, jobUuid) => {
       throw new Error(`iiif-cloud job ${jobUuid} failed (${job.failed_count}/${job.total_count} resource(s) failed)`);
     }
 
-    console.info(`[iiif-cloud] Job ${jobUuid} status: ${job.status} (${job.completed_count + job.failed_count}/${job.total_count}, attempt ${attempt + 1}/${config.pollMaxAttempts})`);
+    const progress = job.completed_count + job.failed_count;
+    attempt = progress === lastProgress ? attempt + 1 : 0;
+    lastProgress = progress;
+
+    console.info(`[iiif-cloud] Job ${jobUuid} status: ${job.status} (${progress}/${job.total_count}, ${attempt}/${config.pollMaxAttempts} attempts with no further progress)`);
     await sleep(config.pollIntervalMs);
   }
 
-  throw new Error(`Timed out waiting for iiif-cloud job ${jobUuid} to complete`);
+  throw new Error(`Timed out waiting for iiif-cloud job ${jobUuid} to make further progress`);
 };
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
