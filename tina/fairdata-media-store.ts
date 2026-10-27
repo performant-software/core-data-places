@@ -1,6 +1,8 @@
 import { Media, MediaList, MediaListOptions, MediaStore, MediaUploadOptions } from 'tinacms';
 import MediaContentsService from '@backend/api/coreData/mediaContents';
 
+const PER_PAGE = 100;
+
 export class CustomFairDataStore implements MediaStore {
   accept = 'image/*';
 
@@ -11,7 +13,7 @@ export class CustomFairDataStore implements MediaStore {
       const page = Number(options.offset) || 1;
       const response = await MediaContentsService.fetchAll({
         page,
-        per_page: 100,
+        per_page: PER_PAGE,
         sort_by: 'name',
         sort_direction: 'asc',
       });
