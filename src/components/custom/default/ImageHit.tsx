@@ -14,7 +14,7 @@ const ImageHit = (props: HitComponentProps) => {
     }}>
       {props.hit.thumbnail && (
         <img
-          alt={props.hit.name}
+          alt={props.title ?? props.hit.name}
           className='object-cover w-full h-[350px]'
           src={props.hit.thumbnail}
         />
@@ -22,7 +22,7 @@ const ImageHit = (props: HitComponentProps) => {
       <div className='px-6 py-2 flex-grow'>
         {props.highlightComponent
           ? <props.highlightComponent hit={props.hit} className='font-medium line-clamp-2' attribute='name'/>
-          : <p className='font-medium text-wrap line-clamp-2'>{props.hit.name}</p>
+          : <p className='font-medium text-wrap line-clamp-2'>{props.title ?? props.hit.name}</p>
         }
       </div>
       {props.attributes.length > 0 && (
@@ -50,7 +50,8 @@ ImageHit.propTypes = {
     value: PropTypes.string,
   })),
   highlightComponent: PropTypes.func,
-  hit: PropTypes.object
+  hit: PropTypes.object,
+  title: PropTypes.string
 };
 
 export default ImageHit;

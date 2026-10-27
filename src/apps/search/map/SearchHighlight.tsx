@@ -13,21 +13,23 @@ interface Props {
   icon?: string;
 }
 
-const SearchHighlight = (props: Props) => (
-  <div
-    className={clsx('flex gap-x-0.5 items-center', props.classNames?.root)}
-  >
-    { props.icon && (
-      <Icon
-        name={props.icon}
+const SearchHighlight = (props: Props) => {
+  return (
+    <div
+      className={clsx('flex gap-x-0.5 items-center', props.classNames?.root)}
+    >
+      { props.icon && (
+        <Icon
+          name={props.icon}
+        />
+      )}
+      <Highlight
+        attribute={props.attribute}
+        className={props.classNames?.highlight}
+        hit={props.hit}
       />
-    )}
-    <Highlight
-      attribute={props.attribute}
-      className={props.classNames?.highlight}
-      hit={props.hit}
-    />
-  </div>
-);
+    </div>
+  );
+};
 
 export default SearchHighlight;

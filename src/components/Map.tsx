@@ -2,14 +2,29 @@ import TranslationContext from '@contexts/TranslationContext';
 import {
   Icon,
   LayerMenu,
-  OverlayLayers,
+  OverlayLayer,
   Peripleo as PeripleoUtils
 } from '@performant-software/core-data';
-import { Map as PeripleoMap, useLoadedMap, ZoomControl } from '@peripleo/maplibre';
+import {
+  addProtocol,
+  Map as PeripleoMap,
+  useLoadedMap,
+  ZoomControl
+} from '@peripleo/maplibre';
 import { MapProvider, useRuntimeConfig } from '@peripleo/peripleo';
+import type { Configuration } from '@types';
+import { resolveLayers } from '@utils/map';
 import clsx from 'clsx';
+import { Protocol } from 'pmtiles';
 import { type ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import _ from 'underscore';
+
+/**
+ * Registers the `pmtiles://` protocol so that styles can load tiles from a PMTiles archive
+ */
+if (typeof window !== 'undefined') {
+  addProtocol('pmtiles', new Protocol().tile);
+}
 
 /**
  * Defers rendering children until the underlying MapLibre style has fully
@@ -66,8 +81,24 @@ interface Props {
 }
 
 const Map = (props: Props) => {
-  const config = useRuntimeConfig();
-  const { baseLayers, dataLayers } = PeripleoUtils.filterLayers(config);
+  const config = useRuntimeConfig<Configuration>();
+  const { baseLayers, dataLayers } = useMemo(() => PeripleoUtils.filterLayers({
+    ...config,
+    layers: resolveLayers(config.layers)
+  }), [config]);
+
+  const loadedMap = useLoadedMap();
+
+  /**
+   * Memoize the first symbol layer of the loaded map,
+   * which any raster layer overlays will be inserted before
+   */
+  const beforeId = useMemo(() => {
+    if (!loadedMap || !loadedMap.getStyle) {
+      return undefined;
+    }
+    return loadedMap.getStyle().layers?.find((layer) => (layer.type === 'symbol'))?.id;
+  }, [loadedMap]);
 
   const [baseLayer, setBaseLayer] = useState(_.first(baseLayers));
   const [overlays, setOverlays] = useState([]);
@@ -124,9 +155,15 @@ const Map = (props: Props) => {
         )}
       </div>
       <WhenStyleLoaded>
-        <OverlayLayers
-          overlays={overlays}
-        />
+        {
+          _.map(overlays, (overlay: any, index: number) => (
+            <OverlayLayer
+              key={index}
+              overlay={overlay}
+              beforeId={beforeId}
+            />
+          ))
+        }
         { props.children }
       </WhenStyleLoaded>
     </PeripleoMap>

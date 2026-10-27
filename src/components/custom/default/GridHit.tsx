@@ -13,7 +13,7 @@ const GridHit = (props: HitComponentProps) => {
     <div className='bg-white rounded-md shadow-xs hover:shadow-md overflow-hidden flex flex-col divide-zinc-200 divide-y h-full'>
       {props.hit.thumbnail && (
         <img
-          alt={props.hit.name}
+          alt={props.title ?? props.hit.name}
           className='object-cover w-full h-[140px]'
           src={props.hit.thumbnail}
         />
@@ -32,7 +32,7 @@ const GridHit = (props: HitComponentProps) => {
         </div>
         {props.highlightComponent
           ? <props.highlightComponent hit={props.hit} className='font-bold' attribute='name'/>
-          : <p className='font-bold text-wrap'>{props.hit.name}</p>
+          : <p className='font-bold text-wrap'>{props.title ?? props.hit.name}</p>
         }
       </div>
       {props.attributes.length > 0 && (
@@ -83,6 +83,7 @@ GridHit.propTypes = {
     secondary: PropTypes.bool,
     value: PropTypes.string,
   })),
+  title: PropTypes.string
 };
 
 export default GridHit;

@@ -13,6 +13,16 @@ export type Models =
 
 import { Dispatch, SetStateAction } from "react";
 
+export interface StaticSearchConfig {
+  model_ids: Array<string>,
+  facets?: {
+    exclude?: Array<string>,
+    include?: Array<string>
+  }
+}
+
+export type SearchType = 'grid' | 'image' | 'list' | 'map';
+
 export interface SearchConfig {
   name: string,
   route: string,
@@ -54,9 +64,11 @@ export interface SearchConfig {
 
   table?: boolean;
 
-  type?: 'grid' | 'image' | 'list' | 'map';
+  type?: SearchType;
 
-  typesense: {
+  static?: StaticSearchConfig;
+
+  typesense?: {
     host: string,
     port: number,
     protocol: string,
@@ -128,6 +140,11 @@ export interface Configuration {
     name: string,
     layer_type: 'geojson' | 'vector' | 'raster' | 'georeference',
     url: string,
+    static?: {
+      url?: string,
+      maxzoom?: number,
+      bbox?: [number, number, number, number]
+    },
     overlay?: boolean
   }>,
 
@@ -186,6 +203,7 @@ export interface HitComponentProps {
   highlightComponent?: React.FC<any>;
   hit: any;
   setManifestUrl?: Dispatch<SetStateAction<string>>
+  title?: string;
   tags?: {
     name: string;
     primary?: boolean;

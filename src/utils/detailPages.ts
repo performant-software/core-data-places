@@ -7,7 +7,7 @@ import { hasDetailPage } from '@utils/detailPagePaths';
 export const getDetailPagePaths = async (model: Models) => {
   let routes = [];
 
-  if (hasDetailPage(model)) {
+  if (!hasDetailPage(model)) {
     return routes;
   }
 

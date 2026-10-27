@@ -115,7 +115,8 @@ const Hits = (props: Props) => {
         hit,
         attributes,
         relationships,
-        tags
+        tags,
+        title: getHitValue(hit, { name: searchConfig.result_card?.title })
       };
     });
   }, [items, t, searchConfig]);

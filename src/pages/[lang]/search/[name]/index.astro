@@ -43,7 +43,7 @@ export const getStaticPaths = () => {
         allowSave={!STATIC_BUILD}
         lang={lang}
         name={name}
-        preload={PRELOAD_MAP}
+        preload={STATIC_BUILD || PRELOAD_MAP}
         client:only='react'
       />
     )

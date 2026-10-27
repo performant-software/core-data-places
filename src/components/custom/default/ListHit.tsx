@@ -21,7 +21,7 @@ const ListHit = (props: Props) => {
         <div className='pb-2'>
           {props.highlightComponent
             ? <props.highlightComponent hit={props.hit} className='font-bold text-neutral-950 break-all' attribute='name'/>
-            : <p className='font-bold text-neutral-950'>{props.hit.name}</p>
+            : <p className='font-bold text-neutral-950'>{props.title ?? props.hit.name}</p>
           }
         </div>
         {(props.attributes.length > 0 || props.tags.length > 0) && (
@@ -74,7 +74,7 @@ const ListHit = (props: Props) => {
       </div>
       {props.hit.thumbnail && (
         <img
-          alt={props.hit.name}
+          alt={props.title ?? props.hit.name}
           className='object-cover w-[140px] h-[115px]'
           src={props.hit.thumbnail}
         />
@@ -100,7 +100,8 @@ ListHit.propTypes = {
     primary: PropTypes.bool,
     secondary: PropTypes.bool,
     value: PropTypes.string,
-  }))
+  })),
+  title: PropTypes.string
 };
 
 export default ListHit;

@@ -6,8 +6,8 @@ import {
 } from 'react';
 import _ from 'underscore';
 import type { SearchConfig } from '@types';
-import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 import { RuntimeConfig, useRuntimeConfig } from '@peripleo/peripleo';
+import { Peripleo as PeripleoUtils } from '@performant-software/core-data';
 
 interface SearchContextType {
   searchConfig: SearchConfig;

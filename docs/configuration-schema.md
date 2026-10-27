@@ -134,6 +134,47 @@ String
 
 Required: `true`
 
+### static
+
+Settings used only when the site is built with `STATIC_BUILD=true`.
+
+Required: No
+
+#### url
+
+URL to load the layer from in place of `url`, e.g. a self-hosted style, tile template or GeoJSON file. Other references to the layer, such as a path's overlay, still use `url`, so it can stay unchanged. When blank, `url` is used.
+
+For vector layers, the style may load its tiles from a single [PMTiles](https://docs.protomaps.com/pmtiles/) archive using a `pmtiles://` source URL, e.g. `pmtiles:///maps/basemap.pmtiles`.
+
+URLs in `/_fds/maps/` can be made by the [maps script](static-deploy.md#static-maps).
+
+```
+String
+```
+
+Required: No
+
+#### maxzoom
+
+For static copies made by the maps script: the highest zoom level to copy.
+
+```
+Number
+```
+
+Required: No  
+Default value: `10` for a basemap, `8` for a raster overlay
+
+#### bbox
+
+For static copies made by the maps script: the area to copy, as `[west, south, east, north]` in degrees. A basemap defaults to the area around the places.
+
+```
+[Number, Number, Number, Number]
+```
+
+Required: No
+
 ### overlay
 
 If `true`, the layer can be rendered on top of the base map layer.
@@ -199,6 +240,8 @@ Default value: `list`
 ### geosearch
 
 If `true`, the "Filter by map bounds" option will be available on the map facet menu. This option will allow the user to filter the search results by zooming/panning the map viewport. This option should only be used if the data set contains only Latitude/Longitude geometries.
+
+The locations are read from the `coordinates` field next to the `map.geometry` path. For example, `<uuid>.geometry` filters on `<uuid>.coordinates`. Use `typesense.overrides.geoLocationField` to change this for Typesense search.
 
 ```
 Boolean
@@ -348,6 +391,58 @@ The path prefix for which to navigate which clicking on a search result. For exa
 
 Required: Yes
 
+### static
+
+Serves this search from an ItemsJS index built in the browser rather than from Typesense. When
+present, no request is made to Typesense and `typesense` is ignored.
+
+The index is generated at build time from the FairData records for the search's `route` (e.g.
+`/places`), so static searches require `STATIC_BUILD=true`. Each configured facet becomes an
+ItemsJS aggregation, and `timeline.date_range_facet` becomes a range aggregation.
+
+Required: No
+
+#### model_ids
+
+UUIDs of the project models whose records are included in the index. The build fails if a model
+isn't in one of the projects in `core_data.project_ids`, or if its records don't match the
+search's `route` (e.g. a person model on a `/places` search).
+
+```
+Array<String>
+```
+
+Required: Yes
+
+#### facets
+
+Facet configuration.
+
+Required: No
+
+##### exclude
+
+Aggregations to omit from the facet sidebar. Ignored when `include` is set.
+
+```
+Array<String>
+```
+
+Required: No
+
+##### include
+
+Aggregations to show in the facet sidebar, in the order they should display. Takes precedence
+over `exclude`.
+
+```
+Array<String>
+```
+
+Required: No
+
+---
+
 ### table
 
 If `true` the table view will be available for selection in the search UI.
@@ -387,7 +482,7 @@ Required: No
 
 Typesense configuration options.
 
-Required: Yes
+Required: Yes, if not using `static`
 
 #### host
 

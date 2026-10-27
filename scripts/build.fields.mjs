@@ -16,34 +16,51 @@ const getLabel = (field) => {
 };
 
 /**
- * Pull in fields/labels from "/projects/:project_id/descriptors".
+ * Pulls in the descriptors from "/projects/:project_id/descriptors" for each project in `config.json`.
  *
  * @param config
  *
- * @returns {Promise<void>}
+ * @returns {Promise<Array<Object>>}
  */
-export const buildUserDefinedFields = async (config) => {
-  const fields = {};
+export const fetchDescriptors = async (config) => {
+  const descriptors = [];
 
   for (const projectId of config.core_data.project_ids) {
     const url = `${config.core_data.url}/core_data/public/v1/projects/${projectId}/descriptors`;
     const payload = await fetch(url).then((response) => response.json());
 
-    payload?.descriptors?.forEach((field) => {
-      fields[field.identifier] = {
-        tinaLabel: getLabel(field),
-        defaultValue: field.label
-      };
-
-      if (field.inverse_label) {
-        fields[`${field.identifier}_inverse`] = {
-          tinaLabel: field.inverse_label,
-          defaultValue: field.inverse_label
-        }
-      }
-    });
+    descriptors.push(...(payload?.descriptors || []));
   }
+
+  return descriptors;
+};
+
+/**
+ * Builds the fields/labels from the passed descriptors.
+ *
+ * @param descriptors
+ *
+ * @returns {Object} the generated fields, keyed by descriptor identifier
+ */
+export const buildUserDefinedFields = (descriptors) => {
+  const fields = {};
+
+  descriptors.forEach((field) => {
+    fields[field.identifier] = {
+      tinaLabel: getLabel(field),
+      defaultValue: field.label
+    };
+
+    if (field.inverse_label) {
+      fields[`${field.identifier}_inverse`] = {
+        tinaLabel: field.inverse_label,
+        defaultValue: field.inverse_label
+      }
+    }
+  });
 
   const content = JSON.stringify(fields, null, 2);
   fs.writeFileSync('./src/i18n/userDefinedFields.json', content, 'utf8');
+
+  return fields;
 };

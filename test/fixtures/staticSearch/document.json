@@ -1,0 +1,248 @@
+{
+  "1c4e9957-c627-435d-a91c-baee051b7436": [
+    {
+      "77f68d53-bb39-4b2e-9d17-a756be13e7d0": "Book Release",
+      "end_date": [],
+      "end_date_facet": [],
+      "id": "41d6ee01-314c-4884-90f9-f9bc64c3db4b",
+      "inverse": false,
+      "name": "Suzi Ehtesham-Zadeh with Dana Rashti: Zan",
+      "name_facet": "Suzi Ehtesham-Zadeh with Dana Rashti: Zan",
+      "start_date": [
+        1722470400,
+        1722470400
+      ],
+      "start_date_facet": [
+        1722470400,
+        1722470400
+      ],
+      "uuid": "41d6ee01-314c-4884-90f9-f9bc64c3db4b"
+    },
+    {
+      "77f68d53-bb39-4b2e-9d17-a756be13e7d0": "Book Release",
+      "end_date": [],
+      "end_date_facet": [],
+      "id": "3b2fa9c7-ee9e-47c8-a10b-e74e97603bdf",
+      "inverse": false,
+      "name": "M.T. Anderson with Kit Mayquist: Nicked",
+      "name_facet": "M.T. Anderson with Kit Mayquist: Nicked",
+      "start_date": [
+        1722902400,
+        1722902400
+      ],
+      "start_date_facet": [
+        1722902400,
+        1722902400
+      ],
+      "uuid": "3b2fa9c7-ee9e-47c8-a10b-e74e97603bdf"
+    },
+    {
+      "77f68d53-bb39-4b2e-9d17-a756be13e7d0": "Book Release",
+      "end_date": [],
+      "end_date_facet": [],
+      "id": "173aa350-8e43-41b4-987d-c0761e912571",
+      "inverse": false,
+      "name": "Casey McQuiston with Meredith Goldstein: The Pairing",
+      "name_facet": "Casey McQuiston with Meredith Goldstein: The Pairing",
+      "start_date": [
+        1722988800,
+        1722988800
+      ],
+      "start_date_facet": [
+        1722988800,
+        1722988800
+      ],
+      "uuid": "173aa350-8e43-41b4-987d-c0761e912571"
+    }
+  ],
+  "6915e33c-a864-41e2-a1c3-7d54e4deb984": "http://www.brooklinebooksmith.com/",
+  "6b38e52b-e3d4-4135-be7a-3c5cbd34ad89": "Multi-level",
+  "6b38e52b-e3d4-4135-be7a-3c5cbd34ad89_facet": "Multi-level",
+  "700dd643-b4a2-4f3c-8336-9e15a423dee8": [
+    {
+      "geometry": {
+        "geometries": [
+          {
+            "coordinates": [
+              -71.12139254808426,
+              42.34227727558768
+            ],
+            "type": "Point"
+          },
+          {
+            "coordinates": [
+              -71.120843,
+              42.342249
+            ],
+            "type": "Point"
+          }
+        ],
+        "type": "GeometryCollection"
+      },
+      "id": "9415baf3-e1b8-4c72-815e-6b78ea1eba1f",
+      "inverse": false,
+      "name": "Coolidge Corner",
+      "names": [
+        "Coolidge Corner"
+      ],
+      "names_facet": [
+        "Coolidge Corner"
+      ],
+      "uuid": "9415baf3-e1b8-4c72-815e-6b78ea1eba1f"
+    }
+  ],
+  "7e81da4a-6772-4d9c-952e-99921ef1d2f0": [
+    {
+      "id": "08c0f038-ba31-4756-8b97-9bb6a1cf02d8",
+      "inverse": false,
+      "name": "Store exterior",
+      "uuid": "08c0f038-ba31-4756-8b97-9bb6a1cf02d8"
+    },
+    {
+      "id": "a94cdd2e-299f-4c8a-8866-a015b58336fc",
+      "inverse": false,
+      "name": "Store interior",
+      "uuid": "a94cdd2e-299f-4c8a-8866-a015b58336fc"
+    },
+    {
+      "id": "7ea9b156-b1d3-4b7f-a5be-e2ae1694bf06",
+      "inverse": false,
+      "name": "Store interior",
+      "uuid": "7ea9b156-b1d3-4b7f-a5be-e2ae1694bf06"
+    },
+    {
+      "id": "fc206476-1f51-4482-ac52-fcf4bae1b285",
+      "inverse": false,
+      "name": "Stair to lower level/event space",
+      "uuid": "fc206476-1f51-4482-ac52-fcf4bae1b285"
+    },
+    {
+      "id": "1c22cc24-9f9d-4b1c-9eba-ece45c80cc9c",
+      "inverse": false,
+      "name": "Window Display.jpg",
+      "uuid": "1c22cc24-9f9d-4b1c-9eba-ece45c80cc9c"
+    },
+    {
+      "id": "09b94195-c49a-4723-8703-5cc85df936eb",
+      "inverse": false,
+      "name": "Upcoming Events",
+      "uuid": "09b94195-c49a-4723-8703-5cc85df936eb"
+    },
+    {
+      "id": "16b8b29d-9b5b-4775-8c70-7155687664b6",
+      "inverse": false,
+      "name": "Brookline Booksmith Store Exterior",
+      "uuid": "16b8b29d-9b5b-4775-8c70-7155687664b6"
+    }
+  ],
+  "8677bf89-b2c2-4ced-816b-be388460c043": [
+    {
+      "id": "17e8c155-dd51-4f72-80f3-48ddb354bce8",
+      "inverse": false,
+      "name": "Used media",
+      "name_facet": "Used media",
+      "uuid": "17e8c155-dd51-4f72-80f3-48ddb354bce8"
+    },
+    {
+      "id": "26c16903-4fa6-4e4a-9946-2c2db1f9f031",
+      "inverse": false,
+      "name": "New media",
+      "name_facet": "New media",
+      "uuid": "26c16903-4fa6-4e4a-9946-2c2db1f9f031"
+    },
+    {
+      "id": "21df8472-6874-45c3-be45-7708d1cb93a1",
+      "inverse": false,
+      "name": "Book clubs",
+      "name_facet": "Book clubs",
+      "uuid": "21df8472-6874-45c3-be45-7708d1cb93a1"
+    },
+    {
+      "id": "600f49c3-5050-4327-a343-3b4fa87125a0",
+      "inverse": false,
+      "name": "Events",
+      "name_facet": "Events",
+      "uuid": "600f49c3-5050-4327-a343-3b4fa87125a0"
+    },
+    {
+      "id": "de2ea794-c3ab-4658-ac16-00edb03add22",
+      "inverse": false,
+      "name": "Can sell used media",
+      "name_facet": "Can sell used media",
+      "uuid": "de2ea794-c3ab-4658-ac16-00edb03add22"
+    },
+    {
+      "id": "78257d45-9403-431f-a0a6-db3cebfa5de0",
+      "inverse": false,
+      "name": "Foreign language materials",
+      "name_facet": "Foreign language materials",
+      "uuid": "78257d45-9403-431f-a0a6-db3cebfa5de0"
+    },
+    {
+      "id": "995e17d4-18f8-4a84-894b-c108aa45426d",
+      "inverse": false,
+      "name": "Misc. merch",
+      "name_facet": "Misc. merch",
+      "uuid": "995e17d4-18f8-4a84-894b-c108aa45426d"
+    },
+    {
+      "id": "40590b02-802a-4b9b-84fc-4c119f90e5ab",
+      "inverse": false,
+      "name": "Event space",
+      "name_facet": "Event space",
+      "uuid": "40590b02-802a-4b9b-84fc-4c119f90e5ab"
+    },
+    {
+      "id": "f263c3f8-0adb-4c03-a471-2c00ce02bff5",
+      "inverse": false,
+      "name": "Children's materials",
+      "name_facet": "Children's materials",
+      "uuid": "f263c3f8-0adb-4c03-a471-2c00ce02bff5"
+    },
+    {
+      "id": "d1ab43de-6fe7-48c1-b597-6a6c3553b4a8",
+      "inverse": false,
+      "name": "Books",
+      "name_facet": "Books",
+      "uuid": "d1ab43de-6fe7-48c1-b597-6a6c3553b4a8"
+    }
+  ],
+  "coordinates": [
+    42.342657,
+    -71.12174
+  ],
+  "event_range_facet": [
+    2024,
+    2024
+  ],
+  "f49250ec-cbf2-40ec-a4f2-62bcf667e576": [
+    {
+      "id": "7e6b4e42-9d27-4485-8612-0ed11be92986",
+      "inverse": false,
+      "name": "Bookstore",
+      "name_facet": "Bookstore",
+      "uuid": "7e6b4e42-9d27-4485-8612-0ed11be92986"
+    }
+  ],
+  "geometry": {
+    "geometries": [
+      {
+        "coordinates": [
+          -71.12174,
+          42.342657
+        ],
+        "type": "Point"
+      }
+    ],
+    "type": "GeometryCollection"
+  },
+  "id": "acc74a91-0b26-4080-871d-601182498707",
+  "name": "Brookline Booksmith",
+  "names": [
+    "Brookline Booksmith"
+  ],
+  "names_facet": [
+    "Brookline Booksmith"
+  ],
+  "uuid": "acc74a91-0b26-4080-871d-601182498707"
+}
