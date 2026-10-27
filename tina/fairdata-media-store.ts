@@ -8,8 +8,14 @@ export class CustomFairDataStore implements MediaStore {
 
   async list(options: MediaListOptions = {}): Promise<MediaList> {
     try {
-      const response = await MediaContentsService.fetchAll({ per_page: 0 });
-      const rawData = response.media_contents;
+      const page = Number(options.offset) || 1;
+      const response = await MediaContentsService.fetchAll({
+        page,
+        per_page: 100,
+        sort_by: 'name',
+        sort_direction: 'asc',
+      });
+      const rawData = response.media_contents || [];
 
       const items: Media[] = rawData.map((item: any) => {
         // the returned URLs have no file extension (e.g. ".../content"), so Tina's isImage()
@@ -19,7 +25,7 @@ export class CustomFairDataStore implements MediaStore {
         const url = item.content_url ? `${item.content_url}#.jpg` : undefined;
         const previewUrl = item.content_preview_url ? `${item.content_preview_url}#.jpg` : undefined;
         return {
-          id: item.content_url,
+          id: item.uuid,
           type: 'file',
           directory: '',
           filename: item.name,
@@ -30,9 +36,13 @@ export class CustomFairDataStore implements MediaStore {
             '1000x1000': previewUrl,
           },
         };
-      }).sort((a: Media, b: Media) => (a.filename.toLowerCase() > b.filename.toLowerCase() ? 1 : -1));
+      });
 
-      return { items };
+      const totalPages = Number(response.list?.pages) || page;
+      return {
+        items,
+        nextOffset: page < totalPages ? page + 1 : undefined,
+      };
     } catch (error) {
       console.error("Failed to fetch direct external media:", error);
       return { items: [] };

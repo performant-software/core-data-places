@@ -80,7 +80,10 @@ export default defineConfig({
         TINA_LOCAL_CONTENT_PATH: '../test/fixtures/',
         SKIP_CONTENT_FETCH: 'true',
         CONFIG_URL: '',
-        CONFIG_FILE: 'test/fixtures/content/settings/config.json'
+        CONFIG_FILE: 'test/fixtures/content/settings/config.json',
+
+        // For purposes of this test suite, specify FairData-based media
+        TINA_PUBLIC_USE_FD_MEDIA: 'true'
       }
     },
     {

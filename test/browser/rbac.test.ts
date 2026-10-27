@@ -104,8 +104,15 @@ test.describe('Tina RBAC restrictions', () => {
     await page.getByRole('button', { name: 'Open navigation menu' }).click();
     await page.getByRole('button', { name: 'Media Manager' }).click();
 
-    for (const label of ['New Folder', 'Upload', 'Delete']) {
-      await expect(page.getByRole('button', { name: label })).toHaveCount(0);
+    await expect(page.getByRole('heading', { name: 'Media Manager' })).toBeVisible();
+
+    for (const label of ['New Folder', 'Upload']) {
+      await expect(page.getByRole('button', { name: label, exact: true })).toHaveCount(0);
     }
+
+    const firstMediaItem = page.locator('ul li button').first();
+    await expect(firstMediaItem).toBeVisible();
+    await firstMediaItem.click();
+    await expect(page.getByRole('button', { name: 'Delete', exact: true })).toHaveCount(0);
   });
 });
