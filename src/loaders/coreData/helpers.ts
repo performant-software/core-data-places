@@ -49,15 +49,15 @@ export const createLoader = (name, [indexName, showName]) => ({
           const relatedModels = ['events', 'instances', 'items', 'media_contents', 'organizations', 'people', 'places', 'taxonomies', 'works'];
           // media_content and taxonomies don't have their own collection, 
           // so we must store the full info on the base record rather than filtering
-          const skipFilter = ['media_content', 'taxonomies']
+          const skipFilter = ['media_contents', 'taxonomies'];
           for (const model of relatedModels) {
+            // convert any compound model names to camel case for the relatedRecords attribute
+            const camelCase = model.replace(/_([a-z])/g, (_, char) => char.toUpperCase());
             if (!fs.existsSync(`${DATA_BASE_PATH}/${indexName}/${uuid}/${model}.json`)) {
-              record.relatedRecords[model] = [];
+              record.relatedRecords[camelCase] = [];
               continue;
             }
             try {
-              // convert any compound model names to camel case for the relatedRecords attribute
-              const camelCase = model.replace(/_([a-z])/g, (_, char) => char.toUpperCase());
               const relatedRecords = JSON.parse(fs.readFileSync(`${DATA_BASE_PATH}/${indexName}/${uuid}/${model}.json`, 'utf-8'))[model];
               record.relatedRecords[camelCase] = skipFilter.includes(model) ? relatedRecords : filterRelated(relatedRecords);
             } catch {
