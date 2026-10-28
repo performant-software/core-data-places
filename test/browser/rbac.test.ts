@@ -97,4 +97,25 @@ test.describe('Tina RBAC restrictions', () => {
 
     await expect(page.locator('body')).toHaveAttribute('data-tina-read-only', 'true');
   });
+
+  test('Media manager hides folder/upload/delete controls for the FairData store', async ({ page }) => {
+    await enterEditMode(page);
+
+    await page.getByRole('button', { name: 'Open navigation menu' }).click();
+    await page.getByRole('button', { name: 'Media Manager' }).click();
+
+    await expect(page.getByRole('heading', { name: 'Media Manager' })).toBeVisible();
+
+    for (const label of ['New Folder', 'Upload']) {
+      await expect(page.getByRole('button', { name: label, exact: true })).toHaveCount(0);
+    }
+
+    const firstMediaItem = page.locator('ul li > button:has(img)').first();
+    await expect(firstMediaItem).toBeVisible();
+    await firstMediaItem.click();
+    // Wait for the selected item's detail pane (its URL label) to render so the
+    // Delete check below can't pass prematurely before the pane loads.
+    await expect(page.locator('label', { hasText: /^URL$/ }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Delete', exact: true })).toHaveCount(0);
+  });
 });
