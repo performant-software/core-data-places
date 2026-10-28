@@ -35,17 +35,21 @@ class Base {
    */
   async getAll(params: { [key: string] : any } = {}) {
     let records;
+    let list;
 
     if (this.useCache()) {
       const entries = await getCollection(this.name);
       records = _.map(entries, (entry) => entry.data);
+      list = { count: records?.count };
     } else {
       const response = await this.service.fetchAll(_.defaults(params, REQUEST_PARAMS));
       records = response[this.name];
+      list = response.list;
     }
 
     return {
-      [this.name]: records
+      [this.name]: records,
+      list
     };
   }
 
