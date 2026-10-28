@@ -99,7 +99,6 @@ test.describe('Tina RBAC restrictions', () => {
   });
 
   test('Media manager hides folder/upload/delete controls for the FairData store', async ({ page }) => {
-    test.skip(process.env.TINA_PUBLIC_USE_FD_MEDIA !== 'true', 'FairData media store is not enabled');
 
     await page.getByRole('button', { name: 'Open navigation menu' }).click();
     await page.getByRole('button', { name: 'Media Manager' }).click();
