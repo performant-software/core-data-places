@@ -39,8 +39,9 @@ class Base {
 
     if (this.useCache()) {
       const entries = await getCollection(this.name);
+      // The content collection is never paginated, so it's always a single page.
       records = _.map(entries, (entry) => entry.data);
-      list = { count: records?.count };
+      list = { count: records?.length, page: 1, pages: 1 };
     } else {
       const response = await this.service.fetchAll(_.defaults(params, REQUEST_PARAMS));
       records = response[this.name];

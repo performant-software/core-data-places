@@ -113,7 +113,9 @@ test.describe('Tina RBAC restrictions', () => {
     const firstMediaItem = page.locator('ul li > button:has(img)').first();
     await expect(firstMediaItem).toBeVisible();
     await firstMediaItem.click();
-    await expect(page.getByRole('button', { name: 'Insert', exact: true })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Delete', exact: true })).toHaveCount(0);  
+    // Wait for the selected item's detail pane (its URL label) to render so the
+    // Delete check below can't pass prematurely before the pane loads.
+    await expect(page.locator('label', { hasText: /^URL$/ }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Delete', exact: true })).toHaveCount(0);
   });
 });
