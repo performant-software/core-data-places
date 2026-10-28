@@ -75,7 +75,7 @@ export const createLoader = (name, [indexName, showName]) => ({
 
           // We need to modify the media contents to point at local records
           // This process is kind of janky and should be improved!
-          record.relatedRecords.mediaContents = _.map(record.relatedRecords['media_contents'], (media: any) => {
+          record.relatedRecords.mediaContents = _.map(record.relatedRecords.mediaContents, (media: any) => {
             const { content_type, content_url, project_model_uuid, project_model_relationship_uuid, user_defined, uuid, name } = media;
             const resourceId = content_url?.split('resources/')[1].split('/')[0];
             return ({
