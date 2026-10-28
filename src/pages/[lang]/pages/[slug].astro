@@ -6,6 +6,7 @@ import Layout from '@layouts/Layout.astro';
 import TinaIsland from '@tinacms/astro/TinaIsland.astro';
 import { islands } from '@lib/islands';
 import { getTranslations } from '@backend/i18n';
+import { STATIC_BUILD } from 'astro:env/client';
 
 const { slug, lang } = Astro.params;
 
@@ -39,10 +40,17 @@ const { t } = await getTranslations(Astro.currentLocale);
   title={page.title}
   transparent={page.transparent}
 >
-  <TinaIsland name="page" wrapper={islands.page.wrapper} params={{ lang, slug }} primary>
+  {STATIC_BUILD ? (
     <Page
       page={page}
       t={t}
     />
-  </TinaIsland>
+  ) : (
+    <TinaIsland name="page" wrapper={islands.page.wrapper} params={{ lang, slug }} primary>
+      <Page
+        page={page}
+        t={t}
+      />
+    </TinaIsland>
+  )}
 </Layout>
