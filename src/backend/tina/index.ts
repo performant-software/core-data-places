@@ -148,8 +148,12 @@ export const fetchPages = async (locale: string, params?: any) => {
 
   const response = await requestWithMetadata(client.queries.pagesConnection(params));
   const data = response.data?.pagesConnection?.edges?.map((item) => item?.node);
-  caches.pages.set(`${locale}-${paramsStr}`, data);
-  return filterAll(locale, data || []);
+
+  // Cache the localized list, not the raw one: a cache hit must return the same
+  // thing a cache miss does, or every render after the first sees both locales.
+  const pages = await filterAll(locale, data || []);
+  caches.pages.set(`${locale}-${paramsStr}`, pages);
+  return pages;
 };
 
 export const fetchPathResponse = async (slug: string) => {
