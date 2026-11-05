@@ -25,6 +25,8 @@ npm install && npm run dev
 
 `npm run dev` runs Astro and a Netlify proxy as separate processes (Netlify spawning Astro breaks under Node 24). Astro runs via `netlify dev:exec`, so a linked Netlify site's environment variables are injected.
 
+The ports default to 4321 (Astro), 8888 (Netlify), 4001 (TinaCMS GraphQL), and 9000 (TinaCMS datalayer). To run more than one site at a time, override them with the environment variables `FDS_ASTRO_PORT`, `FDS_NETLIFY_PORT`, `FDS_GRAPHQL_PORT`, and `FDS_DATALAYER_PORT`.
+
 ## Testing
 
 #### Unit tests
