@@ -11,10 +11,16 @@ interface Props {
 const { header, url } = Astro.props;
 
 const resp = await fetch(url).then((res) => (res.text()));
-const text = resp.includes('<tei-text') 
+
+// Being careful to only match on `<tei-text>` or
+// `<tei-text attr=...>` elements, and not falsely
+// matching with e.g. `<tei-textClass>`
+const TEI_TEXT_OPENTAG = /<tei-text(?=[\s>])/;
+
+const text = TEI_TEXT_OPENTAG.test(resp)  
   && !resp.toLowerCase().includes('<script') 
   && !resp.toLowerCase().includes('<style')
-  ? '<tei-text' + resp.split(/tei-text[\s>]/)[1].split('</tei-text>')[0] + '</tei-text>' 
+  ? '<tei-text' + resp.split(TEI_TEXT_OPENTAG)[1].split('</tei-text>')[0] + '</tei-text>' 
   : '';
 const escapedText = sanitizeHtml(text, {
   allowedTags: false,
