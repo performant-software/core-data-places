@@ -88,12 +88,17 @@ export const getRelationshipLabel = (uuid: string, t: any, inverse = false) => {
   return t(value);
 };
 
-export const isInverse = (attribute: string, hits: any[]) => {
-  if (hits.length === 0) {
-    return false;
-  }
+// Temporary workaround. The direction of a relationship shows only on a hit that has it, so a facet's label fell
+// back to the relationship's forward name whenever no result had the relationship. The direction never changes
+// for a search, so it is remembered once a hit has shown it.
+const inverseRelationships = new Set<string>();
 
+export const isInverse = (attribute: string, hits: any[]) => {
   const attributeBase = attribute.split('.')[0];
+
+  if (inverseRelationships.has(attributeBase)) {
+    return true;
+  }
 
   const sampleHit = _.find(hits, (hit) => (
       hit &&
@@ -102,7 +107,13 @@ export const isInverse = (attribute: string, hits: any[]) => {
       typeof hit[attributeBase][0] === 'object'
   ));
 
-  return sampleHit && sampleHit[attributeBase][0]['inverse'];
+  const inverse = !!(sampleHit && sampleHit[attributeBase][0]['inverse']);
+
+  if (inverse) {
+    inverseRelationships.add(attributeBase);
+  }
+
+  return inverse;
 }
 
 /**
