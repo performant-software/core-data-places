@@ -10,6 +10,9 @@ const MapSearchProvider = (props: { children: ReactNode }) => {
   const latest = useRef(infiniteHits);
   latest.current = infiniteHits;
 
+  const latestGeoSearch = useRef(geoSearch);
+  latestGeoSearch.current = geoSearch;
+
   const requestedFor = useRef<unknown>(null);
 
   /**
@@ -28,10 +31,27 @@ const MapSearchProvider = (props: { children: ReactNode }) => {
     }
   }, []);
 
+  /**
+   * Filters the search by the map's bounds, unless the map spans half of the globe or more from west to east.
+   */
+  const refine = useCallback((bounds) => {
+    // Temporary workaround. Typesense reads the four corners of the bounds as a shape on the globe, and each edge
+    // takes the shorter way around. Bounds that span more than 180 degrees of longitude therefore cover the
+    // opposite side of the globe, and the search finds none of the places on the map. The core-data package drops
+    // the filter above 200 degrees only. Remove this once the package drops it at 180 degrees.
+    const { clearMapRefinement, isRefinedWithMap, refine: refineWithMap } = latestGeoSearch.current;
+
+    if (bounds.northEast.lng - bounds.southWest.lng < 180) {
+      refineWithMap(bounds);
+    } else if (isRefinedWithMap()) {
+      clearMapRefinement();
+    }
+  }, []);
+
   return (
     <PersistentSearchStateContextProvider
       infiniteHits={{ ...infiniteHits, showMore }}
-      geoSearch={geoSearch}
+      geoSearch={{ ...geoSearch, refine }}
       searchBox={searchBox}
     >
       { props.children }
