@@ -7,6 +7,7 @@ const MAX_ATTRIBUTES = 4;
 export const INVERSE_SUFFIX = '_inverse';
 const ALWAYS_INCLUDE_ATTRIBUTES = ['name', 'id', 'uuid', 'record_id', 'thumbnail'];
 const MAP_FEATURE_ATTRIBUTES = ['name', 'names', 'uuid', 'record_id', 'type'];
+const RELATED_RECORD_ATTRIBUTES = ['name', 'uuid', 'inverse'];
 
 /**
  * Adds a link to the document and downloads the passed file.
@@ -56,9 +57,9 @@ export const getDisplayAttributes = (config) => {
   for (const r of (config?.result_card.relationships || [])) {
     relationships = [
       ...relationships,
-      `${r}.name`,
-      `${r}.uuid`,
-      `${r}.inverse`
+      ...(_.map(RELATED_RECORD_ATTRIBUTES, (attr: string) => (
+        `${r}.${attr}`
+      )))
     ]
   }
 
