@@ -49,14 +49,26 @@ export const getAttributes = (config) => config.result_card.attributes?.slice(0,
  * 
  * @param config
  */
-export const getDisplayAttributes = (config) => (_.compact([
-  ...ALWAYS_INCLUDE_ATTRIBUTES,
-  config.map?.geometry,
-  config.timeline?.event_path,
-  ...(config.result_card.relationships || []), 
-  ...(config.result_card.tags || []), 
-  ...getAttributes(config).map((att: any) => (att.name))
-]));
+export const getDisplayAttributes = (config) => {
+  // for relationships, we only actually use the name, UUID, and inverse flag
+  let relationships: string[] = [];
+  for (const r of (config?.result_card.relationships || [])) {
+    relationships = [
+      ...relationships,
+      `${r}.name`,
+      `${r}.uuid`,
+      `${r}.inverse`
+    ]
+  }
+  return (_.compact([
+    ...ALWAYS_INCLUDE_ATTRIBUTES,
+    config.map?.geometry,
+    config.timeline?.event_path,
+    ...relationships, 
+    ...(config.result_card.tags || []), 
+    ...getAttributes(config).map((att: any) => (att.name))
+  ]))
+};
 
 /**
  * Returns the facet label for the passed attribute.
