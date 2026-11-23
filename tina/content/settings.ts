@@ -727,6 +727,10 @@ const Settings: Collection = {
       label: 'Table results view?',
       type: 'boolean'
     }, {
+      name: 'disable_search_as_you_type',
+      label: 'Disable Search-As-You-Type',
+      type: 'boolean'
+    }, {
       name: 'timeline',
       label: 'Timeline',
       type: 'object',

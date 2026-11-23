@@ -68,6 +68,8 @@ export interface SearchConfig {
 
   static?: StaticSearchConfig;
 
+  disable_search_as_you_type?: boolean;
+
   typesense?: {
     host: string,
     port: number,

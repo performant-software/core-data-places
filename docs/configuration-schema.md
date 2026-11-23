@@ -200,6 +200,12 @@ The array of search configuration objects. For each entry, an option will displa
 
 Required: Yes
 
+### disable_search_as_you_type
+
+Boolean. If `true`, will not auto-search after every keystroke. Can be used to improve performance of large datasets.
+
+Required: No
+
 ### facets
 
 Array of facet rendering customizations.

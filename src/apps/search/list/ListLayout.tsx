@@ -40,6 +40,7 @@ const ListLayout = (props: Props) => {
         <div className='flex justify-between gap-4'>
           <SearchBox
             placeholder={t('search')}
+            searchAsYouType={!config?.disable_search_as_you_type}
             classNames={{
               root: 'w-full max-w-[720px]',
               form: 'relative',

@@ -5,6 +5,7 @@ import _ from 'underscore';
 const DEFAULT_JSON_FILENAME = 'search-results.json';
 const MAX_ATTRIBUTES = 4;
 export const INVERSE_SUFFIX = '_inverse';
+const ALWAYS_INCLUDE_ATTRIBUTES = ['name', 'id', 'uuid', 'thumbnail'];
 
 /**
  * Adds a link to the document and downloads the passed file.
@@ -42,6 +43,20 @@ export const exportAsJSON = (hits, filename = DEFAULT_JSON_FILENAME) => {
  * @param config
  */
 export const getAttributes = (config) => config.result_card.attributes?.slice(0, MAX_ATTRIBUTES) || [];
+
+/**
+ * Returns a single array of all hit attributes needed to render the results list
+ * 
+ * @param config
+ */
+export const getDisplayAttributes = (config) => (_.compact([
+  ...ALWAYS_INCLUDE_ATTRIBUTES,
+  config.map?.geometry,
+  config.timeline?.event_path,
+  ...(config.result_card.relationships || []), 
+  ...(config.result_card.tags || []), 
+  ...getAttributes(config).map((att: any) => (att.name))
+]));
 
 /**
  * Returns the facet label for the passed attribute.
