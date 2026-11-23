@@ -5,6 +5,9 @@ import _ from 'underscore';
 const DEFAULT_JSON_FILENAME = 'search-results.json';
 const MAX_ATTRIBUTES = 4;
 export const INVERSE_SUFFIX = '_inverse';
+const ALWAYS_INCLUDE_ATTRIBUTES = ['name', 'id', 'uuid', 'record_id', 'thumbnail'];
+const MAP_FEATURE_ATTRIBUTES = ['name', 'names', 'uuid', 'record_id', 'type'];
+const RELATED_RECORD_ATTRIBUTES = ['name', 'uuid', 'inverse'];
 
 /**
  * Adds a link to the document and downloads the passed file.
@@ -42,6 +45,55 @@ export const exportAsJSON = (hits, filename = DEFAULT_JSON_FILENAME) => {
  * @param config
  */
 export const getAttributes = (config) => config.result_card.attributes?.slice(0, MAX_ATTRIBUTES) || [];
+
+/**
+ * Removes array indices from the passed attribute path, e.g. "<uuid>.0.name" becomes "<uuid>.name".
+ *
+ * @param path
+ */
+export const removeArrayIndices = (path: string) => path
+  .split('.')
+  .filter((segment) => !isNumber(segment))
+  .join('.');
+
+/**
+ * Returns a single array of all hit attributes needed to render the results list
+ * 
+ * @param config
+ */
+export const getDisplayAttributes = (config) => {
+  // for relationships, we only actually use the name, UUID, and inverse flag
+  let relationships: string[] = [];
+  for (const r of (config?.result_card.relationships || [])) {
+    relationships = [
+      ...relationships,
+      ...(_.map(RELATED_RECORD_ATTRIBUTES, (attr: string) => (
+        `${r}.${attr}`
+      )))
+    ]
+  }
+
+  // when the geometry lives on a related record, map features are built from that record's fields
+  const geometryPath: string = config.map?.geometry || '';
+  const geometryObjectPath = geometryPath.substring(0, geometryPath.lastIndexOf('.'));
+  const mapFeatureAttributes = geometryObjectPath
+    ? MAP_FEATURE_ATTRIBUTES.map((attr) => `${geometryObjectPath}.${attr}`)
+    : [];
+
+  const tagNames = _.map((config.result_card?.tags || []), (tag: any) => removeArrayIndices(tag.name));
+
+  return (_.uniq(_.compact([
+    ...ALWAYS_INCLUDE_ATTRIBUTES,
+    config.result_card?.title && removeArrayIndices(config.result_card.title),
+    config.map?.geometry,
+    config.map?.properties,
+    ...mapFeatureAttributes,
+    config.timeline?.event_path,
+    ...relationships, 
+    ...tagNames, 
+    ...getAttributes(config).map((att: any) => removeArrayIndices(att.name))
+  ])))
+};
 
 /**
  * Returns the facet label for the passed attribute.
@@ -109,13 +161,7 @@ export const isInverse = (attribute: string, hits: any[]) => {
  * Gets the label for a search column as given by the result_card.attributes config array.
  */
 export const getColumnLabel = (flattenedAtt, t) => {
-  // remove the indices from the path
-  const path = flattenedAtt
-    .split('.')
-    .filter(att => !isNumber(att))
-    .join('.');
-
-  return getFacetLabel(path, t);
+  return getFacetLabel(removeArrayIndices(flattenedAtt), t);
 };
 
 /**

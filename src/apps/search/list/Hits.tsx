@@ -5,7 +5,7 @@ import ListHit from '@components/custom/project/ListHit'
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import { Highlight } from 'react-instantsearch';
 import { useCallback, useContext, useMemo, useRef, useState } from 'react';
-import { getAttributes, getFacetLabel, getHitValue, getRelationshipLabel, isInverse } from '@utils/search';
+import { getAttributes, getFacetLabel, getHitValue, getRelationshipLabel, isInverse, removeArrayIndices } from '@utils/search';
 import { MediaGallery } from '@performant-software/core-data';
 import clsx from 'clsx';
 import TranslationContext from '@contexts/TranslationContext';
@@ -79,12 +79,12 @@ const Hits = (props: Props) => {
       for (const att of getAttributes(searchConfig)) {
         const value = getHitValue(hit, att);
 
-        const trimmedName = att.name.replace(/\.\d+/g, '')
+        const trimmedName = removeArrayIndices(att.name);
         let label = facetLabels.current[trimmedName];
 
         if (!label) {
           label = getFacetLabel(trimmedName, t, isInverse(trimmedName, items));
-          facetLabels.current[att.name] = label;
+          facetLabels.current[trimmedName] = label;
         }
 
         if (value) {
