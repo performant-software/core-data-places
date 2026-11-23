@@ -5,7 +5,8 @@ import _ from 'underscore';
 const DEFAULT_JSON_FILENAME = 'search-results.json';
 const MAX_ATTRIBUTES = 4;
 export const INVERSE_SUFFIX = '_inverse';
-const ALWAYS_INCLUDE_ATTRIBUTES = ['name', 'id', 'uuid', 'thumbnail'];
+const ALWAYS_INCLUDE_ATTRIBUTES = ['name', 'id', 'uuid', 'record_id', 'thumbnail'];
+const MAP_FEATURE_ATTRIBUTES = ['name', 'names', 'uuid', 'record_id', 'type'];
 
 /**
  * Adds a link to the document and downloads the passed file.
@@ -60,14 +61,24 @@ export const getDisplayAttributes = (config) => {
       `${r}.inverse`
     ]
   }
-  return (_.compact([
+
+  // when the geometry lives on a related record, map features are built from that record's fields
+  const geometryPath: string = config.map?.geometry || '';
+  const geometryObjectPath = geometryPath.substring(0, geometryPath.lastIndexOf('.'));
+  const mapFeatureAttributes = geometryObjectPath
+    ? MAP_FEATURE_ATTRIBUTES.map((attr) => `${geometryObjectPath}.${attr}`)
+    : [];
+
+  return (_.uniq(_.compact([
     ...ALWAYS_INCLUDE_ATTRIBUTES,
     config.map?.geometry,
+    config.map?.properties,
+    ...mapFeatureAttributes,
     config.timeline?.event_path,
     ...relationships, 
     ...(config.result_card.tags || []), 
     ...getAttributes(config).map((att: any) => (att.name))
-  ]))
+  ])))
 };
 
 /**
