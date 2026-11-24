@@ -17,7 +17,7 @@ const Facet = ({ attribute, children, className, icon }: Props) => {
 
   const { items } = useHits();
 
-  const label = useMemo(() => getFacetLabel(attribute, t, isInverse(attribute, items)), [attribute, items.length, t]);
+  const label = useMemo(() => getFacetLabel(attribute, t, isInverse(attribute, items)), [attribute, items, t]);
 
   return (
     <div
