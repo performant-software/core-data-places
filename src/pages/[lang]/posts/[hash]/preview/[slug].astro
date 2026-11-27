@@ -1,4 +1,5 @@
 ---
+import type { GetStaticPaths } from "astro";
 import Post from '@apps/posts/Post.astro';
 import Layout from '@layouts/Layout.astro';
 import _ from 'underscore';
@@ -11,6 +12,10 @@ const createHash = async (input: string) => {
 };
 
 export const prerender = false;
+
+export const getStaticPaths = (() => {
+  return [];
+}) satisfies GetStaticPaths;
 
 const { hash, slug } = Astro.params;
 

@@ -8,6 +8,7 @@ import { loadEnv } from 'vite';
 import config from './public/config.json';
 import tina from '@tinacms/astro/integration';
 import { tinaAdminDevRedirect } from '@tinacms/astro/vite';
+import staticMode from './integrations/static-mode.mjs';
 
 const { locales, default_locale: defaultLocale } = config.i18n;
 const { STATIC_BUILD } = loadEnv(process.env.STATIC_BUILD, process.cwd(), '');
@@ -23,8 +24,10 @@ export default defineConfig({
     }
   },
   output: STATIC_BUILD === 'true' ? 'static' : 'server',
-  adapter: netlify(),
-  integrations: [mdx(), sitemap(), react(), tina()],
+  // A static build is plain files for any host, so it gets no adapter and
+  // emits no serverless function.
+  ...(STATIC_BUILD === 'true' ? {} : { adapter: netlify() }),
+  integrations: [mdx(), sitemap(), react(), tina(), staticMode()],
   vite: {
     optimizeDeps: {
       esbuildOptions: {

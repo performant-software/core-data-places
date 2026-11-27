@@ -43,6 +43,14 @@ tmp/
 /public/config.json
 /public/branding.json
 
+# Static maps generated locally with npm run build:maps
+/public/_fds/
+
+# Other output of static build process run locally
+api
+iiif
+.static-maps
+
 # Workspaces
 *.code-workspace
 

@@ -7,13 +7,21 @@ import {
 } from 'react-instantsearch';
 import { useSearchConfig } from '@apps/search/SearchConfigContext';
 import { FacetStateContextProvider } from '@performant-software/core-data';
+import { getGeoLocationField } from '@utils/map';
+import { getDisplayAttributes } from '@root/src/utils/search';
 
 const TypesenseSearch = (props: { children: ReactNode }) => {
   const config = useSearchConfig();
   const { typesense } = config;
 
-  const options = typesense.overrides || {};
-  const adapter = useMemo(() => TypesenseUtils.createTypesenseAdapter(typesense, options), []);
+  const options = { geoLocationField: getGeoLocationField(config), ...typesense.overrides };
+  const adapter = useMemo(() => TypesenseUtils.createTypesenseAdapter(
+    {
+      ...typesense, 
+      'include_fields': getDisplayAttributes(config).join(',')
+    }, 
+    options
+  ), []);
   const routing = useMemo(() => TypesenseUtils.createRouting(typesense), []);
 
   return (

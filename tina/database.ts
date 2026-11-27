@@ -13,7 +13,15 @@ const branch =
   'main';
 
 export default isLocal
-  ? createLocalDatabase()
+  // TINA_DATALAYER_PORT moves the local datalayer off its default port
+  // (9000). Tina's --datalayer-port flag moves only the server; this client
+  // must follow, or local dev hangs at "Indexing local files". Set by
+  // pstudio workspaces so two sites can run side by side.
+  ? createLocalDatabase(
+    process.env.TINA_DATALAYER_PORT
+      ? { port: Number(process.env.TINA_DATALAYER_PORT) }
+      : undefined
+  )
   : createDatabase({
     gitProvider: new GitHubProvider({
       branch,

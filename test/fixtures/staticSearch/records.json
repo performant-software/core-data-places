@@ -1,0 +1,378 @@
+{
+  "places": [
+    {
+      "user_defined": {
+        "6915e33c-a864-41e2-a1c3-7d54e4deb984": {
+          "label": "URL",
+          "type": "String",
+          "value": "http://www.brooklinebooksmith.com/"
+        },
+        "38fdfecb-5f8f-4085-8bfa-6640c410fa36": {
+          "label": "Refreshments",
+          "type": "Select",
+          "value": [
+            "Refrigerated drinks",
+            "Premade food"
+          ]
+        },
+        "6b38e52b-e3d4-4135-be7a-3c5cbd34ad89": {
+          "label": "Space configuration",
+          "type": "Select",
+          "value": "Multi-level"
+        }
+      },
+      "uuid": "acc74a91-0b26-4080-871d-601182498707",
+      "name": "Brookline Booksmith",
+      "place_names": [
+        {
+          "name": "Brookline Booksmith",
+          "primary": true
+        }
+      ],
+      "place_geometry": {
+        "properties": {},
+        "geometry_json": {
+          "type": "GeometryCollection",
+          "geometries": [
+            {
+              "type": "Point",
+              "coordinates": [
+                -71.12174,
+                42.342657
+              ]
+            }
+          ]
+        }
+      },
+      "place_layers": [],
+      "web_identifiers": [],
+      "relatedRecords": {
+        "events": [
+          {
+            "uuid": "41d6ee01-314c-4884-90f9-f9bc64c3db4b",
+            "project_model_relationship_uuid": "1c4e9957-c627-435d-a91c-baee051b7436",
+            "project_model_relationship_inverse": false
+          },
+          {
+            "uuid": "3b2fa9c7-ee9e-47c8-a10b-e74e97603bdf",
+            "project_model_relationship_uuid": "1c4e9957-c627-435d-a91c-baee051b7436",
+            "project_model_relationship_inverse": false
+          },
+          {
+            "uuid": "173aa350-8e43-41b4-987d-c0761e912571",
+            "project_model_relationship_uuid": "1c4e9957-c627-435d-a91c-baee051b7436",
+            "project_model_relationship_inverse": false
+          }
+        ],
+        "instances": [],
+        "items": [],
+        "mediaContents": [
+          {
+            "content_type": "image/jpeg",
+            "content_url": "https://staging.iiifcloud.com/public/resources/b14ac7bf-f7be-41b3-8523-4a41fb6543d4/content",
+            "content_download_url": "https://staging.iiifcloud.com/public/resources/b14ac7bf-f7be-41b3-8523-4a41fb6543d4/download",
+            "content_iiif_url": "https://staging.iiifcloud.com/public/resources/b14ac7bf-f7be-41b3-8523-4a41fb6543d4/iiif",
+            "content_inline_url": "https://staging.iiifcloud.com/public/resources/b14ac7bf-f7be-41b3-8523-4a41fb6543d4/inline",
+            "content_info_url": "https://staging.iiifcloud.com/public/resources/b14ac7bf-f7be-41b3-8523-4a41fb6543d4/info",
+            "content_preview_url": "https://staging.iiifcloud.com/public/resources/b14ac7bf-f7be-41b3-8523-4a41fb6543d4/preview",
+            "content_thumbnail_url": "https://staging.iiifcloud.com/public/resources/b14ac7bf-f7be-41b3-8523-4a41fb6543d4/thumbnail",
+            "manifest_url": "https://staging.iiifcloud.com/public/resources/b14ac7bf-f7be-41b3-8523-4a41fb6543d4/manifest",
+            "project_model_relationship_uuid": "7e81da4a-6772-4d9c-952e-99921ef1d2f0",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "08c0f038-ba31-4756-8b97-9bb6a1cf02d8",
+            "name": "Store exterior"
+          },
+          {
+            "content_type": "image/jpeg",
+            "content_url": "https://staging.iiifcloud.com/public/resources/4a572f08-15ee-4bea-afb3-c88dd5e96176/content",
+            "content_download_url": "https://staging.iiifcloud.com/public/resources/4a572f08-15ee-4bea-afb3-c88dd5e96176/download",
+            "content_iiif_url": "https://staging.iiifcloud.com/public/resources/4a572f08-15ee-4bea-afb3-c88dd5e96176/iiif",
+            "content_inline_url": "https://staging.iiifcloud.com/public/resources/4a572f08-15ee-4bea-afb3-c88dd5e96176/inline",
+            "content_info_url": "https://staging.iiifcloud.com/public/resources/4a572f08-15ee-4bea-afb3-c88dd5e96176/info",
+            "content_preview_url": "https://staging.iiifcloud.com/public/resources/4a572f08-15ee-4bea-afb3-c88dd5e96176/preview",
+            "content_thumbnail_url": "https://staging.iiifcloud.com/public/resources/4a572f08-15ee-4bea-afb3-c88dd5e96176/thumbnail",
+            "manifest_url": "https://staging.iiifcloud.com/public/resources/4a572f08-15ee-4bea-afb3-c88dd5e96176/manifest",
+            "project_model_relationship_uuid": "7e81da4a-6772-4d9c-952e-99921ef1d2f0",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "a94cdd2e-299f-4c8a-8866-a015b58336fc",
+            "name": "Store interior"
+          },
+          {
+            "content_type": "image/jpeg",
+            "content_url": "https://staging.iiifcloud.com/public/resources/38383a89-7205-4a45-95d8-f225eec5e507/content",
+            "content_download_url": "https://staging.iiifcloud.com/public/resources/38383a89-7205-4a45-95d8-f225eec5e507/download",
+            "content_iiif_url": "https://staging.iiifcloud.com/public/resources/38383a89-7205-4a45-95d8-f225eec5e507/iiif",
+            "content_inline_url": "https://staging.iiifcloud.com/public/resources/38383a89-7205-4a45-95d8-f225eec5e507/inline",
+            "content_info_url": "https://staging.iiifcloud.com/public/resources/38383a89-7205-4a45-95d8-f225eec5e507/info",
+            "content_preview_url": "https://staging.iiifcloud.com/public/resources/38383a89-7205-4a45-95d8-f225eec5e507/preview",
+            "content_thumbnail_url": "https://staging.iiifcloud.com/public/resources/38383a89-7205-4a45-95d8-f225eec5e507/thumbnail",
+            "manifest_url": "https://staging.iiifcloud.com/public/resources/38383a89-7205-4a45-95d8-f225eec5e507/manifest",
+            "project_model_relationship_uuid": "7e81da4a-6772-4d9c-952e-99921ef1d2f0",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "7ea9b156-b1d3-4b7f-a5be-e2ae1694bf06",
+            "name": "Store interior"
+          },
+          {
+            "content_type": "image/jpeg",
+            "content_url": "https://staging.iiifcloud.com/public/resources/2535528b-6b06-4577-b0d7-574306a2ae5b/content",
+            "content_download_url": "https://staging.iiifcloud.com/public/resources/2535528b-6b06-4577-b0d7-574306a2ae5b/download",
+            "content_iiif_url": "https://staging.iiifcloud.com/public/resources/2535528b-6b06-4577-b0d7-574306a2ae5b/iiif",
+            "content_inline_url": "https://staging.iiifcloud.com/public/resources/2535528b-6b06-4577-b0d7-574306a2ae5b/inline",
+            "content_info_url": "https://staging.iiifcloud.com/public/resources/2535528b-6b06-4577-b0d7-574306a2ae5b/info",
+            "content_preview_url": "https://staging.iiifcloud.com/public/resources/2535528b-6b06-4577-b0d7-574306a2ae5b/preview",
+            "content_thumbnail_url": "https://staging.iiifcloud.com/public/resources/2535528b-6b06-4577-b0d7-574306a2ae5b/thumbnail",
+            "manifest_url": "https://staging.iiifcloud.com/public/resources/2535528b-6b06-4577-b0d7-574306a2ae5b/manifest",
+            "project_model_relationship_uuid": "7e81da4a-6772-4d9c-952e-99921ef1d2f0",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "fc206476-1f51-4482-ac52-fcf4bae1b285",
+            "name": "Stair to lower level/event space"
+          },
+          {
+            "content_type": "image/jpeg",
+            "content_url": "https://staging.iiifcloud.com/public/resources/acd85f43-8fcc-4982-aac4-6dad98b8c55c/content",
+            "content_download_url": "https://staging.iiifcloud.com/public/resources/acd85f43-8fcc-4982-aac4-6dad98b8c55c/download",
+            "content_iiif_url": "https://staging.iiifcloud.com/public/resources/acd85f43-8fcc-4982-aac4-6dad98b8c55c/iiif",
+            "content_inline_url": "https://staging.iiifcloud.com/public/resources/acd85f43-8fcc-4982-aac4-6dad98b8c55c/inline",
+            "content_info_url": "https://staging.iiifcloud.com/public/resources/acd85f43-8fcc-4982-aac4-6dad98b8c55c/info",
+            "content_preview_url": "https://staging.iiifcloud.com/public/resources/acd85f43-8fcc-4982-aac4-6dad98b8c55c/preview",
+            "content_thumbnail_url": "https://staging.iiifcloud.com/public/resources/acd85f43-8fcc-4982-aac4-6dad98b8c55c/thumbnail",
+            "manifest_url": "https://staging.iiifcloud.com/public/resources/acd85f43-8fcc-4982-aac4-6dad98b8c55c/manifest",
+            "project_model_relationship_uuid": "7e81da4a-6772-4d9c-952e-99921ef1d2f0",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "09b94195-c49a-4723-8703-5cc85df936eb",
+            "name": "Upcoming Events"
+          },
+          {
+            "content_type": "image/jpeg",
+            "content_url": "https://staging.iiifcloud.com/public/resources/eba762e3-b721-43d8-8aac-940169cefb2b/content",
+            "content_download_url": "https://staging.iiifcloud.com/public/resources/eba762e3-b721-43d8-8aac-940169cefb2b/download",
+            "content_iiif_url": "https://staging.iiifcloud.com/public/resources/eba762e3-b721-43d8-8aac-940169cefb2b/iiif",
+            "content_inline_url": "https://staging.iiifcloud.com/public/resources/eba762e3-b721-43d8-8aac-940169cefb2b/inline",
+            "content_info_url": "https://staging.iiifcloud.com/public/resources/eba762e3-b721-43d8-8aac-940169cefb2b/info",
+            "content_preview_url": "https://staging.iiifcloud.com/public/resources/eba762e3-b721-43d8-8aac-940169cefb2b/preview",
+            "content_thumbnail_url": "https://staging.iiifcloud.com/public/resources/eba762e3-b721-43d8-8aac-940169cefb2b/thumbnail",
+            "manifest_url": "https://staging.iiifcloud.com/public/resources/eba762e3-b721-43d8-8aac-940169cefb2b/manifest",
+            "project_model_relationship_uuid": "7e81da4a-6772-4d9c-952e-99921ef1d2f0",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "16b8b29d-9b5b-4775-8c70-7155687664b6",
+            "name": "Brookline Booksmith Store Exterior"
+          },
+          {
+            "content_type": "image/jpeg",
+            "content_url": "https://staging.iiifcloud.com/public/resources/60fc9766-39a6-453e-acb6-653339cfb5c4/content",
+            "content_download_url": "https://staging.iiifcloud.com/public/resources/60fc9766-39a6-453e-acb6-653339cfb5c4/download",
+            "content_iiif_url": "https://staging.iiifcloud.com/public/resources/60fc9766-39a6-453e-acb6-653339cfb5c4/iiif",
+            "content_inline_url": "https://staging.iiifcloud.com/public/resources/60fc9766-39a6-453e-acb6-653339cfb5c4/inline",
+            "content_info_url": "https://staging.iiifcloud.com/public/resources/60fc9766-39a6-453e-acb6-653339cfb5c4/info",
+            "content_preview_url": "https://staging.iiifcloud.com/public/resources/60fc9766-39a6-453e-acb6-653339cfb5c4/preview",
+            "content_thumbnail_url": "https://staging.iiifcloud.com/public/resources/60fc9766-39a6-453e-acb6-653339cfb5c4/thumbnail",
+            "manifest_url": "https://staging.iiifcloud.com/public/resources/60fc9766-39a6-453e-acb6-653339cfb5c4/manifest",
+            "project_model_relationship_uuid": "7e81da4a-6772-4d9c-952e-99921ef1d2f0",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "1c22cc24-9f9d-4b1c-9eba-ece45c80cc9c",
+            "name": "Window Display.jpg"
+          }
+        ],
+        "organizations": [],
+        "people": [],
+        "places": [
+          {
+            "uuid": "9415baf3-e1b8-4c72-815e-6b78ea1eba1f",
+            "project_model_relationship_uuid": "700dd643-b4a2-4f3c-8336-9e15a423dee8",
+            "project_model_relationship_inverse": false
+          }
+        ],
+        "taxonomies": [
+          {
+            "project_model_relationship_uuid": "8677bf89-b2c2-4ced-816b-be388460c043",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "17e8c155-dd51-4f72-80f3-48ddb354bce8",
+            "name": "Used media"
+          },
+          {
+            "project_model_relationship_uuid": "8677bf89-b2c2-4ced-816b-be388460c043",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "26c16903-4fa6-4e4a-9946-2c2db1f9f031",
+            "name": "New media"
+          },
+          {
+            "project_model_relationship_uuid": "8677bf89-b2c2-4ced-816b-be388460c043",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "21df8472-6874-45c3-be45-7708d1cb93a1",
+            "name": "Book clubs"
+          },
+          {
+            "project_model_relationship_uuid": "8677bf89-b2c2-4ced-816b-be388460c043",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "600f49c3-5050-4327-a343-3b4fa87125a0",
+            "name": "Events"
+          },
+          {
+            "project_model_relationship_uuid": "8677bf89-b2c2-4ced-816b-be388460c043",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "78257d45-9403-431f-a0a6-db3cebfa5de0",
+            "name": "Foreign language materials"
+          },
+          {
+            "project_model_relationship_uuid": "8677bf89-b2c2-4ced-816b-be388460c043",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "995e17d4-18f8-4a84-894b-c108aa45426d",
+            "name": "Misc. merch"
+          },
+          {
+            "project_model_relationship_uuid": "8677bf89-b2c2-4ced-816b-be388460c043",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "40590b02-802a-4b9b-84fc-4c119f90e5ab",
+            "name": "Event space"
+          },
+          {
+            "project_model_relationship_uuid": "8677bf89-b2c2-4ced-816b-be388460c043",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "f263c3f8-0adb-4c03-a471-2c00ce02bff5",
+            "name": "Children's materials"
+          },
+          {
+            "project_model_relationship_uuid": "8677bf89-b2c2-4ced-816b-be388460c043",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "de2ea794-c3ab-4658-ac16-00edb03add22",
+            "name": "Can sell used media"
+          },
+          {
+            "project_model_relationship_uuid": "f49250ec-cbf2-40ec-a4f2-62bcf667e576",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "7e6b4e42-9d27-4485-8612-0ed11be92986",
+            "name": "Bookstore"
+          },
+          {
+            "project_model_relationship_uuid": "8677bf89-b2c2-4ced-816b-be388460c043",
+            "project_model_relationship_inverse": false,
+            "user_defined": {},
+            "uuid": "d1ab43de-6fe7-48c1-b597-6a6c3553b4a8",
+            "name": "Books"
+          }
+        ],
+        "works": []
+      }
+    },
+    {
+      "user_defined": {},
+      "uuid": "9415baf3-e1b8-4c72-815e-6b78ea1eba1f",
+      "name": "Coolidge Corner",
+      "place_names": [
+        {
+          "name": "Coolidge Corner",
+          "primary": true
+        }
+      ],
+      "place_geometry": {
+        "properties": {},
+        "geometry_json": {
+          "type": "GeometryCollection",
+          "geometries": [
+            {
+              "type": "Point",
+              "coordinates": [
+                -71.12139254808426,
+                42.34227727558768
+              ]
+            },
+            {
+              "type": "Point",
+              "coordinates": [
+                -71.120843,
+                42.342249
+              ]
+            }
+          ]
+        }
+      },
+      "place_layers": [],
+      "web_identifiers": []
+    }
+  ],
+  "events": [
+    {
+      "user_defined": {
+        "77f68d53-bb39-4b2e-9d17-a756be13e7d0": {
+          "label": "Event type",
+          "type": "String",
+          "value": "Book Release"
+        }
+      },
+      "uuid": "173aa350-8e43-41b4-987d-c0761e912571",
+      "name": "Casey McQuiston with Meredith Goldstein: The Pairing",
+      "description": null,
+      "start_date": {
+        "id": 39712,
+        "range": false,
+        "start_date": "2024-08-07",
+        "end_date": "2024-08-07",
+        "description": "",
+        "accuracy": 2
+      },
+      "end_date": null,
+      "web_identifiers": []
+    },
+    {
+      "user_defined": {
+        "77f68d53-bb39-4b2e-9d17-a756be13e7d0": {
+          "label": "Event type",
+          "type": "String",
+          "value": "Book Release"
+        }
+      },
+      "uuid": "3b2fa9c7-ee9e-47c8-a10b-e74e97603bdf",
+      "name": "M.T. Anderson with Kit Mayquist: Nicked",
+      "description": null,
+      "start_date": {
+        "id": 39710,
+        "range": false,
+        "start_date": "2024-08-06",
+        "end_date": "2024-08-06",
+        "description": "",
+        "accuracy": 2
+      },
+      "end_date": null,
+      "web_identifiers": []
+    },
+    {
+      "user_defined": {
+        "77f68d53-bb39-4b2e-9d17-a756be13e7d0": {
+          "label": "Event type",
+          "type": "String",
+          "value": "Book Release"
+        }
+      },
+      "uuid": "41d6ee01-314c-4884-90f9-f9bc64c3db4b",
+      "name": "Suzi Ehtesham-Zadeh with Dana Rashti: Zan",
+      "description": null,
+      "start_date": {
+        "id": 39709,
+        "range": false,
+        "start_date": "2024-08-01",
+        "end_date": "2024-08-01",
+        "description": "",
+        "accuracy": 2
+      },
+      "end_date": null,
+      "web_identifiers": []
+    }
+  ]
+}

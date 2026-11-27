@@ -132,7 +132,7 @@ const PostList = (props: Props) => {
                   date={post.date}
                   key={post?._sys?.filename}
                   labels={{
-                    byline: t('by', { author: post.author, date: post.date }),
+                    byline: post.author && t('by', { author: post.author, date: post.date }),
                     readMore: t('readMore')
                   }}
                 />

@@ -1,0 +1,66 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+    branches: [develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+# Serve the committed fixtures instead of a real content repo.
+env:
+  TINA_LOCAL_CONTENT_PATH: ../test/fixtures/
+
+jobs:
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - run: npm ci
+
+      # Generates gitignored assets required by the vitest path aliases.
+      - name: Build generated assets
+        run: node scripts/build.mjs
+
+      - run: npm run vitest
+
+  rbac:
+    name: TinaCMS RBAC
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Servers and their env live in playwright.rbac.config.ts's webServer block.
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Run RBAC tests
+        run: npm run test-rbac
+
+      - name: Upload report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

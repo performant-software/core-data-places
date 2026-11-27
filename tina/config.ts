@@ -8,11 +8,14 @@ import PagesCollection from './content/pages';
 import PathsCollection from './content/paths';
 import PostsCollection from './content/posts';
 import Settings from './content/settings';
+import History from './content/history';
+import HistoryDashboard from './content/historyDashboard';
 import { ClerkAuthProvider } from './auth-provider';
 import { Clerk } from '@clerk/clerk-js';
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true';
 const localContentPath = process.env.TINA_LOCAL_CONTENT_PATH;
+const useFairDataMedia = process.env.TINA_PUBLIC_USE_FD_MEDIA == 'true';
 
 // Clerk SSO is required for deployed CDP sites as of v1.9.0 — see docs/upgrade-notes.md.
 // (Local development still uses LocalAuthProvider via TINA_PUBLIC_IS_LOCAL=true and needs no Clerk config.)
@@ -35,7 +38,7 @@ export default defineConfig({
     publicFolder: 'public',
   },
   cmsCallback: (cms) => {
-    if (!isLocal) {
+    if (!isLocal || process.env.TINA_PUBLIC_DEV_ROLE) {
       import('./role-ui').then(({ applyRoleRestrictions }) => {
         applyRoleRestrictions(cms);
       });
@@ -46,6 +49,10 @@ export default defineConfig({
   localContentPath,
   media: {
     loadCustomStore: async () => {
+      if (useFairDataMedia) {
+        const { CustomFairDataStore } = await import('./fairdata-media-store');
+        return CustomFairDataStore;
+      }
       const pack = await import('next-tinacms-s3');
       return pack.TinaCloudS3MediaStore;
     }
@@ -63,7 +70,9 @@ export default defineConfig({
         : undefined,
       I18n,
       Navbar,
-      Settings
+      Settings,
+      History,
+      HistoryDashboard
     ])
   }
 });

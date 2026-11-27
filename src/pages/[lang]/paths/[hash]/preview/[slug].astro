@@ -1,6 +1,7 @@
 ---
 import Path from '@apps/paths/Path.astro';
 import Layout from "@layouts/Layout.astro";
+import type { GetStaticPaths } from "astro";
 
 const createHash = async (input: string) => {
   const str = input + import.meta.env.TINA_PUBLIC_HASH_KEY;
@@ -10,6 +11,10 @@ const createHash = async (input: string) => {
 };
 
 export const prerender = false;
+
+export const getStaticPaths = (() => {
+  return [];
+}) satisfies GetStaticPaths;
 
 const { hash, slug } = Astro.params;
 

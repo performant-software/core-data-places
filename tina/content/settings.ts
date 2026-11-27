@@ -5,6 +5,8 @@ import TinaMapLayerURLField from '../components/TinaMapLayerURLField';
 import RebuildSiteButton from '../components/RebuildSiteButton';
 import { postMetadata } from './posts';
 import _ from 'underscore';
+import { commonCollectionFields } from './common';
+import { logEditHistory } from '../utils/content';
 
 const editioncrafterConfigFields: TinaField<false>[] = [{
   name: 'xml_id_field',
@@ -449,6 +451,28 @@ const Settings: Collection = {
         component: TinaMapLayerURLField,
       },
     }, {
+      name: 'static',
+      label: 'Static build',
+      description: 'Only for sites published as static files.',
+      type: 'object',
+      fields: [{
+        name: 'url',
+        label: 'Self-hosted URL',
+        description: 'Where to load this layer from instead of the URL above. Leave blank to keep using the URL above.',
+        type: 'string'
+      }, {
+        name: 'maxzoom',
+        label: 'Maximum zoom',
+        description: 'For static copies made by the maps script. Higher shows more detail but makes larger files.',
+        type: 'number'
+      }, {
+        name: 'bbox',
+        label: 'Area',
+        description: 'For static copies made by the maps script: west, south, east and north, in degrees. Leave blank to use the area around the places.',
+        type: 'number',
+        list: true
+      }]
+    }, {
       name: 'overlay',
       label: 'Overlay',
       type: 'boolean',
@@ -703,6 +727,10 @@ const Settings: Collection = {
       label: 'Table results view?',
       type: 'boolean'
     }, {
+      name: 'disable_search_as_you_type',
+      label: 'Disable Search-As-You-Type',
+      type: 'boolean'
+    }, {
       name: 'timeline',
       label: 'Timeline',
       type: 'object',
@@ -726,6 +754,33 @@ const Settings: Collection = {
         name: 'default_open',
         label: 'Show by default',
         type: 'boolean'
+      }]
+    }, {
+      name: 'static',
+      label: 'Static search',
+      description: 'Serve this search from an index generated at build time from the FairData records instead of Typesense. Requires a static build.',
+      type: 'object',
+      fields: [{
+        name: 'model_ids',
+        label: 'Model IDs',
+        description: 'UUIDs of the project models to include. Each must belong to one of the projects in Core Data > Project IDs.',
+        type: 'string',
+        list: true
+      }, {
+        name: 'facets',
+        label: 'Facets',
+        type: 'object',
+        fields: [{
+          name: 'exclude',
+          label: 'Exclude',
+          type: 'string',
+          list: true
+        }, {
+          name: 'include',
+          label: 'Include',
+          type: 'string',
+          list: true
+        }]
       }]
     }, {
       name: 'typesense',
@@ -810,11 +865,14 @@ const Settings: Collection = {
     ui: {
       component: RebuildSiteButton
     }
-  }],
+  }, ...commonCollectionFields],
   ui: {
     allowedActions: {
       create: false,
       delete: false
+    },
+    beforeSubmit: async (arg: { values, form, cms }) => {
+      return await logEditHistory(arg, "settings");
     }
   }
 };

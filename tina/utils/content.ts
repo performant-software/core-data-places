@@ -16,3 +16,48 @@ export const createDataVisualization = ({ name, label, component, fields = [] })
     }
   }, ...fields]
 });
+
+export const logEditHistory = async (arg: any, collection: string) => {
+  const user = arg.cms?.api?.tina?.authProvider?.clerk?.user;
+
+  // No Clerk user in local dev (LocalAuthProvider has no .clerk) — skip history logging rather than crash the save.
+  if (!user) {
+    return arg.values;
+  }
+
+  const docId =
+    (arg.values?._sys?.filename as string | undefined) ??
+    (arg.form.id as string);
+  const crudType = (arg.form).crudType ?? "update";
+
+  // add to History collection
+  try {
+    await fetch("/api/tina/edit-history", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        docId,
+        collection,
+        crudType,
+        userEmail: user.primaryEmailAddress?.emailAddress,
+        userID: user.id,
+        userName: user.firstName + ' ' + user.lastName,
+        timestamp: new Date().toISOString()
+      }),
+    });
+  } catch (e) {
+    throw e;
+  }
+
+  // Log edit history
+  arg.values.history ||= [];
+  arg.values.history = [
+    { 
+      user_id: user.id, 
+      user_email: user.primaryEmailAddress?.emailAddress, 
+      timestamp: new Date().toISOString()
+    },
+    ...arg.values.history
+  ];
+  return arg.values;
+}

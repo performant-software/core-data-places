@@ -39,7 +39,11 @@ const MapView = () => {
    */
   useEffect(() => {
     if (fitBoundingBox && !_.isEmpty(features) && map && !searching) {
-      getBoundingBox().then((bbox) => map.fitBounds(bbox, boundingBoxOptions));
+      getBoundingBox().then((bbox) => {
+        if (bbox) {
+          map.fitBounds(bbox, boundingBoxOptions);
+        }
+      })
     }
   }, [boundingBoxOptions, fitBoundingBox, features, map, searching]);
 

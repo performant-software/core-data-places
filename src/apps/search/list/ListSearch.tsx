@@ -2,7 +2,7 @@ import ListLayout from '@apps/search/list/ListLayout';
 import { RuntimeConfigProvider } from '@apps/search/SearchConfigContext';
 import TranslationContext from '@contexts/TranslationContext';
 import { useTranslations } from '@i18n/useTranslations';
-import TypesenseSearch from '@apps/search/TypesenseSearch';
+import Search from '@apps/search/Search';
 
 interface Props {
   lang: string;
@@ -16,13 +16,13 @@ const ListSearch = (props: Props) => {
     <RuntimeConfigProvider
       name={props.name}
     >
-      <TypesenseSearch>
+      <Search>
         <TranslationContext.Provider
           value={{ lang: props.lang, t }}
         >
           <ListLayout lang={props.lang} />
         </TranslationContext.Provider>
-      </TypesenseSearch>
+      </Search>
     </RuntimeConfigProvider>
   );
 };

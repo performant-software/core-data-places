@@ -56,7 +56,7 @@ const TableView = (props: Props) => {
       <SearchResultsTable
         columns={[{
           name: title,
-          label: t(title),
+          label: getColumnLabel(title, t),
           render: (hit) => (
             <SearchHighlight
               attribute={title}

@@ -1,6 +1,31 @@
 import { getUserRoleAsync } from './utils/getUserRole';
 
-const ADMIN_ONLY_COLLECTIONS = ['Settings', 'Branding', 'Internationalization', 'Navbar', 'Pages'];
+const ADMIN_ONLY_COLLECTIONS = ['Settings', 'Branding', 'Internationalization', 'Navbar', 'Pages', 'Edit History Dashboard'];
+const HIDDEN_COLLECTIONS = ['Edit History'];
+
+const hideHiddenCollections = () => {
+  if (!document || !document?.body) {
+    return;
+  }
+
+  const links = document?.querySelectorAll('a[href*="#/collections/"], a[href*="/admin"]');
+
+  if (!links || !links?.length) {
+    return;
+  }
+
+  links.forEach((link: Element) => {
+    const el = link as HTMLAnchorElement;
+    const text = el.textContent?.trim();
+    if (!text || !HIDDEN_COLLECTIONS.includes(text)) return;
+
+    el.style.display = 'none';
+    el.setAttribute('aria-disabled', 'true');
+    el.removeAttribute('href');
+
+  });
+
+}
 
 /**
  * Apply role-based UI restrictions to the TinaCMS admin.
@@ -15,6 +40,13 @@ export const applyRoleRestrictions = async (cms: any) => {
   if (userId) {
     document.body.dataset.tinaUserId = userId;
   }
+
+  // Remove collections from the sidebar that are hidden for all users
+
+  hideHiddenCollections();
+
+  const hiddenCollectionsObserver = new MutationObserver(hideHiddenCollections);
+  hiddenCollectionsObserver.observe(document.body, { childList: true, subtree: true });
 
   if (isAdmin) return;
 

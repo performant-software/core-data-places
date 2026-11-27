@@ -1,4 +1,6 @@
+import { TinaField } from 'tinacms';
 import TinaMediaPicker from '../components/TinaMediaPicker';
+import EditHistory from '../components/EditHistory';
 
 export const media = {
   name: "media",
@@ -52,3 +54,28 @@ export const media = {
     }
   ]
 }
+
+export const commonCollectionFields: TinaField<false>[] = [
+  {
+    name: 'history',
+    label: 'Edit History',
+    type: 'object',
+    list: true,
+    fields: [{
+      name: 'user_email',
+      label: 'User',
+      type: 'string'
+    }, {
+      name: 'timestamp',
+      label: 'Timestamp',
+      type: 'datetime'
+    }, {
+      name: 'user_id',
+      label: 'User ID',
+      type: 'string'
+    }],
+    ui: {
+      component: EditHistory
+    }
+  }
+]

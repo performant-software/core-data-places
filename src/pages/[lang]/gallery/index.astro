@@ -4,7 +4,10 @@ import config from '@config';
 import Layout from '@layouts/Layout.astro';
 import _ from 'underscore';
 
-export const getStaticPaths = () => _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}));
+export const getStaticPaths = () => (config.gallery
+  ? _.map(config.i18n.locales, (lang: string) => ({ params: { lang }}))
+  : []
+);
 
 ---
 
